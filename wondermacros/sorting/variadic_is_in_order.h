@@ -36,10 +36,58 @@
 # include "wondermacros/configs/compare.h"
 #endif
 
-#define W_VARIADIC_IS_IN_ASC_ORDER(...) W_SEQ_IS_IN_ORDER(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), <=)
-#define W_VARIADIC_IS_IN_TOTAL_ASC_ORDER(...) W_SEQ_IS_IN_ORDER(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), <)
-#define W_VARIADIC_IS_IN_DESC_ORDER(...) W_SEQ_IS_IN_ORDER(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), >=)
-#define W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(...) W_SEQ_IS_IN_ORDER(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), >)
+/***
+ *** Name:  W_VARIADIC_IS_IN_ASC_ORDER
+ *** Proto: W_VARIADIC_IS_IN_ASC_ORDER(...)
+ *** Arg:   ...   elements to be tested
+ *** Description: Use W_VARIADIC_IS_IN_ASC_ORDER to test if given input is in ascending order.
+ *** Returns 1 if elements are in ascending order, 0 otherwise.
+ *** Notes:  All inputs are evaluated multiple times.
+ ***         Redefine COMPARE in order to change the comparison method.
+ *** Example: W_VARIADIC_IS_IN_ASC_ORDER(1,2,3,4) evaluates to 1.
+ ***/
+#define W_VARIADIC_IS_IN_ASC_ORDER(...) \
+    W_SEQ_IS_IN_ORDER(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), <=)
+
+/***
+ *** Name:  W_VARIADIC_IS_IN_TOTAL_ASC_ORDER
+ *** Proto: W_VARIADIC_IS_IN_TOTAL_ASC_ORDER(...)
+ *** Arg:   ...   elements to be tested
+ *** Description: Use W_VARIADIC_IS_IN_TOTAL_ASC_ORDER to test if given input is in total ascending order.
+ *** Returns 1 if elements are in ascending order, 0 otherwise.
+ *** Notes:  All inputs are evaluated multiple times.
+ ***         Redefine COMPARE in order to change the comparison method.
+ *** Example: W_VARIADIC_IS_IN_TOTAL_ASC_ORDER(1,2,3,4) evaluates to 1.
+ ***/
+#define W_VARIADIC_IS_IN_TOTAL_ASC_ORDER(...) \
+    W_SEQ_IS_IN_ORDER(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), <)
+
+/***
+ *** Name:  W_VARIADIC_IS_IN_DESC_ORDER
+ *** Proto: W_VARIADIC_IS_IN_DESC_ORDER(...)
+ *** Arg:   ...   elements to be tested
+ *** Description: Use W_VARIADIC_IS_IN_DESC_ORDER to test if given input is in descending order.
+ *** Returns 1 if elements are in descending order, 0 otherwise.
+ *** Notes:  All inputs are evaluated multiple times.
+ ***         Redefine COMPARE in order to change the comparison method.
+ *** Example: W_VARIADIC_IS_IN_DESC_ORDER(3,3,2,1) evaluates to 1.
+ ***/
+#define W_VARIADIC_IS_IN_DESC_ORDER(...) \
+    W_SEQ_IS_IN_ORDER(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), >=)
+
+/***
+ *** Name:  W_VARIADIC_IS_IN_TOTAL_DESC_ORDER
+ *** Proto: W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(...)
+ *** Arg:   ...   elements to be tested
+ *** Description: Use W_VARIADIC_IS_IN_TOTAL_DESC_ORDER to test if given input is in total descending order.
+ *** Returns 1 if elements are in total descending order, 0 otherwise.
+ *** Notes:  All inputs are evaluated multiple times.
+ ***         Redefine COMPARE in order to change the comparison method.
+ *** Example: W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(4,3,2,1) evaluates to 1.
+ ***/
+#define W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(...) \
+    W_SEQ_IS_IN_ORDER(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), >)
+
 
 #define W_SEQ_IS_IN_ORDER(seq,op) \
     BOOST_PP_SEQ_FOR_EACH_I(_W_IS_IN_ORDER,(op,seq),seq) 1
