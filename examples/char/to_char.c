@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <wondermacros/char/to_char.h>
-#include <wondermacros/char/chars_to_str.h>
 
 int main()
 {

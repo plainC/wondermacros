@@ -48,19 +48,19 @@
  ***                  printf("%d: %d\n", a_ix, a);
  ***              }
  ***/
-#define W_ARRAY_FOR_EACH(T,elem,...)                                      \
+#define W_ARRAY_FOR_EACH(T,elem,...)                                        \
     BOOST_PP_OVERLOAD(_W_ARRAY_FOR_EACH_,__VA_ARGS__)(T,elem,__VA_ARGS__)
 
-#define _W_ARRAY_FOR_EACH_1(T,elem,array)                                 \
+#define _W_ARRAY_FOR_EACH_1(T,elem,array)                                   \
     _W_ARRAY_FOR_EACH(T,elem,array,W_ARRAY_GET_SIZE(array))
 
-#define _W_ARRAY_FOR_EACH_2(T,elem,array,size)                            \
+#define _W_ARRAY_FOR_EACH_2(T,elem,array,size)                              \
     _W_ARRAY_FOR_EACH(T,elem,array,size)
 
-#define _W_ARRAY_FOR_EACH(T,elem,array,Size)                              \
-    MPP_DECLARE(_array_for_each_, T elem)                                 \
-    for (int elem ## _ix=0, W_ID(size) = (Size);                          \
-         elem ## _ix < W_ID(size) && (elem = GET(array, elem ## _ix), 1); \
+#define _W_ARRAY_FOR_EACH(T,elem,array,Size)                                \
+    MPP_DECLARE(_array_for_each_, T elem)                                   \
+    for (int elem ## _ix=0, W_ID(size) = (Size);                            \
+         elem ## _ix < W_ID(size) && (elem = W_GET(array, elem ## _ix), 1); \
          ++elem ## _ix)
 
 #endif
