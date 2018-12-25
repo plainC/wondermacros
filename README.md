@@ -25,3 +25,52 @@ control structures. The original mp.h is included in Wondermacros.
 
 Best Regards,
 J.P. Iivonen <wondermacros@yahoo.com>
+
+
+
+Macro Reference
+
+
+The package contains the following macros:
+
+W_CAT(...)
+    Concatenates given arguments. Similar to BOOST_PP_CAT except that takes up to 16 arguments
+
+W_ID(id)
+    Provides a more hygienic id name
+
+W_NUMERIC_CMP_ASC(a,b)
+    Returns -1 if a<b, 0 if a=b and 1 if a>b
+
+W_NUMERIC_CMP_DESC(a,b)
+    Returns -1 if a>b, 0 if a=b and 1 if a<b
+
+W_REF_VOID_PTR(ptr,offset)
+    A pointer is referenced using an offset in bytes
+
+W_STRINGIZE(...)
+    Stringizes its arguments. Similar to BOOST_PP_STRINGIZE except that takes up to 16 arguments
+
+W_SWAP(T,a,b)
+    Swaps a and b of type T
+
+W_TO_CHAR(ch)
+    Converts a single character identifier to a C string, i.g. a to 'a'
+
+W_UNUSED(id)
+    Kills a compiler warning caused by an unused variable
+
+W_VARIADIC_IS_EQUAL(...)
+    Compares if given arguments are equal
+
+W_VARIADIC_IS_IN_ASC_ORDER(...)
+    Compares if given arguments are in ascending order
+
+W_VARIADIC_IS_IN_DESC_ORDER(...)
+    Compares if given arguments are in descending order
+
+W_VARIADIC_IS_IN_TOTAL_ASC_ORDER(...)
+    Compares if given arguments are in total ascending order
+
+W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(...)
+    Compares if given arguments are in total descending order
