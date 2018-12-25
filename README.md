@@ -27,6 +27,11 @@ Best Regards,
 J.P. Iivonen <wondermacros@yahoo.com>
 
 
+Installation
+
+The package contains just header files. To install wondermacros directory
+under /usr/include, type 'make install' as root.
+
 
 Macro Reference
 
