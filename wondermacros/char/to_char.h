@@ -22,6 +22,9 @@
  * SOFTWARE.
  */
 
+#ifndef __W_TO_CHAR_H
+#define __W_TO_CHAR_H
+
 /***
  *** Name:  W_TO_CHAR
  *** Proto: W_TO_CHAR(ch)
@@ -97,3 +100,6 @@
 #define _W_TO_CHAR_w 'w'
 #define _W_TO_CHAR_x 'x'
 #define _W_TO_CHAR_y 'y'
+
+#endif
+

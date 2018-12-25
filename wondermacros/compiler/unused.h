@@ -22,13 +22,19 @@
  * SOFTWARE.
  */
 
+#ifndef __W_UNUSED_H
+#define __W_UNUSED_H
+
 /***
- *** Name:  W_UNUSED
- *** Proto: W_UNUSED(id)
- *** Arg:   id   identifier name       The name of unused identifier.
+ *** Name:        W_UNUSED
+ *** Proto:       W_UNUSED(id)
+ *** Arg:         id   identifier name       The name of unused identifier.
  *** Description: Use W_UNUSED to kill a warning if an identifier is unused.
  ***/
 #define W_UNUSED(id) \
     do {             \
         (void) id;   \
     } while (0)
+
+#endif
+

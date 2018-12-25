@@ -22,12 +22,18 @@
  * SOFTWARE.
  */
 
+#ifndef __W_REF_VOID_PTR_H
+#define __W_REF_VOID_PTR_H
+
 /***
- *** Name:  W_REF_VOID_PTR
- *** Proto: W_REF_VOID_PTR(ptr,offset)
- *** Arg:   ptr     a pointer       A pointer to be referenced by an offset.
- *** Arg:   offset  an offset       An offset in bytes.
+ *** Name:        W_REF_VOID_PTR
+ *** Proto:       W_REF_VOID_PTR(ptr,offset)
+ *** Arg:         ptr     a pointer       A pointer to be referenced by an offset.
+ *** Arg:         offset  an offset       An offset in bytes.
  *** Description: Use W_REF_VOID_PTR to reference a void pointer using an offset in bytes.
  ***/
-#define PP_REF_VOID_PTR(ptr,offset) \
+#define W_REF_VOID_PTR(ptr,offset) \
     ((void*)((char*) (ptr) + (offset)))
+
+#endif
+

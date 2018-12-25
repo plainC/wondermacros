@@ -6,6 +6,9 @@
  *   https://www.chiark.greenend.org.uk/~sgtatham/mp/
  */
 
+#ifndef __MP_H
+#define __MP_H
+
 /*
  * mp.h is copyright 2012 Simon Tatham.
  * 
@@ -481,4 +484,6 @@
                     MPI_LABEL(labid, else):             \
                         if (0)                          \
                         MPI_LABEL(labid, body):
+
+#endif
 
