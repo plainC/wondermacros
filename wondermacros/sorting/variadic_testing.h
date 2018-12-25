@@ -51,19 +51,6 @@
 #define W_VARIADIC_IS_EQUAL(...) \
     W_SEQ_TO_COMPARE_EXPR(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), COMPARE, ==, 0, &&, 1)
 
-/***
- *** Name:  W_VARIADIC_IS_UNEQUAL
- *** Proto: W_VARIADIC_IS_UNEQUAL(...)
- *** Arg:   ...   elements to be tested
- *** Description: Use W_VARIADIC_IS_UNEQUAL to test if given values are all different.
- ***              Expands to an expression like (a != b && b != c && ...).
- *** Returns 1 if elements are unequal, 0 otherwise.
- *** Notes:  All inputs are evaluated multiple times.
- ***         Redefine COMPARE in order to change the comparison method.
- *** Example: W_VARIADIC_IS_UNEQUAL(1,2,3,4) evaluates to 1.
- ***/
-#define W_VARIADIC_IS_UNEQUAL(...) \
-    W_SEQ_TO_COMPARE_EXPR(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), COMPARE, !=, 0, &&, 1)
 
 /***
  *** Name:  W_VARIADIC_IS_IN_ASC_ORDER
