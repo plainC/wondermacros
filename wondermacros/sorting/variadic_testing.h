@@ -32,93 +32,93 @@
 #include <boost/preprocessor/seq/for_each_i.hpp>
 #include <boost/preprocessor/variadic/to_seq.hpp>
 
-#ifndef COMPARE
+#ifndef W_COMPARE
 # include "wondermacros/configs/compare.h"
 #endif
 
 
 /***
- *** Name:  W_VARIADIC_IS_EQUAL
- *** Proto: W_VARIADIC_IS_EQUAL(...)
- *** Arg:   ...   elements to be tested
+ *** Name:        W_VARIADIC_IS_EQUAL
+ *** Proto:       W_VARIADIC_IS_EQUAL(...)
+ *** Arg:         ...   elements to be tested
  *** Description: Use W_VARIADIC_IS_EQUAL to test if given values are all equal.
  ***              Expands to an expression like (a == b && b == c && ...).
- *** Returns 1 if elements are equal, 0 otherwise.
- *** Notes:  All inputs are evaluated multiple times.
- ***         Redefine COMPARE in order to change the comparison method.
- *** Example: W_VARIADIC_IS_EQUAL(1,2,3,4) evaluates to 0.
+ *** Returns:     1 if elements are equal, 0 otherwise.
+ *** Notes:       All inputs are evaluated multiple times.
+ ***              Redefine W_COMPARE in order to change the comparison method.
+ *** Example:     W_VARIADIC_IS_EQUAL(1,2,3,4) evaluates to 0.
  ***/
 #define W_VARIADIC_IS_EQUAL(...) \
-    W_SEQ_TO_COMPARE_EXPR(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), COMPARE, ==, 0, &&, 1)
+    W_SEQ_TO_COMPARE_EXPR(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), W_COMPARE, ==, 0, &&, 1)
 
 
 /***
- *** Name:  W_VARIADIC_IS_IN_ASC_ORDER
- *** Proto: W_VARIADIC_IS_IN_ASC_ORDER(...)
- *** Arg:   ...   elements to be tested
+ *** Name:        W_VARIADIC_IS_IN_ASC_ORDER
+ *** Proto:       W_VARIADIC_IS_IN_ASC_ORDER(...)
+ *** Arg:         ...   elements to be tested
  *** Description: Use W_VARIADIC_IS_IN_ASC_ORDER to test if given input is in ascending order.
- *** Returns 1 if elements are in ascending order, 0 otherwise.
- *** Notes:  All inputs are evaluated multiple times.
- ***         Redefine COMPARE in order to change the comparison method.
- *** Example: W_VARIADIC_IS_IN_ASC_ORDER(1,2,3,4) evaluates to 1.
+ *** Returns:     1 if elements are in ascending order, 0 otherwise.
+ *** Notes:       All inputs are evaluated multiple times.
+ ***              Redefine W_COMPARE in order to change the comparison method.
+ *** Example:     W_VARIADIC_IS_IN_ASC_ORDER(1,2,3,4) evaluates to 1.
  ***/
 #define W_VARIADIC_IS_IN_ASC_ORDER(...) \
-    W_SEQ_TO_COMPARE_EXPR(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), COMPARE, <=, 0, &&, 1)
+    W_SEQ_TO_COMPARE_EXPR(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), W_COMPARE, <=, 0, &&, 1)
 
 /***
- *** Name:  W_VARIADIC_IS_IN_TOTAL_ASC_ORDER
- *** Proto: W_VARIADIC_IS_IN_TOTAL_ASC_ORDER(...)
- *** Arg:   ...   elements to be tested
+ *** Name:        W_VARIADIC_IS_IN_TOTAL_ASC_ORDER
+ *** Proto:       W_VARIADIC_IS_IN_TOTAL_ASC_ORDER(...)
+ *** Arg:         ...   elements to be tested
  *** Description: Use W_VARIADIC_IS_IN_TOTAL_ASC_ORDER to test if given input is in total ascending order.
- *** Returns 1 if elements are in ascending order, 0 otherwise.
- *** Notes:  All inputs are evaluated multiple times.
- ***         Redefine COMPARE in order to change the comparison method.
- *** Example: W_VARIADIC_IS_IN_TOTAL_ASC_ORDER(1,2,3,4) evaluates to 1.
+ *** Returns:      1 if elements are in ascending order, 0 otherwise.
+ *** Notes:       All inputs are evaluated multiple times.
+ ***              Redefine W_COMPARE in order to change the comparison method.
+ *** Example:     W_VARIADIC_IS_IN_TOTAL_ASC_ORDER(1,2,3,4) evaluates to 1.
  ***/
 #define W_VARIADIC_IS_IN_TOTAL_ASC_ORDER(...) \
-    W_SEQ_TO_COMPARE_EXPR(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), COMPARE, <, 0, &&, 1)
+    W_SEQ_TO_COMPARE_EXPR(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), W_COMPARE, <, 0, &&, 1)
 
 /***
- *** Name:  W_VARIADIC_IS_IN_DESC_ORDER
- *** Proto: W_VARIADIC_IS_IN_DESC_ORDER(...)
+ *** Name:        W_VARIADIC_IS_IN_DESC_ORDER
+ *** Proto:       W_VARIADIC_IS_IN_DESC_ORDER(...)
  *** Arg:   ...   elements to be tested
  *** Description: Use W_VARIADIC_IS_IN_DESC_ORDER to test if given input is in descending order.
- *** Returns 1 if elements are in descending order, 0 otherwise.
- *** Notes:  All inputs are evaluated multiple times.
- ***         Redefine COMPARE in order to change the comparison method.
- *** Example: W_VARIADIC_IS_IN_DESC_ORDER(3,3,2,1) evaluates to 1.
+ *** Returns:     1 if elements are in descending order, 0 otherwise.
+ *** Notes:       All inputs are evaluated multiple times.
+ ***              Redefine W_COMPARE in order to change the comparison method.
+ *** Example:     W_VARIADIC_IS_IN_DESC_ORDER(3,3,2,1) evaluates to 1.
  ***/
 #define W_VARIADIC_IS_IN_DESC_ORDER(...) \
-    W_SEQ_TO_COMPARE_EXPR(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), COMPARE, >=, 0, &&, 1)
+    W_SEQ_TO_COMPARE_EXPR(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), W_COMPARE, >=, 0, &&, 1)
 
 /***
- *** Name:  W_VARIADIC_IS_IN_TOTAL_DESC_ORDER
- *** Proto: W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(...)
- *** Arg:   ...   elements to be tested
+ *** Name:        W_VARIADIC_IS_IN_TOTAL_DESC_ORDER
+ *** Proto:       W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(...)
+ *** Arg:         ...   elements to be tested
  *** Description: Use W_VARIADIC_IS_IN_TOTAL_DESC_ORDER to test if given input is in total descending order.
- *** Returns 1 if elements are in total descending order, 0 otherwise.
- *** Notes:  All inputs are evaluated multiple times.
- ***         Redefine COMPARE in order to change the comparison method.
- *** Example: W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(4,3,2,1) evaluates to 1.
+ *** Returns:     1 if elements are in total descending order, 0 otherwise.
+ *** Notes:       All inputs are evaluated multiple times.
+ ***              Redefine W_COMPARE in order to change the comparison method.
+ *** Example:     W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(4,3,2,1) evaluates to 1.
  ***/
 #define W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(...) \
-    W_SEQ_TO_COMPARE_EXPR(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), COMPARE, >, 0, &&, 1)
+    W_SEQ_TO_COMPARE_EXPR(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__), W_COMPARE, >, 0, &&, 1)
 
 
 /***
- *** Name:  W_SEQ_TO_COMPARE_EXPR
- *** Proto: W_SEQ_TO_COMPARE_EXPR(seq,method,comp_op,comp_value,log_op,neutral_value)
- *** Arg:   seq            a sequence of values to be compared
- *** Arg:   method         a function or macro name used in comparisons
- *** Arg:   comp_op        comparison operator
- *** Arg:   comp_value     comparison value
- *** Arg:   log_op         logical operator
- *** Arg:   neutral_value  neutral value
+ *** Name:        W_SEQ_TO_COMPARE_EXPR
+ *** Proto:       W_SEQ_TO_COMPARE_EXPR(seq,method,comp_op,comp_value,log_op,neutral_value)
+ *** Arg:         seq            a sequence of values to be compared
+ *** Arg:         method         a function or macro name used in comparisons
+ *** Arg:         comp_op        comparison operator
+ *** Arg:         comp_value     comparison value
+ *** Arg:         log_op         logical operator
+ *** Arg:         neutral_value  neutral value
  *** Description: Use W_SEQ_TO_COMPARE_EXPR to test equality or order multiple values, for example.
- *** Returns 1 or 0.
- *** Notes:  All inputs are evaluated multiple times.
- *** Example: W_SEQ_TO_COMPARE((1)(2)(3)(4), W_NUMERIC_CMP_ASC, <=, 0, &&, 1) compares ascending order and evaluates to 1.
- *** Example: W_SEQ_TO_COMPARE((1)(2)(3)(4), W_NUMERIC_CMP_ASC, ==, 0, &&, 1) compares equality and evaluates to 0.
+ *** Returns:     1 or 0.
+ *** Notes:       All inputs are evaluated multiple times.
+ *** Example:     W_SEQ_TO_COMPARE((1)(2)(3)(4), W_NUMERIC_CMP_ASC, <=, 0, &&, 1) compares ascending order and evaluates to 1.
+ *** Example:     W_SEQ_TO_COMPARE((1)(2)(3)(4), W_NUMERIC_CMP_ASC, ==, 0, &&, 1) compares equality and evaluates to 0.
  ***/
 #define W_SEQ_TO_COMPARE_EXPR(seq,method,comp_op,comp_value,log_op,neutral_value) \
     (BOOST_PP_SEQ_FOR_EACH_I(_W0000_HELPER,(seq,method,comp_op,comp_value,log_op),seq) neutral_value)
@@ -137,4 +137,3 @@
     )
 
 #endif
-
