@@ -47,6 +47,24 @@ W_ARRAY_GET_SIZE(a)
 W_CAT(...)
     Concatenates given arguments. Similar to BOOST_PP_CAT except that takes up to 16 arguments.
 
+W_DYNAMIC_ARRAY_DECLARE(T,name)
+    Declares a dynamic array.
+
+W_DYNAMIC_ARRAY_INIT(name,T,init_size)
+    Initializes a dynamic array.
+
+W_DYNAMIC_ARRAY_ELEM(array,index)
+    Gets an element of a dynamic array.
+
+W_DYNAMIC_ARRAY_SIZE(array)
+    Gets the number of elements in a dynamic array.
+
+W_DYNAMIC_ARRAY_PUSH(array,...)
+    Adds elements to a dynamic array.
+
+W_DYNAMIC_ARRAY_CLEAR(array)
+    Removes all elements of a dynamic array.
+
 W_ID(id)
     Provides a more hygienic id name.
 
