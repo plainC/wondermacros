@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef __W_META_ID_H
-#define __W_META_ID_H
+#ifndef __W_ID_H
+#define __W_ID_H
 
 #include <boost/preprocessor/cat.hpp>
 

@@ -22,6 +22,9 @@
  * SOFTWARE.
  */
 
+#ifndef _W_STRINGIZE_H
+#define _W_STRINGIZE_H
+
 #include <boost/preprocessor/facilities/overload.hpp>
 
 #define W_STRINGIZE(...) BOOST_PP_OVERLOAD(_W_STRINGIZE_,__VA_ARGS__)(__VA_ARGS__)
@@ -42,3 +45,6 @@
 #define _W_STRINGIZE_14(_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,_11,_12,_13,_14)  # _1 # _2 # _3 # _4 # _5 # _6 # _7 # _8 # _9 # _10 # _11 # _12 # _13 # _14
 #define _W_STRINGIZE_15(_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,_11,_12,_13,_14,_15)  # _1 # _2 # _3 # _4 # _5 # _6 # _7 # _8 # _9 # _10 # _11 # _12 # _13 # _14 # _15
 #define _W_STRINGIZE_16(_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,_11,_12,_13,_14,_15,_16)  # _1 # _2 # _3 # _4 # _5 # _6 # _7 # _8 # _9 # _10 # _11 # _12 # _13 # _14 # _15 # _16
+
+#endif
+
