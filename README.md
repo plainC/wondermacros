@@ -59,6 +59,9 @@ under /usr/include, type 'make install' as root.
 #### W_DYNAMIC_ARRAY_SIZE(array)
     Gets the number of elements in a dynamic array.
 
+#### W_DYNAMIC_ARRAY_STEAL_LAST(array)
+    Gets and removes the last element in a dynamic array.
+
 #### W_DYNAMIC_ARRAY_PEEK_LAST(array)
     Gets the last element in a dynamic array.
 
@@ -73,6 +76,24 @@ under /usr/include, type 'make install' as root.
 
 #### W_DYNAMIC_ARRAY_FREE(array)
     Destroys a dynamic array.
+
+#### W_DYNAMIC_STACK_INIT(stack,T,init_size)
+    Initializes a dynamic stack.
+
+#### W_DYNAMIC_STACK_PEEK(stack)
+    Gets the toppest element in a dynamic stack.
+
+#### W_DYNAMIC_STACK_POP(stack)
+    Gets and removes the toppest element in a dynamic stack.
+
+#### W_DYNAMIC_STACK_PUSH(stack,...)
+    Pushes elements to a dynamic stack.
+
+#### W_DYNAMIC_STACK_CLEAR(stack)
+    Removes all elements of a dynamic stack but keeps the header. No need to reinitialize.
+
+#### W_DYNAMIC_STACK_FREE(stack)
+    Destroys a dynamic stack.
 
 #### W_ID(id)
     Provides a more hygienic id name.

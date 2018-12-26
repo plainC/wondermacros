@@ -19,7 +19,7 @@ int main()
     for (int i=0; i < W_DYNAMIC_ARRAY_SIZE(array); i++)
         printf("%d\n", array[i]);
 
-    printf("Last elem=%d\n", W_DYNAMIC_ARRAY_PEEK_LAST(array));
+    printf("Last elem=%d (steal it)\n", W_DYNAMIC_ARRAY_STEAL_LAST(array));
     printf("Last elem=%d (using safe version)\n", W_DYNAMIC_ARRAY_PEEK_LAST_SAFE(array,0));
 
     W_DYNAMIC_ARRAY_FREE(array);

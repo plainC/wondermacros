@@ -74,6 +74,17 @@
 #define W_DYNAMIC_ARRAY_SIZE(array) (W_DYNAMIC_ARRAY_HEADER(array)->nbr_of_elems)
 
 /***
+ *** Name:        W_DYNAMIC_ARRAY_STEAL_LAST
+ *** Proto:       W_DYNAMIC_ARRAY_STEAL_LAST(array)
+ ***
+ *** Arg:         array   array  A pointer to a dynamic array
+ ***
+ *** Description: Use W_DYNAMIC_ARRAY_STEAL_LAST to get and remove the last element in the array.
+ *** Note:        If the array is empty, the behaviour is undefined.
+ ***/
+#define W_DYNAMIC_ARRAY_STEAL_LAST(array) ((array)[--W_DYNAMIC_ARRAY_SIZE(array)])
+
+/***
  *** Name:        W_DYNAMIC_ARRAY_PEEK_LAST
  *** Proto:       W_DYNAMIC_ARRAY_PEEK_LAST(array)
  ***
@@ -143,21 +154,29 @@
 
 /***
  *** Name:        W_DYNAMIC_ARRAY_CLEAR
- *** Proto:       W_DYNAMIC_ARRAY_CLEAR(name)
+ *** Proto:       W_DYNAMIC_ARRAY_CLEAR(array)
  ***
- *** Arg:         name      array name  Array name
+ *** Arg:         array a dynamic array
  ***
  *** Description: Use W_DYNAMIC_ARRAY_CLEAR to clear a dynamic array.
  ***/
-#define W_DYNAMIC_ARRAY_CLEAR(name)                                           \
+#define W_DYNAMIC_ARRAY_CLEAR(array)                                          \
     do {                                                                      \
-        int W_ID(elem_size) W_DYNAMIC_ARRAY_ELEM_SIZE(name);                  \
-        W_FREE(W_DYNAMIC_ARRAY_HEADER(name));                                 \
-        _W_DYNAMIC_ARRAY_INIT(name,W_ID(elem_size),0);                        \
+        int W_ID(elem_size) W_DYNAMIC_ARRAY_ELEM_SIZE(array);                 \
+        W_FREE(W_DYNAMIC_ARRAY_HEADER(array));                                \
+        _W_DYNAMIC_ARRAY_INIT(array,W_ID(elem_size),0);                       \
     } while (0)
 
-#define W_DYNAMIC_ARRAY_FREE(name)                                            \
-    W_FREE(W_DYNAMIC_ARRAY_HEADER(name))
+/***
+ *** Name:        W_DYNAMIC_ARRAY_FREE
+ *** Proto:       W_DYNAMIC_ARRAY_FREE(array)
+ ***
+ *** Arg:         array      a dynamic array
+ ***
+ *** Description: Use W_DYNAMIC_ARRAY_FREE to free a dynamic array.
+ ***/
+#define W_DYNAMIC_ARRAY_FREE(array)                                            \
+    W_FREE(W_DYNAMIC_ARRAY_HEADER(array))
 
 
 #define _W_DYNAMIC_ARRAY_PUSH(r,name,i,e)                                     \
