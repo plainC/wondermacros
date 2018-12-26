@@ -67,11 +67,35 @@
  *** Name:        W_DYNAMIC_ARRAY_SIZE
  *** Proto:       W_DYNAMIC_ARRAY_SIZE(array)
  ***
- *** Arg:         array   array  A pointer to an array
+ *** Arg:         array   array  A pointer to a dynamic array
  ***
  *** Description: Use W_DYNAMIC_ARRAY_SIZE to get the number of elements in the array.
  ***/
 #define W_DYNAMIC_ARRAY_SIZE(array) (W_DYNAMIC_ARRAY_HEADER(array)->nbr_of_elems)
+
+/***
+ *** Name:        W_DYNAMIC_ARRAY_PEEK_LAST
+ *** Proto:       W_DYNAMIC_ARRAY_PEEK_LAST(array)
+ ***
+ *** Arg:         array   array  A pointer to a dynamic array
+ ***
+ *** Description: Use W_DYNAMIC_ARRAY_PEEK_LAST to get the last element in the array.
+ *** Note:        If the array is empty, the behaviour is undefined.
+ ***/
+#define W_DYNAMIC_ARRAY_PEEK_LAST(array) ((array)[W_DYNAMIC_ARRAY_SIZE(array)-1])
+
+/***
+ *** Name:        W_DYNAMIC_ARRAY_PEEK_LAST_SAFE
+ *** Proto:       W_DYNAMIC_ARRAY_PEEK_LAST_SAFE(array,value)
+ ***
+ *** Arg:         array   array    A pointer to a dynamic array
+ *** Arg:         value   a value  A value returned if the array is empty
+ ***
+ *** Description: Use W_DYNAMIC_ARRAY_PEEK_LAST_SAFE to get the last element in the array.
+ ***              If the array is empty, the given value is returned.
+ ***/
+#define W_DYNAMIC_ARRAY_PEEK_LAST_SAFE(array,value) \
+    (W_DYNAMIC_ARRAY_SIZE(array) == 0 ? (value) : (array)[W_DYNAMIC_ARRAY_SIZE(array)-1])
 
 /***
  *** Name:        W_DYNAMIC_ARRAY_ALLOC_SIZE

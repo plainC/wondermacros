@@ -59,6 +59,12 @@ W_DYNAMIC_ARRAY_ALLOC_SIZE(array)
 W_DYNAMIC_ARRAY_SIZE(array)
     Gets the number of elements in a dynamic array.
 
+W_DYNAMIC_ARRAY_PEEK_LAST(array)
+    Gets the last element in a dynamic array.
+
+W_DYNAMIC_ARRAY_PEEK_LAST_SAFE(array,value)
+    Gets the last element in a dynamic array, or returns given value if empty.
+
 W_DYNAMIC_ARRAY_PUSH(array,...)
     Adds elements to a dynamic array.
 
