@@ -1,6 +1,6 @@
 # Wondermacros - Generally useful macros for C/C++ programming.
 
-Intro
+## Intro
 
 Writting a C/C++ macro library is hard. There exists just few of them,
 typically with a very narrow focus. Our focus is generally useful
@@ -27,94 +27,94 @@ Best Regards,
 J.P. Iivonen <wondermacros@yahoo.com>
 
 
-Installation
+## Installation
 
 The package contains just header files. To install wondermacros directory
 under /usr/include, type 'make install' as root.
 
 
-Macro Reference
+## Macro Reference
 
 
-The package contains the following macros:
+### The package contains the following macros:
 
-W_ARRAY_FOR_EACH(T,elem,array[,size])
+#### W_ARRAY_FOR_EACH(T,elem,array[,size])
     Iterates all elements in an array.
 
-W_ARRAY_GET_SIZE(a)
+#### W_ARRAY_GET_SIZE(a)
     Returns the allocation size of a statically allocated array.
 
-W_CAT(...)
+#### W_CAT(...)
     Concatenates given arguments. Similar to BOOST_PP_CAT except that takes up to 16 arguments.
 
-W_DYNAMIC_ARRAY_INIT(name,T,init_size)
+#### W_DYNAMIC_ARRAY_INIT(name,T,init_size)
     Initializes a dynamic array.
 
-W_DYNAMIC_ARRAY_ELEM_SIZE(array)
+#### W_DYNAMIC_ARRAY_ELEM_SIZE(array)
     Gets the element size of a dynamic array.
 
-W_DYNAMIC_ARRAY_ALLOC_SIZE(array)
+#### W_DYNAMIC_ARRAY_ALLOC_SIZE(array)
     Gets the current allocation size of a dynamic array.
 
-W_DYNAMIC_ARRAY_SIZE(array)
+#### W_DYNAMIC_ARRAY_SIZE(array)
     Gets the number of elements in a dynamic array.
 
-W_DYNAMIC_ARRAY_PEEK_LAST(array)
+#### W_DYNAMIC_ARRAY_PEEK_LAST(array)
     Gets the last element in a dynamic array.
 
-W_DYNAMIC_ARRAY_PEEK_LAST_SAFE(array,value)
+#### W_DYNAMIC_ARRAY_PEEK_LAST_SAFE(array,value)
     Gets the last element in a dynamic array, or returns given value if empty.
 
-W_DYNAMIC_ARRAY_PUSH(array,...)
+#### W_DYNAMIC_ARRAY_PUSH(array,...)
     Adds elements to a dynamic array.
 
-W_DYNAMIC_ARRAY_CLEAR(array)
+#### W_DYNAMIC_ARRAY_CLEAR(array)
     Removes all elements of a dynamic array but keeps the header. No need to reinitialize.
 
-W_DYNAMIC_ARRAY_FREE(array)
+#### W_DYNAMIC_ARRAY_FREE(array)
     Destroys a dynamic array.
 
-W_ID(id)
+#### W_ID(id)
     Provides a more hygienic id name.
 
-W_MAX(...)
+#### W_MAX(...)
     Returns maximum of given arguments (up to four).
 
-W_MIN(...)
+#### W_MIN(...)
     Returns minimum of given arguments (up to four).
 
-W_NUMERIC_CMP_ASC(a,b)
+#### W_NUMERIC_CMP_ASC(a,b)
     Returns -1 if a<b, 0 if a=b and 1 if a>b.
 
-W_NUMERIC_CMP_DESC(a,b)
+#### W_NUMERIC_CMP_DESC(a,b)
     Returns -1 if a>b, 0 if a=b and 1 if a<b.
 
-W_REF_VOID_PTR(ptr,offset)
+#### W_REF_VOID_PTR(ptr,offset)
     A pointer is referenced using an offset in bytes.
 
-W_STRINGIZE(...)
+#### W_STRINGIZE(...)
     Stringizes its arguments. Similar to BOOST_PP_STRINGIZE except that takes up to 16 arguments.
 
-W_SWAP(T,a,b)
+#### W_SWAP(T,a,b)
     Swaps a and b of type T.
 
-W_TO_CHAR(ch)
+#### W_TO_CHAR(ch)
     Converts a single character identifier to a C string, i.g. a to 'a'.
 
-W_UNUSED(id)
+#### W_UNUSED(id)
     Kills a compiler warning caused by an unused variable.
 
-W_VARIADIC_IS_EQUAL(...)
+#### W_VARIADIC_IS_EQUAL(...)
     Compares if given arguments are equal.
 
-W_VARIADIC_IS_IN_ASC_ORDER(...)
+#### W_VARIADIC_IS_IN_ASC_ORDER(...)
     Compares if given arguments are in ascending order.
 
-W_VARIADIC_IS_IN_DESC_ORDER(...)
+#### W_VARIADIC_IS_IN_DESC_ORDER(...)
     Compares if given arguments are in descending order.
 
-W_VARIADIC_IS_IN_TOTAL_ASC_ORDER(...)
+#### W_VARIADIC_IS_IN_TOTAL_ASC_ORDER(...)
     Compares if given arguments are in total ascending order.
 
-W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(...)
+#### W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(...)
     Compares if given arguments are in total descending order.
