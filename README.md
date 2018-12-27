@@ -47,6 +47,9 @@ under /usr/include, type 'make install' as root.
 #### W_CAT(...)
     Concatenates given arguments. Similar to BOOST_PP_CAT except that takes up to 16 arguments.
 
+#### W_CONTAINER_OF(ptr,T,member)
+    Gets the pointer to the beginning of a given struct based on a pointer to a member of the struct.
+
 #### W_DYNAMIC_ARRAY_INIT(name,T,init_size)
     Initializes a dynamic array.
 
