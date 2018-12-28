@@ -35,8 +35,7 @@ under /usr/include, type 'make install' as root.
 
 ## Macro Reference
 
-
-### The package contains the following macros:
+### Array macros
 
 #### W_ARRAY_FOR_EACH(T,elem,array[,size])
     Iterates all elements in an array.
@@ -44,11 +43,8 @@ under /usr/include, type 'make install' as root.
 #### W_ARRAY_GET_SIZE(a)
     Returns the allocation size of a statically allocated array.
 
-#### W_CAT(...)
-    Concatenates given arguments. Similar to BOOST_PP_CAT except that takes up to 16 arguments.
 
-#### W_CONTAINER_OF(ptr,T,member)
-    Gets the pointer to the beginning of a given struct based on a pointer to a member of the struct.
+### Dynamic Array
 
 #### W_DYNAMIC_ARRAY_INIT(name,T,init_size)
     Initializes a dynamic array.
@@ -80,6 +76,10 @@ under /usr/include, type 'make install' as root.
 #### W_DYNAMIC_ARRAY_FREE(array)
     Destroys a dynamic array.
 
+
+### Dynamic Stack
+
+
 #### W_DYNAMIC_STACK_INIT(stack,T,init_size)
     Initializes a dynamic stack.
 
@@ -98,8 +98,23 @@ under /usr/include, type 'make install' as root.
 #### W_DYNAMIC_STACK_FREE(stack)
     Destroys a dynamic stack.
 
+
+### Pre-Processor Programming
+
+#### W_CAT(...)
+    Concatenates given arguments. Similar to BOOST_PP_CAT except that takes up to 16 arguments.
+
 #### W_ID(id)
     Provides a more hygienic id name.
+
+#### W_LABEL(id1,id2)
+    Constructs line-unique labels.
+
+#### W_STRINGIZE(...)
+    Stringizes its arguments. Similar to BOOST_PP_STRINGIZE except that takes up to 16 arguments.
+
+
+### Mathematics
 
 #### W_MAX(...)
     Returns maximum of given arguments (up to four).
@@ -107,26 +122,17 @@ under /usr/include, type 'make install' as root.
 #### W_MIN(...)
     Returns minimum of given arguments (up to four).
 
+
+### Sorting
+
 #### W_NUMERIC_CMP_ASC(a,b)
     Returns -1 if a<b, 0 if a=b and 1 if a>b.
 
 #### W_NUMERIC_CMP_DESC(a,b)
     Returns -1 if a>b, 0 if a=b and 1 if a<b.
 
-#### W_REF_VOID_PTR(ptr,offset)
-    A pointer is referenced using an offset in bytes.
-
-#### W_STRINGIZE(...)
-    Stringizes its arguments. Similar to BOOST_PP_STRINGIZE except that takes up to 16 arguments.
-
 #### W_SWAP(T,a,b)
     Swaps a and b of type T.
-
-#### W_TO_CHAR(ch)
-    Converts a single character identifier to a C string, i.g. a to 'a'.
-
-#### W_UNUSED(id)
-    Kills a compiler warning caused by an unused variable.
 
 #### W_VARIADIC_IS_EQUAL(...)
     Compares if given arguments are equal.
@@ -142,3 +148,22 @@ under /usr/include, type 'make install' as root.
 
 #### W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(...)
     Compares if given arguments are in total descending order.
+
+
+### Compiler Tools
+
+#### W_CONTAINER_OF(ptr,T,member)
+    Gets the pointer to the beginning of a given struct based on a pointer to a member of the struct.
+
+#### W_REF_VOID_PTR(ptr,offset)
+    A pointer is referenced using an offset in bytes.
+
+#### W_UNUSED(id)
+    Kills a compiler warning caused by an unused variable.
+
+
+### Strings and Characters
+
+#### W_TO_CHAR(ch)
+    Converts a single character identifier to a C string, i.g. a to 'a'.
+

@@ -11,7 +11,7 @@
 
 /*
  * mp.h is copyright 2012 Simon Tatham.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
  * files (the "Software"), to deal in the Software without
@@ -20,10 +20,10 @@
  * sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following
  * conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -32,23 +32,13 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- * 
- * $Id$
+ *
  */
 
-/*
- * Macros beginning with 'MPI_' are internal to this header file, and
- * intended only to be used by other macros defined _in_ this header
- * file. Do not refer to them externally.
- */
 
-/* Standard trickery to allow us to macro-expand and then token-paste */
-#define MPI_TOKPASTEINNER(x,y) x ## y
-#define MPI_TOKPASTE(x,y) MPI_TOKPASTEINNER(x,y)
+#include <wondermacros/meta/cat.h>
+#include <wondermacros/meta/label.h>
 
-/* Method of constructing line-unique labels */
-#define MPI_LABEL(id1,id2)                                      \
-    MPI_TOKPASTE(MPI_LABEL_ ## id1 ## _ ## id2 ## _, __LINE__)
 
 /*
  * Macros beginning with 'MPP_' and 'MPS_' are building blocks
@@ -190,9 +180,9 @@
 #define MPP_BEFORE(labid,before)                \
     if (1) {                                    \
         before;                                 \
-        goto MPI_LABEL(labid, body);            \
+        goto W_LABEL(labid, body);            \
     } else                                      \
-    MPI_LABEL(labid, body):
+    W_LABEL(labid, body):
 
 /*
  * MPP_AFTER: run the suffixed statement, and then the code given in
@@ -210,14 +200,14 @@
  */
 #define MPP_AFTER(labid,after)                  \
     if (1)                                      \
-        goto MPI_LABEL(labid, body);            \
+        goto W_LABEL(labid, body);            \
     else                                        \
         while (1)                               \
             if (1) {                            \
                 after;                          \
                 break;                          \
             } else                              \
-            MPI_LABEL(labid, body):
+            W_LABEL(labid, body):
 
 /*
  * MPP_DECLARE: run the 'declaration' argument before the suffixed
@@ -235,14 +225,14 @@
     else                                                \
         for (declaration;;)                             \
             if (1) {                                    \
-                goto MPI_LABEL(labid, body);            \
-              MPI_LABEL(labid, done): break;            \
+                goto W_LABEL(labid, body);            \
+              W_LABEL(labid, done): break;            \
             } else                                      \
                 while (1)                               \
                     if (1)                              \
-                        goto MPI_LABEL(labid, done);    \
+                        goto W_LABEL(labid, done);    \
                     else                                \
-                    MPI_LABEL(labid, body):
+                    W_LABEL(labid, body):
 /* (The 'if(0) ; else' at the start of the above is just in case we
  * encounter an old-style compiler that considers variables declared
  * in for statements to have scope extending beyond the for statement.
@@ -272,10 +262,10 @@
  */
 #define MPP_DO_WHILE(labid, condition)          \
     if (1)                                      \
-        goto MPI_LABEL(labid, body);            \
+        goto W_LABEL(labid, body);            \
     else                                        \
         while (condition)                       \
-        MPI_LABEL(labid, body):
+        W_LABEL(labid, body):
 
 /*
  * MPP_IF: run the suffixed statement only if 'condition' is true.
@@ -310,25 +300,25 @@
  */
 #define MPP_BREAK_CATCH(labid)                  \
     if (0)                                      \
-    MPI_LABEL(labid, catch): break;             \
+    W_LABEL(labid, catch): break;             \
     else
 
 #define MPP_BREAK_THROW(labid)                          \
     if (1) {                                            \
-        goto MPI_LABEL(labid, body);                    \
-      MPI_LABEL(labid, finish):;                        \
+        goto W_LABEL(labid, body);                    \
+      W_LABEL(labid, finish):;                        \
     } else                                              \
         while (1)                                       \
             if (1)                                      \
-                goto MPI_LABEL(labid, catch);           \
+                goto W_LABEL(labid, catch);           \
             else                                        \
                 while (1)                               \
                     if (1)                              \
-                        goto MPI_LABEL(labid, finish);  \
+                        goto W_LABEL(labid, finish);  \
                     else                                \
-                    MPI_LABEL(labid, body):
+                    W_LABEL(labid, body):
 
-#define MPS_BREAK_THROW(labid) goto MPI_LABEL(labid, catch)
+#define MPS_BREAK_THROW(labid) goto W_LABEL(labid, catch)
 
 /*
  * MPP_BREAK_HANDLER: handle a 'break' in the suffixed statement by
@@ -345,21 +335,21 @@
  */
 #define MPP_BREAK_HANDLER(labid, handler)               \
     if (1) {                                            \
-        goto MPI_LABEL(labid, body);                    \
-      MPI_LABEL(labid, break):                          \
+        goto W_LABEL(labid, body);                    \
+      W_LABEL(labid, break):                          \
         {handler;}                                      \
         break;                                          \
-      MPI_LABEL(labid, finish):;                        \
+      W_LABEL(labid, finish):;                        \
     } else                                              \
         while (1)                                       \
             if (1)                                      \
-                goto MPI_LABEL(labid, break);           \
+                goto W_LABEL(labid, break);           \
             else                                        \
                 while (1)                               \
                     if (1)                              \
-                        goto MPI_LABEL(labid, finish);  \
+                        goto W_LABEL(labid, finish);  \
                     else                                \
-                    MPI_LABEL(labid, body):
+                    W_LABEL(labid, body):
 
 /*
  * MPP_FINALLY: execute the suffixed statement, and execute the
@@ -384,22 +374,22 @@
  */
 #define MPP_FINALLY(labid, finally)                     \
     if (1) {                                            \
-        goto MPI_LABEL(labid, body);                    \
-      MPI_LABEL(labid, break):                          \
+        goto W_LABEL(labid, body);                    \
+      W_LABEL(labid, break):                          \
         {finally;}                                      \
         break;                                          \
-      MPI_LABEL(labid, finish):                         \
+      W_LABEL(labid, finish):                         \
         {finally;}                                      \
     } else                                              \
         while (1)                                       \
             if (1)                                      \
-                goto MPI_LABEL(labid, break);           \
+                goto W_LABEL(labid, break);           \
             else                                        \
                 while (1)                               \
                     if (1)                              \
-                        goto MPI_LABEL(labid, finish);  \
+                        goto W_LABEL(labid, finish);  \
                     else                                \
-                    MPI_LABEL(labid, body):
+                    W_LABEL(labid, body):
 
 /*
  * MPP_BREAK_STOP: handle a 'break' in the suffixed statement by
@@ -412,20 +402,20 @@
  */
 #define MPP_BREAK_STOP(labid, handler)                  \
     if (1) {                                            \
-        goto MPI_LABEL(labid, body);                    \
-      MPI_LABEL(labid, break):                          \
+        goto W_LABEL(labid, body);                    \
+      W_LABEL(labid, break):                          \
         {handler;}                                      \
-      MPI_LABEL(labid, finish):;                        \
+      W_LABEL(labid, finish):;                        \
     } else                                              \
         while (1)                                       \
             if (1)                                      \
-                goto MPI_LABEL(labid, break);           \
+                goto W_LABEL(labid, break);           \
             else                                        \
                 while (1)                               \
                     if (1)                              \
-                        goto MPI_LABEL(labid, finish);  \
+                        goto W_LABEL(labid, finish);  \
                     else                                \
-                    MPI_LABEL(labid, body):
+                    W_LABEL(labid, body):
 
 /*
  * MPP_ELSE_ACCEPT, MPS_MAIN_INVOKE, MPS_ELSE_INVOKE: arrange to
@@ -443,17 +433,17 @@
  */
 #define MPP_ELSE_ACCEPT(labid)                  \
     if (1)                                      \
-        goto MPI_LABEL(labid, body);            \
+        goto W_LABEL(labid, body);            \
     else                                        \
-    MPI_LABEL(labid, else):                     \
+    W_LABEL(labid, else):                     \
         if (0)                                  \
-        MPI_LABEL(labid, body):
+        W_LABEL(labid, body):
 
 #define MPS_MAIN_INVOKE(labid)                  \
-    goto MPI_LABEL(labid, body)
+    goto W_LABEL(labid, body)
 
 #define MPS_ELSE_INVOKE(labid)                  \
-    goto MPI_LABEL(labid, else)
+    goto W_LABEL(labid, else)
 
 /*
  * MPP_ELSE_GENERAL: like MPP_ELSE_ACCEPT, but also lets you provide a
@@ -469,7 +459,7 @@
  */
 #define MPP_ELSE_GENERAL(labid, after, breakhandler)    \
     if (1)                                              \
-        goto MPI_LABEL(labid, body);                    \
+        goto W_LABEL(labid, body);                    \
     else                                                \
         while (1)                                       \
             if (1) {                                    \
@@ -481,9 +471,8 @@
                         {after;}                        \
                         break;                          \
                     } else                              \
-                    MPI_LABEL(labid, else):             \
+                    W_LABEL(labid, else):             \
                         if (0)                          \
-                        MPI_LABEL(labid, body):
+                        W_LABEL(labid, body):
 
 #endif
-
