@@ -93,16 +93,6 @@
 #define W_DYNAMIC_STACK_IS_EMPTY(stack) (W_DYNAMIC_STACK_SIZE(stack) == 0)
 
 /***
- *** Name:        W_DYNAMIC_STACK_ELEM_SIZE
- *** Proto:       W_DYNAMIC_STACK_ELEM_SIZE(stack)
- ***
- *** Arg:         stack   A pointer to a dynamic stack
- ***
- *** Description: Use W_DYNAMIC_STACK_ELEM_SIZE to get the element size.
- ***/
-#define W_DYNAMIC_STACK_ELEM_SIZE(stack) W_DYNAMIC_STACK_ELEM_SIZE(stack)
-
-/***
  *** Name:        W_DYNAMIC_STACK_INIT
  *** Proto:       W_DYNAMIC_STACK_INIT(stack,T,init_size)
  ***
@@ -114,16 +104,6 @@
  ***/
 #define W_DYNAMIC_STACK_INIT(stack,T,init_size)                                  \
     W_DYNAMIC_ARRAY_INIT(stack,T,init_size)
-
-/***
- *** Name:        W_DYNAMIC_STACK_CLEAR
- *** Proto:       W_DYNAMIC_STACK_CLEAR(stack)
- ***
- *** Arg:         stack   A pointer to a dynamic stack
- ***
- *** Description: Use W_DYNAMIC_STACK_CLEAR to clear a dynamic stack.
- ***/
-#define W_DYNAMIC_STACK_CLEAR(stack) W_DYNAMIC_ARRAY_CLEAR(stack)
 
 /***
  *** Name:        W_DYNAMIC_STACK_FREE

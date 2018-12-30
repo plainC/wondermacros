@@ -30,7 +30,7 @@
 #include <boost/preprocessor/variadic/elem.hpp>
 #include <boost/preprocessor/seq/for_each_i.hpp>
 
-#include <wondermacros/compiler/ref_void_ptr.h>
+#include <wondermacros/compiler/hidden_of.h>
 
 #ifndef W_MALLOC
 # define W_MALLOC malloc
@@ -57,22 +57,30 @@
     struct {                                                                  \
         int alloc_size;                                                       \
         int nbr_of_elems;                                                     \
-        int elem_size;                                                        \
     }
 
-
-#define W_DYNAMIC_ARRAY_HEADER(array)                                         \
-    ((W_DYNAMIC_ARRAY_HEADER_TYPE*) W_REF_VOID_PTR(array, -sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE)))
 
 /***
  *** Name:        W_DYNAMIC_ARRAY_SIZE
  *** Proto:       W_DYNAMIC_ARRAY_SIZE(array)
  ***
- *** Arg:         array   array  A pointer to a dynamic array
+ *** Arg:         array   A pointer to a dynamic array
  ***
  *** Description: Use W_DYNAMIC_ARRAY_SIZE to get the number of elements in the array.
  ***/
-#define W_DYNAMIC_ARRAY_SIZE(array) (W_DYNAMIC_ARRAY_HEADER(array)->nbr_of_elems)
+#define W_DYNAMIC_ARRAY_SIZE(array) \
+    W_HIDDEN_OF(array,W_DYNAMIC_ARRAY_HEADER_TYPE,nbr_of_elems)
+
+/***
+ *** Name:        W_DYNAMIC_ARRAY_ALLOC_SIZE
+ *** Proto:       W_DYNAMIC_ARRAY_ALLOC_SIZE(array)
+ ***
+ *** Arg:         array   A pointer to an array
+ ***
+ *** Description: Use W_DYNAMIC_ARRAY_ALLOC_SIZE to get the current allocation size.
+ ***/
+#define W_DYNAMIC_ARRAY_ALLOC_SIZE(array) \
+    W_HIDDEN_OF(array,W_DYNAMIC_ARRAY_HEADER_TYPE,alloc_size)
 
 /***
  *** Name:        W_DYNAMIC_ARRAY_STEAL_LAST
@@ -110,62 +118,26 @@
     (W_DYNAMIC_ARRAY_SIZE(array) == 0 ? (value) : (array)[W_DYNAMIC_ARRAY_SIZE(array)-1])
 
 /***
- *** Name:        W_DYNAMIC_ARRAY_ALLOC_SIZE
- *** Proto:       W_DYNAMIC_ARRAY_ALLOC_SIZE(array)
- ***
- *** Arg:         array   array  A pointer to an array
- ***
- *** Description: Use W_DYNAMIC_ARRAY_ALLOC_SIZE to get the current allocation size.
- ***/
-#define W_DYNAMIC_ARRAY_ALLOC_SIZE(array) (W_DYNAMIC_ARRAY_HEADER(array)->alloc_size)
-
-/***
- *** Name:        W_DYNAMIC_ARRAY_ELEM_SIZE
- *** Proto:       W_DYNAMIC_ARRAY_ELEM_SIZE(array)
- ***
- *** Arg:         array   array  A pointer to an array
- ***
- *** Description: Use W_DYNAMIC_ARRAY_ELEM_SIZE to get the element size.
- ***/
-#define W_DYNAMIC_ARRAY_ELEM_SIZE(array) (W_DYNAMIC_ARRAY_HEADER(array)->elem_size)
-
-/***
  *** Name:        W_DYNAMIC_ARRAY_INIT
  *** Proto:       W_DYNAMIC_ARRAY_INIT(name,T,init_size)
  ***
- *** Arg:         name      array name  Array name
- *** Arg:         T         type name   Type name of array elements
- *** Arg:         init_size size        Initial allocation size for the array
+ *** Arg:         array      Array pointer
+ *** Arg:         T          Type name of array elements
+ *** Arg:         init_size  Initial allocation size for the array
  ***
  *** Description: Use W_DYNAMIC_ARRAY_INIT to initialize a dynamic array.
  ***/
-#define W_DYNAMIC_ARRAY_INIT(name,elem_type,init_size)                                  \
-    _W_DYNAMIC_ARRAY_INIT(name,sizeof(elem_type),init_size)
+#define W_DYNAMIC_ARRAY_INIT(array,elem_type,init_size)                                  \
+    _W_DYNAMIC_ARRAY_INIT(array,sizeof(elem_type),init_size)
 
-#define _W_DYNAMIC_ARRAY_INIT(name,elem_size,init_size)                                 \
-    do {                                                                                \
-        name = W_MALLOC(sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE) + (init_size) * elem_size); \
-        if (name == NULL)                                                               \
-            W_ERROR_ALLOCATION;                                                         \
-        name = W_REF_VOID_PTR(name,sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE));                \
-        W_DYNAMIC_ARRAY_ALLOC_SIZE(name) = (init_size);                                 \
-        W_DYNAMIC_ARRAY_ELEM_SIZE(name) = elem_size;                                    \
-        W_DYNAMIC_ARRAY_SIZE(name) = 0;                                                 \
-    } while (0)
-
-/***
- *** Name:        W_DYNAMIC_ARRAY_CLEAR
- *** Proto:       W_DYNAMIC_ARRAY_CLEAR(array)
- ***
- *** Arg:         array a dynamic array
- ***
- *** Description: Use W_DYNAMIC_ARRAY_CLEAR to clear a dynamic array.
- ***/
-#define W_DYNAMIC_ARRAY_CLEAR(array)                                          \
-    do {                                                                      \
-        int W_ID(elem_size) W_DYNAMIC_ARRAY_ELEM_SIZE(array);                 \
-        W_FREE(W_DYNAMIC_ARRAY_HEADER(array));                                \
-        _W_DYNAMIC_ARRAY_INIT(array,W_ID(elem_size),0);                       \
+#define _W_DYNAMIC_ARRAY_INIT(array,elem_size,init_size)                                   \
+    do {                                                                                   \
+        (array) = W_MALLOC(sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE) + (init_size) * elem_size); \
+        if ((array) == NULL)                                                               \
+            W_ERROR_ALLOCATION;                                                            \
+        array = W_REF_VOID_PTR(array,sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE));                 \
+        W_HIDDEN_OF(array, W_DYNAMIC_ARRAY_HEADER_TYPE, alloc_size) = (init_size);         \
+        W_HIDDEN_OF(array, W_DYNAMIC_ARRAY_HEADER_TYPE, nbr_of_elems) = 0;                 \
     } while (0)
 
 /***
@@ -177,11 +149,14 @@
  *** Description: Use W_DYNAMIC_ARRAY_FREE to free a dynamic array.
  ***/
 #define W_DYNAMIC_ARRAY_FREE(array)                                            \
-    W_FREE(W_DYNAMIC_ARRAY_HEADER(array))
+    do {                                                                       \
+        W_FREE(W_HIDDEN_CONTAINER_OF(array,W_DYNAMIC_ARRAY_HEADER_TYPE));      \
+        (array) = NULL;                                                        \
+    } while (0)
 
 
-#define _W_DYNAMIC_ARRAY_PUSH(r,name,i,e)                                     \
-    (name)[W_DYNAMIC_ARRAY_SIZE(name) + i] = e;
+#define _W_DYNAMIC_ARRAY_PUSH(r,array,i,e)                                      \
+    (array)[W_DYNAMIC_ARRAY_SIZE(array) + i] = e;
 
 /***
  *** Name:        W_DYNAMIC_ARRAY_PUSH
@@ -205,16 +180,16 @@
         W_DYNAMIC_ARRAY_SIZE(array) += BOOST_PP_VARIADIC_SIZE(__VA_ARGS__);            \
     } while (0)
 
-#define W_DYNAMIC_ARRAY_GROW(name)                                               \
-    do {                                                                         \
-        W_DYNAMIC_ARRAY_ALLOC_SIZE(name) = W_DYNAMIC_ARRAY_ALLOC_SIZE(name) ?    \
-            (W_DYNAMIC_ARRAY_ALLOC_SIZE(name) << 1) : 8;                         \
-        name = W_REALLOC(W_DYNAMIC_ARRAY_HEADER(name),                           \
-            sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE) +                                \
-            W_DYNAMIC_ARRAY_ALLOC_SIZE(name) * W_DYNAMIC_ARRAY_ELEM_SIZE(name)); \
-        if ((name) == NULL)                                                      \
-            W_ERROR_ALLOCATION;                                                  \
-        name = W_REF_VOID_PTR(name,sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE));                \
+#define W_DYNAMIC_ARRAY_GROW(array)                                                    \
+    do {                                                                               \
+        W_DYNAMIC_ARRAY_ALLOC_SIZE(array) = W_DYNAMIC_ARRAY_ALLOC_SIZE(array) ?        \
+            (W_DYNAMIC_ARRAY_ALLOC_SIZE(array) << 1) : 8;                              \
+        array = W_REALLOC(W_HIDDEN_CONTAINER_OF(array,W_DYNAMIC_ARRAY_HEADER_TYPE),    \
+            sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE) +                                      \
+            W_DYNAMIC_ARRAY_ALLOC_SIZE(array) * sizeof((array)[0]));                   \
+        if ((array) == NULL)                                                           \
+            W_ERROR_ALLOCATION;                                                        \
+        array = W_REF_VOID_PTR(array,sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE));             \
     } while (0)
 
 #endif
