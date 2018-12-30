@@ -1,4 +1,4 @@
-/* (C) is Copyright 2015 J.P. Iivonen <wondermacros@yahoo.com>
+/* (C) is Copyright 2015,2018 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -25,13 +25,26 @@
 #ifndef __W_ABS_H
 #define __W_ABS_H
 
+#ifndef W_GE
+# define W_GE(a,b) ((a) >= (b))
+#endif
+
+#ifndef W_ZERO
+# define W_ZERO 0
+#endif
+
+#ifndef W_NEG
+# define W_NEG(a) (-(a))
+#endif
+
 /***
  *** Name:        W_ABS
  *** Proto:       W_ABS(a)
  *** Arg:         a          a value
  *** Description: Use W_ABS to get the absolute value.
+ *** Notes:       Redefine W_GE, W_ZERO and W_NEG to change the default operators.
  ***/
-#define W_ABS(a) ((a) >= 0 ? (a) : -(a))
+#define W_ABS(a) (W_GE(a,W_ZERO) ? (a) : W_NEG(a))
 
 #endif
 

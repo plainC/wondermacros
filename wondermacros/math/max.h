@@ -1,4 +1,4 @@
-/* (C) is Copyright 2015 J.P. Iivonen <wondermacros@yahoo.com>
+/* (C) is Copyright 2015,2018 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -31,6 +31,15 @@
 # include "wondermacros/configs/compare.h"
 #endif
 
+#ifndef W_GE
+# define W_GE(a,b) ((a) >= (b))
+#endif
+
+#ifndef W_ZERO
+# define W_ZERO 0
+#endif
+
+
 /***
  *** Name:        W_MAX
  *** Proto:       W_MAX(...)
@@ -40,9 +49,10 @@
 #define W_MAX(...) BOOST_PP_OVERLOAD(_W_MAX_,__VA_ARGS__)(__VA_ARGS__)
 
 #define _W_MAX_1(a) (a)
-#define _W_MAX_2(a,b) (W_COMPARE(a,b) >= 0 ? (a) : (b))
-#define _W_MAX_3(a,b,c) (W_COMPARE(a,b) >= 0 ? _W_MAX_2(a,c) : _W_MAX_2(b,c))
-#define _W_MAX_4(a,b,c,d) (W_COMPARE(_W_MAX_2(a,b),_W_MAX_2(c,d)) >= 0 ? _W_MAX_2(a,b) : _W_MAX_2(c,d))
+#define _W_MAX_2(a,b) (W_GE(W_COMPARE(a,b), W_ZERO) ? (a) : (b))
+#define _W_MAX_3(a,b,c) (W_GE(W_COMPARE(a,b), W_ZERO) ? _W_MAX_2(a,c) : _W_MAX_2(b,c))
+#define _W_MAX_4(a,b,c,d) (W_GE(W_COMPARE(_W_MAX_2(a,b),_W_MAX_2(c,d)), W_ZERO) \
+    ? _W_MAX_2(a,b) : _W_MAX_2(c,d))
 
 #endif
 

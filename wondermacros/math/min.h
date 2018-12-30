@@ -1,4 +1,4 @@
-/* (C) is Copyright 2015 J.P. Iivonen <wondermacros@yahoo.com>
+/* (C) is Copyright 2015,2018 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -31,18 +31,28 @@
 # include "wondermacros/configs/compare.h"
 #endif
 
+#ifndef W_LE
+# define W_LE(a,b) ((a) <= (b))
+#endif
+
+#ifndef W_ZERO
+# define W_ZERO 0
+#endif
+
+
 /***
  *** Name:        W_MIN
  *** Proto:       W_MIN(...)
  *** Arg:         ...          values to be compared (from one up to four)
  *** Description: Use W_MIN to get the minimum of given values.
+ *** Notes:       Redefine W_LE, W_ZERO and W_COMPARE to change the default operators.
  ***/
 #define W_MIN(...) BOOST_PP_OVERLOAD(_W_MIN_,__VA_ARGS__)(__VA_ARGS__)
 
 #define _W_MIN_1(a) (a)
-#define _W_MIN_2(a,b) (W_COMPARE(a,b) <= 0 ? (a) : (b))
-#define _W_MIN_3(a,b,c) (W_COMPARE(a,b) <= 0 ? _W_MIN_2(a,c) : _W_MIN_2(b,c))
-#define _W_MIN_4(a,b,c,d) (W_COMPARE(_W_MIN_2(a,b),_W_MIN_2(c,d)) <= 0 ? _W_MIN_2(a,b) : _W_MIN_2(c,d))
+#define _W_MIN_2(a,b) (W_LE(W_COMPARE(a,b), W_ZERO) ? (a) : (b))
+#define _W_MIN_3(a,b,c) (W_LE(W_COMPARE(a,b), W_ZERO) ? _W_MIN_2(a,c) : _W_MIN_2(b,c))
+#define _W_MIN_4(a,b,c,d) (W_LE(W_COMPARE(_W_MIN_2(a,b),_W_MIN_2(c,d)), W_ZERO) \
+    ? _W_MIN_2(a,b) : _W_MIN_2(c,d))
 
 #endif
-
