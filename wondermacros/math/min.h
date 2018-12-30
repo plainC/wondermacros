@@ -31,6 +31,12 @@
 # include "wondermacros/configs/compare.h"
 #endif
 
+/***
+ *** Name:        W_MIN
+ *** Proto:       W_MIN(...)
+ *** Arg:         ...          values to be compared (from one up to four)
+ *** Description: Use W_MIN to get the minimum of given values.
+ ***/
 #define W_MIN(...) BOOST_PP_OVERLOAD(_W_MIN_,__VA_ARGS__)(__VA_ARGS__)
 
 #define _W_MIN_1(a) (a)

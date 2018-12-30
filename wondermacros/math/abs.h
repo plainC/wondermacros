@@ -25,6 +25,12 @@
 #ifndef __W_ABS_H
 #define __W_ABS_H
 
+/***
+ *** Name:        W_ABS
+ *** Proto:       W_ABS(a)
+ *** Arg:         a          a value
+ *** Description: Use W_ABS to get the absolute value.
+ ***/
 #define W_ABS(a) ((a) >= 0 ? (a) : -(a))
 
 #endif

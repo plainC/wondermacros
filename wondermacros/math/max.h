@@ -31,6 +31,12 @@
 # include "wondermacros/configs/compare.h"
 #endif
 
+/***
+ *** Name:        W_MAX
+ *** Proto:       W_MAX(...)
+ *** Arg:         ...          values to be compared (from one up to four)
+ *** Description: Use W_MAX to get the maximum of given values.
+ ***/
 #define W_MAX(...) BOOST_PP_OVERLOAD(_W_MAX_,__VA_ARGS__)(__VA_ARGS__)
 
 #define _W_MAX_1(a) (a)
