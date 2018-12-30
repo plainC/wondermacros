@@ -27,6 +27,7 @@
 
 #include <boost/preprocessor/variadic/size.hpp>
 #include <boost/preprocessor/variadic/to_seq.hpp>
+#include <boost/preprocessor/variadic/elem.hpp>
 #include <boost/preprocessor/seq/for_each_i.hpp>
 
 #include <wondermacros/compiler/ref_void_ptr.h>
@@ -184,21 +185,24 @@
 
 /***
  *** Name:        W_DYNAMIC_ARRAY_PUSH
- *** Proto:       W_DYNAMIC_ARRAY_PUSH(name,...)
+ *** Proto:       W_DYNAMIC_ARRAY_PUSH(array,...)
  ***
- *** Arg:         name      array name  Array name
- *** Arg:         ...       values      Values to be pushed into a dynamic array
+ *** Arg:         array      Array pointer
+ *** Arg:         ...        Values to be pushed into a dynamic array
  ***
  *** Description: Use W_DYNAMIC_ARRAY_PUSH to add values to a dynamic array.
  ***/
-#define W_DYNAMIC_ARRAY_PUSH(name,...)                                           \
-    do {                                                                         \
-        while (W_DYNAMIC_ARRAY_ALLOC_SIZE(name) - W_DYNAMIC_ARRAY_SIZE(name) <   \
-            BOOST_PP_VARIADIC_SIZE(__VA_ARGS__))                                 \
-            W_DYNAMIC_ARRAY_GROW(name);                                          \
-        BOOST_PP_SEQ_FOR_EACH_I(_W_DYNAMIC_ARRAY_PUSH,name,                      \
-            BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))                               \
-        W_DYNAMIC_ARRAY_SIZE(name) += BOOST_PP_VARIADIC_SIZE(__VA_ARGS__);       \
+#define W_DYNAMIC_ARRAY_PUSH(array,...)                                                \
+    do {                                                                               \
+        if ((array) == NULL)                                                           \
+            _W_DYNAMIC_ARRAY_INIT(array, sizeof(BOOST_PP_VARIADIC_ELEM(0,__VA_ARGS__)),\
+                BOOST_PP_VARIADIC_SIZE(__VA_ARGS__));                                  \
+        while (W_DYNAMIC_ARRAY_ALLOC_SIZE(array) - W_DYNAMIC_ARRAY_SIZE(array) <       \
+            BOOST_PP_VARIADIC_SIZE(__VA_ARGS__))                                       \
+            W_DYNAMIC_ARRAY_GROW(array);                                               \
+        BOOST_PP_SEQ_FOR_EACH_I(_W_DYNAMIC_ARRAY_PUSH,array,                           \
+            BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))                                     \
+        W_DYNAMIC_ARRAY_SIZE(array) += BOOST_PP_VARIADIC_SIZE(__VA_ARGS__);            \
     } while (0)
 
 #define W_DYNAMIC_ARRAY_GROW(name)                                               \
