@@ -31,6 +31,8 @@
 #include <boost/preprocessor/seq/for_each_i.hpp>
 
 #include <wondermacros/compiler/hidden_of.h>
+#include <wondermacros/array/move_left.h>
+
 
 #ifndef W_MALLOC
 # define W_MALLOC malloc
@@ -178,6 +180,27 @@
         BOOST_PP_SEQ_FOR_EACH_I(_W_DYNAMIC_ARRAY_PUSH,array,                           \
             BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))                                     \
         W_DYNAMIC_ARRAY_SIZE(array) += BOOST_PP_VARIADIC_SIZE(__VA_ARGS__);            \
+    } while (0)
+
+/***
+ *** Name:        W_DYNAMIC_ARRAY_REMOVE
+ *** Proto:       W_DYNAMIC_ARRAY_REMOVE(array,pos[,nbr_of_elems])
+ ***
+ *** Arg:         array         Array pointer
+ *** Arg:         pos           Array index
+ *** Arg:         nbr_of_elems  Number of elements to be removed (default is one).
+ ***
+ *** Description: Use W_DYNAMIC_ARRAY_REMOVE to remove elements from a dynamic array.
+ ***/
+#define W_DYNAMIC_ARRAY_REMOVE(array,...) \
+    BOOST_PP_OVERLOAD(_W_DYNAMIC_ARRAY_REMOVE_,__VA_ARGS__)(array,__VA_ARGS__)
+
+#define _W_DYNAMIC_ARRAY_REMOVE_1(array,pos) _W_DYNAMIC_ARRAY_REMOVE_2(array,pos,1)
+#define _W_DYNAMIC_ARRAY_REMOVE_2(array,pos,nbr_of_elems)                     \
+    do {                                                                      \
+        int W_ID(e) = (nbr_of_elems);                                         \
+        W_ARRAY_MOVE_LEFT(array,W_DYNAMIC_ARRAY_SIZE(array),pos,W_ID(e));     \
+        W_DYNAMIC_ARRAY_SIZE(array) -= W_ID(e);                               \
     } while (0)
 
 #define W_DYNAMIC_ARRAY_GROW(array)                                                    \

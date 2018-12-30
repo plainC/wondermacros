@@ -43,14 +43,17 @@ under /usr/include, type 'make install' as root.
 #### W_ARRAY_GET_SIZE(a)
     Returns the allocation size of a statically allocated array.
 
+#### W_ARRAY_MOVE_LEFT(a,size,pos,offset)
+    Move elements left in an array.
+
+#### W_ARRAY_MOVE_RIGHT(a,size,pos,offset)
+    Move elements right in an array.
+
 
 ### Dynamic Array
 
 #### W_DYNAMIC_ARRAY_INIT(name,T,init_size)
     Initializes a dynamic array.
-
-#### W_DYNAMIC_ARRAY_ELEM_SIZE(array)
-    Gets the element size of a dynamic array.
 
 #### W_DYNAMIC_ARRAY_ALLOC_SIZE(array)
     Gets the current allocation size of a dynamic array.
@@ -70,8 +73,8 @@ under /usr/include, type 'make install' as root.
 #### W_DYNAMIC_ARRAY_PUSH(array,...)
     Adds elements to a dynamic array.
 
-#### W_DYNAMIC_ARRAY_CLEAR(array)
-    Removes all elements of a dynamic array but keeps the header. No need to reinitialize.
+#### W_DYNAMIC_ARRAY_REMOVE(array,pos[,nbr_of_elems])
+    Remove elements from a dynamic array.
 
 #### W_DYNAMIC_ARRAY_FREE(array)
     Destroys a dynamic array.
@@ -91,9 +94,6 @@ under /usr/include, type 'make install' as root.
 
 #### W_DYNAMIC_STACK_PUSH(stack,...)
     Pushes elements to a dynamic stack.
-
-#### W_DYNAMIC_STACK_CLEAR(stack)
-    Removes all elements of a dynamic stack but keeps the header. No need to reinitialize.
 
 #### W_DYNAMIC_STACK_FREE(stack)
     Destroys a dynamic stack.
@@ -115,6 +115,9 @@ under /usr/include, type 'make install' as root.
 
 
 ### Mathematics
+
+#### W_ABS(a)
+    Returns the absolute value of a.
 
 #### W_MAX(...)
     Returns maximum of given arguments (up to four).
@@ -154,6 +157,12 @@ under /usr/include, type 'make install' as root.
 
 #### W_CONTAINER_OF(ptr,T,member)
     Gets the pointer to the beginning of a given struct based on a pointer to a member of the struct.
+
+#### W_HIDDEN_CONTAINER_OF(ptr,T)
+    Gets the pointer to the hidden container of a pointer of type T.
+
+#### W_HIDDEN_OF(ptr,T,member)
+    Access a member of a hidden container of type T.
 
 #### W_REF_VOID_PTR(ptr,offset)
     A pointer is referenced using an offset in bytes.

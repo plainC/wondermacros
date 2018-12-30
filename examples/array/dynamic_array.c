@@ -21,6 +21,11 @@ int main()
 
     printf("Last elem=%d (steal it)\n", W_DYNAMIC_ARRAY_STEAL_LAST(array));
     printf("Last elem=%d (using safe version)\n", W_DYNAMIC_ARRAY_PEEK_LAST_SAFE(array,0));
+    printf("Remove two elements starting at position 3\n");
+
+    W_DYNAMIC_ARRAY_REMOVE(array, 3, 2);
+    for (int i=0; i < W_DYNAMIC_ARRAY_SIZE(array); i++)
+        printf("%d: %d\n", i, array[i]);
 
     W_DYNAMIC_ARRAY_FREE(array);
 }
