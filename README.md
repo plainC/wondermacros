@@ -38,7 +38,10 @@ under /usr/include, type 'make install' as root.
 ### Array macros
 
 #### W_ARRAY_FOR_EACH(T,elem,array[,size])
-    Iterates all elements in an array.
+    Iterates all elements of an array.
+
+#### W_ARRAY_FOR_EACH_REVERSED(T,elem,array[,size])
+    Iterates all elements of an array in reversed order.
 
 #### W_ARRAY_GET_SIZE(a)
     Returns the allocation size of a statically allocated array.
