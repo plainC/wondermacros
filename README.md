@@ -49,6 +49,10 @@ under /usr/include, type 'make install' as root.
 #### W_ARRAY_MOVE_RIGHT(a,size,pos,offset)
     Move elements right in an array.
 
+### Debugging
+
+#### W_LOG(...)
+    Write a log message.
 
 ### Dynamic Array
 
