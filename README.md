@@ -126,6 +126,9 @@ under /usr/include, type 'make install' as root.
 #### W_ABS(a)
     Returns the absolute value of a.
 
+#### W_SIGN(a)
+    Returns the sign of a.
+
 #### W_MAX(...)
     Returns maximum of given arguments (up to four).
 
