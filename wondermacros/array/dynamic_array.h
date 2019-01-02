@@ -124,17 +124,13 @@
  *** Proto:       W_DYNAMIC_ARRAY_INIT(name,T,init_size)
  ***
  *** Arg:         array      Array pointer
- *** Arg:         T          Type name of array elements
  *** Arg:         init_size  Initial allocation size for the array
  ***
  *** Description: Use W_DYNAMIC_ARRAY_INIT to initialize a dynamic array.
  ***/
-#define W_DYNAMIC_ARRAY_INIT(array,elem_type,init_size)                                  \
-    _W_DYNAMIC_ARRAY_INIT(array,sizeof(elem_type),init_size)
-
-#define _W_DYNAMIC_ARRAY_INIT(array,elem_size,init_size)                                   \
+#define W_DYNAMIC_ARRAY_INIT(array,init_size)                                              \
     do {                                                                                   \
-        (array) = W_MALLOC(sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE) + (init_size) * elem_size); \
+        (array) = W_MALLOC(sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE) + (init_size) * sizeof((array)[0])); \
         if ((array) == NULL)                                                               \
             W_ERROR_ALLOCATION;                                                            \
         array = W_REF_VOID_PTR(array,sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE));                 \
@@ -172,8 +168,7 @@
 #define W_DYNAMIC_ARRAY_PUSH(array,...)                                                \
     do {                                                                               \
         if ((array) == NULL)                                                           \
-            _W_DYNAMIC_ARRAY_INIT(array, sizeof(BOOST_PP_VARIADIC_ELEM(0,__VA_ARGS__)),\
-                BOOST_PP_VARIADIC_SIZE(__VA_ARGS__));                                  \
+            W_DYNAMIC_ARRAY_INIT(array, BOOST_PP_VARIADIC_SIZE(__VA_ARGS__));          \
         while (W_DYNAMIC_ARRAY_ALLOC_SIZE(array) - W_DYNAMIC_ARRAY_SIZE(array) <       \
             BOOST_PP_VARIADIC_SIZE(__VA_ARGS__))                                       \
             W_DYNAMIC_ARRAY_GROW(array);                                               \

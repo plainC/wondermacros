@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <wondermacros/array/dynamic_array.h>
-#include <wondermacros/array/array_for_each.h>
+#include <wondermacros/array/for_each.h>
 
 
 int main()

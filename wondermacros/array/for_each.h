@@ -29,7 +29,7 @@
 #include <wondermacros/meta/id.h>
 #include <wondermacros/array/array_get_size.h>
 #include <wondermacros/configs/array_collection.h>
-#include <wondermacros/included/mp.h>
+#include <wondermacros/meta/declare.h>
 
 /***
  *** Name:        W_ARRAY_FOR_EACH
@@ -58,7 +58,7 @@
     _W_ARRAY_FOR_EACH(T,elem,array,size)
 
 #define _W_ARRAY_FOR_EACH(T,elem,array,Size)                                \
-    MPP_DECLARE(_array_for_each_, T elem)                                   \
+    W_DECLARE(_array_for_each_, T elem)                                     \
     for (int elem ## _ix=0, W_ID(size) = (Size);                            \
          elem ## _ix < W_ID(size) && (elem = W_GET(array, elem ## _ix), 1); \
          ++elem ## _ix)

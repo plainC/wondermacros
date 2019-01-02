@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <wondermacros/array/array_for_each.h>
+#include <wondermacros/array/for_each.h>
 #include <wondermacros/array/for_each_reversed.h>
 
 int main()

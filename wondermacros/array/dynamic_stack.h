@@ -1,4 +1,4 @@
-/* (C) Copyright 2018 J.P. Iivonen <wondermacros@yahoo.com>
+/* (C) Copyright 2018,2019 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -102,8 +102,8 @@
  ***
  *** Description: Use W_DYNAMIC_STACK_INIT to initialize a dynamic stack.
  ***/
-#define W_DYNAMIC_STACK_INIT(stack,T,init_size)                                  \
-    W_DYNAMIC_ARRAY_INIT(stack,T,init_size)
+#define W_DYNAMIC_STACK_INIT(stack,init_size)                                  \
+    W_DYNAMIC_ARRAY_INIT(stack,init_size)
 
 /***
  *** Name:        W_DYNAMIC_STACK_FREE
