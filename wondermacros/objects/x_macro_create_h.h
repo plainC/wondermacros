@@ -71,3 +71,7 @@ struct W_CAT(PREFIX,CLASS) {
 
 /* Forward declare class struct instance. */
 extern struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance);
+
+
+#undef ABSTRACT
+
