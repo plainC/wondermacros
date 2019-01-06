@@ -42,7 +42,7 @@ struct W_CAT(PREFIX,CLASS,__private);
 #define PUBLIC_METHOD(type,name,args,...) \
     type (*name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
         BOOST_PP_REMOVE_PARENS(args));
-#define PRIVATE_METHOD(type,name,args,...) PUBLIC_METHOD(type,name,args,__VA_ARGS__)
+#define PRIVATE_METHOD(type,name,args,...)
 struct W_CAT(PREFIX,CLASS,__class_private) {
     struct {
         const char* name;
@@ -51,6 +51,10 @@ struct W_CAT(PREFIX,CLASS,__class_private) {
 #ifdef SUPER
     W_CAT(SUPER,__methods)
 #endif
+
+#undef PRIVATE_METHOD
+#define PRIVATE_METHOD(type,name,args,...) PUBLIC_METHOD(type,name,args,__VA_ARGS__)
+
     W_CAT(CLASS,__methods)
 };
 #undef PUBLIC_METHOD
@@ -60,13 +64,17 @@ struct W_CAT(PREFIX,CLASS,__class_private) {
 
 /* Declare private instance struct. */
 #define PUBLIC_PROPERTY(type,name,...) type name;
-#define PRIVATE_PROPERTY(type,name,...) type name;
+#define PRIVATE_PROPERTY(type,name,...)
 
 struct W_CAT(PREFIX,CLASS,__private) {
     struct W_CAT(PREFIX,CLASS,__class_private)* klass;
 #ifdef SUPER
     W_CAT(SUPER,__properties)
 #endif
+
+#undef PRIVATE_PROPERTY
+#define PRIVATE_PROPERTY(type,name,...) PUBLIC_PROPERTY(type,name,__VA_ARGS__)
+
     W_CAT(CLASS,__properties)
 };
 
@@ -74,6 +82,8 @@ struct W_CAT(PREFIX,CLASS,__private) {
 #undef PRIVATE_PROPERTY
 
 
+
+#ifndef ABSTRACT
 
 /* Forward declare methods. */
 #define PUBLIC_METHOD(type,name,args,...) \
@@ -92,7 +102,6 @@ W_CAT(CLASS,__methods)
 
 
 /* Initialize class struct instance if not an abstract class. */
-#ifndef ABSTRACT
 
 # define PUBLIC_METHOD(type,name,args,...) \
     .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) name,
@@ -118,3 +127,7 @@ struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance) = {
 static type name (struct W_CAT(PREFIX,CLASS,__private)* self BOOST_PP_REMOVE_PARENS(args))
 
 #define PRIVATE_METHOD(type,name,args,...) PUBLIC_METHOD(type,name,args,__VA_ARGS__)
+
+
+#undef ABSTRACT
+
