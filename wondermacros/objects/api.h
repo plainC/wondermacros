@@ -25,9 +25,21 @@
 #ifndef __W_OBJECTS_API_H
 #define __W_OBJECTS_API_H
 
+static inline void*
+w_object_new(void* (*allocate)(size_t), size_t size, void* klass)
+{
+    struct {
+        void* klass;
+    }* self = allocate(size);
+    self->klass = klass;
+    return self;
+}
 
-#define W_CALL(o,method) (((o)->klass->method) (o W_CALL_CLOSE
+#define W_CALL(o,method) (((o)->klass->method) (o, W_CALL_CLOSE
 #define W_CALL_CLOSE(...) __VA_ARGS__))
+
+#define W_CALL_VOID(o,method) (((o)->klass->method)(o))
+
 
 #define W_NEW(type) \
     w_object_new(malloc,sizeof(struct type),&W_CAT(type,__class_instance))
