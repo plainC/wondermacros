@@ -25,12 +25,25 @@
 #ifndef __W_OBJECTS_API_H
 #define __W_OBJECTS_API_H
 
+#include <strings.h>
+
 static inline void*
 w_object_new(void* (*allocate)(size_t), size_t size, void* klass)
 {
     struct {
         void* klass;
     }* self = allocate(size);
+    self->klass = klass;
+    return self;
+}
+
+static inline void*
+w_object_new0(void* (*allocate)(size_t), size_t size, void* klass)
+{
+    struct {
+        void* klass;
+    }* self = allocate(size);
+    bzero(self, size);
     self->klass = klass;
     return self;
 }
@@ -43,6 +56,13 @@ w_object_new(void* (*allocate)(size_t), size_t size, void* klass)
 
 #define W_NEW(type) \
     w_object_new(malloc,sizeof(struct type),&W_CAT(type,__class_instance))
+
+#define W_NEW0(type) \
+    w_object_new0(malloc,sizeof(struct type),&W_CAT(type,__class_instance))
+
+
+#define W_OBJECT_IS(o,type) ((o)->klass == &W_CAT(type,__class_instance))
+#define W_OBJECT_AS(o,type) ((struct type*)(o))
 
 
 #endif
