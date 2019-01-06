@@ -1,4 +1,4 @@
-/* (C) Copyright 2018 J.P. Iivonen <wondermacros@yahoo.com>
+/* (C) Copyright 2018,2019 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -72,6 +72,8 @@
  ***/
 #define W_DYNAMIC_ARRAY_SIZE(array) \
     W_HIDDEN_OF(array,W_DYNAMIC_ARRAY_HEADER_TYPE,nbr_of_elems)
+#define W_DYNAMIC_ARRAY_GET_SIZE(array) \
+    ((array) == NULL ? 0 : W_HIDDEN_OF(array,W_DYNAMIC_ARRAY_HEADER_TYPE,nbr_of_elems))
 
 /***
  *** Name:        W_DYNAMIC_ARRAY_ALLOC_SIZE
@@ -209,5 +211,12 @@
             W_ERROR_ALLOCATION;                                                        \
         array = W_REF_VOID_PTR(array,sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE));             \
     } while (0)
+
+
+#include <wondermacros/array/for_each.h>
+
+#define W_DYNAMIC_ARRAY_FOR_EACH(T,elem,array)                                         \
+    for (void* W_ID(a) = (array); W_ID(a); W_ID(a) = NULL)                             \
+        W_ARRAY_FOR_EACH(T,elem,array,W_DYNAMIC_ARRAY_SIZE(array))
 
 #endif
