@@ -87,7 +87,7 @@ struct W_CAT(PREFIX,CLASS,__private) {
 
 /* Forward declare methods. */
 #define PUBLIC_METHOD(type,name,args,...) \
-    static type name (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
+    static type BOOST_PP_CAT(__method__,name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
         BOOST_PP_REMOVE_PARENS(args));
 #define PRIVATE_METHOD(type,name,args,...) PUBLIC_METHOD(type,name,args,__VA_ARGS__)
 
@@ -104,7 +104,7 @@ W_CAT(CLASS,__methods)
 /* Initialize class struct instance if not an abstract class. */
 
 # define PUBLIC_METHOD(type,name,args,...) \
-    .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) name,
+    .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(__method__,name),
 # define PRIVATE_METHOD(type,name,args,...) PUBLIC_METHOD(type,name,args,__VA_ARGS__)
 struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance) = {
     .meta.name = BOOST_PP_STRINGIZE(CLASS),
@@ -124,7 +124,7 @@ struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance) = {
 
 /* Define method macros to provide signatures. */
 #define PUBLIC_METHOD(type,name,args,...) \
-static type name (struct W_CAT(PREFIX,CLASS,__private)* self BOOST_PP_REMOVE_PARENS(args))
+static type W_CAT(__method__,name) (struct W_CAT(PREFIX,CLASS,__private)* self BOOST_PP_REMOVE_PARENS(args))
 
 #define PRIVATE_METHOD(type,name,args,...) PUBLIC_METHOD(type,name,args,__VA_ARGS__)
 
