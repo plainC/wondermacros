@@ -23,6 +23,7 @@
  */
 
 #include <boost/preprocessor/punctuation/remove_parens.hpp>
+#include <boost/preprocessor/logical/not.hpp>
 #include <boost/preprocessor/stringize.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <wondermacros/meta/cat.h>
@@ -74,34 +75,61 @@ struct W_CAT(PREFIX,CLASS,__private) {
 
 
 
-#ifndef ABSTRACT
-
 /* Forward declare methods. */
-#define METHOD(type,name,args,...) \
-    static type BOOST_PP_CAT(__method__,name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
+#ifdef SUPER
+
+# define METHOD(type,name,args,...) \
+    type BOOST_PP_CAT(BOOST_PP_CAT(SUPER,__),name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
         BOOST_PP_REMOVE_PARENS(args));
 
-#ifdef SUPER
 W_CAT(SUPER,__public_methods)
 W_CAT(SUPER,__private_methods)
+
+# undef METHOD
 #endif
+
+#define METHOD(type,name,args,...) \
+    type BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
+        BOOST_PP_REMOVE_PARENS(args));
 W_CAT(CLASS,__public_methods)
 W_CAT(CLASS,__private_methods)
 
 #undef METHOD
 
+#define METHOD(type,name,args,...) \
+    type BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
+        BOOST_PP_REMOVE_PARENS(args));
+    W_CAT(CLASS,__override_methods)
+#undef METHOD
 
 
-/* Initialize class struct instance if not an abstract class. */
 
-# define METHOD(type,name,args,...) \
-    .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(__method__,name),
+
+/* Initialize class struct instance. */
+
+#if BOOST_PP_NOT(BOOST_PP_CAT(CLASS,__is_abstract))
+
 struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance) = {
     .meta.name = BOOST_PP_STRINGIZE(CLASS),
-//    .meta.size = sizeof(struct W_CAT(PREFIX,CLASS,__private)),
-# ifdef SUPER
+    .meta.size = sizeof(struct W_CAT(PREFIX,CLASS,__private)),
+
+#ifdef SUPER
+# define METHOD(type,name,args,...) \
+    .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(BOOST_PP_CAT(SUPER,__),name),
     W_CAT(SUPER,__public_methods)
-# endif
+# undef METHOD
+
+# define METHOD(type,name,args,...) \
+    .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name),
+    W_CAT(CLASS,__override_methods)
+# undef METHOD
+
+#endif
+
+
+# define METHOD(type,name,args,...) \
+    .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name),
+
     W_CAT(CLASS,__public_methods)
     W_CAT(CLASS,__private_methods)
 };
@@ -111,11 +139,7 @@ struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance) = {
 
 
 
-
 /* Define method macros to provide signatures. */
 #define METHOD(type,name,args,...) \
-static type W_CAT(__method__,name) (struct W_CAT(PREFIX,CLASS,__private)* self BOOST_PP_REMOVE_PARENS(args))
-
-
-#undef ABSTRACT
+type W_CAT(CLASS,__,name) (struct W_CAT(PREFIX,CLASS,__private)* self BOOST_PP_REMOVE_PARENS(args))
 
