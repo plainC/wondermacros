@@ -36,37 +36,34 @@
 
 
 /* Declare class struct. */
-#define PUBLIC_METHOD(type,name,args,...) \
+#define METHOD(type,name,args,...) \
     type (*name) (struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args));
-#define PRIVATE_METHOD(...)
 struct W_CAT(PREFIX,CLASS,__class) {
     struct {
         const char* name;
         size_t size;
     } meta;
 #ifdef SUPER
-    W_CAT(SUPER,__methods)
+    W_CAT(SUPER,__public_methods)
 #endif
-    W_CAT(CLASS,__methods)
+    W_CAT(CLASS,__public_methods)
 };
-#undef PUBLIC_METHOD
-#undef PRIVATE_METHOD
+#undef METHOD
 
 
 /* Declare instance struct. */
-#define PUBLIC_PROPERTY(type,name,...) type name;
-#define PRIVATE_PROPERTY(...)
+#define PROPERTY(type,name,...) type name;
 
 struct W_CAT(PREFIX,CLASS) {
     struct W_CAT(PREFIX,CLASS,__class)* klass;
 #ifdef SUPER
-    W_CAT(SUPER,__properties)
+    W_CAT(SUPER,__public_properties)
 #endif
-    W_CAT(CLASS,__properties)
+    W_CAT(CLASS,__public_properties)
 };
 
-#undef PUBLIC_PROPERTY
-#undef PRIVATE_PROPERTY
+#undef PROPERTY
+
 
 
 /* Forward declare class struct instance. */
