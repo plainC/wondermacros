@@ -27,8 +27,23 @@
 
 #include <wondermacros/compiler/ref_void_ptr.h>
 
+/***
+ *** Name:        W_HIDDEN_CONTAINER_OF
+ *** Proto:       W_HIDDEN_CONTAINER_OF(ptr,T)
+ *** Arg:         ptr   a pointer to a structure having a hidden header.
+ *** Arg:         T     type of the hidden header.
+ *** Description: Use W_HIDDEN_CONTAINER_OF to get a pointer to the actual container of on object having a hidden header.
+ ***/
 #define W_HIDDEN_CONTAINER_OF(ptr,T) ((T*) W_REF_VOID_PTR(ptr, -sizeof(T)))
 
+/***
+ *** Name:        W_HIDDEN_OF
+ *** Proto:       W_HIDDEN_OF(ptr,T,member)
+ *** Arg:         ptr     a pointer to a structure having a hidden header.
+ *** Arg:         T       type of the hidden header.
+ *** Arg:         member  member field name of the header.
+ *** Description: Use W_HIDDEN_OF to get a value of a field in the hidden header of a structure.
+ ***/
 #define W_HIDDEN_OF(ptr,T,member) (W_HIDDEN_CONTAINER_OF(ptr,T)->member)
 
 #endif

@@ -45,7 +45,7 @@
  *** Arg:         stack   A pointer to a dynamic stack
  ***
  *** Description: Use W_DYNAMIC_STACK_PEEK to peek the toppest element in the stack.
- *** Note:        If the stack is empty, the behaviour is undefined.
+ *** Notes:       If the stack is empty, the behaviour is undefined.
  ***/
 #define W_DYNAMIC_STACK_PEEK(stack) W_DYNAMIC_ARRAY_PEEK_LAST(stack)
 
@@ -68,7 +68,7 @@
  *** Arg:         stack   A pointer to a dynamic stack
  ***
  *** Description: Use W_DYNAMIC_STACK_POP to get and remove the last element in the stack.
- *** Note:        If the stack is empty, the behavious is undefined.
+ *** Notes:       If the stack is empty, the behavious is undefined.
  ***/
 #define W_DYNAMIC_STACK_POP(stack) W_DYNAMIC_ARRAY_STEAL_LAST(stack)
 

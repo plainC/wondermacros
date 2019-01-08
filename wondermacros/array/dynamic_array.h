@@ -93,7 +93,7 @@
  *** Arg:         array   array  A pointer to a dynamic array
  ***
  *** Description: Use W_DYNAMIC_ARRAY_STEAL_LAST to get and remove the last element in the array.
- *** Note:        If the array is empty, the behaviour is undefined.
+ *** Notes:       If the array is empty, the behaviour is undefined.
  ***/
 #define W_DYNAMIC_ARRAY_STEAL_LAST(array) ((array)[--W_DYNAMIC_ARRAY_SIZE(array)])
 
@@ -104,7 +104,7 @@
  *** Arg:         array   array  A pointer to a dynamic array
  ***
  *** Description: Use W_DYNAMIC_ARRAY_PEEK_LAST to get the last element in the array.
- *** Note:        If the array is empty, the behaviour is undefined.
+ *** Notes:       If the array is empty, the behaviour is undefined.
  ***/
 #define W_DYNAMIC_ARRAY_PEEK_LAST(array) ((array)[W_DYNAMIC_ARRAY_SIZE(array)-1])
 

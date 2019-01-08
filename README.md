@@ -67,23 +67,7 @@ under /usr/include, type 'make install' as root.
 
 ### [Sorting](https://github.com/plainC/wondermacros/blob/master/docs/sorting.md)
 
-### Compiler Tools
-
-#### W_CONTAINER_OF(ptr,T,member)
-    Gets the pointer to the beginning of a given struct based on a pointer to a member of the struct.
-
-#### W_HIDDEN_CONTAINER_OF(ptr,T)
-    Gets the pointer to the hidden container of a pointer of type T.
-
-#### W_HIDDEN_OF(ptr,T,member)
-    Access a member of a hidden container of type T.
-
-#### W_REF_VOID_PTR(ptr,offset)
-    A pointer is referenced using an offset in bytes.
-
-#### W_UNUSED(id)
-    Kills a compiler warning caused by an unused variable.
-
+### [Compiler Tools](https://github.com/plainC/wondermacros/blob/master/docs/compiler.md)
 
 ### Strings and Characters
 

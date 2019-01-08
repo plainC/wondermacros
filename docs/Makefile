@@ -1,9 +1,10 @@
-DOCS = \
+DOCS =                   \
+	compiler.md      \
 	dynamic_array.md \
 	dynamic_stack.md \
-	math.md \
-	meta.md \
-	sorting.md \
+	math.md          \
+	meta.md          \
+	sorting.md       \
 
 all: $(DOCS)
 
@@ -14,6 +15,10 @@ dynamic_array.md: ../wondermacros/array/dynamic_array.h
 dynamic_stack.md: ../wondermacros/array/dynamic_stack.h
 	echo "## Dynamic Stack" > dynamic_stack.md
 	cd ../wondermacros/array && ../../tools/api_tool.pl dynamic_stack.h >> ../../docs/dynamic_stack.md
+
+compiler.md:
+	echo "## Compiler Tools" > compiler.md
+	cd ../wondermacros/compiler && ../../tools/api_tool.pl >> ../../docs/compiler.md
 
 meta.md:
 	echo "## Meta-programming" > meta.md
