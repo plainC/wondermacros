@@ -6,7 +6,7 @@
  *** Proto:       W_LABEL(id1,id2)
  ***
  *** Arg:         id1   label one
- *** Arg:         id1   label one
+ *** Arg:         id2   label one
  ***
  *** Description: Use W_LABEL to construct line-unique labels.
  ***/

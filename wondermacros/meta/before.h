@@ -165,18 +165,20 @@
  *       enough.
  */
 
-/*
- * MPP_BEFORE: run the code given in the argument 'before' and then
- * the suffixed statement.
- *
- * 'before' should have the syntactic form of one or more declarations
- * and statements, except that a trailing semicolon may be omitted.
- * Any declarations will be in scope only within 'before', not within
- * the suffixed statement.
- *
- * This macro, unusually among the collection, is naturally
- * transparent to 'break' and also transparent to 'continue'.
- */
+/***
+ *** Name:        W_BEFORE
+ *** Proto:       W_BEFORE(labelid,before)
+ *** Arg:         labelid   A unique label identifier, e.g. foo if foo is not used already
+ *** Arg:         before    The code to be run before the following statement.
+ *** Description: Use W_BEFORE to run the code given in the argument 'before' and then
+ ***              the suffixed statement.
+ ***              'before' should have the syntactic form of one or more declarations
+ ***              and statements, except that a trailing semicolon may be omitted.
+ ***              Any declarations will be in scope only within 'before', not within
+ ***              the suffixed statement.
+ ***              This macro, unusually among the collection, is naturally
+ ***              transparent to 'break' and also transparent to 'continue'.
+ ***/
 #define W_BEFORE(labid,before)                  \
     if (1) {                                    \
         before;                                 \

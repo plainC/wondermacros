@@ -165,16 +165,19 @@
  *       enough.
  */
 
-/*
- * W_DECLARE: run the 'declaration' argument before the suffixed
- * statement. The argument may have the form of either a C expression
- * (e.g. an assignment) or a declaration; if the latter, it will be in
- * scope within the suffixed statement.
- *
- * This macro is break-unsafe - it causes a 'break' to terminate the
- * suffixed statement only. If you need different behaviour, you can
- * use MPP_BREAK_CATCH and MPP_BREAK_THROW to pass a break past it.
- */
+/***
+ *** Name:        W_DECLARE
+ *** Proto:       W_DECLARE(labelid, declaration)
+ *** Arg:         labelid      An unique label identifier
+ *** Arg:         declaration  The declaration
+ *** Description: Use W_DECLARE to run the 'declaration' argument before the suffixed
+ ***              statement. The argument may have the form of either a C expression
+ ***              (e.g. an assignment) or a declaration; if the latter, it will be in
+ ***              scope within the suffixed statement.
+ ***              This macro is break-unsafe - it causes a 'break' to terminate the
+ ***              suffixed statement only. If you need different behaviour, you can
+ ***              use W_BREAK_CATCH and W_BREAK_THROW to pass a break past it.
+ ***/
 #define W_DECLARE(labid, declaration)                   \
     if (0)                                              \
         ;                                               \

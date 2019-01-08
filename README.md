@@ -57,34 +57,7 @@ under /usr/include, type 'make install' as root.
 #### W_LOG(...)
     Write a log message.
 
-### Dynamic Array
-
-#### W_DYNAMIC_ARRAY_INIT(name,T,init_size)
-    Initializes a dynamic array.
-
-#### W_DYNAMIC_ARRAY_ALLOC_SIZE(array)
-    Gets the current allocation size of a dynamic array.
-
-#### W_DYNAMIC_ARRAY_SIZE(array)
-    Gets the number of elements in a dynamic array.
-
-#### W_DYNAMIC_ARRAY_STEAL_LAST(array)
-    Gets and removes the last element in a dynamic array.
-
-#### W_DYNAMIC_ARRAY_PEEK_LAST(array)
-    Gets the last element in a dynamic array.
-
-#### W_DYNAMIC_ARRAY_PEEK_LAST_SAFE(array,value)
-    Gets the last element in a dynamic array, or returns given value if empty.
-
-#### W_DYNAMIC_ARRAY_PUSH(array,...)
-    Adds elements to a dynamic array.
-
-#### W_DYNAMIC_ARRAY_REMOVE(array,pos[,nbr_of_elems])
-    Remove elements from a dynamic array.
-
-#### W_DYNAMIC_ARRAY_FREE(array)
-    Destroys a dynamic array.
+### [Dynamic Array](https://github.com/plainC/wondermacros/blob/master/docs/dynamic_array.md)
 
 
 ### Dynamic Stack
@@ -106,19 +79,7 @@ under /usr/include, type 'make install' as root.
     Destroys a dynamic stack.
 
 
-### Pre-Processor Programming
-
-#### W_CAT(...)
-    Concatenates given arguments. Similar to BOOST_PP_CAT except that takes up to 16 arguments.
-
-#### W_ID(id)
-    Provides a more hygienic id name.
-
-#### W_LABEL(id1,id2)
-    Constructs line-unique labels.
-
-#### W_STRINGIZE(...)
-    Stringizes its arguments. Similar to BOOST_PP_STRINGIZE except that takes up to 16 arguments.
+### [Pre-Processor Meta-Programming](https://github.com/plainC/wondermacros/blob/master/docs/meta.md)
 
 
 ### Mathematics

@@ -32,6 +32,14 @@
 # define W_PP_POW2_TYPE U
 #endif
 
+/***
+ *** Name:        W_PP_POW2
+ *** Proto:       W_PP_POW2(i)
+ *** Arg:         i    the exponent
+ *** Description: Use W_PP_POW2 to get power of two for the given exponent.
+ ***              The expansion is done at pre-processing time. Redefine W_PP_POW2_TYPE
+ ***              to modify the numeric literal type.  The default is unsigned (U).
+ ***/
 #define W_PP_POW2(i) W_CAT(W_PP_POW2_,i)
 
 #define W_PP_POW2_0 BOOST_PP_CAT(1,W_PP_POW2_TYPE)

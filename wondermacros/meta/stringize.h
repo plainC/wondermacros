@@ -27,6 +27,12 @@
 
 #include <boost/preprocessor/facilities/overload.hpp>
 
+/***
+ *** Name:        W_STRINGIZE
+ *** Proto:       W_STRINGIZE(...)
+ *** Arg:         ...  arguments to be converted to text
+ *** Description: Use W_STRINGIZE to stringize arguments to text.
+ ***/
 #define W_STRINGIZE(...) BOOST_PP_OVERLOAD(_W_STRINGIZE_,__VA_ARGS__)(__VA_ARGS__)
 
 #define _W_STRINGIZE_1(_1)  # _1

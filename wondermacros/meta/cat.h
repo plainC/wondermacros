@@ -27,6 +27,12 @@
 
 #include <boost/preprocessor/facilities/overload.hpp>
 
+/***
+ *** Name:        W_CAT
+ *** Proto:       W_CAT(...)
+ *** Arg:         ...  identifiers to be concatenated
+ *** Description: Use W_CAT to concatenate its arguments after they have been expanded.
+ ***/
 #define W_CAT(...) BOOST_PP_OVERLOAD(_W_CAT_,__VA_ARGS__)(__VA_ARGS__)
 
 #define _W_CAT_1(_1) _1
