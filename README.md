@@ -59,31 +59,11 @@ under /usr/include, type 'make install' as root.
 
 ### [Dynamic Array](https://github.com/plainC/wondermacros/blob/master/docs/dynamic_array.md)
 
-
-### Dynamic Stack
-
-
-#### W_DYNAMIC_STACK_INIT(stack,T,init_size)
-    Initializes a dynamic stack.
-
-#### W_DYNAMIC_STACK_PEEK(stack)
-    Gets the toppest element in a dynamic stack.
-
-#### W_DYNAMIC_STACK_POP(stack)
-    Gets and removes the toppest element in a dynamic stack.
-
-#### W_DYNAMIC_STACK_PUSH(stack,...)
-    Pushes elements to a dynamic stack.
-
-#### W_DYNAMIC_STACK_FREE(stack)
-    Destroys a dynamic stack.
-
+### [Dynamic Stack](https://github.com/plainC/wondermacros/blob/master/docs/dynamic_stack.md)
 
 ### [Pre-Processor Meta-Programming](https://github.com/plainC/wondermacros/blob/master/docs/meta.md)
 
-
 ### [Mathematics](https://github.com/plainC/wondermacros/blob/master/docs/math.md)
-
 
 ### [Sorting](https://github.com/plainC/wondermacros/blob/master/docs/sorting.md)
 

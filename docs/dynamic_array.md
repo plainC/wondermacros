@@ -1,5 +1,4 @@
-# Dynamic Array
-## Reference
+## Dynamic Array
     
 ### W_DYNAMIC_ARRAY_SIZE(array)
     
