@@ -69,3 +69,7 @@ struct W_CAT(PREFIX,CLASS) {
 /* Forward declare class struct instance. */
 extern struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance);
 
+/* Forward declare constructor and destructor. */
+struct W_CAT(PREFIX,CLASS)* W_CAT(PREFIX,CLASS,_new)();
+void W_CAT(PREFIX,CLASS,_free)(struct W_CAT(PREFIX,CLASS)* self);
+
