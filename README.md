@@ -82,47 +82,10 @@ under /usr/include, type 'make install' as root.
 ### [Pre-Processor Meta-Programming](https://github.com/plainC/wondermacros/blob/master/docs/meta.md)
 
 
-### Mathematics
-
-#### W_ABS(a)
-    Returns the absolute value of a.
-
-#### W_SIGN(a)
-    Returns the sign of a.
-
-#### W_MAX(...)
-    Returns maximum of given arguments (up to four).
-
-#### W_MIN(...)
-    Returns minimum of given arguments (up to four).
+### [Mathematics](https://github.com/plainC/wondermacros/blob/master/docs/math.md)
 
 
-### Sorting
-
-#### W_NUMERIC_CMP_ASC(a,b)
-    Returns -1 if a<b, 0 if a=b and 1 if a>b.
-
-#### W_NUMERIC_CMP_DESC(a,b)
-    Returns -1 if a>b, 0 if a=b and 1 if a<b.
-
-#### W_SWAP(T,a,b)
-    Swaps a and b of type T.
-
-#### W_VARIADIC_IS_EQUAL(...)
-    Compares if given arguments are equal.
-
-#### W_VARIADIC_IS_IN_ASC_ORDER(...)
-    Compares if given arguments are in ascending order.
-
-#### W_VARIADIC_IS_IN_DESC_ORDER(...)
-    Compares if given arguments are in descending order.
-
-#### W_VARIADIC_IS_IN_TOTAL_ASC_ORDER(...)
-    Compares if given arguments are in total ascending order.
-
-#### W_VARIADIC_IS_IN_TOTAL_DESC_ORDER(...)
-    Compares if given arguments are in total descending order.
-
+### [Sorting](https://github.com/plainC/wondermacros/blob/master/docs/sorting.md)
 
 ### Compiler Tools
 

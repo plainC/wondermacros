@@ -34,7 +34,7 @@
  *** Arg:         a   a value A value to be swapped
  *** Arg:         b   a value A value to be swapped
  *** Description: Use W_SWAP to swap the values of a and b. Neither of them can be constants.
- *** Note:        Both a and b are evaluated twice.
+ *** Notes:       Both a and b are evaluated twice.
  ***/
 #define W_SWAP(T, a, b)     \
     do {                    \

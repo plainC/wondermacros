@@ -26,25 +26,25 @@
 #define __W_NUMERIC_CMP_H
 
 /***
- *** Name:  W_NUMERIC_CMP_ASC
- *** Proto: W_NUMERIC_CMP_ASC(a,b)
- *** Arg:   a   numeric value   A value to be compared
- *** Arg:   b   numeric value   A value to be compared
+ *** Name:        W_NUMERIC_CMP_ASC
+ *** Proto:       W_NUMERIC_CMP_ASC(a,b)
+ *** Arg:         a   A value to be compared
+ *** Arg:         b   A value to be compared
  *** Description: Use W_NUMERIC_CMP_ASC to compare two values of the same numeric types.
- *** Returns -1, if a < b, 0 if a == b, and 1 if a > b.
- *** Note:  Both a and b are evaluated twice.
+ *** Returns:     -1, if a < b, 0 if a == b, and 1 if a > b.
+ *** Notes:       Both a and b are evaluated twice.
  ***/
 #define W_NUMERIC_CMP_ASC(a, b) \
     (((a) > (b)) - ((a) < (b)))
 
 /***
- *** Name:  W_NUMERIC_CMP_DESC
- *** Proto: W_NUMERIC_CMP_DESC(a,b)
- *** Arg:   a   numeric value   A value to be compared
- *** Arg:   b   numeric value   A value to be compared
- *** Descr: Use W_NUMERIC_CMP_ASC to compare two values of the same numeric types.
- *** Returns -1, if a > b, 0 if a == b, and 1 if a < b.
- *** Note:  Both a and b are evaluated twice.
+ *** Name:        W_NUMERIC_CMP_DESC
+ *** Proto:       W_NUMERIC_CMP_DESC(a,b)
+ *** Arg:         a   A value to be compared
+ *** Arg:         b   A value to be compared
+ *** Description: Use W_NUMERIC_CMP_ASC to compare two values of the same numeric types.
+ *** Returns:     -1, if a > b, 0 if a == b, and 1 if a < b.
+ *** Notes:       Both a and b are evaluated twice.
  ***/
 #define W_NUMERIC_CMP_DESC(a, b) \
     (((a) < (b)) - ((a) > (b)))
