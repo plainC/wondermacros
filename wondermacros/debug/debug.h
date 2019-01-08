@@ -1,4 +1,4 @@
-/* (C) is Copyright 2018 J.P. Iivonen <wondermacros@yahoo.com>
+/* (C) is Copyright 2019 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -22,36 +22,46 @@
  * SOFTWARE.
  */
 
-#ifndef __W_LOG_H
-#define __W_LOG_H
+#ifndef __W_DEBUG_H
+#define __W_DEBUG_H
 
 #include <boost/preprocessor/control/expr_if.hpp>
 
-#ifndef W_LOG_FUNC
+#ifndef W_DEBUG_FUNC
 # include <stdio.h>
-# define W_LOG_FUNC fprintf
+# define W_DEBUG_FUNC fprintf
 #endif
 
-#ifndef W_LOG_FILE
-# define W_LOG_FILE stderr
+#ifndef W_DEBUG_FILE
+# define W_DEBUG_FILE stderr
 #endif
 
-#ifndef W_LOG_APPEND_NL
-# define W_LOG_APPEND_NL 1
+#ifndef W_DEBUG_APPEND_NL
+# define W_DEBUG_APPEND_NL 1
 #endif
+
+
+#ifdef NDEBUG
+
+# define W_DEBUG(...)
+
+#else
 
 /***
- *** Name:        W_LOG
- *** Proto:       W_LOG(a)
- *** Arg:         ...          a format and arguments
- *** Description: Use W_LOG to write a log message.
- *** Notes:       Redefine W_LOG_FUNC, W_LOG_FILE and W_LOG_APPEND_NL change the default behaviour.
+ *** Name:        W_DEBUG
+ *** Proto:       W_DEBUG(fmt,...)
+ *** Arg:         fmt          a format (like printf)
+ *** Arg:         ...          optional arguments
+ *** Description: Use W_DEBUG to write a debug message.
+ *** Notes:       Redefine W_DEBUG_FUNC, W_DEBUG_FILE and W_DEBUG_APPEND_NL change the default behaviour.
  ***/
- #define W_LOG(...)                                                      \
-    do {                                                                \
-        W_LOG_FUNC(W_LOG_FILE, "[%s:%d] ", __FILE__, __LINE__);         \
-        W_LOG_FUNC(W_LOG_FILE, __VA_ARGS__);                            \
-        BOOST_PP_EXPR_IF(W_LOG_APPEND_NL,W_LOG_FUNC(W_LOG_FILE, "\n");) \
+# define W_DEBUG(...)                                                         \
+    do {                                                                      \
+        W_DEBUG_FUNC(W_DEBUG_FILE, "[%s:%d] ", __FILE__, __LINE__);           \
+        W_DEBUG_FUNC(W_DEBUG_FILE, __VA_ARGS__);                              \
+        BOOST_PP_EXPR_IF(W_DEBUG_APPEND_NL,W_DEBUG_FUNC(W_DEBUG_FILE, "\n");) \
     } while (0)
+
+# endif
 
 #endif

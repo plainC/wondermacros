@@ -35,42 +35,14 @@ under /usr/include, type 'make install' as root.
 
 ## Macro Reference
 
-### Array macros
-
-#### W_ARRAY_FOR_EACH(T,elem,array[,size])
-    Iterates all elements of an array.
-
-#### W_ARRAY_FOR_EACH_REVERSED(T,elem,array[,size])
-    Iterates all elements of an array in reversed order.
-
-#### W_ARRAY_GET_SIZE(a)
-    Returns the allocation size of a statically allocated array.
-
-#### W_ARRAY_MOVE_LEFT(a,size,pos,offset)
-    Move elements left in an array.
-
-#### W_ARRAY_MOVE_RIGHT(a,size,pos,offset)
-    Move elements right in an array.
-
-### Debugging
-
-#### W_LOG(...)
-    Write a log message.
-
+## Data Structures
 ### [Dynamic Array](https://github.com/plainC/wondermacros/blob/master/docs/dynamic_array.md)
-
 ### [Dynamic Stack](https://github.com/plainC/wondermacros/blob/master/docs/dynamic_stack.md)
 
-### [Pre-Processor Meta-Programming](https://github.com/plainC/wondermacros/blob/master/docs/meta.md)
-
-### [Mathematics](https://github.com/plainC/wondermacros/blob/master/docs/math.md)
-
-### [Sorting](https://github.com/plainC/wondermacros/blob/master/docs/sorting.md)
-
+## Others
 ### [Compiler Tools](https://github.com/plainC/wondermacros/blob/master/docs/compiler.md)
-
+### [Debugging](https://github.com/plainC/wondermacros/blob/master/docs/debug.md)
+### [Pre-Processor Meta-Programming](https://github.com/plainC/wondermacros/blob/master/docs/meta.md)
+### [Mathematics](https://github.com/plainC/wondermacros/blob/master/docs/math.md)
+### [Sorting](https://github.com/plainC/wondermacros/blob/master/docs/sorting.md)
 ### Strings and Characters
-
-#### W_TO_CHAR(ch)
-    Converts a single character identifier to a C string, i.g. a to 'a'.
-

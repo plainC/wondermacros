@@ -1,5 +1,6 @@
 DOCS =                   \
 	compiler.md      \
+	debug.md         \
 	dynamic_array.md \
 	dynamic_stack.md \
 	math.md          \
@@ -19,6 +20,10 @@ dynamic_stack.md: ../wondermacros/array/dynamic_stack.h
 compiler.md:
 	echo "## Compiler Tools" > compiler.md
 	cd ../wondermacros/compiler && ../../tools/api_tool.pl >> ../../docs/compiler.md
+
+debug.md:
+	echo "## Debugging" > debug.md
+	cd ../wondermacros/debug && ../../tools/api_tool.pl >> ../../docs/debug.md
 
 meta.md:
 	echo "## Meta-programming" > meta.md
