@@ -53,7 +53,9 @@ struct W_CAT(PREFIX,CLASS,__class_private) {
 #endif
 
     W_CAT(CLASS,__public_methods)
+#if BOOST_PP_NOT(W_CAT(CLASS,__is_abstract))
     W_CAT(CLASS,__private_methods)
+#endif
 };
 #undef METHOD
 
@@ -68,7 +70,9 @@ struct W_CAT(PREFIX,CLASS,__private) {
 #endif
 
     W_CAT(CLASS,__public_properties)
+#if BOOST_PP_NOT(W_CAT(CLASS,__is_abstract))
     W_CAT(CLASS,__private_properties)
+#endif
 };
 
 #undef PROPERTY
@@ -83,7 +87,6 @@ struct W_CAT(PREFIX,CLASS,__private) {
         BOOST_PP_REMOVE_PARENS(args));
 
 W_CAT(SUPER,__public_methods)
-W_CAT(SUPER,__private_methods)
 
 # undef METHOD
 #endif
@@ -92,16 +95,19 @@ W_CAT(SUPER,__private_methods)
     type BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
         BOOST_PP_REMOVE_PARENS(args));
 W_CAT(CLASS,__public_methods)
+#if BOOST_PP_NOT(W_CAT(CLASS,__is_abstract))
 W_CAT(CLASS,__private_methods)
+#endif
 
 #undef METHOD
 
-#define METHOD(type,name,args,...) \
+#ifdef SUPER
+# define METHOD(type,name,args,...) \
     type BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
         BOOST_PP_REMOVE_PARENS(args));
     W_CAT(CLASS,__override_methods)
-#undef METHOD
-
+# undef METHOD
+#endif
 
 
 
@@ -131,7 +137,9 @@ struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance) = {
     .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name),
 
     W_CAT(CLASS,__public_methods)
+#if BOOST_PP_NOT(W_CAT(CLASS,__is_abstract))
     W_CAT(CLASS,__private_methods)
+#endif
 };
 # undef METHOD
 
