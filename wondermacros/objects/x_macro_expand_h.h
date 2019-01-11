@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 #include <boost/preprocessor/punctuation/remove_parens.hpp>
+#include <boost/preprocessor/logical/not.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <wondermacros/meta/cat.h>
 
@@ -37,19 +38,22 @@
 
 
 /* Declare class struct. */
-#define METHOD(type,name,args,...) \
+#define METHOD(C,type,name,args,...) \
     type (*name) (struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args));
 struct W_CAT(PREFIX,CLASS,__class) {
     struct {
         const char* name;
         size_t size;
     } meta;
-#ifdef SUPER
-    W_CAT(SUPER,__public_methods)
-#endif
+
+    W_CAT(CLASS,__inherited_interfaces)
+
     W_CAT(CLASS,__public_methods)
+
+    void (*free)(struct W_CAT(PREFIX,CLASS)* self);
 };
 #undef METHOD
+
 
 
 /* Declare instance struct. */
@@ -57,14 +61,26 @@ struct W_CAT(PREFIX,CLASS,__class) {
 
 struct W_CAT(PREFIX,CLASS) {
     struct W_CAT(PREFIX,CLASS,__class)* klass;
-#ifdef SUPER
-    W_CAT(SUPER,__public_properties)
-#endif
+
     W_CAT(CLASS,__public_properties)
 };
 
 #undef PROPERTY
 
+
+/* Declare private instance struct. */
+#define PROPERTY(type,name,...) type name;
+
+struct W_CAT(PREFIX,CLASS,__private) {
+    struct W_CAT(PREFIX,CLASS,__class_private)* klass;
+
+    W_CAT(CLASS,__public_properties)
+#if BOOST_PP_NOT(W_CAT(CLASS,__is_abstract))
+    W_CAT(CLASS,__private_properties)
+#endif
+};
+
+#undef PROPERTY
 
 
 /* Forward declare class struct instance. */
@@ -72,5 +88,6 @@ extern struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance);
 
 /* Forward declare constructor and destructor. */
 struct W_CAT(PREFIX,CLASS)* W_CAT(PREFIX,CLASS,_new)();
+struct W_CAT(PREFIX,CLASS)* W_CAT(PREFIX,CLASS,_new_with)(const struct W_CAT(PREFIX,CLASS,__private)* clone);
 void W_CAT(PREFIX,CLASS,_free)(struct W_CAT(PREFIX,CLASS)* self);
 

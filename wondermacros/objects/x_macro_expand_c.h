@@ -39,8 +39,9 @@
 
 struct W_CAT(PREFIX,CLASS,__private);
 
+
 /* Declare private class struct. */
-#define METHOD(type,name,args,...) \
+#define METHOD(C,type,name,args,...) \
     type (*name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
         BOOST_PP_REMOVE_PARENS(args));
 struct W_CAT(PREFIX,CLASS,__class_private) {
@@ -48,41 +49,24 @@ struct W_CAT(PREFIX,CLASS,__class_private) {
         const char* name;
         size_t size;
     } meta;
-#ifdef SUPER
-    W_CAT(SUPER,__public_methods)
-#endif
+
+    W_CAT(CLASS,__inherited_interfaces)
 
     W_CAT(CLASS,__public_methods)
 #if BOOST_PP_NOT(W_CAT(CLASS,__is_abstract))
     W_CAT(CLASS,__private_methods)
 #endif
+
+    void (*free)(struct W_CAT(PREFIX,CLASS)* self);
 };
 #undef METHOD
-
-
-/* Declare private instance struct. */
-#define PROPERTY(type,name,...) type name;
-
-struct W_CAT(PREFIX,CLASS,__private) {
-    struct W_CAT(PREFIX,CLASS,__class_private)* klass;
-#ifdef SUPER
-    W_CAT(SUPER,__public_properties)
-#endif
-
-    W_CAT(CLASS,__public_properties)
-#if BOOST_PP_NOT(W_CAT(CLASS,__is_abstract))
-    W_CAT(CLASS,__private_properties)
-#endif
-};
-
-#undef PROPERTY
 
 
 
 /* Forward declare methods. */
 #ifdef SUPER
 
-# define METHOD(type,name,args,...) \
+# define METHOD(C,type,name,args,...) \
     type BOOST_PP_CAT(BOOST_PP_CAT(SUPER,__),name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
         BOOST_PP_REMOVE_PARENS(args));
 
@@ -91,7 +75,7 @@ W_CAT(SUPER,__public_methods)
 # undef METHOD
 #endif
 
-#define METHOD(type,name,args,...) \
+#define METHOD(C,type,name,args,...) \
     type BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
         BOOST_PP_REMOVE_PARENS(args));
 W_CAT(CLASS,__public_methods)
@@ -102,13 +86,14 @@ W_CAT(CLASS,__private_methods)
 #undef METHOD
 
 #ifdef SUPER
-# define METHOD(type,name,args,...) \
+# define METHOD(C,type,name,args,...) \
     type BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
         BOOST_PP_REMOVE_PARENS(args));
     W_CAT(CLASS,__override_methods)
 # undef METHOD
 #endif
 
+void W_CAT(CLASS,__,free)(struct W_CAT(PREFIX,CLASS)* self);
 
 
 /* Initialize class struct instance. */
@@ -119,36 +104,31 @@ struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance) = {
     .meta.name = BOOST_PP_STRINGIZE(CLASS),
     .meta.size = sizeof(struct W_CAT(PREFIX,CLASS,__private)),
 
-#ifdef SUPER
-# define METHOD(type,name,args,...) \
-    .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(BOOST_PP_CAT(SUPER,__),name),
-    W_CAT(SUPER,__public_methods)
-# undef METHOD
-
-# define METHOD(type,name,args,...) \
-    .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name),
+# define METHOD(C,type,name,args,...) \
+    .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(BOOST_PP_CAT(C,__),name),
     W_CAT(CLASS,__override_methods)
 # undef METHOD
 
 #endif
 
 
-# define METHOD(type,name,args,...) \
-    .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name),
+# define METHOD(C,type,name,args,...) \
+    .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(BOOST_PP_CAT(C,__),name),
 
     W_CAT(CLASS,__public_methods)
 #if BOOST_PP_NOT(W_CAT(CLASS,__is_abstract))
     W_CAT(CLASS,__private_methods)
 #endif
+
+   .free = W_CAT(CLASS,_free),
 };
 # undef METHOD
 
-#endif
 
 
 
 /* Define method macros to provide signatures. */
-#define METHOD(type,name,args,...) \
+#define METHOD(C,type,name,args,...) \
 type W_CAT(CLASS,__,name) (struct W_CAT(PREFIX,CLASS,__private)* self BOOST_PP_REMOVE_PARENS(args))
 
 
@@ -165,6 +145,16 @@ W_CAT(PREFIX,CLASS,_new)()                                                      
     return (struct W_CAT(PREFIX,CLASS)*) self;                                                         \
 }                                                                                                      \
                                                                                                        \
+struct W_CAT(PREFIX,CLASS)*                                                                            \
+W_CAT(PREFIX,CLASS,_new_with)(const struct W_CAT(PREFIX,CLASS,__private)* clone)                       \
+{                                                                                                      \
+    struct W_CAT(PREFIX,CLASS,__private)* self = malloc(sizeof(struct W_CAT(PREFIX,CLASS,__private))); \
+    *self = *clone;                                                                                    \
+    self->klass = (struct W_CAT(PREFIX,CLASS,__class_private)*)&W_CAT(PREFIX,CLASS,__class_instance);  \
+    W_CAT(CLASS,___construct)(self);                                                                   \
+    return (struct W_CAT(PREFIX,CLASS)*) self;                                                         \
+}                                                                                                      \
+                                                                                                       \
 void W_CAT(CLASS,___construct) (struct W_CAT(PREFIX,CLASS,__private)* self)
 
 
@@ -172,7 +162,7 @@ void W_CAT(CLASS,___construct) (struct W_CAT(PREFIX,CLASS,__private)* self)
 /* Destructor. */
 #define FINALIZE                                                                                       \
 void W_CAT(CLASS,___finalize) (struct W_CAT(PREFIX,CLASS,__private)* self);                            \
-void W_CAT(PREFIX,CLASS,_free)(struct W_CAT(PREFIX,CLASS)* self)                                       \
+void W_CAT(CLASS,_free)(struct W_CAT(PREFIX,CLASS)* self)                                       \
 {                                                                                                      \
     W_CAT(CLASS,___finalize)((struct W_CAT(PREFIX,CLASS,__private)*) self);                            \
     free(self);                                                                                        \

@@ -26,6 +26,19 @@
 #define __W_OBJECTS_API_H
 
 #include <strings.h>
+#include <boost/preprocessor/control/if.hpp>
+#include <boost/preprocessor/comparison/equal.hpp>
+#include <boost/preprocessor/variadic/size.hpp>
+#include <boost/preprocessor/variadic/elem.hpp>
+
+#define W_NEW(...) \
+    BOOST_PP_IF(BOOST_PP_EQUAL(BOOST_PP_VARIADIC_SIZE(__VA_ARGS__), 1), \
+        W_CAT(BOOST_PP_VARIADIC_ELEM(0,__VA_ARGS__),_new)(), \
+        _W_NEW(__VA_ARGS__) \
+    )
+#define _W_NEW(T,...) \
+    W_CAT(T,_new_with)(&((struct W_CAT(T,__private)){__VA_ARGS__}))
+
 
 
 #define W_CALL(o,method) (((o)->klass->method) (o, W_CALL_CLOSE
