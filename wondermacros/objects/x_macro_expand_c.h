@@ -41,25 +41,9 @@ struct W_CAT(PREFIX,CLASS,__private);
 
 
 /* Declare private class struct. */
-#define METHOD(C,type,name,args,...) \
-    type (*name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
-        BOOST_PP_REMOVE_PARENS(args));
-struct W_CAT(PREFIX,CLASS,__class_private) {
-    struct {
-        const char* name;
-        size_t size;
-    } meta;
-
-    W_CAT(CLASS,__inherited_interfaces)
-
-    W_CAT(CLASS,__public_methods)
-#if BOOST_PP_NOT(W_CAT(CLASS,__is_abstract))
-    W_CAT(CLASS,__private_methods)
-#endif
-
-    void (*free)(struct W_CAT(PREFIX,CLASS)* self);
-};
-#undef METHOD
+#undef X_PRIVATE
+#define X_PRIVATE
+#include <wondermacros/objects/x_macro_expand_class.h>
 
 
 
@@ -93,8 +77,39 @@ W_CAT(CLASS,__private_methods)
 # undef METHOD
 #endif
 
+
 void W_CAT(CLASS,__,free)(struct W_CAT(PREFIX,CLASS)* self);
 
+
+/* Generate 'get method offset' function. */
+int
+W_CAT(CLASS,___get_method_offset)(const char* name)
+{
+    for (int i=0; i < W_CAT(CLASS,_NBR_OF_METHODS); i++)
+        if (strcmp(W_CAT(PREFIX,CLASS,__class_instance).meta.method[i], name) == 0)
+            return i*sizeof(void*);
+
+    return -1;
+}
+
+
+extern const char* W_CAT(CLASS,___properties)[W_CAT(CLASS,_NBR_OF_PROPERTIES)+1];
+extern const char* W_CAT(CLASS,___methods)[W_CAT(CLASS,_NBR_OF_METHODS)+1];
+extern const int W_CAT(CLASS,___property_size)[W_CAT(CLASS,_NBR_OF_PROPERTIES)+1];
+
+
+
+/* Generate 'get property offset' function. */
+int
+W_CAT(CLASS,___get_property_offset)(const char* name)
+{
+    int size = 0;
+    for (int i=0; i < W_CAT(CLASS,_NBR_OF_PROPERTIES); size += W_CAT(CLASS,___property_size)[i++])
+        if (strcmp(W_CAT(PREFIX,CLASS,__class_instance).meta.property[i], name) == 0)
+            return size;
+
+    return -1;
+}
 
 /* Initialize class struct instance. */
 
@@ -103,7 +118,10 @@ void W_CAT(CLASS,__,free)(struct W_CAT(PREFIX,CLASS)* self);
 struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance) = {
     .meta.name = BOOST_PP_STRINGIZE(CLASS),
     .meta.size = sizeof(struct W_CAT(PREFIX,CLASS,__private)),
-
+    .meta.method = W_CAT(CLASS,___methods),
+    .meta.property = W_CAT(CLASS,___properties),
+    .meta.get_method_offset = W_CAT(CLASS,___get_method_offset),
+    .meta.get_property_offset = W_CAT(CLASS,___get_property_offset),
 # define METHOD(C,type,name,args,...) \
     .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(BOOST_PP_CAT(C,__),name),
     W_CAT(CLASS,__override_methods)
@@ -123,6 +141,30 @@ struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance) = {
    .free = W_CAT(CLASS,_free),
 };
 # undef METHOD
+
+
+
+const char* W_CAT(CLASS,___properties)[] = {
+# define PROPERTY(type,name,...) # name,
+    W_CAT(CLASS,__public_properties)
+# undef PROPERTY
+    NULL
+};
+const int W_CAT(CLASS,___property_size)[] = {
+# define PROPERTY(type,name,...) sizeof(type),
+    W_CAT(CLASS,__public_properties)
+# undef PROPERTY
+    -1
+};
+const char* W_CAT(CLASS,___methods)[] = {
+# define METHOD(C,type,name,args,...) # name,
+    W_CAT(CLASS,__inherited_interfaces)
+    W_CAT(CLASS,__public_methods)
+    "free",
+# undef METHOD
+    NULL
+};
+ 
 
 
 

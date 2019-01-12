@@ -50,5 +50,37 @@
 #define W_OBJECT_IS(o,type) ((o)->klass == &W_CAT(type,__class_instance))
 #define W_OBJECT_AS(o,type) ((struct type*)(o))
 
+#define W_OBJECT_CLASS_NAME(o) ((o)->klass->meta.name)
+#define W_OBJECT_METHOD_BY_INDEX(o,ix) ((o)->klass->meta.method[(ix)])
+
+#define W_OBJECT_GET_METHOD_PTR(o,method) \
+    W_REF_VOID_PTR( (o)->klass, (o)->klass->meta.get_method_offset(# method) + W_BYTE_OFFSET((o)->klass->vftb,(o)->klass->start) )
+
+#define W_SEND_VOID(T,o,method) \
+    if ((o)->klass->meta.get_method_offset(#method) != -1) \
+        ((T) (*((void**) W_OBJECT_GET_METHOD_PTR(o,method))))(o); \
+    else
+
+#define W_SEND(T,o,method,...) \
+    if ((o)->klass->meta.get_method_offset(#method) != -1) \
+        ((T) (*((void**) W_OBJECT_GET_METHOD_PTR(o,method))))(o,__VA_ARGS__); \
+    else
+
+#define W_OBJECT_SET(T,o,name,value) \
+    if ((o)->klass->meta.get_property_offset(# name) != -1) \
+        *((T*) W_REF_VOID_PTR((o),sizeof(void*) + (o)->klass->meta.get_property_offset(# name))) = (value); \
+    else
+
+#define W_OBJECT_GET(T,o,name,na_value) \
+    (((o)->klass->meta.get_property_offset(# name) != -1) ? \
+        *((T*) W_REF_VOID_PTR((o),sizeof(void*) + (o)->klass->meta.get_property_offset(# name))) : \
+        (na_value) \
+    )
+
+#define W_OBJECT_HAS_PROPERTY(o,name) \
+    ((o)->klass->meta.get_property_offset(# name) != -1)
+
+#define W_OBJECT_HAS_METHOD(o,name) \
+    ((o)->klass->meta.get_method_offset(# name) != -1)
 
 #endif

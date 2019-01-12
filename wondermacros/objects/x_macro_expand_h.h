@@ -35,24 +35,26 @@
 # error "Macro CLASS is not defined"
 #endif
 
-
-
-/* Declare class struct. */
-#define METHOD(C,type,name,args,...) \
-    type (*name) (struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args));
-struct W_CAT(PREFIX,CLASS,__class) {
-    struct {
-        const char* name;
-        size_t size;
-    } meta;
-
+/* Count the number of methods in the class. */
+enum W_CAT(CLASS,__,method_list) {
+# define METHOD(C,type,name,args,...) BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__method__),name),
     W_CAT(CLASS,__inherited_interfaces)
-
     W_CAT(CLASS,__public_methods)
-
-    void (*free)(struct W_CAT(PREFIX,CLASS)* self);
+    W_CAT(CLASS,__method__free),
+# undef METHOD
+    W_CAT(CLASS,_NBR_OF_METHODS)
 };
-#undef METHOD
+enum W_CAT(CLASS,__,property_list) {
+# define PROPERTY(type,name,...) BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__property__),name),
+    W_CAT(CLASS,__public_properties)
+# undef PROPERTY
+    W_CAT(CLASS,_NBR_OF_PROPERTIES)
+};
+
+
+/* Declare public class struct. */
+#undef X_PRIVATE
+#include <wondermacros/objects/x_macro_expand_class.h>
 
 
 
