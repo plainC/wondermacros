@@ -1,0 +1,4 @@
+#!/bin/sh
+
+gcc -E -P -I . -I ../../.. $1 | indent 
+
