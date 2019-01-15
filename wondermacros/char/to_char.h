@@ -26,13 +26,13 @@
 #define __W_TO_CHAR_H
 
 /***
- *** Name:  W_TO_CHAR
- *** Proto: W_TO_CHAR(ch)
- *** Arg:   ch   a character       A character to be converted to ASCII.
+ *** Name:        W_TO_CHAR
+ *** Proto:       W_TO_CHAR(ch)
+ *** Arg:         ch   A character to be converted to ASCII.
  *** Description: Use W_TO_CHAR to convert a single character to a C character.
- *** Note:  ch must be a valid character to be used in an identifer, i.g. [a-zA-Z_0-9].
- *** Example: 'char str[] = { W_TO_CHAR(a), W_TO_CHAR(b), 0 };' expands to
- ***          'char str[] = { 'a', 'b', 0 };'
+ *** Notes:       ch must be a valid character to be used in an identifer, i.g. [a-zA-Z_0-9].
+ *** Example:     'char str[] = { W_TO_CHAR(a), W_TO_CHAR(b), 0 };' expands to
+ ***              'char str[] = { 'a', 'b', 0 };'
  ***/
 #define W_TO_CHAR(ch) _W_TO_CHAR(ch)
 
