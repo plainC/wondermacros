@@ -52,7 +52,7 @@
  *** Example:     'char buf[16]; W_PP_CHARSEQ_TO_STRING( (A)(B)(C)(D), buf, 16)'
  ***/
 #define W_PP_CHARSEQ_TO_STRING(seq,buf,size)                                             \
-    memcpy(buf,                                                                       \
+    memcpy(buf,                                                                          \
         &((const char[]) { BOOST_PP_SEQ_FOR_EACH(_W_PP_CHARSEQ_TO_STRING,~,seq) '\0' }), \
         W_MIN(size, (BOOST_PP_INC(BOOST_PP_SEQ_SIZE(seq)))))
 
@@ -99,7 +99,7 @@
  *** Proto:       W_PP_CHARSEQ_TOUPPER(seq)
  *** Arg:         seq   A character sequence, e.g. (R)(E)(A)(D)
  *** Description: Use W_PP_CHARSEQ_TOUPPER to convert a sequence of characters to upper case.
- *** Example:     'W_PP_CHARSEQ_TOUPPER((r)(a)(a)(d))' expands to '(R)(E)(A)(D)'.
+ *** Example:     'W_PP_CHARSEQ_TOUPPER((r)(e)(a)(d))' expands to '(R)(E)(A)(D)'.
  ***/
 #define W_PP_CHARSEQ_TOUPPER(seq) BOOST_PP_SEQ_FOR_EACH(_W_PP_CHARSEQ_TOUPPER,~,seq)
 #define _W_PP_CHARSEQ_TOUPPER(z,arg,elem) (W_PP_CHAR_TOUPPER(elem))
@@ -111,9 +111,9 @@
  *** Arg:         seq1   A character sequence, e.g. (R)(E)(A)(D)
  *** Arg:         seq2   A character sequence, e.g. (R)(E)(A)(D)
  *** Description: Use W_PP_CHARSEQ_EQUAL to test if two sequences of characters are equal.
- *** Example:     'W_PP_CHARSEQ_EQUAL((r)(a)(a)(d), (r)(e)(a)(d))' expands to '1'.
+ *** Example:     'W_PP_CHARSEQ_EQUAL((r)(e)(a)(d), (r)(e)(a)(d))' expands to '1'.
  ***/
-#define W_PP_CHARSEQ_EQUAL(seq1,seq2)                        \
+#define W_PP_CHARSEQ_EQUAL(seq1,seq2)                     \
     BOOST_PP_AND(BOOST_PP_EQUAL(BOOST_PP_SEQ_SIZE(seq1),  \
                                 BOOST_PP_SEQ_SIZE(seq2)), \
                  _W_PP_CHARSEQ_EQUAL(seq1,seq2))
