@@ -20,7 +20,7 @@ dynamic_stack.md: ../wondermacros/array/dynamic_stack.h
 
 char.md:
 	echo "## Character and String Handling" > char.md
-	cd ../wondermacros/char && ../../tools/api_tool.pl >> ../../docs/char.md
+	cd ../wondermacros/pp_char && ../../tools/api_tool.pl >> ../../docs/char.md
 
 compiler.md:
 	echo "## Compiler Tools" > compiler.md
