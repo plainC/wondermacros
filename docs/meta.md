@@ -31,6 +31,12 @@
     
     Use W_LABEL to construct line-unique labels.
     
+### W_PP_MAX(a,b)
+    Use W_PP_MAX to get the maximum of two values at pre-processing time.
+    
+### W_PP_MIN(a,b)
+    Use W_PP_MIN to get the minimum of two values at pre-processing time.
+    
 ### W_PP_POW2(i)
     Use W_PP_POW2 to get power of two for the given exponent.
     The expansion is done at pre-processing time. Redefine W_PP_POW2_TYPE

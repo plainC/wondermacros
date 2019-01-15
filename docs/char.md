@@ -19,3 +19,6 @@
 ### W_TO_CHAR(ch)
     Use W_TO_CHAR to convert a single character to a C character.
     'char str[] = { 'a', 'b', 0 };'
+    
+### W_CHAR_TO_INT(ch)
+    Use W_CHAR_TO_INT to convert a single character to an integer.
