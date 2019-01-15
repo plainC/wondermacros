@@ -1,5 +1,6 @@
 DOCS =                   \
 	compiler.md      \
+	char.md          \
 	debug.md         \
 	dynamic_array.md \
 	dynamic_stack.md \
@@ -16,6 +17,10 @@ dynamic_array.md: ../wondermacros/array/dynamic_array.h
 dynamic_stack.md: ../wondermacros/array/dynamic_stack.h
 	echo "## Dynamic Stack" > dynamic_stack.md
 	cd ../wondermacros/array && ../../tools/api_tool.pl dynamic_stack.h >> ../../docs/dynamic_stack.md
+
+char.md:
+	echo "## Character and String Handling" > char.md
+	cd ../wondermacros/char && ../../tools/api_tool.pl >> ../../docs/char.md
 
 compiler.md:
 	echo "## Compiler Tools" > compiler.md
