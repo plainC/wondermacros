@@ -77,13 +77,35 @@
 #define _W_PP_POW_3_4 81
 #define _W_PP_POW_3_5 243
 
+#define _W_PP_POW_4_2 16
+#define _W_PP_POW_4_3 64
+#define _W_PP_POW_4_4 256
+
 #define _W_PP_POW_5_2 25
 #define _W_PP_POW_5_3 125
 
+#define _W_PP_POW_6_2 36
+#define _W_PP_POW_6_3 216
+
 #define _W_PP_POW_7_2 49
 
+#define _W_PP_POW_8_2 64
+
+#define _W_PP_POW_9_2 81
+
+#define _W_PP_POW_10_2 100
+
 #define _W_PP_POW_11_2 121
+
+#define _W_PP_POW_12_2 144
+
 #define _W_PP_POW_13_2 169
+
+#define _W_PP_POW_14_2 196
+
+#define _W_PP_POW_15_2 225
+
+#define _W_PP_POW_16_2 256
 
 #endif
 
