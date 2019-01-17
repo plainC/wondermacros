@@ -25,7 +25,21 @@
 #ifndef __W_PP_POW_H
 #define __W_PP_POW_H
 
-#define W_PP_POW(a,b) BOOST_PP_IF(b,BOOST_PP_IF(BOOST_PP_EQUAL(b,1),a,W_CAT(_W_PP_POW_,a,_,b)),0)
+#include <boost/preprocessor/control/if.hpp>
+#include <boost/preprocessor/comparison/equal.hpp>
+
+
+/***
+ *** Name:        W_PP_POW
+ *** Proto:       W_PP_POW(a,b)
+ *** Arg:         a    a number between 0...255
+ *** Arg:         b    an exponent between 0...31
+ *** Description: Use W_PP_POW to get the power a to b. The exponent must be two or, result must be in range [0,255].
+ ***/
+#define W_PP_POW(a,b)                                                \
+    BOOST_PP_IF(b,                                                   \
+        BOOST_PP_IF(BOOST_PP_EQUAL(b,1),a,W_CAT(_W_PP_POW_,a,_,b)),  \
+        0)
 
 #define _W_PP_POW_2_2 4
 #define _W_PP_POW_2_3 8
@@ -33,6 +47,30 @@
 #define _W_PP_POW_2_5 32
 #define _W_PP_POW_2_6 64
 #define _W_PP_POW_2_7 128
+#define _W_PP_POW_2_8 256
+#define _W_PP_POW_2_9 512
+#define _W_PP_POW_2_10 1024
+#define _W_PP_POW_2_11 2048
+#define _W_PP_POW_2_12 4096
+#define _W_PP_POW_2_13 8192
+#define _W_PP_POW_2_14 16384
+#define _W_PP_POW_2_15 32768
+#define _W_PP_POW_2_16 65536
+#define _W_PP_POW_2_17 131072
+#define _W_PP_POW_2_18 262144
+#define _W_PP_POW_2_19 524288
+#define _W_PP_POW_2_20 1048576
+#define _W_PP_POW_2_21 2097152
+#define _W_PP_POW_2_22 4194304
+#define _W_PP_POW_2_23 8388608
+#define _W_PP_POW_2_24 16777216
+#define _W_PP_POW_2_25 33554432
+#define _W_PP_POW_2_26 67108864
+#define _W_PP_POW_2_27 134217728
+#define _W_PP_POW_2_28 268435456
+#define _W_PP_POW_2_29 536870912
+#define _W_PP_POW_2_30 1073741824
+#define _W_PP_POW_2_31 2147483648
 
 #define _W_PP_POW_3_2 9
 #define _W_PP_POW_3_3 27
