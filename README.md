@@ -39,6 +39,7 @@ under /usr/include, type 'make install' as root.
 ### [Deque](https://github.com/plainC/wondermacros/blob/master/docs/deque.md)
 ### [Dynamic Array](https://github.com/plainC/wondermacros/blob/master/docs/dynamic_array.md)
 ### [Dynamic Stack](https://github.com/plainC/wondermacros/blob/master/docs/dynamic_stack.md)
+### [Hash Table](https://github.com/plainC/wondermacros/blob/master/docs/hash_table.md)
 
 ## Others
 ### [Compiler Tools](https://github.com/plainC/wondermacros/blob/master/docs/compiler.md)

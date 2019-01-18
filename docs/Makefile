@@ -5,6 +5,7 @@ DOCS =                   \
 	deque.md         \
 	dynamic_array.md \
 	dynamic_stack.md \
+	hash_table.md    \
 	math.md          \
 	meta.md          \
 	sorting.md       \
@@ -22,6 +23,11 @@ deque.md: ../wondermacros/array/deque.h
 dynamic_stack.md: ../wondermacros/array/dynamic_stack.h
 	echo "## Dynamic Stack" > dynamic_stack.md
 	cd ../wondermacros/array && ../../tools/api_tool.pl dynamic_stack.h >> ../../docs/dynamic_stack.md
+
+hash_table.md: ../wondermacros/array/hash_table.h
+	echo "## Hash Table" > hash_table.md
+	cd ../wondermacros/array && ../../tools/api_tool.pl hash_table.h >> ../../docs/hash_table.md
+
 
 char.md:
 	echo "## Character and String Handling" > char.md
