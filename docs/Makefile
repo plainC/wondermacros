@@ -2,6 +2,7 @@ DOCS =                   \
 	compiler.md      \
 	char.md          \
 	debug.md         \
+	deque.md         \
 	dynamic_array.md \
 	dynamic_stack.md \
 	math.md          \
@@ -13,6 +14,10 @@ all: $(DOCS)
 dynamic_array.md: ../wondermacros/array/dynamic_array.h
 	echo "## Dynamic Array" > dynamic_array.md
 	cd ../wondermacros/array && ../../tools/api_tool.pl dynamic_array.h >> ../../docs/dynamic_array.md
+
+deque.md: ../wondermacros/array/deque.h
+	echo "## Deque" > deque.md
+	cd ../wondermacros/array && ../../tools/api_tool.pl deque.h >> ../../docs/deque.md
 
 dynamic_stack.md: ../wondermacros/array/dynamic_stack.h
 	echo "## Dynamic Stack" > dynamic_stack.md
@@ -33,6 +38,7 @@ debug.md:
 meta.md:
 	echo "## Meta-programming" > meta.md
 	cd ../wondermacros/meta && ../../tools/api_tool.pl >> ../../docs/meta.md
+	cd ../wondermacros/pp && ../../tools/api_tool.pl >> ../../docs/meta.md
 
 math.md:
 	echo "## Mathematics" > math.md

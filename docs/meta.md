@@ -31,12 +31,6 @@
     
     Use W_LABEL to construct line-unique labels.
     
-### W_PP_MAX(a,b)
-    Use W_PP_MAX to get the maximum of two values at pre-processing time.
-    
-### W_PP_MIN(a,b)
-    Use W_PP_MIN to get the minimum of two values at pre-processing time.
-    
 ### W_PP_POW2(i)
     Use W_PP_POW2 to get power of two for the given exponent.
     The expansion is done at pre-processing time. Redefine W_PP_POW2_TYPE
@@ -50,3 +44,12 @@
     Typically such macros are written inside a 'do...while (0)' block.
     W_WRAP does that and adds the name of the macro to the code (id) in
     order to help the debugging phase.
+    
+### W_PP_MAX(a,b)
+    Use W_PP_MAX to get the maximum of two values at pre-processing time.
+    
+### W_PP_MIN(a,b)
+    Use W_PP_MIN to get the minimum of two values at pre-processing time.
+    
+### W_PP_POW(a,b)
+    Use W_PP_POW to get the power a to b. The exponent must be two or, result must be in range [0,255].

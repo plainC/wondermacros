@@ -36,6 +36,7 @@ under /usr/include, type 'make install' as root.
 ## Macro Reference
 
 ## Data Structures
+### [Deque](https://github.com/plainC/wondermacros/blob/master/docs/deque.md)
 ### [Dynamic Array](https://github.com/plainC/wondermacros/blob/master/docs/dynamic_array.md)
 ### [Dynamic Stack](https://github.com/plainC/wondermacros/blob/master/docs/dynamic_stack.md)
 
