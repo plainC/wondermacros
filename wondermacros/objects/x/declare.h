@@ -8,3 +8,5 @@
 #include <wondermacros/objects/x/method_forward_declares.h>
 #undef W_DECLARE
 
+#undef CLASS
+

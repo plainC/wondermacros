@@ -10,3 +10,6 @@
 #define W_GENERATE
 #include <wondermacros/objects/x/class_instance.h>
 #undef W_GENERATE
+
+#undef CLASS
+

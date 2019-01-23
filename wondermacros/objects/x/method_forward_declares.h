@@ -39,9 +39,9 @@
 
 #ifdef W_DECLARE
 # define public 1
-# define private 0
+# define private 1
 #else
-# define public 0
+# define public 1
 # define private 1
 #endif
 

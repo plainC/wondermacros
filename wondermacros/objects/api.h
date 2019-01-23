@@ -25,7 +25,9 @@
 #ifndef __W_OBJECTS_API_H
 #define __W_OBJECTS_API_H
 
-#include <strings.h>
+#ifndef WDEBUG_EXPAND
+# include <strings.h>
+#endif
 #include <boost/preprocessor/control/if.hpp>
 #include <boost/preprocessor/comparison/equal.hpp>
 #include <boost/preprocessor/variadic/size.hpp>
@@ -37,14 +39,14 @@
         _W_NEW(__VA_ARGS__) \
     )
 #define _W_NEW(T,...) \
-    W_CAT(T,_new_with)(&((struct W_CAT(T,__private)){__VA_ARGS__}))
+    W_CAT(T,_new_with)(&((struct W_CAT(T)){__VA_ARGS__}))
 
 
 
-#define W_CALL(o,method) (((o)->klass->method) (o, W_CALL_CLOSE
+#define W_CALL(o,method) (((o)->klass->method) ((void*) o, W_CALL_CLOSE
 #define W_CALL_CLOSE(...) __VA_ARGS__))
 
-#define W_CALL_VOID(o,method) (((o)->klass->method)(o))
+#define W_CALL_VOID(o,method) (((o)->klass->method)((void*) o))
 
 
 #define W_OBJECT_IS(o,type) ((o)->klass == &W_CAT(type,__class_instance))
