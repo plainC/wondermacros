@@ -1,3 +1,6 @@
+#ifndef __W_DECLARE_H__
+#define __W_DECLARE_H__
+
 /*
  * mp.h: header file providing macros for 'metaprogramming' custom
  * loop constructions in standard C.
@@ -5,9 +8,6 @@
  * Accompanies the article on the web at
  *   https://www.chiark.greenend.org.uk/~sgtatham/mp/
  */
-
-#ifndef __W_DECLARE_H
-#define __W_DECLARE_H
 
 /*
  * mp.h is copyright 2012 Simon Tatham.

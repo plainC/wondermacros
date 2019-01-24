@@ -22,19 +22,19 @@ FINALIZE(Point)
 
 M_MOVE_UP(Point)
 {
-    self->x -= steps;
+    self->y -= steps;
     return 0;
 }
 
 M_MOVE_LEFT(Point)
 {
-    self->y -= steps;
+    self->x -= steps;
     return 0;
 }
 
 M_DRAW(Point)
 {
-    printf("Point at %d,%d\n", self->x, self->y);
+    printf("point at %d,%d\n", self->x, self->y);
 }
 
 

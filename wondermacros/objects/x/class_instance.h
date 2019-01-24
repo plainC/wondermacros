@@ -52,9 +52,9 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
 # define METHOD(C,P,type,...)          \
     BOOST_PP_OVERLOAD(_METHOD_,__VA_ARGS__)(C,P,type,__VA_ARGS__)
 # define _METHOD_1(C,P,type,name)      \
-    .name = ( type (*)(struct W_CAT_INNER(C,__private)* self)) W_CAT_INNER(C,__,name),
+    .name = W_CAT_INNER(C,__,name),
 # define _METHOD_2(C,P,type,name,args) \
-    .name = ( type (*)(struct W_CAT_INNER(C,__private)* self, BOOST_PP_REMOVE_PARENS(args))) W_CAT_INNER(C,__,name),
+    .name = W_CAT_INNER(C,__,name),
     W_CAT(CLASS,__methods)
 # undef OVERLOAD
 # undef METHOD
