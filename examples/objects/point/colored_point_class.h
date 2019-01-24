@@ -4,7 +4,7 @@
 
 #define ColoredPoint__methods   \
     Point__methods              \
-    OVERLOAD(draw)              \
+    OVERLOAD(ColoredPoint,draw) \
     /**/
 
 #define ColoredPoint__vars      \

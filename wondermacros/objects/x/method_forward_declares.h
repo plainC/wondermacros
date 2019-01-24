@@ -37,7 +37,7 @@
 #endif
 
 
-#ifdef W_DECLARE
+#ifdef W_CLASS_DECLARE
 # define public 1
 # define private 1
 #else

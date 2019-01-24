@@ -6,7 +6,7 @@
 #include "point.h"
 
 #include "colored_point_class.h"
-#include <wondermacros/objects/x/declare.h>
+#include <wondermacros/objects/x/class_declare.h>
 
 #endif
 

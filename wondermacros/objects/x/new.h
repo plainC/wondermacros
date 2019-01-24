@@ -43,7 +43,7 @@ void W_CAT(CLASS,___construct)(struct W_CAT(CLASS,__private)* self);
 
 struct CLASS*
 W_CAT(CLASS,_new)()
-#ifdef W_DECLARE
+#ifdef W_CLASS_DECLARE
 ;
 #endif
 #ifdef W_GENERATE
@@ -61,7 +61,7 @@ W_CAT(CLASS,_new)()
 
 struct CLASS*
 W_CAT(CLASS,_new_with)(struct CLASS* data)
-#ifdef W_DECLARE
+#ifdef W_CLASS_DECLARE
 ;
 #endif
 #ifdef W_GENERATE
@@ -79,4 +79,3 @@ W_CAT(CLASS,_new_with)(struct CLASS* data)
 }
 
 #endif
-

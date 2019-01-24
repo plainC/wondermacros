@@ -35,7 +35,7 @@
 # error "Macro CLASS is not defined"
 #endif
 
-#ifdef W_DECLARE
+#ifdef W_CLASS_DECLARE
 extern struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance);
 #endif
 
@@ -47,8 +47,8 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
     .meta.size = sizeof(struct W_CAT_INNER(CLASS,__private)),
 
     /* Expand method interface. */
-# define OVERLOAD(name) \
-    .name = /* kill warning */ (void*) W_CAT_INNER(CLASS,__,name),
+# define OVERLOAD(C,name) \
+    .name = /* kill warning */ (void*) W_CAT_INNER(C,__,name),
 # define METHOD(C,P,type,...)          \
     BOOST_PP_OVERLOAD(_METHOD_,__VA_ARGS__)(C,P,type,__VA_ARGS__)
 # define _METHOD_1(C,P,type,name)      \
@@ -62,4 +62,3 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
 # undef _METHOD_2
 };
 #endif
-

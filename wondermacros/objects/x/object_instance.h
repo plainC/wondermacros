@@ -47,7 +47,7 @@ struct CLASS;
 struct W_CAT(CLASS,__private);
 #endif
 
-#ifdef W_DECLARE
+#ifdef W_CLASS_DECLARE
 struct W_CAT(CLASS,__private);
 struct CLASS {
     struct W_CAT(CLASS,__class)* klass;
@@ -113,4 +113,3 @@ struct W_CAT(CLASS,__private) {
 #undef _READ_SPECIFIER
 #undef W_O_CAT
 #undef _W_O_CAT
-

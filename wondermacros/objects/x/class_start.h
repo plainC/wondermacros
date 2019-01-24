@@ -4,9 +4,9 @@
 #include <wondermacros/objects/x/method_forward_declares.h>
 #undef W_GENERATE
 
-#define W_DECLARE
+#define W_CLASS_DECLARE
 #include <wondermacros/objects/x/class_instance.h>
-#undef W_DECLARE
+#undef W_CLASS_DECLARE
 
 #define W_GENERATE
 #include <wondermacros/objects/x/new.h>
@@ -29,4 +29,3 @@
 #define _METHOD_2(C,P,type,name,args) \
     _METHOD(C,P,type,name, struct W_CAT(C,__private)* self, BOOST_PP_REMOVE_PARENS(args))
 #define _METHOD(C,P,type,name,...) type W_CAT(C,__,name) (__VA_ARGS__)
-

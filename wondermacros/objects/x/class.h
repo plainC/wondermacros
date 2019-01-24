@@ -43,7 +43,7 @@
 struct W_CAT(CLASS,__class);
 #endif
 
-#ifdef W_DECLARE
+#ifdef W_CLASS_DECLARE
 struct W_CAT(CLASS,__class) {
 # define _PRIVATE
 # define _EXPAND_CLASS

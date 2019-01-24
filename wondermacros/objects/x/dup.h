@@ -40,7 +40,7 @@
 
 struct CLASS*
 W_CAT(CLASS,_dup)(struct CLASS* data, int flags)
-#ifdef W_DECLARE
+#ifdef W_CLASS_DECLARE
 ;
 #endif
 #ifdef W_GENERATE

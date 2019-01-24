@@ -4,7 +4,7 @@
 #include "classes_declare.h"
 
 #include "point_class.h"
-#include <wondermacros/objects/x/declare.h>
+#include <wondermacros/objects/x/class_declare.h>
 
 #endif
 

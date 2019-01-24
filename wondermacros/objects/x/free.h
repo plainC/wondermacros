@@ -47,7 +47,7 @@ void W_CAT(CLASS,___finalize)(struct W_CAT(CLASS,__private)* self);
 
 void
 W_CAT(CLASS,_free)(struct CLASS* self)
-#ifdef W_DECLARE
+#ifdef W_CLASS_DECLARE
 ;
 #endif
 #ifdef W_GENERATE

@@ -37,7 +37,7 @@
 #endif
 
 
-#ifdef W_DECLARE
+#ifdef W_CLASS_DECLARE
 
 # define OVERLOAD(...)
 # define METHOD(C,P,type,...)          \
