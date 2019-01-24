@@ -38,7 +38,7 @@
 
 #undef _PRIVATE
 
-#ifdef W_GENERATE
+#ifdef W_CLASS_GENERATE
 void W_CAT(CLASS,___finalize)(struct W_CAT(CLASS,__private)* self);
 # define _PRIVATE __private
 #else
@@ -50,7 +50,7 @@ W_CAT(CLASS,_free)(struct CLASS* self)
 #ifdef W_CLASS_DECLARE
 ;
 #endif
-#ifdef W_GENERATE
+#ifdef W_CLASS_GENERATE
 {
     W_CAT(CLASS,___finalize)((struct W_CAT(CLASS,__private)*) self);
     W_FREE(self);

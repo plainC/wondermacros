@@ -49,7 +49,7 @@ struct W_CAT(CLASS,__class) {
 # define _EXPAND_CLASS
 #endif
 
-#ifdef W_GENERATE
+#ifdef W_CLASS_GENERATE
 struct W_CAT(CLASS,__private);
 struct W_CAT(CLASS,__class_private) {
 # define _PRIVATE __private
@@ -67,6 +67,7 @@ struct W_CAT(CLASS,__class_private) {
     } meta;
 
     /* Expand public method interface. */
+# define VAR(...)
 # define OVERLOAD(...)
 # define public 1
 # define private 0
@@ -76,7 +77,7 @@ struct W_CAT(CLASS,__class_private) {
     BOOST_PP_EXPR_IF(P,type (*name) (struct W_CAT(C,_PRIVATE)* self);)
 # define _METHOD_2(C,P,type,name,args) \
     BOOST_PP_EXPR_IF(P,type (*name) (struct W_CAT(C,_PRIVATE)* self, BOOST_PP_REMOVE_PARENS(args));)
-    W_CAT_INNER(CLASS,__methods)
+    W_CAT_INNER(CLASS,__define)
 # undef public
 # undef private
 # undef METHOD
@@ -84,7 +85,7 @@ struct W_CAT(CLASS,__class_private) {
 # undef _METHOD_2
     /**/
 
-# ifdef W_GENERATE
+# ifdef W_CLASS_GENERATE
     /* Expand private method interface. */
 #  define public 0
 #  define private 1
@@ -94,7 +95,7 @@ struct W_CAT(CLASS,__class_private) {
     BOOST_PP_EXPR_IF(P,type (*name) (struct W_CAT(C,__private)* self);)
 #  define _METHOD_2(C,P,type,name,args) \
     BOOST_PP_EXPR_IF(P,type (*name) (struct W_CAT(C,__private)* self, BOOST_PP_REMOVE_PARENS(args));)
-    W_CAT_INNER(CLASS,__methods)
+    W_CAT_INNER(CLASS,__define)
 #  undef public
 #  undef private
 #  undef METHOD
@@ -104,6 +105,7 @@ struct W_CAT(CLASS,__class_private) {
     /**/
 
 # endif
+# undef VAR
 };
 #endif
 

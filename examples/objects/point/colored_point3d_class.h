@@ -2,16 +2,11 @@
 
 #include "Ipoint.h"
 
-#define ColoredPoint3D__methods   \
-    /* inherits */                \
-    ColoredPoint__methods         \
+#define ColoredPoint3D__define    \
+    /* Inherits */                \
+    ColoredPoint__define          \
                                   \
     OVERLOAD(ColoredPoint3D,draw) \
-    /**/
-
-#define ColoredPoint3D__vars      \
-    /* inherits */                \
-    ColoredPoint__vars            \
                                   \
     VAR(read,int,z)               \
     /**/

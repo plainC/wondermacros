@@ -39,7 +39,7 @@
 extern struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance);
 #endif
 
-#ifdef W_GENERATE
+#ifdef W_CLASS_GENERATE
 struct W_CAT(CLASS,__private);
 struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
 
@@ -47,6 +47,7 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
     .meta.size = sizeof(struct W_CAT_INNER(CLASS,__private)),
 
     /* Expand method interface. */
+# define VAR(...)
 # define OVERLOAD(C,name) \
     .name = /* kill warning */ (void*) W_CAT_INNER(C,__,name),
 # define METHOD(C,P,type,...)          \
@@ -55,10 +56,11 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
     .name = W_CAT_INNER(C,__,name),
 # define _METHOD_2(C,P,type,name,args) \
     .name = W_CAT_INNER(C,__,name),
-    W_CAT(CLASS,__methods)
+    W_CAT(CLASS,__define)
 # undef OVERLOAD
 # undef METHOD
 # undef _METHOD_1
 # undef _METHOD_2
+# undef VAR
 };
 #endif

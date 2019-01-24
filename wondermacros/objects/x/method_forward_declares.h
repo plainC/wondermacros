@@ -37,27 +37,17 @@
 #endif
 
 
-#ifdef W_CLASS_DECLARE
-# define public 1
-# define private 1
-#else
-# define public 1
-# define private 1
-#endif
-
-
+# define VAR(...)
 # define OVERLOAD(...)
 # define METHOD(C,P,type,...)          \
     BOOST_PP_OVERLOAD(_METHOD_,__VA_ARGS__)(C,P,type,__VA_ARGS__)
 # define _METHOD_1(C,P,type,name)      \
-    BOOST_PP_EXPR_IF(P, type W_CAT_INNER(CLASS,__,name)(struct W_CAT_INNER(CLASS,__private)* self);)
+    type W_CAT_INNER(CLASS,__,name)(struct W_CAT_INNER(CLASS,__private)* self);
 # define _METHOD_2(C,P,type,name,args) \
-    BOOST_PP_EXPR_IF(P, type W_CAT_INNER(CLASS,__,name)(struct W_CAT_INNER(CLASS,__private)* self, BOOST_PP_REMOVE_PARENS(args));)
-    W_CAT(CLASS,__methods)
+    type W_CAT_INNER(CLASS,__,name)(struct W_CAT_INNER(CLASS,__private)* self, BOOST_PP_REMOVE_PARENS(args));
+    W_CAT(CLASS,__define)
 # undef OVERLOAD
 # undef METHOD
 # undef _METHOD_1
 # undef _METHOD_2
-
-#undef public
-#undef private
+# undef VAR

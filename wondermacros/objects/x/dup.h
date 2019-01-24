@@ -43,7 +43,7 @@ W_CAT(CLASS,_dup)(struct CLASS* data, int flags)
 #ifdef W_CLASS_DECLARE
 ;
 #endif
-#ifdef W_GENERATE
+#ifdef W_CLASS_GENERATE
 {
     struct W_CAT(CLASS,__private)* self = W_MALLOC(sizeof(struct W_CAT(CLASS,__private)));
 

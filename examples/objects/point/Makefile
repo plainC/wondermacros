@@ -22,4 +22,4 @@ $(OBJS): $(SRCS) $(CLASSES)
 	cc -c $(CFLAGS) $^
 
 clean:
-	rm -f test $(OBJS)
+	rm -f test $(OBJS) *.gch
