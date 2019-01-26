@@ -51,7 +51,7 @@
 #define W_CALL_VOID(o,method) (((o)->klass->method)((void*) o))
 
 
-#define W_OBJECT_IS(o,type) ((o)->klass == &W_CAT(type,__class_instance))
+#define W_OBJECT_IS(o,type) ((void*) ((o)->klass) == W_CAT(type,__class_instance_ptr))
 #define W_OBJECT_AS(o,type) ((struct type*)(o))
 
 #define W_OBJECT_CLASS_NAME(o) ((o)->klass->meta.name)

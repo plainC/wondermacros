@@ -6,6 +6,9 @@
 #include <wondermacros/objects/x/dup.h>
 #include <wondermacros/objects/x/free.h>
 #include <wondermacros/objects/x/method_forward_declares.h>
+
+extern void* W_CAT(CLASS,__class_instance_ptr);
+
 #undef W_CLASS_DECLARE
 
 #undef CLASS

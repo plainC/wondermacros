@@ -63,4 +63,6 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
 # undef _METHOD_2
 # undef VAR
 };
+
+void* W_CAT(CLASS,__class_instance_ptr) = &W_CAT(CLASS,__class_instance);
 #endif
