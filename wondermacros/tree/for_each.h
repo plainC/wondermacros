@@ -29,7 +29,9 @@
 #include <wondermacros/meta/declare.h>
 #include <wondermacros/meta/id.h>
 #include <wondermacros/meta/cat.h>
-#include <wondermacros/array/dynamic_stack.h>
+#ifndef WDEBUG_EXPAND
+# include <wondermacros/array/dynamic_stack.h>
+#endif
 
 
 #ifndef W_TREE_NEXT
@@ -50,7 +52,7 @@
     W_TREE_NEXT(tree,0)
 
 #define W_TREE_NEXT_RIGHTMOST(tree)                                            \
-    W_TREE_NEXT(tree,TREE_GET_DEGREE(tree)-1)
+    W_TREE_NEXT(tree,W_TREE_GET_DEGREE(tree)-1)
 
 #define W_TREE_FOR_EACH_IMMEDIATE(T,node,tree)                                 \
     W_DECLARE(10, T* node)                                                     \
@@ -91,6 +93,56 @@
                         W_DYNAMIC_STACK_PUSH(W_ID(stack), W_ID(tmp));          \
             )                                                                  \
     /**/
+
+
+#define W_TREE_FOR_EACH_POSTORDER(T,Child,self)                                                \
+    W_DECLARE(1, T *Child)                                                                     \
+    W_DECLARE(11, T* W_ID(node) = (self))                                                      \
+    W_DECLARE(2, T** W_ID(stack) = NULL )                                                      \
+    if (W_ID(node) == NULL)                                                                    \
+        ;                                                                                      \
+    else                                                                                       \
+        W_BEFORE(4, goto W_LABEL(6,Child); )                                                   \
+        while (!W_DYNAMIC_STACK_IS_EMPTY(W_ID(stack)))                                         \
+            W_BEFORE (5,                                                                       \
+              W_LABEL(6,Child):                                                                \
+                while (W_ID(node)) {                                                           \
+                    BOOST_PP_IF(W_REVERSED,                                                    \
+                        W_TREE_FOR_EACH_IMMEDIATE_REVERSED(T,W_CAT(Child,_child), W_ID(node))  \
+                            if (W_CAT(Child,_child,_ix) < W_TREE_GET_DEGREE(W_ID(node))-1)     \
+                                W_DYNAMIC_STACK_PUSH( W_ID(stack),W_CAT(Child,_child) );       \
+                        W_DYNAMIC_STACK_PUSH( W_ID(stack),W_ID(node) );                        \
+                        W_ID(node) = W_TREE_NEXT_RIGHTMOST(W_ID(node));                        \
+                        , /* else */                                                           \
+                        W_TREE_FOR_EACH_IMMEDIATE(T,W_CAT(Child,_child), W_ID(node))           \
+                            if (W_CAT(Child,_child,_ix) > 0)                                   \
+                                W_DYNAMIC_STACK_PUSH( W_ID(stack),W_CAT(Child,_child) );       \
+                        W_DYNAMIC_STACK_PUSH( W_ID(stack),W_ID(node) );                        \
+                        W_ID(node) = W_TREE_NEXT_LEFTMOST(W_ID(node));                         \
+                    )                                                                          \
+                }                                                                              \
+                W_ID(node) = W_DYNAMIC_STACK_POP( W_ID(stack) );                               \
+                BOOST_PP_IF(W_REVERSED,                                                        \
+                    if (W_ID(node) && W_TREE_NEXT_LEFTMOST(W_ID(node))                         \
+                        && W_DYNAMIC_STACK_PEEK_SAFE(W_ID(stack),NULL) == W_TREE_NEXT_LEFTMOST(W_ID(node)) ) { \
+                        W_DYNAMIC_STACK_POP(W_ID(stack));                                      \
+                        W_DYNAMIC_STACK_PUSH( W_ID(stack),W_ID(node) );                        \
+                        W_ID(node) = W_TREE_NEXT_LEFTMOST(W_ID(node));                         \
+                        goto W_LABEL(6,Child);                                                 \
+                    }                                                                          \
+                    , /* else */                                                               \
+                    if (W_ID(node) && W_TREE_NEXT_RIGHTMOST(W_ID(node))                        \
+                        && W_DYNAMIC_STACK_PEEK_SAFE(W_ID(stack),NULL) == W_TREE_NEXT_RIGHTMOST(W_ID(node)) ) { \
+                        W_DYNAMIC_STACK_POP(W_ID(stack));                                      \
+                        W_DYNAMIC_STACK_PUSH( W_ID(stack),W_ID(node) );                        \
+                        W_ID(node) = W_TREE_NEXT_RIGHTMOST(W_ID(node));                        \
+                        goto W_LABEL(6,Child);                                                 \
+                    }                                                                          \
+                )                                                                              \
+                Child = W_ID(node);                                                            \
+                W_ID(node) = NULL;                                                             \
+            )                                                                                  \
+            /**/
 
 #endif
 
