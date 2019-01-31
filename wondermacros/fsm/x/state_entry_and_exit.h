@@ -20,6 +20,7 @@ static inline void W_CAT(FSM,__,state,__entry)(struct FSM* self)        \
 static inline void W_CAT(FSM,__,state,__exit)(struct FSM* self)         \
 { action }                                                              \
 /**/
+#define INITIAL(...)
 #define STATE(s) W_CAT_OUTER(s,__define)
 #define BEGIN(...)
 #define END
@@ -31,6 +32,7 @@ STATES
 
 #undef ENTRY
 #undef EXIT
+#undef INITIAL
 #undef STATE
 #undef BEGIN
 #undef END
