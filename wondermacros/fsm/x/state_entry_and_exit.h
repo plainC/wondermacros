@@ -24,7 +24,7 @@ static inline void W_CAT(FSM,__,state,__exit)(struct FSM* self)         \
 #define STATE(s) W_CAT_OUTER(s,__define)
 #define BEGIN(...)
 #define END
-#define SUBSTATE(...)
+#define SUPERSTATE(...)
 #define AUTO(...)
 #define EVENTS(...)
 
@@ -36,6 +36,6 @@ STATES
 #undef STATE
 #undef BEGIN
 #undef END
-#undef SUBSTATE
+#undef SUPERSTATE
 #undef AUTO
 #undef EVENTS

@@ -3,6 +3,8 @@ void W_CAT(FSM,_start)(struct FSM* self)
 ;
 #else
 {
+#define STATE(Name) W_CAT_OUTER(Name,__define)
+
 #define INITIAL(State,action)               \
     action                                  \
     self->state.func = W_CAT(FSM,__,State); \
@@ -10,14 +12,26 @@ void W_CAT(FSM,_start)(struct FSM* self)
     /**/
 #define BEGIN(...)
 #define END
-#define SUBSTATE(...)
+#define SUPERSTATE(...)
 #define AUTO(...)
 #define EVENTS(...)
-
+#define ENTRY(...)
+#define EXIT(...)
 
 /**/
 STATES
 /**/
 
 }
+
+#undef INITIAL
+#undef BEGIN
+#undef END
+#undef SUPERSTATE
+#undef AUTO
+#undef EVENTS
+#undef STATE
+#undef ENTRY
+#undef EXIT
+
 #endif

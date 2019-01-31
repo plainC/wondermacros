@@ -1,7 +1,7 @@
 #define INITIAL(...)
 #define BEGIN(name)
 #define END }
-#define SUBSTATE(...)
+#define SUPERSTATE(...)
 #define AUTO(...)
 #define EVENTS(...)
 
@@ -13,7 +13,7 @@ STATES
 #undef INITIAL
 #undef BEGIN
 #undef END
-#undef SUBSTATE
+#undef SUPERSTATE
 #undef AUTO
 #undef EVENTS
 

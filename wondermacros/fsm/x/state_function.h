@@ -18,10 +18,10 @@
 
 /**/
 
+#define STATE(s) W_CAT_OUTER(s,__define)
 #define ENTRY(...)
 #define EXIT(...)
-
-#define STATE(s) W_CAT_OUTER(s,__define)
+#define SUPERSTATE(...)
 
 #if W_FSM_DECLARE
 
@@ -34,3 +34,8 @@
 # include <wondermacros/fsm/x/state_function_end.h>
 
 #endif
+
+#undef STATE
+#undef ENTRY
+#undef EXIT
+#undef SUPERSTATE

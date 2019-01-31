@@ -6,6 +6,7 @@
 #include <wondermacros/fsm/x/state_function.h>
 #include <wondermacros/fsm/x/start_function.h>
 #include <wondermacros/fsm/x/on_event_function.h>
+#include <wondermacros/fsm/x/state_meta.h>
 #undef W_FSM_DECLARE
 
 #undef FSM
