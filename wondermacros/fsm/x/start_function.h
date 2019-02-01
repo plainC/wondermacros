@@ -6,9 +6,7 @@ void W_CAT(FSM,_start)(struct FSM* self)
 #define STATE(Name) W_CAT_OUTER(Name,__define)
 
 #define INITIAL(State,action)               \
-    action                                  \
-    self->state.func = W_CAT(FSM,__,State); \
-    W_CAT(FSM,__,State,__entry)(self);      \
+    FSM_GO_NEXT_STATE(self,State,action);   \
     /**/
 #define BEGIN(...)
 #define END
@@ -19,7 +17,8 @@ void W_CAT(FSM,_start)(struct FSM* self)
 #define EXIT(...)
 
 /**/
-STATES
+    self->status = W_CAT(FSM,__status_running);
+    STATES
 /**/
 
 }

@@ -1,17 +1,3 @@
-#ifndef FSM
-# error "FSM must be defined"
-#endif
-
-#ifndef STATES
-# error "STATES must be defined"
-#endif
-
-#ifndef FSM_EVENT_TYPE
-# define FSM_EVENT_TYPE unsigned
-#endif
-
-/**/
-
 #include <wondermacros/meta/cat.h>
 #include <wondermacros/meta/cat_outer.h>
 #include <boost/preprocessor/control/if.hpp>
@@ -30,7 +16,7 @@
 #else
 
 # include <wondermacros/fsm/x/state_function_begin.h>
-# include <wondermacros/fsm/x/state_function_auto_transition.h>
+# include <wondermacros/fsm/x/on_event.h>
 # include <wondermacros/fsm/x/state_function_end.h>
 
 #endif

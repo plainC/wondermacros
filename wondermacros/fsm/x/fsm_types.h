@@ -7,16 +7,18 @@
 
 struct FSM;
 
-struct W_CAT(FSM,_state) {
-    struct W_CAT(FSM,_state) (*func)(struct FSM* self, unsigned event);
-};
-
 struct W_CAT(FSM,_model) {
     int foo;
 };
 
+enum W_CAT(FSM,_status) {
+    W_CAT(FSM,__status_stopped),
+    W_CAT(FSM,__status_running),
+};
+
 struct FSM {
-    struct W_CAT(FSM,_state) state;
+    enum W_CAT(FSM,_status) status;
+    int (*state)(struct FSM* self, FSM_EVENT_TYPE event);
     struct W_CAT(FSM,_model) model;
 };
 
