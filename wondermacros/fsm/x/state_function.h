@@ -15,9 +15,8 @@
 
 #else
 
-# include <wondermacros/fsm/x/state_function_begin.h>
 # include <wondermacros/fsm/x/on_event.h>
-# include <wondermacros/fsm/x/state_function_end.h>
+# include <wondermacros/fsm/x/state_function_begin.h>
 
 #endif
 

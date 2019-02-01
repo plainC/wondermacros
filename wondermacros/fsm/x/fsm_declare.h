@@ -10,6 +10,9 @@
 # define FSM_EVENT_TYPE unsigned
 #endif
 
+#include <wondermacros/meta/wrap.h>
+#include <wondermacros/fsm/x/fsm_tools.h>
+
 
 #include <wondermacros/meta/cat.h>
 #include <wondermacros/meta/cat_inner.h>
@@ -21,5 +24,6 @@
 #include <wondermacros/fsm/x/state_entry_and_exit.h>
 #include <wondermacros/fsm/x/state_function.h>
 #include <wondermacros/fsm/x/start_function.h>
+#include <wondermacros/fsm/x/auto_transition_function.h>
 
 #undef W_FSM_DECLARE

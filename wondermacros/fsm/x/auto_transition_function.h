@@ -1,15 +1,9 @@
-#define ENTRY(...)
-#define EXIT(...)
-#define STATE(s) W_CAT_OUTER(s,__define)
-#define AUTO(start,...)                                    \
-    BOOST_PP_OVERLOAD(_AUTO_,__VA_ARGS__)(start,__VA_ARGS__)
-#define _AUTO_1(start,target)                              \
-    _AUTO_3(start,target,/*none*/,1)
-#define _AUTO_2(start,target,action)                       \
-    _AUTO_3(start,target,action,1)
-#define _AUTO_3(start,target,action,guard)                 \
-static int                                                 \
-W_CAT(FSM,__,start,_auto_transition)(struct FSM* self)      \
+/* begin: auto_transition_function.h */
+
+#if W_FSM_DECLARE
+#define AUTO_BODY(start,target,action,guard) ;
+#else
+#define AUTO_BODY(start,target,action,guard) \
 {                                                           \
     if (guard) {                                            \
         W_CAT(FSM,__,start,__,exit)(self);                  \
@@ -20,6 +14,20 @@ W_CAT(FSM,__,start,_auto_transition)(struct FSM* self)      \
     }                                                       \
     return 0;                                               \
 }
+
+#define ENTRY(...)
+#define EXIT(...)
+#define STATE(s) W_CAT_OUTER(s,__define)
+#define AUTO(start,...)                                    \
+    BOOST_PP_OVERLOAD(_AUTO_,__VA_ARGS__)(start,__VA_ARGS__)
+#define _AUTO_1(start,target)                              \
+    _AUTO_3(start,target,/*none*/,1)
+#define _AUTO_2(start,target,action)                       \
+    _AUTO_3(start,target,action,1)
+#define _AUTO_3(start,target,action,guard)                 \
+int                                                 \
+W_CAT(FSM,__,start,__auto_transition)(struct FSM* self)      \
+AUTO_BODY(start,target,action,guard)
 
 #define INITIAL(...)
 #define BEGIN(name)
@@ -42,3 +50,7 @@ STATES
 #undef EVENTS
 #undef STATE
 
+#endif
+/* end: auto_transition_function.h */
+
+#undef AUTO_BODY

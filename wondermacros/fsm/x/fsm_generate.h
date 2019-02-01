@@ -1,6 +1,11 @@
 #include <wondermacros/meta/cat.h>
 #include <wondermacros/meta/cat_inner.h>
 #include <wondermacros/meta/cat_outer.h>
+#include <wondermacros/meta/wrap.h>
+
+#ifndef WDEBUG_EXPAND
+# include <wondermacros/pp_char/charseq.h>
+#endif
 
 #include <wondermacros/fsm/x/fsm_tools.h>
 

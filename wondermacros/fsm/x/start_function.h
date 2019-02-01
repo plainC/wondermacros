@@ -1,3 +1,5 @@
+/* begin: start_function.h */
+
 void W_CAT(FSM,_start)(struct FSM* self)
 #if W_FSM_DECLARE
 ;
@@ -34,3 +36,5 @@ void W_CAT(FSM,_start)(struct FSM* self)
 #undef EXIT
 
 #endif
+
+/* end: start_function.h */
