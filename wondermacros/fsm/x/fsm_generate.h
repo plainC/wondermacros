@@ -14,5 +14,6 @@
 #include <wondermacros/fsm/x/start_function.h>
 #include <wondermacros/fsm/x/auto_transition_function.h>
 #include <wondermacros/fsm/x/state_meta.h>
+//#include <wondermacros/fsm/x/exit_state.h>
 #undef W_FSM_DECLARE
 

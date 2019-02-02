@@ -10,11 +10,12 @@
 /**/
 #if W_FSM_DECLARE
 
+#define SUPERSTATE(...)
 #define AUTO(...)
 #define END
 #define BEGIN(Name) \
-extern struct W_CAT(FSM,_state_meta)* W_CAT(FSM,__,Name,__meta_super); \
-extern int (*W_CAT(FSM,__,Name,__meta_auto_transition))(struct FSM* self); \
+extern int (*W_CAT(FSM,__,Name,__meta_super))(W_FSM_T* self, W_FSM_EVENT_T* event); \
+extern int (*W_CAT(FSM,__,Name,__meta_auto_transition))(W_FSM_T* self); \
 extern const char* W_CAT(FSM,__,Name,__meta_name);
 
 STATES
@@ -28,9 +29,9 @@ STATES
 /* Generate meta superstate variable. */
 
 #define AUTO(...)
-#define SUPERSTATE(name) = &W_CAT(FSM,__,name,_state_meta)
+#define SUPERSTATE(name) = W_CAT(FSM,__,name)
 #define BEGIN(Name) \
-struct W_CAT(FSM,_state_meta)* W_CAT(FSM,__,Name,__meta_super)
+int (*W_CAT(FSM,__,Name,__meta_super))(W_FSM_T* self, W_FSM_EVENT_T* event)
 #define END ;
 
 STATES
@@ -45,7 +46,7 @@ STATES
 #define AUTO(name,...) = W_CAT(FSM,__,name,__auto_transition)
 #define SUPERSTATE(...)
 #define BEGIN(Name) \
-int (*W_CAT(FSM,__,Name,__meta_auto_transition))(struct FSM* self)
+int (*W_CAT(FSM,__,Name,__meta_auto_transition))(W_FSM_T* self)
 #define END ;
 
 STATES
