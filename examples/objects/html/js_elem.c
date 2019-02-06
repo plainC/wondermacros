@@ -2,28 +2,30 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <wondermacros/compiler/unused.h>
+# include <wondermacros/array/for_each.h>
+# include <wondermacros/array/dynamic_array.h>
 #endif
 
-#include "css_selector.h"
+#include "js_elem.h"
 
-#include "css_selector_class.h"
+#include "js_elem_class.h"
 #include <wondermacros/objects/x/class_start.h>
 
 
-CONSTRUCT(css_selector)
+CONSTRUCT(js_elem)
 {
     W_UNUSED(self);
 }
 
-FINALIZE(css_selector)
+FINALIZE(js_elem)
 {
     W_UNUSED(self);
 }
 
-METHOD(css_selector,public,int,to_string,
+METHOD(js_elem,public,int,to_string,
     (struct model* model, struct view_context* context))
 {
-    context->pos += sprintf(context->buffer + context->pos, "%s", self->elem);
+    W_CALL(self->script,to_string)(model, context);
 }
 
 

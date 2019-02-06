@@ -24,17 +24,18 @@ FINALIZE(css_elem)
 }
 
 METHOD(css_elem,public,int,to_string,
-    (char* buffer, size_t size, int* pos))
+    (struct model* model, struct view_context* context))
 {
-    W_CALL(self->selector,to_string)(buffer, size, pos);
+    W_CALL(self->selector,to_string)(model, context);
 
-    *pos += sprintf(buffer + *pos, " {%s",self->declarations);
+    context->pos += sprintf(context->buffer + context->pos,
+        " {%s",self->declarations);
 /*
     W_ARRAY_FOR_EACH(char*,decl, self->declarations, W_DYNAMIC_ARRAY_GET_SIZE(self->declarations)) {
         *pos += sprintf(buffer + *pos, "%s;", decl);
     }
 */
-    *pos += sprintf(buffer + *pos, "}");
+    context->pos += sprintf(context->buffer + context->pos, "}");
 }
 
 
