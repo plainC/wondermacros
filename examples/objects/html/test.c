@@ -53,19 +53,6 @@ int main()
     W_CALL(model,bind_ptr)("prices",1,prices);
 
 
-    struct quad_tree {
-        double value;
-        struct quad_tree* next[4];
-    };
-#define QUAD(value,_0,_1,_2,_3)  &(struct quad_tree) { value, {_0,_1,_2,_3} } 
-
-    struct quad_tree quad = {
-        10.1, QUAD(20.2,QUAD(15.5,NULL,NULL,NULL,NULL),QUAD(30.3,NULL,NULL,QUAD(40.4,NULL,NULL,NULL,NULL),NULL),NULL,NULL)
-    };
-
-
-    W_CALL(model,bind_ptr)("root", 1, &quad);
-
     struct html_elem* doc = DOC(
         DOCTYPE,
         htmlHTML( attrID(_("FooPoro")), attrLANG(_("fi-FI")), attrDIR(_("LTR")), attrCLASS(_("Public")),
@@ -79,8 +66,7 @@ int main()
             htmlBODY(
                 css(cssTYPE_SELECTOR("p"),"width:9;"),
             ),
-            INT_VAR("a"), DOUBLE_VAR("e", .format="%.2%%"), COND("has_prices", ARRAY("prices", htmlLI(htmlB(DOUBLE_VAR("@elem", .format="$%.2f"))))),
-            TREE("root",htmlB(DOUBLE_VAR("@elem")))
+            INT_VAR("a"), DOUBLE_VAR("e", .format="%.2%%"), COND("has_prices", ARRAY("prices", htmlLI(htmlB(DOUBLE_VAR("@elem", .format="$%.2f")))))
         )
     );
 
