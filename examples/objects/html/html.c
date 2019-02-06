@@ -23,7 +23,7 @@ FINALIZE(html) /* self */
 }
 
 METHOD(html,public,int,to_string,
-    (char* buffer, size_t size, int* pos))
+    (struct model* model, struct view_context* context))
 {
 }
 

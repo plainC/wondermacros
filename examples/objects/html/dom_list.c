@@ -27,10 +27,10 @@ METHOD(dom_list,public,int,append_child,
 }
 
 METHOD(dom_list,public,int,to_string,
-    (char* buffer, size_t size, int* pos))
+    (struct model* model, struct view_context* context))
 {
     W_ARRAY_FOR_EACH(struct html*,doc, self->docs, W_DYNAMIC_ARRAY_GET_SIZE(self->docs))
-        W_CALL(doc,to_string)(buffer,size,pos);
+        W_CALL(doc,to_string)(model, context);
 
     return 0;
 }

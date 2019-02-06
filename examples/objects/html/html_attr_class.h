@@ -7,5 +7,5 @@
     OVERLOAD(html_attr,to_string)             \
                                               \
     VAR(read,enum html_attr_tag,tag)          \
-    VAR(read,char*,value)                     \
+    VAR(read,struct html*,value)              \
     /**/

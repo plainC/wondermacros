@@ -76,16 +76,18 @@ METHOD(html_elem,public,int,append_child,
 }
 
 METHOD(html_elem,public,int,to_string,
-    (char* buffer, size_t size, int* pos))
+    (struct model* model, struct view_context* context))
 {
-    *pos += sprintf(buffer + *pos, "<%s", html_elem_name[self->tag]);
+    context->pos += sprintf(context->buffer + context->pos,
+        "<%s", html_elem_name[self->tag]);
     W_ARRAY_FOR_EACH(struct html_attr*, attr, self->attrs, W_DYNAMIC_ARRAY_GET_SIZE(self->attrs))
-        W_CALL(attr,to_string)(buffer, size, pos);
-    *pos += sprintf(buffer + *pos, ">");
+        W_CALL(attr,to_string)(model, context);
+    context->pos += sprintf(context->buffer + context->pos, ">");
     if (!(html_elem_flags[self->tag] & HTML_ELEM_FLAG_SELF_CLOSING)) {
         W_ARRAY_FOR_EACH(struct html*, elem, self->next, W_DYNAMIC_ARRAY_GET_SIZE(self->next))
-            W_CALL(elem,to_string)(buffer, size, pos);
-        *pos += sprintf(buffer + *pos, "</%s>", html_elem_name[self->tag]);
+            W_CALL(elem,to_string)(model, context);
+        context->pos += sprintf(context->buffer + context->pos, "</%s>",
+            html_elem_name[self->tag]);
     }
 
     return 0;

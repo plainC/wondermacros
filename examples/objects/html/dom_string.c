@@ -4,6 +4,7 @@
 # include <wondermacros/compiler/unused.h>
 #endif
 
+#include "html.h"
 #include "dom_string.h"
 
 #include "dom_string_class.h"
@@ -21,9 +22,9 @@ FINALIZE(dom_string)
 }
 
 METHOD(dom_string,public,int,to_string,
-    (char* buffer, size_t size, int* pos))
+    (struct model* model, struct view_context* context))
 {
-    *pos += sprintf(buffer + *pos, "%s", self->value);
+    context->pos += sprintf(context->buffer + context->pos, "%s", self->value);
 
     return 0;
 }

@@ -9,6 +9,7 @@
 #include <boost/preprocessor/comparison/equal.hpp>
 
 #include <stdarg.h>
+#include <stdlib.h>
 #include <wondermacros/meta/variadic_rest_n.h>
 #include <wondermacros/array/dynamic_array.h>
 
@@ -35,6 +36,15 @@ html_dynamic_array_build(int nbr_of_elems, ...)
     va_end(ap);
     return array;
 }
+
+#define PTR_STR(p) W_NEW(ptr_string, .value=(p))
+#define PTR_INT(p) W_NEW(ptr_int, .value=(p))
+#define PTR_DOUBLE(p) W_NEW(ptr_double, .value=(p))
+#define COND(c,elem) W_NEW(cond, .name = (c), .child = elem)
+#define INT_VAR(n) W_NEW(var_int, .name = n)
+#define DOUBLE_VAR(...) W_NEW(var_double, .name = __VA_ARGS__)
+#define ARRAY(...) W_NEW(array, .name = __VA_ARGS__)
+#define TREE(...) W_NEW(tree, .name = __VA_ARGS__)
 
 #define DOCTYPE _("<!DOCTYPE html>")
 #define DOC(...) \
@@ -303,5 +313,7 @@ html_dynamic_array_build(int nbr_of_elems, ...)
 
 #define cssTYPE_SELECTOR(e) W_NEW(css_selector, .elem = e)
 #define css(s,d) W_NEW(css_elem, .selector = s, .declarations = d)
+
+#define javascript(s) W_NEW(js_elem, .script = s)
 
 #endif

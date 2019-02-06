@@ -4,8 +4,7 @@
     /* Inherits */                                                       \
       /*none */                                                          \
                                                                          \
-    METHOD(html,public,int,to_string,(char* buffer, size_t size, int* pos)) \
+    METHOD(html,public,int,to_string,                                    \
+        (struct model* model, struct view_context* context))             \
                                                                          \
-    VAR(read,int,x)    \
-    VAR(read,int,y)    \
     /**/

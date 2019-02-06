@@ -30,9 +30,12 @@ FINALIZE(html_attr)
 }
 
 METHOD(html_attr,public,int,to_string,
-    (char* buffer, size_t size, int* pos))
+    (struct model* model, struct view_context* context))
 {
-    *pos += sprintf(buffer + *pos, " %s=\"%s\"", html_attr_name[self->tag], self->value);
+    context->pos += sprintf(context->buffer + context->pos,
+        " %s=\"", html_attr_name[self->tag]);
+    W_CALL(self->value,to_string)(model, context);
+    context->pos += sprintf(context->buffer + context->pos, "\"");
 }
 
 
