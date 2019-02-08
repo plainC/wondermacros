@@ -26,6 +26,9 @@ under /usr/include, type 'make install' as root.
 
 ## Macro Reference
 
+## Frameworks
+### [Object-Oriented Programming](https://github.com/plainC/wondermacros/blob/master/docs/objects.md)
+
 ## Data Structures
 ### [Deque](https://github.com/plainC/wondermacros/blob/master/docs/deque.md)
 ### [Dynamic Array](https://github.com/plainC/wondermacros/blob/master/docs/dynamic_array.md)

@@ -1,0 +1,271 @@
+## Object-Oriented Programming in C
+
+### Introduction
+There exists various libraries for object-oriented programming in C, e.g.
+[GObject](https://developer.gnome.org/gobject/stable/).  There are also
+compilers, pre-processors and tools which will build objects for C.  In
+Wondermacros we will take a different approach.  We will use a header file
+(e.g. a_class.h) which has a fixed-form and specific guidelines 
+to define a class with properties and methods.  Then we will create another
+header file (e.g. a.h) which includes the first header and an
+X-macro, <wondermacros/objects/x_macro_expand_h.h>. This header may also
+have other type definitions and declarations just like all headers if needed.
+Then we will implement the methods of the class in a separate C file (e.g.
+a.c). This C file also includes the first header (a_class.h) and
+an X-macro, <wondermacros/objects/x_macro_expand_c.h>.  This set-up will
+give us object-oriented capabilities including:
+
+* Abstraction: we have class based objects with properties and methods
+* Encapsulation: we have public, private and read-only properties, public and private methods
+* Inheritance: we have single inheritance
+* Polymorphism: method calls lookup the actual method implementation from the class of the object being called
+* Introspection: we can study existing objects at runtime
+
+### How to define a class
+In order to define a class, first create a new header file, e.g. 'point_class.h'.
+The first thing is to name the class.  We name it to 'Point' by defining CLASS macro.
+
+```C
+#define CLASS Point
+```
+
+Next we declare the superclass, properties and method of this class. This is done by
+defining Point__define macro.
+
+```C
+#define Point__define                                         \
+    /* Inherits */                                            \
+    /*none */                                                 \
+                                                              \
+    METHOD(Point,public,int,move_up,(int steps))              \
+    METHOD(Point,public,int,move_left,(int steps))            \
+    METHOD(Point,private,void,ping,(const char* message))     \
+    METHOD(Point,public,void,draw)                            \
+                                                              \
+    VAR(read,int,x)                                           \
+    VAR(read,int,y)                                           \
+    /**/
+
+```
+
+Since this class is the superclass we do not inherit anything. 
+Each method is defined inside `METHOD(class_name,scope,return_type,method_name,method_args)` macro.
+The class name has to be present in each definition (i.g. Point in our example). `scope' can be
+public or private.  `return_type` is the return type of the method, `method_name` is the name of the
+method and method's arguments are given inside parenthisis after it.  If the method
+does not take arguments give only the first four arguments to METHOD.
+
+Properties are defined using VAR macro. The first argument specifies the scope which is private, read, or
+public.  Read means read-only so x and y can only be modified in the implementation of Point's methods.
+
+### How to inherit a class
+
+Next we will define a class `ColoredPoint` in `colored_point_class.h`.  It will inherit the previously
+defined `Point` class. The code is underneath.
+
+```C
+#define CLASS ColoredPoint
+
+#define ColoredPoint__define    \
+    /* Inherits */              \
+    Point__define               \
+                                \
+    OVERLOAD(ColoredPoint,draw) \
+                                \
+    VAR(read,char*,color)       \
+    /**/
+```
+
+We place Point__define as the first declaration to specify the inheritance. Next we declare draw method
+to be overloaded in ColoredPoint. The last line adds a color property which is read-only.
+
+### How to expand the header file of a class
+
+What we have now is just the plain definitions of two classes. In order to compile code we need to
+get the necessary type definitions and forward declarations in C.  And then actually implement the
+class. Typically classess refer to each other so they need forward declarations of each other before
+the types are actually declared. In our simple example this is not actually needed but we will cover it
+here anyway. In order to get the forward declarations we write the following into `classes_declare.h':
+
+```C
+#ifndef __CLASSES_DECLARE_H
+#define __CLASSES_DECLARE_H
+
+#include "point_class.h"
+#include <wondermacros/objects/x/forward_declare.h>
+
+#include "colored_point_class.h"
+#include <wondermacros/objects/x/forward_declare.h>
+
+#endif
+```
+
+Next we create `point.h'.
+
+```C
+#ifndef __POINT_H
+#define __POINT_H
+
+#include "classes_declare.h"
+
+#include "point_class.h"
+#include <wondermacros/objects/x/class_declare.h>
+
+#endif
+```
+
+In the subclass's header in `colored_point.h' we must include `point.h'. These header may include
+other declarations if they are needed in the implementations.
+
+```C
+#ifndef __COLORED_POINT_H
+#define __COLORED_POINT_H
+
+#include "classes_declare.h"
+
+#include "point.h"
+
+#include "colored_point_class.h"
+#include <wondermacros/objects/x/class_declare.h>
+
+#endif
+```
+
+### How to implement a class
+
+In order to implement the class we will first include the header file of the class, i.g. `point.h'.
+The next step is to include the class file `point_class.h' and the X-macro which begins the class
+implementation. The implementation is written between two X-macros. The file must end to another
+X-macro inclusion. See an example bellow.
+
+```C
+#ifndef WDEBUG_EXPAND
+# include <stdio.h>
+# include <wondermacros/compiler/unused.h>
+#endif
+
+
+/* Include class header. */
+#include "point.h"
+
+/* Begin class implementation. */
+#include "point_class.h"
+#include <wondermacros/objects/x/class_start.h>
+
+
+CONSTRUCT(Point) /* self */
+{
+    W_CALL(self,ping)("constructed");
+    W_UNUSED(self);
+}
+
+FINALIZE(Point) /* self */
+{
+    W_UNUSED(self);
+}
+
+METHOD(Point,private,void,ping,(const char* message))
+{
+    printf("Message: %s\n", message);
+}
+
+
+METHOD(Point,public,int,move_up,(int steps))
+{
+    if (self->y - steps < 0) {
+        W_CALL(self,ping)("Hits the wall");
+        self->y = 0;
+        return 1;
+    }
+
+    self->y -= steps;
+    return 0;
+}
+
+METHOD(Point,public,int,move_left,(int steps))
+{
+    self->x -= steps;
+    return 0;
+}
+
+METHOD(Point,public,void,draw)
+{
+    printf("point at %d,%d\n", self->x, self->y);
+}
+
+
+#include <wondermacros/objects/x/class_end.h>
+```
+
+A constructor is provided in a block after `CONSTRUCT` macro, and a destructor in a similar manner after
+`FINALIZE`.  Each method is implemented using `METHOD` macro. Note that the name of the class must be
+repeated in each method. The object in all methods including constructor and destructor can be accessed in `self'.
+A method of an object can be called using `W_CALL' or `W_CALL_VOID'.
+
+### How to call methods of an object
+
+Let's now put it all together and provide a test program. We will also implement `ColoredPoint3D` in a similar way.
+See the full source code of the example in here.
+
+```C
+#include <wondermacros/array/for_each.h>
+
+#ifndef WDEBUG_EXPAND
+#include <wondermacros/meta/declare.h>
+# include <stdio.h>
+# include <wondermacros/objects/api.h>
+#endif
+
+#include "point.h"
+#include "colored_point.h"
+#include "colored_point3d.h"
+
+
+int main()
+{
+    struct Point* array[] = {
+        W_NEW(Point, .x = 2, .y = 7),
+        W_NEW(ColoredPoint, .x = 4, .y = 9, .color = "red"),
+        W_NEW(ColoredPoint3D, .x=5, .y=2, .z=8, .color="green"),
+    };
+
+    for (int i=0; i < 3; i++) {
+        printf("Round: %d\n", i);
+        W_ARRAY_FOR_EACH(struct Point*, point, array) {
+            W_CALL_VOID(point,draw);
+            W_CALL(point,move_up)(2);
+        }
+    }
+}
+```
+
+We created objects using W_NEW macro. It is defined, as well as other generic object macros, in `<wondermacros/objects/api.h>`.
+Its first argument is the class name and after that we can provide the initial
+values including read-only properties.  The syntax is the structure initialization syntax, so
+if property names are omitted the order of values must be the same than in the class definition (not recommended to
+omit).
+
+A method call is invoked by `W_CALL` macro. It takes two arguments, an object and a method name and it expects an
+argument list to follow (e.g. `W_CALL(o,method)(1,2)`.  It then expands to `((o)->klass->method)` and goes to the
+argument list and adds the object as the first argument, e.g. `(o, 1,2)`.  If the method does not take any arguments
+(except the automatically added object itself), use `W_CALL_VOID(o,method);` instead.  Note that `W_CALL` cannot
+be used in a macro definition, e.g. `#define EVAL_AND_ADD(o,context,x) W_CALL(o,eval)(context) + (x)` does not work.
+You have to expand all calls manually in macro definitions, e.g.
+`#define EVAL_AND_ADD(o,context),x) (((o)->klass->eval)(o,context) + (x))`.
+
+It is also possible to create object without initialization.  Use `Point2D_new()` to create `Point2D` object.  If
+you want to clone an existing object `b`, use `Point2D_new_with(b)`.  All these object creations run the constructor.
+
+To finalize and free an object `o`, run `Point2D_free(o)`. It will first run the destructor block and then free the
+object's memory allocation.
+
+### Object introspection
+
+To test if an object is an instance of a specific class, use `W_OBJECT_IS(o,klass)`.  For instance, 
+`W_OBJECT_IS(points[0],Point3D)` would evaluate to 0 in the previous example.
+
+It is possible to study an existing object.  The get the name of the class use `W_OBJECT_CLASS_NAME(o)`.  It gives
+a pointer to a constant string.  The size of an object (with all private properties as well) can be obtained using
+`W_OBJECT_CLASS_SIZE(o)`.
+
+
