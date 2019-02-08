@@ -36,7 +36,7 @@
  *** Arg:         offset    steps to be moved
  *** Description: Use W_ARRAY_MOVE_RIGHT to move items in an array to right by given offset.
  ***/
-##define W_ARRAY_MOVE_RIGHT(array,size,pos,offset)                                  \
+#define W_ARRAY_MOVE_RIGHT(array,size,pos,offset)                                  \
     do {                                                                           \
         int W_ID(elems) = (size);                                                  \
         int W_ID(step) = (offset);                                                 \
