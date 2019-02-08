@@ -272,7 +272,7 @@ int main()
     int v=42;
     double e=2.744;
     double* prices = NULL;
-    int has_prices = 0;
+    int has_prices = 1;
 
     W_DYNAMIC_ARRAY_PUSH(prices, 2.12, 3.14, 6.32, 4.24, 7.44);
 

@@ -5,6 +5,7 @@ all:
 	cd meta && make all
 	cd list && make all
 	cd sorting && make all
+	cd objects && make all
 
 
 clean:
@@ -14,4 +15,6 @@ clean:
 	cd meta && make clean
 	cd list && make clean
 	cd sorting && make clean
+	cd objects && make clean
+
 
