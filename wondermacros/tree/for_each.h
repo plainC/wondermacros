@@ -29,6 +29,7 @@
 #include <wondermacros/meta/declare.h>
 #include <wondermacros/meta/id.h>
 #include <wondermacros/meta/cat.h>
+#include <boost/preprocessor/control/if.hpp>
 #ifndef WDEBUG_EXPAND
 # include <wondermacros/array/dynamic_stack.h>
 #endif
@@ -40,7 +41,7 @@
 
 #ifndef W_TREE_GET_DEGREE
 # include <wondermacros/array/get_size.h>
-# define W_TREE_GET_DEGREE(tree) W_ARRAY_GET_SIZE((tree)->next)
+# define W_TREE_GET_DEGREE(tree) ((int) W_ARRAY_GET_SIZE((tree)->next))
 #endif
 
 #ifndef W_REVERSED
@@ -85,12 +86,13 @@
         while (!W_DYNAMIC_STACK_IS_EMPTY(W_ID(stack)))                         \
             W_BEFORE(4, (node) = W_DYNAMIC_STACK_POP(W_ID(stack)))             \
             W_AFTER(5,                                                         \
-                if (node)                                                      \
+                if (node) {                                                    \
                     BOOST_PP_IF(W_REVERSED,                                    \
                         W_TREE_FOR_EACH_IMMEDIATE_REVERSED,                    \
                         W_TREE_FOR_EACH_IMMEDIATE)                             \
                     (T,W_ID(tmp), node)                                        \
                         W_DYNAMIC_STACK_PUSH(W_ID(stack), W_ID(tmp));          \
+                }                                                              \
             )                                                                  \
     /**/
 
@@ -145,4 +147,3 @@
             /**/
 
 #endif
-
