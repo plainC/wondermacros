@@ -19,7 +19,7 @@ FINALIZE(ColoredPoint)
     W_UNUSED(self);
 }
 
-M_DRAW(ColoredPoint)
+METHOD(ColoredPoint,public,void,draw)
 {
     printf("%s point at %d,%d\n", self->color, self->x, self->y);
 }

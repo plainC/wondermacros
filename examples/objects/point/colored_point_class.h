@@ -1,7 +1,5 @@
 #define CLASS ColoredPoint
 
-#include "Ipoint.h"
-
 #define ColoredPoint__define    \
     /* Inherits */              \
     Point__define               \

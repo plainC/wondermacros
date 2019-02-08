@@ -1,15 +1,13 @@
 #define CLASS Point
 
-#include "Ipoint.h"
-
 #define Point__define  \
     /* Inherits */     \
       /*none */        \
                        \
-    M_MOVE_UP(Point)   \
-    M_MOVE_LEFT(Point) \
-    M_PING(Point)      \
-    M_DRAW(Point)      \
+    METHOD(Point,public,int,move_up,(int steps))              \
+    METHOD(Point,public,int,move_left,(int steps))            \
+    METHOD(Point,private,void,ping,(const char* message))     \
+    METHOD(Point,public,void,draw)                            \
                        \
     VAR(read,int,x)    \
     VAR(read,int,y)    \

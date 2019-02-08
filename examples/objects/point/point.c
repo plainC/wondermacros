@@ -23,12 +23,12 @@ FINALIZE(Point) /* self */
     W_UNUSED(self);
 }
 
-M_PING(Point) /* self, const char* message */
+METHOD(Point,private,void,ping,(const char* message))
 {
     printf("Message: %s\n", message);
 }
 
-M_MOVE_UP(Point) /* self, int steps */
+METHOD(Point,public,int,move_up,(int steps))
 {
     if (self->y - steps < 0) {
         W_CALL(self,ping)("Hits the wall");
@@ -40,13 +40,13 @@ M_MOVE_UP(Point) /* self, int steps */
     return 0;
 }
 
-M_MOVE_LEFT(Point) /* self, int steps */
+METHOD(Point,public,int,move_left,(int steps))
 {
     self->x -= steps;
     return 0;
 }
 
-M_DRAW(Point) /* self */
+METHOD(Point,public,void,draw)
 {
     printf("point at %d,%d\n", self->x, self->y);
 }
