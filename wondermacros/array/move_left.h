@@ -27,6 +27,15 @@
 
 #include <wondermacros/meta/id.h>
 
+/***
+ *** Name:        W_ARRAY_MOVE_LEFT
+ *** Proto:       W_ARRAY_MOVE_LEFT(array,size,pos,offset)
+ *** Arg:         array     a pointer to an array
+ *** Arg:         size      size of the array
+ *** Arg:         pos       start position (index) in the array
+ *** Arg:         offset    steps to be moved
+ *** Description: Use W_ARRAY_MOVE_LEFT to move items in an array to left by given offset.
+ ***/
 #define W_ARRAY_MOVE_LEFT(array,size,pos,offset)                             \
     do {                                                                     \
         int W_ID(elems) = (size);                                            \

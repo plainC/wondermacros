@@ -13,6 +13,16 @@
 ### W_CAT(...)
     Use W_CAT to concatenate its arguments after they have been expanded.
     
+### W_CAT_INNER(...)
+    Use W_CAT_INNER to concatenate its arguments after they have been expanded during W_CAT expansion.
+    This macro is identical to W_CAT but sometimes we need to concatenate another time during W_CAT
+    expansion.
+    
+### W_CAT_OUTER(...)
+    Use W_CAT_OUTER to concatenate its arguments after they have been expanded during W_CAT expansion.
+    This macro is identical to W_CAT but sometimes we need to concatenate another time during W_CAT
+    expansion.
+    
 ### W_DECLARE(labelid, declaration)
     Use W_DECLARE to run the 'declaration' argument before the suffixed
     statement. The argument may have the form of either a C expression

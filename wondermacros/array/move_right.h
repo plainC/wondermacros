@@ -27,7 +27,16 @@
 
 #include <wondermacros/meta/id.h>
 
-#define W_ARRAY_MOVE_RIGHT(array,size,pos,offset)                                  \
+/***
+ *** Name:        W_ARRAY_MOVE_RIGHT
+ *** Proto:       W_ARRAY_MOVE_RIGHT(array,size,pos,offset)
+ *** Arg:         array     a pointer to an array
+ *** Arg:         size      size of the array
+ *** Arg:         pos       start position (index) in the array
+ *** Arg:         offset    steps to be moved
+ *** Description: Use W_ARRAY_MOVE_RIGHT to move items in an array to right by given offset.
+ ***/
+##define W_ARRAY_MOVE_RIGHT(array,size,pos,offset)                                  \
     do {                                                                           \
         int W_ID(elems) = (size);                                                  \
         int W_ID(step) = (offset);                                                 \

@@ -29,7 +29,7 @@
  *** Name:        W_ARRAY_GET_SIZE
  *** Proto:       W_ARRAY_GET_SIZE(a)
  ***
- *** Arg:         a   a static array   A static array
+ *** Arg:         a   A static array
  ***
  *** Description: Use W_ARRAY_GET_SIZE to obtain the allocation size of a static array.
  *** Returns:     The static allocation size of an array.

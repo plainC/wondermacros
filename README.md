@@ -33,6 +33,7 @@ under /usr/include, type 'make install' as root.
 ### [Hash Table](https://github.com/plainC/wondermacros/blob/master/docs/hash_table.md)
 
 ## Others
+### [Generic Array Macros](https://github.com/plainC/wondermacros/blob/master/docs/array.md)
 ### [Compiler Tools](https://github.com/plainC/wondermacros/blob/master/docs/compiler.md)
 ### [Debugging](https://github.com/plainC/wondermacros/blob/master/docs/debug.md)
 ### [Pre-Processor Meta-Programming](https://github.com/plainC/wondermacros/blob/master/docs/meta.md)

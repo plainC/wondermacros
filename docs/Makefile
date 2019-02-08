@@ -1,4 +1,5 @@
 DOCS =                   \
+	array.md         \
 	compiler.md      \
 	char.md          \
 	debug.md         \
@@ -11,6 +12,14 @@ DOCS =                   \
 	sorting.md       \
 
 all: $(DOCS)
+
+array.md: ../wondermacros/array/get_size.h
+	echo "## Generic Array Macros" > array.md
+	cd ../wondermacros/array && ../../tools/api_tool.pl get_size.h >> ../../docs/array.md
+	cd ../wondermacros/array && ../../tools/api_tool.pl for_each.h >> ../../docs/array.md
+	cd ../wondermacros/array && ../../tools/api_tool.pl for_each_reversed.h >> ../../docs/array.md
+	cd ../wondermacros/array && ../../tools/api_tool.pl move_left.h >> ../../docs/array.md
+	cd ../wondermacros/array && ../../tools/api_tool.pl move_righ.h >> ../../docs/array.md
 
 dynamic_array.md: ../wondermacros/array/dynamic_array.h
 	echo "## Dynamic Array" > dynamic_array.md

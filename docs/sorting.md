@@ -1,20 +1,5 @@
 ## Sorting
     
-### W_BUBBLESORT(T,collection)
-    Use W_BUBBLESORT to sort a collection with a random access API.
-    The sorting is done in-place.
-    Uses W_GET(collection,i) to read from collection using index i.
-    Uses W_SET(collection,i,val) to write to collection.
-    Redefine these macros to sort any collection.
-    
-### W_HEAPSORT(T,collection)
-    Use W_HEAPSORT to sort a collection with a random access API.
-    The sorting is done in-place.
-    Uses GET(collection,i) to read from collection using index i.
-    Uses SET(collection,i,val) to write to collection.
-    Uses GET_SIZE(collection,size) to read the collection size to size.
-    Redefine these macros to sort any collection.
-    
 ### W_NUMERIC_CMP_ASC(a,b)
     Use W_NUMERIC_CMP_ASC to compare two values of the same numeric types.
     
