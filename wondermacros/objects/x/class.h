@@ -35,6 +35,10 @@
 # error "Macro CLASS is not defined"
 #endif
 
+#ifndef CLASS_MAX_TAGS
+# define CLASS_MAX_TAGS 4
+#endif
+
 
 #undef _EXPAND_CLASS
 #undef _PRIVATE
@@ -57,6 +61,8 @@ struct W_CAT(CLASS,__class_private) {
 #endif
 
 #ifdef _EXPAND_CLASS
+    int tags[CLASS_MAX_TAGS];
+
     struct {
         const char* name;
         size_t size;

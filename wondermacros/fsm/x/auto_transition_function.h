@@ -9,7 +9,7 @@
         W_CAT(FSM,__,start,__,exit)(self);                   \
         action                                               \
         W_CAT(FSM,__,target,__,entry)(self);                 \
-        self->state = W_CAT(FSM,__,target);                  \
+        self->state = W_CAT(FSM,__state_tag__,target);       \
         return 1;                                            \
     }                                                        \
     return 0;                                                \

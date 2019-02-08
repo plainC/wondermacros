@@ -27,7 +27,7 @@
 
 #include <boost/preprocessor/facilities/overload.hpp>
 #include <wondermacros/meta/id.h>
-#include <wondermacros/array/array_get_size.h>
+#include <wondermacros/array/get_size.h>
 #include <wondermacros/configs/array_collection.h>
 #include <wondermacros/meta/declare.h>
 

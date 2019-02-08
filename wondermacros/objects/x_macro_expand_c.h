@@ -28,16 +28,13 @@
 #include <boost/preprocessor/cat.hpp>
 #include <wondermacros/meta/cat.h>
 
-#ifndef PREFIX
-# define PREFIX
-#endif
 
 #ifndef CLASS
 # error "Macro CLASS is not defined"
 #endif
 
 
-struct W_CAT(PREFIX,CLASS,__private);
+struct W_CAT(CLASS,__private);
 
 
 /* Declare private class struct. */
@@ -51,7 +48,7 @@ struct W_CAT(PREFIX,CLASS,__private);
 #ifdef SUPER
 
 # define METHOD(C,type,name,args,...) \
-    type BOOST_PP_CAT(BOOST_PP_CAT(SUPER,__),name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
+    type BOOST_PP_CAT(BOOST_PP_CAT(SUPER,__),name) (struct BOOST_PP_CAT(CLASS,__private)* self \
         BOOST_PP_REMOVE_PARENS(args));
 
 W_CAT(SUPER,__public_methods)
@@ -60,7 +57,7 @@ W_CAT(SUPER,__public_methods)
 #endif
 
 #define METHOD(C,type,name,args,...) \
-    type BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
+    type BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name) (struct BOOST_PP_CAT(CLASS,__private)* self \
         BOOST_PP_REMOVE_PARENS(args));
 W_CAT(CLASS,__public_methods)
 #if BOOST_PP_NOT(W_CAT(CLASS,__is_abstract))
@@ -71,14 +68,14 @@ W_CAT(CLASS,__private_methods)
 
 #ifdef SUPER
 # define METHOD(C,type,name,args,...) \
-    type BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
+    type BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__),name) (struct BOOST_PP_CAT(CLASS,__private)* self \
         BOOST_PP_REMOVE_PARENS(args));
     W_CAT(CLASS,__override_methods)
 # undef METHOD
 #endif
 
 
-void W_CAT(CLASS,__,free)(struct W_CAT(PREFIX,CLASS)* self);
+void W_CAT(CLASS,__,free)(struct CLASS* self);
 
 
 /* Generate 'get method offset' function. */
@@ -86,7 +83,7 @@ int
 W_CAT(CLASS,___get_method_offset)(const char* name)
 {
     for (int i=0; i < W_CAT(CLASS,_NBR_OF_METHODS); i++)
-        if (strcmp(W_CAT(PREFIX,CLASS,__class_instance).meta.method[i], name) == 0)
+        if (strcmp(W_CAT(CLASS,__class_instance).meta.method[i], name) == 0)
             return i*sizeof(void*);
 
     return -1;
@@ -105,7 +102,7 @@ W_CAT(CLASS,___get_property_offset)(const char* name)
 {
     int size = 0;
     for (int i=0; i < W_CAT(CLASS,_NBR_OF_PROPERTIES); size += W_CAT(CLASS,___property_size)[i++])
-        if (strcmp(W_CAT(PREFIX,CLASS,__class_instance).meta.property[i], name) == 0)
+        if (strcmp(W_CAT(CLASS,__class_instance).meta.property[i], name) == 0)
             return size;
 
     return -1;
@@ -115,32 +112,37 @@ W_CAT(CLASS,___get_property_offset)(const char* name)
 
 #if BOOST_PP_NOT(BOOST_PP_CAT(CLASS,__is_abstract))
 
-struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance) = {
+struct W_CAT(CLASS,__class) W_CAT(CLASS,__class_instance) = {
     .meta.name = BOOST_PP_STRINGIZE(CLASS),
-    .meta.size = sizeof(struct W_CAT(PREFIX,CLASS,__private)),
+    .meta.size = sizeof(struct W_CAT(CLASS,__private)),
     .meta.method = W_CAT(CLASS,___methods),
     .meta.property = W_CAT(CLASS,___properties),
     .meta.get_method_offset = W_CAT(CLASS,___get_method_offset),
     .meta.get_property_offset = W_CAT(CLASS,___get_property_offset),
-# define METHOD(C,type,name,args,...) \
-    .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(BOOST_PP_CAT(C,__),name),
+#define METHOD(C,type,name,...) \
+    .name = (BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(M__,C),__),name)) BOOST_PP_CAT(BOOST_PP_CAT(C,__),name),
+#define BEGIN(I)
+#define END
+
     W_CAT(CLASS,__override_methods)
 # undef METHOD
+#undef BEGIN
+#undef END
 
-#endif
 
 
 # define METHOD(C,type,name,args,...) \
-    .name = (type (*)(struct BOOST_PP_CAT(PREFIX,CLASS)* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(BOOST_PP_CAT(C,__),name),
+    .name = (type (*)(struct CLASS* self BOOST_PP_REMOVE_PARENS(args))) BOOST_PP_CAT(BOOST_PP_CAT(C,__),name),
 
-    W_CAT(CLASS,__public_methods)
+   // W_CAT(CLASS,__public_methods)
 #if BOOST_PP_NOT(W_CAT(CLASS,__is_abstract))
-    W_CAT(CLASS,__private_methods)
+   // W_CAT(CLASS,__private_methods)
 #endif
 
    .free = W_CAT(CLASS,_free),
 };
 # undef METHOD
+#endif
 
 
 
@@ -171,46 +173,46 @@ const char* W_CAT(CLASS,___methods)[] = {
 
 /* Define method macros to provide signatures. */
 #define METHOD(C,type,name,args,...) \
-type W_CAT(CLASS,__,name) (struct W_CAT(PREFIX,CLASS,__private)* self BOOST_PP_REMOVE_PARENS(args))
+type W_CAT(CLASS,__,name) (struct W_CAT(CLASS,__private)* self BOOST_PP_REMOVE_PARENS(args))
 
 
 /* Constructor. */
 #define CONSTRUCT                                                                                      \
-void W_CAT(CLASS,___construct) (struct W_CAT(PREFIX,CLASS,__private)* self);                           \
-struct W_CAT(PREFIX,CLASS)*                                                                            \
-W_CAT(PREFIX,CLASS,_new)()                                                                             \
+void W_CAT(CLASS,___construct) (struct W_CAT(CLASS,__private)* self);                           \
+struct CLASS*                                                                            \
+W_CAT(CLASS,_new)()                                                                             \
 {                                                                                                      \
-    struct W_CAT(PREFIX,CLASS,__private)* self = malloc(sizeof(struct W_CAT(PREFIX,CLASS,__private))); \
-    bzero(self, sizeof(struct W_CAT(PREFIX,CLASS,__private)));                                         \
-    self->klass = (struct W_CAT(PREFIX,CLASS,__class_private)*)&W_CAT(PREFIX,CLASS,__class_instance);  \
+    struct W_CAT(CLASS,__private)* self = malloc(sizeof(struct W_CAT(CLASS,__private))); \
+    bzero(self, sizeof(struct W_CAT(CLASS,__private)));                                         \
+    self->klass = (struct W_CAT(CLASS,__class_private)*)&W_CAT(CLASS,__class_instance);  \
     W_CAT(CLASS,___construct)(self);                                                                   \
-    return (struct W_CAT(PREFIX,CLASS)*) self;                                                         \
+    return (struct CLASS*) self;                                                         \
 }                                                                                                      \
                                                                                                        \
-struct W_CAT(PREFIX,CLASS)*                                                                            \
-W_CAT(PREFIX,CLASS,_new_with)(const struct W_CAT(PREFIX,CLASS,__private)* clone)                       \
+struct CLASS*                                                                            \
+W_CAT(CLASS,_new_with)(const struct W_CAT(CLASS,__private)* clone)                       \
 {                                                                                                      \
-    struct W_CAT(PREFIX,CLASS,__private)* self = malloc(sizeof(struct W_CAT(PREFIX,CLASS,__private))); \
+    struct W_CAT(CLASS,__private)* self = malloc(sizeof(struct W_CAT(CLASS,__private))); \
     *self = *clone;                                                                                    \
-    self->klass = (struct W_CAT(PREFIX,CLASS,__class_private)*)&W_CAT(PREFIX,CLASS,__class_instance);  \
+    self->klass = (struct W_CAT(CLASS,__class_private)*)&W_CAT(CLASS,__class_instance);  \
     W_CAT(CLASS,___construct)(self);                                                                   \
-    return (struct W_CAT(PREFIX,CLASS)*) self;                                                         \
+    return (struct CLASS*) self;                                                         \
 }                                                                                                      \
                                                                                                        \
-void W_CAT(CLASS,___construct) (struct W_CAT(PREFIX,CLASS,__private)* self)
+void W_CAT(CLASS,___construct) (struct W_CAT(CLASS,__private)* self)
+
 
 
 
 /* Destructor. */
 #define FINALIZE                                                                                       \
-void W_CAT(CLASS,___finalize) (struct W_CAT(PREFIX,CLASS,__private)* self);                            \
-void W_CAT(CLASS,_free)(struct W_CAT(PREFIX,CLASS)* self)                                       \
+void W_CAT(CLASS,___finalize) (struct W_CAT(CLASS,__private)* self);                            \
+void W_CAT(CLASS,_free)(struct CLASS* self)                                       \
 {                                                                                                      \
-    W_CAT(CLASS,___finalize)((struct W_CAT(PREFIX,CLASS,__private)*) self);                            \
+    W_CAT(CLASS,___finalize)((struct W_CAT(CLASS,__private)*) self);                            \
     free(self);                                                                                        \
 }                                                                                                      \
                                                                                                        \
-void W_CAT(CLASS,___finalize) (struct W_CAT(PREFIX,CLASS,__private)* self)
-
+void W_CAT(CLASS,___finalize) (struct W_CAT(CLASS,__private)* self)
 
 

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <wondermacros/array/array_get_size.h>
+#include <wondermacros/array/get_size.h>
 
 int main()
 {

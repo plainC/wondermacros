@@ -26,16 +26,12 @@
 
 
 #ifdef X_PRIVATE
-# define METHOD(C,type,name,args,...) \
-    type (*name) (struct BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,CLASS),__private)* self \
-        BOOST_PP_REMOVE_PARENS(args));
 struct W_CAT(PREFIX,CLASS,__class_private) {
 #else
-# define METHOD(C,type,name,args,...) \
-    type (*name) (struct BOOST_PP_CAT(PREFIX,CLASS)* self \
-        BOOST_PP_REMOVE_PARENS(args));
 struct W_CAT(PREFIX,CLASS,__class) {
 #endif
+
+
     void* start[0];
     struct {
         const char* name;
@@ -46,14 +42,28 @@ struct W_CAT(PREFIX,CLASS,__class) {
         int (*get_property_offset)(const char* name);
     } meta;
     void* vftb[0];
-    W_CAT(CLASS,__inherited_interfaces)
 
-    W_CAT(CLASS,__public_methods)
+
+/* Expand interfaces. */
+#define METHOD(C,type,...) BOOST_PP_OVERLOAD(_METHOD_,__VA_ARGS__)(C,type,__VA_ARGS__)
+#define _METHOD_1(C,type,name) type (*name) (struct C* self);
+#define _METHOD_2(C,type,name,args) type (*name) (struct C* self, BOOST_PP_REMOVE_PARENS(args));
+
+#define BEGIN(I)
+#define END
+O_CAT(CLASS,__interfaces)(CLASS)
+#undef METHOD
+#undef _METHOD_1
+#undef _METHOD_2
+#undef BEGIN
+#undef END
+
 #ifdef X_PRIVATE
 # if BOOST_PP_NOT(W_CAT(CLASS,__is_abstract))
     W_CAT(CLASS,__private_methods)
 # endif
 #endif
+
     void (*free)(struct W_CAT(PREFIX,CLASS)* self);
 };
 #undef METHOD

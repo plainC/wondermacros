@@ -6,27 +6,10 @@
 static inline int                                                     \
 W_CAT(FSM,__,name,__on_event)(W_FSM_T* self, W_FSM_EVENT_T* event)    \
 {                                                                     \
-    int (*super)(struct FSM* self, W_FSM_EVENT_T* event) =            \
-        W_CAT(FSM,__,name,__meta_super);                              \
-    switch (event->tag) {                                             \
-    case W_PP_CHARSEQ_TO_UINT(FSM_EVENT_TYPE,(_)(n)(t)(R)):           \
-        W_CAT(FSM,__,name,__entry)(self);                             \
-        return 1;                                                     \
-    case W_PP_CHARSEQ_TO_UINT(FSM_EVENT_TYPE,(_)(x)(i)(T)):           \
-        W_CAT(FSM,__,name,__exit)(self);                              \
-        return 1;                                                     \
-    case W_PP_CHARSEQ_TO_UINT(FSM_EVENT_TYPE,(_)(x)(U)(p)):           \
-        W_CAT(FSM,__,name,__exit)(self);                              \
-        self->state = super;                                          \
-        return 1;                                                     \
-    case W_PP_CHARSEQ_TO_UINT(FSM_EVENT_TYPE,(_)(_)(U)(p)):           \
-        self->state = super;                                          \
-        return 1;                                                     \
+    switch (event->tag) {
 
 #define END                                                           \
     }                                                                 \
-    if (super)                                                        \
-        super(self, event);                                           \
 }
     /**/
 #define STATE(s) W_CAT_OUTER(s,__define)

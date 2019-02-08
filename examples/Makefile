@@ -3,6 +3,7 @@ all:
 	cd char && make all
 	cd math && make all
 	cd meta && make all
+	cd list && make all
 	cd sorting && make all
 
 
@@ -11,5 +12,6 @@ clean:
 	cd char && make clean
 	cd math && make clean
 	cd meta && make clean
+	cd list && make clean
 	cd sorting && make clean
 

@@ -35,6 +35,11 @@
 # error "Macro CLASS is not defined"
 #endif
 
+#ifndef TAGS
+# define TAGS 0
+#endif
+
+
 #ifdef W_CLASS_DECLARE
 extern struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance);
 #endif
@@ -42,6 +47,7 @@ extern struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance);
 #ifdef W_CLASS_GENERATE
 struct W_CAT(CLASS,__private);
 struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
+    .tags = { TAGS },
 
     .meta.name = BOOST_PP_STRINGIZE(CLASS),
     .meta.size = sizeof(struct W_CAT_INNER(CLASS,__private)),
@@ -65,4 +71,7 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
 };
 
 void* W_CAT(CLASS,__class_instance_ptr) = &W_CAT(CLASS,__class_instance);
+
+#undef TAGS
+
 #endif

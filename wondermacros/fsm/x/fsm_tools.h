@@ -2,7 +2,7 @@
 #define __FSM_TOOLS_H
 
 #define W_ON_EVENT(fsm,event) \
-    (fsm)->state(fsm,event)
+    W_CAT(FSM,__states)[(fsm)->state](fsm,event)
 
 
 #define FSM_GO_NEXT_STATE(self,...)                         \
@@ -19,7 +19,7 @@
 #define DO_FSM_GO_NEXT_STATE(self,exit_start,target,action)    \
     W_WRAP(FSM_GO_NEXT_STATE,                                  \
         exit_start                                             \
-        self->state = W_CAT(FSM,__,target);                    \
+        self->state = W_CAT(FSM,__state_tag__,target);         \
         { action }                                             \
         W_CAT(FSM,__,target,__entry)(self);                    \
         if (W_CAT(FSM,__,target,__meta_auto_transition))       \

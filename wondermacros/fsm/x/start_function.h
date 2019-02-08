@@ -5,6 +5,10 @@ void W_CAT(FSM,_start)(struct FSM* self)
 ;
 #else
 {
+    if (self->meta == NULL)
+        W_CAT(FSM,__initialize)(self);
+
+
 #define STATE(Name) W_CAT_OUTER(Name,__define)
 
 #define INITIAL(State,action)               \

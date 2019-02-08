@@ -1,3 +1,6 @@
+#ifndef __W_WRAP_H
+#define __W_WRAP_H
+
 /* (C) Copyright 2018 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
@@ -21,9 +24,6 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-#ifndef __W_WRAP_H
-#define __W_WRAP_H
 
 #include <boost/preprocessor/stringize.hpp>
 

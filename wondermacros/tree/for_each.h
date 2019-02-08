@@ -39,7 +39,7 @@
 #endif
 
 #ifndef W_TREE_GET_DEGREE
-# include <wondermacros/array/array_get_size.h>
+# include <wondermacros/array/get_size.h>
 # define W_TREE_GET_DEGREE(tree) W_ARRAY_GET_SIZE((tree)->next)
 #endif
 

@@ -26,30 +26,27 @@
 #include <boost/preprocessor/cat.hpp>
 #include <wondermacros/meta/cat.h>
 
-
-#ifndef PREFIX
-# define PREFIX
-#endif
+#define O_CAT(a,b) _O_CAT(a,b)
+#define _O_CAT(a,b) a ## b
 
 #ifndef CLASS
 # error "Macro CLASS is not defined"
 #endif
 
-/* Count the number of methods in the class. */
-enum W_CAT(CLASS,__,method_list) {
-# define METHOD(C,type,name,args,...) BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__method__),name),
-    W_CAT(CLASS,__inherited_interfaces)
-    W_CAT(CLASS,__public_methods)
-    W_CAT(CLASS,__method__free),
-# undef METHOD
-    W_CAT(CLASS,_NBR_OF_METHODS)
-};
-enum W_CAT(CLASS,__,property_list) {
-# define PROPERTY(type,name,...) BOOST_PP_CAT(BOOST_PP_CAT(CLASS,__property__),name),
-    W_CAT(CLASS,__public_properties)
-# undef PROPERTY
-    W_CAT(CLASS,_NBR_OF_PROPERTIES)
-};
+
+/* Expand method types. */
+#define METHOD(C,type,...) BOOST_PP_OVERLOAD(_METHOD_,__VA_ARGS__)(C,type,__VA_ARGS__)
+#define _METHOD_1(C,type,name) typedef type (*W_CAT(M__,C,__,name)) (struct C* self);
+#define _METHOD_2(C,type,name,args) typedef type (*W_CAT(M__,C,__,name)) (struct C* self, BOOST_PP_REMOVE_PARENS(args));
+#define BEGIN(_)
+#define END
+O_CAT(CLASS,__interfaces)
+#undef METHOD
+#undef _METHOD_1
+#undef _METHOD_2
+#undef BEGIN
+#undef END
+
 
 
 /* Declare public class struct. */
@@ -61,8 +58,8 @@ enum W_CAT(CLASS,__,property_list) {
 /* Declare instance struct. */
 #define PROPERTY(type,name,...) type name;
 
-struct W_CAT(PREFIX,CLASS) {
-    struct W_CAT(PREFIX,CLASS,__class)* klass;
+struct CLASS {
+    struct W_CAT(CLASS,__class)* klass;
 
     W_CAT(CLASS,__public_properties)
 };
@@ -73,8 +70,8 @@ struct W_CAT(PREFIX,CLASS) {
 /* Declare private instance struct. */
 #define PROPERTY(type,name,...) type name;
 
-struct W_CAT(PREFIX,CLASS,__private) {
-    struct W_CAT(PREFIX,CLASS,__class_private)* klass;
+struct W_CAT(CLASS,__private) {
+    struct W_CAT(CLASS,__class_private)* klass;
 
     W_CAT(CLASS,__public_properties)
 #if BOOST_PP_NOT(W_CAT(CLASS,__is_abstract))
@@ -86,10 +83,10 @@ struct W_CAT(PREFIX,CLASS,__private) {
 
 
 /* Forward declare class struct instance. */
-extern struct W_CAT(PREFIX,CLASS,__class) W_CAT(PREFIX,CLASS,__class_instance);
+extern struct W_CAT(CLASS,__class) W_CAT(CLASS,__class_instance);
 
 /* Forward declare constructor and destructor. */
-struct W_CAT(PREFIX,CLASS)* W_CAT(PREFIX,CLASS,_new)();
-struct W_CAT(PREFIX,CLASS)* W_CAT(PREFIX,CLASS,_new_with)(const struct W_CAT(PREFIX,CLASS,__private)* clone);
-void W_CAT(PREFIX,CLASS,_free)(struct W_CAT(PREFIX,CLASS)* self);
+struct CLASS* W_CAT(CLASS,_new)();
+struct CLASS* W_CAT(CLASS,_new_with)(const struct W_CAT(CLASS,__private)* clone);
+void W_CAT(CLASS,_free)(struct CLASS* self);
 

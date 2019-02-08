@@ -32,13 +32,16 @@
 #include <boost/preprocessor/logical/and.hpp>
 #include <boost/preprocessor/comparison/equal.hpp>
 
+#include <wondermacros/meta/cat.h>
 #include <wondermacros/meta/id.h>
 #include <wondermacros/math/min.h>
-#include <wondermacros/meta/pp_min.h>
+#include <wondermacros/pp/min.h>
 #include <wondermacros/pp_char/to_int.h>
 #include <wondermacros/pp_char/to_char.h>
 
-#include <string.h>
+#ifndef WDEBUG_EXPAND
+# include <string.h>
+#endif
 
 
 /***

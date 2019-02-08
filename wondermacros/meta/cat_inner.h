@@ -1,3 +1,6 @@
+#ifndef _W_CAT_INNER__H
+#define _W_CAT_INNER__H
+
 /* (C) Copyright 2019 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
@@ -21,9 +24,6 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-#ifndef _W_CAT_INNER__H
-#define _W_CAT_INNER__H
 
 #include <boost/preprocessor/facilities/overload.hpp>
 
