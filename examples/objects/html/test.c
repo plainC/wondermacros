@@ -30,15 +30,6 @@
 
 int main()
 {
-    char* script =
-        "var x, y, z;"
-        "x = 1;"
-        "y = 8;"
-        "z = x + y;"
-        ""
-        "document.getElementById(\"demo\").innerHTML ="
-        "\"The value of z is \" + z + \".\";";
-
     int v=42;
     double e=2.744;
     double* prices = NULL;
