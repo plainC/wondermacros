@@ -35,11 +35,10 @@
  *** Name:        W_ARRAY_FOR_EACH_REVERSED
  *** Proto:       W_ARRAY_FOR_EACH_REVERSED(T,elem,array[,size])
  ***
- *** Arg:         T      a type name        type name of array elements
- *** Arg:         elem   an identifier      a free identifier name
- *** Arg:         array  an array           a pointer to an array
- *** Arg:         size   nbr of elements    number of elements in the array (if
- ***                                        omitted static size obtained using sizeof is used)
+ *** Arg:         T      type name of array elements
+ *** Arg:         elem   a free identifier name
+ *** Arg:         array  a pointer to an array
+ *** Arg:         size   number of elements in the array (if omitted static size obtained using sizeof is used)
  ***
  *** Description: Use W_ARRAY_FOR_EACH_REVERSED to iterate all elements of an array in reversed order.
  *** Note:        The index of the element is stored in 'elem ## _ix'.

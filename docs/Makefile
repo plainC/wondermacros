@@ -19,7 +19,7 @@ array.md: ../wondermacros/array/get_size.h
 	cd ../wondermacros/array && ../../tools/api_tool.pl for_each.h >> ../../docs/array.md
 	cd ../wondermacros/array && ../../tools/api_tool.pl for_each_reversed.h >> ../../docs/array.md
 	cd ../wondermacros/array && ../../tools/api_tool.pl move_left.h >> ../../docs/array.md
-	cd ../wondermacros/array && ../../tools/api_tool.pl move_righ.h >> ../../docs/array.md
+	cd ../wondermacros/array && ../../tools/api_tool.pl move_right.h >> ../../docs/array.md
 
 dynamic_array.md: ../wondermacros/array/dynamic_array.h
 	echo "## Dynamic Array" > dynamic_array.md
