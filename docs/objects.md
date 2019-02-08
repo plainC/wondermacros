@@ -253,19 +253,8 @@ be used in a macro definition, e.g. `#define EVAL_AND_ADD(o,context,x) W_CALL(o,
 You have to expand all calls manually in macro definitions, e.g.
 `#define EVAL_AND_ADD(o,context),x) (((o)->klass->eval)(o,context) + (x))`.
 
-It is also possible to create object without initialization.  Use `Point2D_new()` to create `Point2D` object.  If
-you want to clone an existing object `b`, use `Point2D_new_with(b)`.  All these object creations run the constructor.
+It is also possible to create object without initialization.  Use `ColoredPoint_new()` to create `ColoredPoint` object.  If
+you want to clone an existing object `b`, use `ColoredPoint_new_with(b)`.  All these object creations run the constructor.
 
-To finalize and free an object `o`, run `Point2D_free(o)`. It will first run the destructor block and then free the
+To finalize and free an object `o`, run `ColoredPoint_free(o)`. It will first run the destructor block and then free the
 object's memory allocation.
-
-### Object introspection
-
-To test if an object is an instance of a specific class, use `W_OBJECT_IS(o,klass)`.  For instance, 
-`W_OBJECT_IS(points[0],Point3D)` would evaluate to 0 in the previous example.
-
-It is possible to study an existing object.  The get the name of the class use `W_OBJECT_CLASS_NAME(o)`.  It gives
-a pointer to a constant string.  The size of an object (with all private properties as well) can be obtained using
-`W_OBJECT_CLASS_SIZE(o)`.
-
-
