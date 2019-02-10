@@ -46,3 +46,4 @@ under /usr/include, type 'make install' as root.
 ### [Pre-Processor Character and String Tools](https://github.com/plainC/wondermacros/blob/master/docs/pp_char.md)
 ### [Mathematics](https://github.com/plainC/wondermacros/blob/master/docs/math.md)
 ### [Sorting](https://github.com/plainC/wondermacros/blob/master/docs/sorting.md)
+### [String Handling](https://github.com/plainC/wondermacros/blob/master/docs/string.md)
