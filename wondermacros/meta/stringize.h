@@ -52,5 +52,15 @@
 #define _W_STRINGIZE_15(_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,_11,_12,_13,_14,_15)  # _1 # _2 # _3 # _4 # _5 # _6 # _7 # _8 # _9 # _10 # _11 # _12 # _13 # _14 # _15
 #define _W_STRINGIZE_16(_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,_11,_12,_13,_14,_15,_16)  # _1 # _2 # _3 # _4 # _5 # _6 # _7 # _8 # _9 # _10 # _11 # _12 # _13 # _14 # _15 # _16
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_STRINGIZE,
+    W_TEST_ASSERT(strcmp(W_STRINGIZE(aa,bb,cc),"aabbcc") == 0, "String mismatch");
+)
+
 #endif
 

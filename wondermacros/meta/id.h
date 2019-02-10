@@ -39,5 +39,16 @@
 #define W_ID(id)                          \
     BOOST_PP_CAT(W_ID_ ## id, __LINE__)
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_ID,
+    int W_ID(i) = 42;
+    W_TEST_ASSERT(W_ID(i) == 42, "Value mismatch");
+)
+
 #endif
 
