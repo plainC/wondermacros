@@ -1,4 +1,4 @@
-/* (C) Copyright 2018 J.P. Iivonen <wondermacros@yahoo.com>
+/* (C) is Copyright 2019 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -22,32 +22,22 @@
  * SOFTWARE.
  */
 
-#ifndef __W_ARRAY_GET_SIZE_H
-#define __W_ARRAY_GET_SIZE_H
+#ifndef __W_TEST_H
+#define __W_TEST_H
 
-/***
- *** Name:        W_ARRAY_GET_SIZE
- *** Proto:       W_ARRAY_GET_SIZE(a)
- ***
- *** Arg:         a   A static array
- ***
- *** Description: Use W_ARRAY_GET_SIZE to obtain the allocation size of a static array.
- *** Returns:     The static allocation size of an array.
- *** Example:     'char foo[] = { 'a', 'b', 'c' }; printf("%d", W_ARRAY_GET_SIZE(foo));' prints '3'.
- ***/
-#define W_ARRAY_GET_SIZE(a) \
-    ((sizeof(a) / sizeof((a)[0])))
+#define W_TEST(name,...)                      \
+    {                                         \
+        printf("[%s:%s] ", # name, __FILE__); \
+        __VA_ARGS__                           \
+        printf("Ok.\n");                      \
+    }
 
-
-/*Unit Test*/
-
-#ifndef W_TEST
-# define W_TEST(...)
-#endif
-
-W_TEST(W_ARRAY_GET_SIZE,
-    int array[] = { 1, 2, 3, 4, 5 };
-    W_TEST_ASSERT(W_ARRAY_GET_SIZE(array) == 5, "Array size");
-)
+#define W_TEST_ASSERT(cond,...)             \
+    if (cond) {                             \
+    } else {                                \
+        printf(__VA_ARGS__);                \
+        return 1;                           \
+    }
 
 #endif
+

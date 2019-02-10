@@ -219,4 +219,24 @@
     for (void* W_ID(a) = (array); W_ID(a); W_ID(a) = NULL)                             \
         W_ARRAY_FOR_EACH(T,elem,array,W_DYNAMIC_ARRAY_SIZE(array))
 
+
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_DYNAMIC_ARRAY_PUSH,
+    int* array = NULL;
+    W_DYNAMIC_ARRAY_PUSH(array, 1, 2);
+    W_TEST_ASSERT(W_DYNAMIC_ARRAY_GET_SIZE(array) == 2, "Array size mismatch");
+)
+
+W_TEST(W_DYNAMIC_ARRAY_STEAL_LAST,
+    int* array = NULL;
+    W_DYNAMIC_ARRAY_PUSH(array, 1, 2, 3, 4);
+    W_TEST_ASSERT(W_DYNAMIC_ARRAY_STEAL_LAST(array) == 4, "Steal last failed");
+    W_TEST_ASSERT(W_DYNAMIC_ARRAY_GET_SIZE(array) == 3, "Array size mismatch");
+)
+
 #endif
