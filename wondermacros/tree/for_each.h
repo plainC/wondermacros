@@ -73,6 +73,15 @@
             ;                                                                  \
         else
 
+/***
+ *** Name:        W_TREE_FOR_EACH_PREORDER
+ *** Proto:       W_TREE_FOR_EACH_PREORDER(T,node,self)
+ *** Arg:         T          type name of tree nodes
+ *** Arg:         node       name of the free variable
+ *** Arg:         self       a tree
+ *** Description: Use W_TREE_FOR_EACH_PREORDER to traverse a tree structure iteratively in preorder.
+ *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
+ ***/
 #define W_TREE_FOR_EACH_PREORDER(T,node,self)                                  \
     W_DECLARE(1, T** W_ID(stack) = NULL)                                       \
     W_DECLARE(2, T* node)                                                      \
@@ -97,6 +106,15 @@
     /**/
 
 
+/***
+ *** Name:        W_TREE_FOR_EACH_POSTORDER
+ *** Proto:       W_TREE_FOR_EACH_POSTORDER(T,node,self)
+ *** Arg:         T          type name of tree nodes
+ *** Arg:         node       name of the free variable
+ *** Arg:         self       a tree
+ *** Description: Use W_TREE_FOR_EACH_POSTORDER to traverse a tree structure iteratively in postorder.
+ *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
+ ***/
 #define W_TREE_FOR_EACH_POSTORDER(T,Child,self)                                                \
     W_DECLARE(1, T *Child)                                                                     \
     W_DECLARE(11, T* W_ID(node) = (self))                                                      \
