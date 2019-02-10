@@ -36,7 +36,7 @@
  ***
  *** Description: Use W_DYNAMIC_STACK_SIZE to get the number of elements in the stack.
  ***/
-#define W_DYNAMIC_STACK_SIZE(stack) W_DYNAMIC_ARRAY_SIZE(stack)
+#define W_DYNAMIC_STACK_SIZE(stack) W_DYNAMIC_ARRAY_GET_SIZE(stack)
 
 /***
  *** Name:        W_DYNAMIC_STACK_PEEK
@@ -125,5 +125,39 @@
  *** Description: Use W_DYNAMIC_STACK_PUSH to push values to a dynamic stack.
  ***/
 #define W_DYNAMIC_STACK_PUSH(stack,...) W_DYNAMIC_ARRAY_PUSH(stack,__VA_ARGS__)
+
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_DYNAMIC_STACK_PUSH,
+    int* stack = NULL;
+    W_DYNAMIC_STACK_PUSH(stack, 1, 2);
+    W_TEST_ASSERT(W_DYNAMIC_STACK_SIZE(stack) == 2, "Stack size mismatch");
+    W_DYNAMIC_STACK_FREE(stack);
+)
+
+W_TEST(W_DYNAMIC_STACK_POP,
+    int* stack = NULL;
+    W_DYNAMIC_STACK_PUSH(stack, 1, 2, 3);
+    W_TEST_ASSERT(W_DYNAMIC_STACK_POP(stack) == 3, "Expecting 3");
+    W_TEST_ASSERT(W_DYNAMIC_STACK_POP(stack) == 2, "Expecting 2");
+    W_TEST_ASSERT(W_DYNAMIC_STACK_POP(stack) == 1, "Expecting 1");
+)
+
+W_TEST(W_DYNAMIC_STACK_IS_EMPTY,
+    int* stack = NULL;
+    W_TEST_ASSERT(W_DYNAMIC_STACK_IS_EMPTY(stack), "Expecting stack to be empty");
+    W_DYNAMIC_STACK_PUSH(stack, 1, 2, 3);
+    W_TEST_ASSERT(!W_DYNAMIC_STACK_IS_EMPTY(stack), "Expecting stack not to be empty");
+    W_TEST_ASSERT(W_DYNAMIC_STACK_POP(stack) == 3, "Expecting 3");
+    W_TEST_ASSERT(!W_DYNAMIC_STACK_IS_EMPTY(stack), "Expecting stack not to be empty");
+    W_TEST_ASSERT(W_DYNAMIC_STACK_POP(stack) == 2, "Expecting 2");
+    W_TEST_ASSERT(!W_DYNAMIC_STACK_IS_EMPTY(stack), "Expecting stack not to be empty");
+    W_TEST_ASSERT(W_DYNAMIC_STACK_POP(stack) == 1, "Expecting 1");
+    W_TEST_ASSERT(W_DYNAMIC_STACK_IS_EMPTY(stack), "Expecting stack to be empty");
+)
 
 #endif
