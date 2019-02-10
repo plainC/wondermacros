@@ -43,6 +43,6 @@ under /usr/include, type 'make install' as root.
 ### [Compiler Tools](https://github.com/plainC/wondermacros/blob/master/docs/compiler.md)
 ### [Debugging](https://github.com/plainC/wondermacros/blob/master/docs/debug.md)
 ### [Pre-Processor Meta-Programming](https://github.com/plainC/wondermacros/blob/master/docs/meta.md)
+### [Pre-Processor Character and String Tools](https://github.com/plainC/wondermacros/blob/master/docs/pp_char.md)
 ### [Mathematics](https://github.com/plainC/wondermacros/blob/master/docs/math.md)
 ### [Sorting](https://github.com/plainC/wondermacros/blob/master/docs/sorting.md)
-### Strings and Characters
