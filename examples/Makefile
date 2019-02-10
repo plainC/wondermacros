@@ -6,6 +6,7 @@ all:
 	cd list && make all
 	cd sorting && make all
 	cd objects && make all
+	cd x && make all
 
 
 clean:
@@ -16,5 +17,6 @@ clean:
 	cd list && make clean
 	cd sorting && make clean
 	cd objects && make clean
+	cd x && make clean
 
 

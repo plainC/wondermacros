@@ -23,8 +23,14 @@
  */
 
 
+#include <wondermacros/meta/cat.h>
+#include <wondermacros/meta/cat_inner.h>
+
 #ifndef W_NAME
-# error "enum's name must be specified in W_NAME"
+# define W_NAME
+# ifndef W_PREFIX
+#  define W_PREFIX
+# endif
 #endif
 
 #ifndef W_XFILE
