@@ -1,6 +1,5 @@
-XMACRO(blue,490)
-XMACRO(green,560)
-XMACRO(red,700)
-XMACRO(violet,450)
-XMACRO(yellow,590)
-
+XMACRO(blue,490,cold)
+XMACRO(green,560,warm)
+XMACRO(red,700,warm)
+XMACRO(violet,450,cold)
+XMACRO(yellow,590,warm)
