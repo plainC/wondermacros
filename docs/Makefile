@@ -7,9 +7,15 @@ DOCS =                   \
 	dynamic_array.md \
 	dynamic_stack.md \
 	hash_table.md    \
+	dlist.md         \
+	cslist.md        \
+	slist.md         \
 	math.md          \
+	pp_char.md       \
 	meta.md          \
 	sorting.md       \
+	string.md        \
+	tree.md          \
 
 all: $(DOCS)
 
@@ -24,6 +30,22 @@ array.md: ../wondermacros/array/get_size.h
 dynamic_array.md: ../wondermacros/array/dynamic_array.h
 	echo "## Dynamic Array" > dynamic_array.md
 	cd ../wondermacros/array && ../../tools/api_tool.pl dynamic_array.h >> ../../docs/dynamic_array.md
+
+slist.md: ../wondermacros/list/slist.h
+	echo "## Singly-Linked List" > slist.md
+	cd ../wondermacros/list && ../../tools/api_tool.pl slist.h >> ../../docs/slist.md
+
+dlist.md: ../wondermacros/list/dlist.h
+	echo "## Doubly-Linked List" > dlist.md
+	cd ../wondermacros/list && ../../tools/api_tool.pl dlist.h >> ../../docs/dlist.md
+
+cslist.md: ../wondermacros/list/cslist.h
+	echo "## Singly-Linked Circular List" > cslist.md
+	cd ../wondermacros/list && ../../tools/api_tool.pl cslist.h >> ../../docs/cslist.md
+
+tree.md: ../wondermacros/tree/for_each.h
+	echo "## Trees" > tree.md
+	cd ../wondermacros/tree && ../../tools/api_tool.pl >> ../../docs/tree.md
 
 deque.md: ../wondermacros/array/deque.h
 	echo "## Deque" > deque.md
@@ -59,9 +81,17 @@ math.md:
 	echo "## Mathematics" > math.md
 	cd ../wondermacros/math && ../../tools/api_tool.pl >> ../../docs/math.md
 
+pp_char.md:
+	echo "## Pre-Processor Character and String Tools" > pp_char.md
+	cd ../wondermacros/pp_char && ../../tools/api_tool.pl >> ../../docs/pp_char.md
+
 sorting.md:
 	echo "## Sorting" > sorting.md
 	cd ../wondermacros/sorting && ../../tools/api_tool.pl >> ../../docs/sorting.md
+
+string.md:
+	echo "## String Handling" > string.md
+	cd ../wondermacros/string && ../../tools/api_tool.pl >> ../../docs/string.md
 
 
 clean:

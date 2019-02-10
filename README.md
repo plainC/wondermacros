@@ -37,6 +37,7 @@ under /usr/include, type 'make install' as root.
 ### [Singly-Linked List](https://github.com/plainC/wondermacros/blob/master/docs/slist.md)
 ### [Doubly-Linked List](https://github.com/plainC/wondermacros/blob/master/docs/dlist.md)
 ### [Singly-Linked Circular List](https://github.com/plainC/wondermacros/blob/master/docs/cslist.md)
+### [Trees](https://github.com/plainC/wondermacros/blob/master/docs/tree.md)
 
 ## Others
 ### [Generic Array Macros](https://github.com/plainC/wondermacros/blob/master/docs/array.md)
