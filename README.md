@@ -34,6 +34,9 @@ under /usr/include, type 'make install' as root.
 ### [Dynamic Array](https://github.com/plainC/wondermacros/blob/master/docs/dynamic_array.md)
 ### [Dynamic Stack](https://github.com/plainC/wondermacros/blob/master/docs/dynamic_stack.md)
 ### [Hash Table](https://github.com/plainC/wondermacros/blob/master/docs/hash_table.md)
+### [Singly-Linked List](https://github.com/plainC/wondermacros/blob/master/docs/slist.md)
+### [Doubly-Linked List](https://github.com/plainC/wondermacros/blob/master/docs/dlist.md)
+### [Singly-Linked Circular List](https://github.com/plainC/wondermacros/blob/master/docs/cslist.md)
 
 ## Others
 ### [Generic Array Macros](https://github.com/plainC/wondermacros/blob/master/docs/array.md)
