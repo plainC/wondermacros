@@ -38,33 +38,23 @@
 # define W_POSTFIX
 #endif
 
-#ifndef W_STATIC
-# define W_STATIC 1
-#endif
-
 #ifndef W_NAME_INDEX
 # define W_NAME_INDEX 0
 #endif
 
-#ifndef W_CODE_PREFIX
-# define W_CODE_PREFIX
+#ifndef W_COMMON
+# define W_COMMON
 #endif
-
-#ifndef W_CODE_POSTFIX
-# define W_CODE_POSTFIX
-#endif
-
 
 #ifndef W_CODE
-# define W_CODE(tag,code) code(tag);
+# define W_CODE(name,code) code
 #endif
 
 
-#define W_CASE(name,code)                                                        \
-    case W_CAT(W_PREFIX,name,W_POSTFIX): {                                       \
-        W_CODE_PREFIX W_CODE(W_CAT(W_PREFIX,name,W_POSTFIX),code) W_CODE_POSTFIX \
-    }                                                                            \
-    break;
+#define W_CASE(name,code)                                    \
+    struct W_CAT(W_PREFIX,name,W_POSTFIX) {                  \
+        W_COMMON W_CODE(W_CAT(W_PREFIX,name,W_POSTFIX),code) \
+    };
 
 
 #include <wondermacros/x/code.h>
@@ -80,5 +70,4 @@
 #undef W_POSTFIX
 #undef W_VALUE
 #undef W_TYPE
-#undef W_STATIC
 #undef XMACRO
