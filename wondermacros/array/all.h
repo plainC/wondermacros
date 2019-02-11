@@ -9,6 +9,7 @@ W_TEST_GROUP("Other Array")
 
 /**/
 
+#include <wondermacros/array/deque.h>
 #include <wondermacros/array/dynamic_array.h>
 #include <wondermacros/array/dynamic_stack.h>
 

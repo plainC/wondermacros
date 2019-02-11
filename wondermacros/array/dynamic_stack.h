@@ -143,6 +143,7 @@ W_TEST(W_DYNAMIC_STACK_PUSH,
     int* stack = NULL;
     W_DYNAMIC_STACK_PUSH(stack, 1, 2);
     W_TEST_ASSERT(W_DYNAMIC_STACK_SIZE(stack) == 2, "Stack size mismatch");
+
     W_DYNAMIC_STACK_FREE(stack);
 )
 
@@ -152,6 +153,8 @@ W_TEST(W_DYNAMIC_STACK_POP,
     W_TEST_ASSERT(W_DYNAMIC_STACK_POP(stack) == 3, "Expecting 3");
     W_TEST_ASSERT(W_DYNAMIC_STACK_POP(stack) == 2, "Expecting 2");
     W_TEST_ASSERT(W_DYNAMIC_STACK_POP(stack) == 1, "Expecting 1");
+
+    W_DYNAMIC_STACK_FREE(stack);
 )
 
 W_TEST(W_DYNAMIC_STACK_IS_EMPTY,
@@ -165,6 +168,8 @@ W_TEST(W_DYNAMIC_STACK_IS_EMPTY,
     W_TEST_ASSERT(!W_DYNAMIC_STACK_IS_EMPTY(stack), "Expecting stack not to be empty");
     W_TEST_ASSERT(W_DYNAMIC_STACK_POP(stack) == 1, "Expecting 1");
     W_TEST_ASSERT(W_DYNAMIC_STACK_IS_EMPTY(stack), "Expecting stack to be empty");
+
+    W_DYNAMIC_STACK_FREE(stack);
 )
 
 #endif

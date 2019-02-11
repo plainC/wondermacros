@@ -236,6 +236,8 @@ W_TEST(W_DYNAMIC_ARRAY_PUSH,
     int* array = NULL;
     W_DYNAMIC_ARRAY_PUSH(array, 1, 2);
     W_TEST_ASSERT(W_DYNAMIC_ARRAY_GET_SIZE(array) == 2, "Array size mismatch");
+
+    W_DYNAMIC_ARRAY_FREE(array);
 )
 
 W_TEST(W_DYNAMIC_ARRAY_STEAL_LAST,
@@ -243,6 +245,8 @@ W_TEST(W_DYNAMIC_ARRAY_STEAL_LAST,
     W_DYNAMIC_ARRAY_PUSH(array, 1, 2, 3, 4);
     W_TEST_ASSERT(W_DYNAMIC_ARRAY_STEAL_LAST(array) == 4, "Steal last failed");
     W_TEST_ASSERT(W_DYNAMIC_ARRAY_GET_SIZE(array) == 3, "Array size mismatch");
+
+    W_DYNAMIC_ARRAY_FREE(array);
 )
 
 #endif

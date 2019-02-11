@@ -121,6 +121,15 @@
     ))                                                                           \
 
 /***
+ *** Name:        W_DEQUE_GET_SIZE
+ *** Proto:       W_DEQUE_GET_SIZE(Q)
+ *** Arg:         Q  a pointer to a deque.
+ *** Description: Use W_DEQUE_GET_SIZE to get the number of elements in a deque. If Q is NULL, the size is zero.
+ ***/
+#define W_DEQUE_GET_SIZE(Q) \
+    ((Q) == NULL ? 0 : W_DEQUE_SIZE(Q))
+
+/***
  *** Name:        W_DEQUE_IS_EMPTY
  *** Proto:       W_DEQUE_IS_EMPTY(Q)
  *** Arg:         Q  a pointer to a deque.
@@ -302,5 +311,59 @@
     (W_DEQUE_SIZE(Q) + (n) <= W_DEQUE_ALLOC_SIZE(Q))
 
 
+#ifndef W_TEST
+# define W_TEST(...)
 #endif
 
+#ifndef W_TEST_GROUP
+# define W_TEST_GROUP(...)
+#endif
+
+W_TEST_GROUP("Deque")
+
+W_TEST(W_DEQUE_INIT,
+    int* deque;
+    W_DEQUE_INIT(deque, /* 2 ^ */ 3);
+    W_TEST_ASSERT(W_DEQUE_GET_SIZE(deque) == 0, "Deque size mismatch");
+    W_DEQUE_FREE(deque);
+)
+
+W_TEST(W_DEQUE_PUSH_BACK,
+    int* deque, is_full;
+    W_DEQUE_INIT(deque, /* 2 ^ */ 3);
+    W_DEQUE_PUSH_BACK(is_full, deque, 1);
+    W_TEST_ASSERT(!is_full, "Deque full");
+    W_DEQUE_PUSH_BACK(is_full, deque, 2);
+    W_TEST_ASSERT(!is_full, "Deque full");
+    W_TEST_ASSERT(W_DEQUE_GET_SIZE(deque) == 2, "Deque size mismatch");
+
+    int elem;
+    W_DEQUE_POP_FRONT(deque,elem);
+    W_TEST_ASSERT(elem == 1, "Deque value mismatch: %d (not 1)", elem);
+    W_DEQUE_POP_FRONT(deque,elem);
+    W_TEST_ASSERT(elem == 2, "Deque value mismatch: %d (not 2)", elem);
+    W_TEST_ASSERT(W_DEQUE_GET_SIZE(deque) == 0, "Deque size mismatch");
+
+    W_DEQUE_FREE(deque);
+)
+
+W_TEST(W_DEQUE_PUSH_FRONT,
+    int* deque, is_full;
+    W_DEQUE_INIT(deque, /* 2 ^ */ 3);
+    W_DEQUE_PUSH_FRONT(is_full, deque, 1);
+    W_TEST_ASSERT(!is_full, "Deque full");
+    W_DEQUE_PUSH_FRONT(is_full, deque, 2);
+    W_TEST_ASSERT(!is_full, "Deque full");
+    W_TEST_ASSERT(W_DEQUE_GET_SIZE(deque) == 2, "Deque size mismatch");
+
+    int elem;
+    W_DEQUE_POP_FRONT(deque,elem);
+    W_TEST_ASSERT(elem == 2, "Deque value mismatch: %d (not 2)", elem);
+    W_DEQUE_POP_FRONT(deque,elem);
+    W_TEST_ASSERT(elem == 1, "Deque value mismatch: %d (not 1)", elem);
+    W_TEST_ASSERT(W_DEQUE_GET_SIZE(deque) == 0, "Deque size mismatch");
+
+    W_DEQUE_FREE(deque);
+)
+
+#endif
