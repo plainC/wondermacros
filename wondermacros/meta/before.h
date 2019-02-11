@@ -186,5 +186,17 @@
     } else                                      \
     W_LABEL(labid, body):
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
 #endif
 
+W_TEST(W_BEFORE,
+    int identifier = 1;
+    W_BEFORE(1,
+        identifier = 2;
+    ) W_TEST_ASSERT(identifier == 2, "Value mismatch");
+)
+
+#endif

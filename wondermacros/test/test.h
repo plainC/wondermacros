@@ -25,19 +25,27 @@
 #ifndef __W_TEST_H
 #define __W_TEST_H
 
-#define W_TEST(name,...)                      \
-    {                                         \
-        printf("[%s:%s] ", # name, __FILE__); \
-        __VA_ARGS__                           \
-        printf("Ok.\n");                      \
+#define W_TEST(name,...)                            \
+    {                                               \
+        char buf[256];                              \
+        sprintf(buf,"[%s:%s] ", # name, __FILE__);  \
+        printf("%s ", buf);                         \
+        for (int i=strlen(buf); i < 80; i++)        \
+            printf(" ");                            \
+        __VA_ARGS__                                 \
+        printf("Ok.\n");                            \
     }
 
-#define W_TEST_ASSERT(cond,...)             \
-    if (cond) {                             \
-    } else {                                \
-        printf(__VA_ARGS__);                \
-        return 1;                           \
+#define W_TEST_ASSERT(cond,...)                     \
+    if (cond) {                                     \
+    } else {                                        \
+        printf(" ");                                \
+        printf(__VA_ARGS__);                        \
+        return 1;                                   \
     }
+
+#define W_TEST_GROUP(name)                    \
+    printf("\n\nGROUP: %s\n\n", name);
 
 #endif
 
