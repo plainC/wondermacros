@@ -3,7 +3,8 @@
 Wondermacros itself has build-in unit tests which use an X-macro based unit tester.
 All you need to do is to create a C file, define W_XFILE to include all source code
 to be tested, and then include `<wondermacros/x/unit_test.h>'. It will expand to a
-main program that can be compiled. See an example below.
+main program that can be compiled. See an example below. It can also be found
+[here](https://github.com/plainC/wondermacros/tree/master/test).
 
 ```C
 #include <string.h>
@@ -13,7 +14,8 @@ main program that can be compiled. See an example below.
 
 The tests are written to the header files to be included. The best place is at the
 end of the file. There, first test if W_TEST is not defined. If it is not, define
-it to expand to nothing. Then add tests separately. See an example below.
+it to expand to nothing. Then add tests separately. See an example below. The
+full file is [here](https://github.com/plainC/wondermacros/blob/master/wondermacros/meta/id.h).
 
 ```C
 /*Unit Test*/
