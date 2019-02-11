@@ -44,4 +44,19 @@
             (array)[W_ID(i)] = (array)[W_ID(i) + W_ID(step)];                \
     } while (0)
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_MOVE_LEFT,
+    int a[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    W_ARRAY_MOVE_LEFT(a, 10, 4,3);
+
+    int c[] = { 0, 1, 2, 3, 7, 8, 9 };
+    for (int i=0; i < 7; i++)
+        W_TEST_ASSERT(a[i] == c[i], "Value mismatch");
+)
+
 #endif
