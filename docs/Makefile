@@ -15,6 +15,7 @@ DOCS =                   \
 	meta.md          \
 	sorting.md       \
 	string.md        \
+	test.md          \
 	tree.md          \
 
 all: $(DOCS)
@@ -46,6 +47,11 @@ cslist.md: ../wondermacros/list/cslist.h
 tree.md: ../wondermacros/tree/for_each.h
 	echo "## Trees" > tree.md
 	cd ../wondermacros/tree && ../../tools/api_tool.pl >> ../../docs/tree.md
+
+test.md: ../wondermacros/test/test.h
+	echo "## Unit Testing" > test.md
+	cat test_x.md >> test.md
+	cd ../wondermacros/test && ../../tools/api_tool.pl >> ../../docs/test.md
 
 deque.md: ../wondermacros/array/deque.h
 	echo "## Deque" > deque.md

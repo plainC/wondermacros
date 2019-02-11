@@ -16,6 +16,14 @@ Q                    a pointer to a deque.
 #### Description
     Use W_DEQUE_SIZE to get the number of elements in a deque.
     
+### W_DEQUE_GET_SIZE(Q)
+#### Arguments
+```C
+Q                    a pointer to a deque.
+```
+#### Description
+    Use W_DEQUE_GET_SIZE to get the number of elements in a deque. If Q is NULL, the size is zero.
+    
 ### W_DEQUE_IS_EMPTY(Q)
 #### Arguments
 ```C

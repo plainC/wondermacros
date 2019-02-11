@@ -25,6 +25,13 @@
 #ifndef __W_TEST_H
 #define __W_TEST_H
 
+/***
+ *** Name:        W_TEST
+ *** Proto:       W_TEST(name,...)
+ *** Arg:         name         name of the test case
+ *** Arg:         ...          statements to be executed
+ *** Description: Use W_TEST to add a unit test directly into a header file.  It is used with the unit test X-Macro.
+ ***/
 #define W_TEST(name,...)                            \
     {                                               \
         char buf[256];                              \
@@ -36,6 +43,13 @@
         printf("Ok.\n");                            \
     }
 
+/***
+ *** Name:        W_TEST_ASSERT
+ *** Proto:       W_TEST_ASSERT(cond,...)
+ *** Arg:         cond         a condition expression, should evaluate to non-zero if test ok
+ *** Arg:         ...          format and arguments for error reporting
+ *** Description: Use W_TEST_ASSERT to run a test in a unit test.
+ ***/
 #define W_TEST_ASSERT(cond,...)                     \
     if (cond) {                                     \
     } else {                                        \
@@ -45,8 +59,13 @@
         return 1;                                   \
     }
 
+/***
+ *** Name:        W_TEST_GROUP
+ *** Proto:       W_TEST_GROUP(name)
+ *** Arg:         name         a test group name
+ *** Description: Use W_TEST_GROUP to group tests in unit testing.
+ ***/
 #define W_TEST_GROUP(name)                    \
     printf("\n\nGROUP: %s\n\n", name);
 
 #endif
-

@@ -29,6 +29,7 @@ under /usr/include, type 'make install' as root.
 ## X-Macros
 ### [Object-Oriented Programming](https://github.com/plainC/wondermacros/blob/master/docs/objects.md)
 ### [Generic Enum, String Array, Picked Value Array, and Switch...Case Block Generation](https://github.com/plainC/wondermacros/blob/master/docs/generic_x.md)
+### [Unit Testing](https://github.com/plainC/wondermacros/blob/master/docs/test.md)
 ## Data Structures
 ### [Deque](https://github.com/plainC/wondermacros/blob/master/docs/deque.md)
 ### [Dynamic Array](https://github.com/plainC/wondermacros/blob/master/docs/dynamic_array.md)
