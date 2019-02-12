@@ -83,22 +83,22 @@
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
  ***/
 #define W_TREE_FOR_EACH_PREORDER(T,node,self)                                  \
-    W_DECLARE(1, T** W_ID(stack) = NULL)                                       \
-    W_DECLARE(2, T* node)                                                      \
-    W_DECLARE(22, T* W_ID(root) = (self))                                      \
-    W_BEFORE(3,                                                                \
+    W_DECLARE(W_CAT(node,1), T** W_ID(stack) = NULL)                           \
+    W_DECLARE(W_CAT(node,2), T* node)                                          \
+    W_DECLARE(W_CAT(node,3), T* W_ID(root) = (self))                           \
+    W_BEFORE(W_CAT(node,4),                                                    \
         W_DYNAMIC_STACK_PUSH(W_ID(stack), W_ID(root) );                        \
     )                                                                          \
     if (W_ID(root) == NULL)                                                    \
         ;                                                                      \
     else                                                                       \
         while (!W_DYNAMIC_STACK_IS_EMPTY(W_ID(stack)))                         \
-            W_BEFORE(4, (node) = W_DYNAMIC_STACK_POP(W_ID(stack)))             \
-            W_AFTER(5,                                                         \
+            W_BEFORE(W_CAT(node,5), (node) = W_DYNAMIC_STACK_POP(W_ID(stack))) \
+            W_AFTER(W_CAT(node,6),                                             \
                 if (node) {                                                    \
                     BOOST_PP_IF(W_REVERSED,                                    \
-                        W_TREE_FOR_EACH_IMMEDIATE_REVERSED,                    \
-                        W_TREE_FOR_EACH_IMMEDIATE)                             \
+                        W_TREE_FOR_EACH_IMMEDIATE,                             \
+                        W_TREE_FOR_EACH_IMMEDIATE_REVERSED)                    \
                     (T,W_ID(tmp), node)                                        \
                         W_DYNAMIC_STACK_PUSH(W_ID(stack), W_ID(tmp));          \
                 }                                                              \
@@ -163,5 +163,61 @@
                 W_ID(node) = NULL;                                                             \
             )                                                                                  \
             /**/
+
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#else
+# include <wondermacros/misc/struct_init.h>
+# include <wondermacros/misc/struct_new.h>
+#endif
+
+W_TEST(W_TREE_FOR_EACH_PREORDER,
+    struct bintree {
+        int value;
+        struct bintree* next[2];
+    };
+    struct bintree* root = W_STRUCT_NEW(struct bintree, .value=45,
+        .next[0] = W_STRUCT_NEW(struct bintree, .value=13,
+            .next[0] = W_STRUCT_NEW(struct bintree, .value=7),
+            .next[1] = W_STRUCT_NEW(struct bintree, .value=19)),
+        .next[1] = W_STRUCT_NEW(struct bintree, .value=74));
+
+    int correct[] = {45,13,7,19,74};
+    int ix=0;
+
+#undef W_REVERSED
+#define W_REVERSED 0
+    W_TREE_FOR_EACH_PREORDER(struct bintree, node, root)
+        W_TEST_ASSERT(node->value == correct[ix++], "Value mismatch");
+
+    W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
+    ix=0;
+)
+
+W_TEST(W_TREE_FOR_EACH_PREORDER_reversed,
+    struct bintree {
+        int value;
+        struct bintree* next[2];
+    };
+
+    struct bintree* root = W_STRUCT_NEW(struct bintree, .value=45,
+        .next[0] = W_STRUCT_NEW(struct bintree, .value=13,
+            .next[0] = W_STRUCT_NEW(struct bintree, .value=7),
+            .next[1] = W_STRUCT_NEW(struct bintree, .value=19)),
+        .next[1] = W_STRUCT_NEW(struct bintree, .value=74));
+
+    int correct[] = {45,74,13,19,7};
+    int ix=0;
+
+#undef W_REVERSED
+#define W_REVERSED 1
+    W_TREE_FOR_EACH_PREORDER(struct bintree, n, root)
+        W_TEST_ASSERT(n->value == correct[ix++], "Value mismatch");
+
+    W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
+    ix=0;
+)
 
 #endif
