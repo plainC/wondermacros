@@ -18,3 +18,11 @@ T                    a type name
 ```
 #### Description
     Use W_STRUCT_NEW to allocate and initialize a structure.
+    
+### W_UNUSED(id)
+#### Arguments
+```C
+id                   a name of unused identifier.
+```
+#### Description
+    Use W_UNUSED to kill a warning if an identifier is unused.
