@@ -20,11 +20,6 @@ SRCS =                 \
 	css_selector.c \
 	cond.c         \
 	array.c        \
-	tree.c         \
-
-#	ptr_string.c   \
-#	ptr_int.c      \
-#	ptr_double.c   \
 
 CLASSES = $(patsubst %.c,%_class.h,$(SRCS))
 OBJS = $(patsubst %.c,%.o,$(SRCS))

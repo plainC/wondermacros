@@ -1,6 +1,6 @@
 DOCS =                   \
 	array.md         \
-	compiler.md      \
+	pointer.md      \
 	char.md          \
 	debug.md         \
 	deque.md         \
@@ -11,6 +11,7 @@ DOCS =                   \
 	cslist.md        \
 	slist.md         \
 	math.md          \
+	misc.md          \
 	pp_char.md       \
 	meta.md          \
 	sorting.md       \
@@ -70,9 +71,9 @@ char.md:
 	echo "## Character and String Handling" > char.md
 	cd ../wondermacros/pp_char && ../../tools/api_tool.pl >> ../../docs/char.md
 
-compiler.md:
-	echo "## Compiler Tools" > compiler.md
-	cd ../wondermacros/compiler && ../../tools/api_tool.pl >> ../../docs/compiler.md
+pointer.md:
+	echo "## Pointer Macros" > pointer.md
+	cd ../wondermacros/pointer && ../../tools/api_tool.pl >> ../../docs/pointer.md
 
 debug.md:
 	echo "## Debugging" > debug.md
@@ -86,6 +87,10 @@ meta.md:
 math.md:
 	echo "## Mathematics" > math.md
 	cd ../wondermacros/math && ../../tools/api_tool.pl >> ../../docs/math.md
+
+misc.md:
+	echo "## Misc" > misc.md
+	cd ../wondermacros/misc && ../../tools/api_tool.pl >> ../../docs/misc.md
 
 pp_char.md:
 	echo "## Pre-Processor Character and String Tools" > pp_char.md

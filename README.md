@@ -52,10 +52,11 @@ after building the test set.
 
 ## Others
 ### [Generic Array Macros](https://github.com/plainC/wondermacros/blob/master/docs/array.md)
-### [Compiler Tools](https://github.com/plainC/wondermacros/blob/master/docs/compiler.md)
+### [Pointer Macros](https://github.com/plainC/wondermacros/blob/master/docs/pointer.md)
 ### [Debugging](https://github.com/plainC/wondermacros/blob/master/docs/debug.md)
 ### [Pre-Processor Meta-Programming](https://github.com/plainC/wondermacros/blob/master/docs/meta.md)
 ### [Pre-Processor Character and String Tools](https://github.com/plainC/wondermacros/blob/master/docs/pp_char.md)
 ### [Mathematics](https://github.com/plainC/wondermacros/blob/master/docs/math.md)
 ### [Sorting](https://github.com/plainC/wondermacros/blob/master/docs/sorting.md)
 ### [String Handling](https://github.com/plainC/wondermacros/blob/master/docs/string.md)
+### [Misc](https://github.com/plainC/wondermacros/blob/master/docs/misc.md)

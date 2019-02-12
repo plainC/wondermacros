@@ -29,7 +29,7 @@
 #include <boost/preprocessor/variadic/to_seq.hpp>
 #include <boost/preprocessor/variadic/size.hpp>
 #include <boost/preprocessor/facilities/overload.hpp>
-#include <wondermacros/compiler/hidden_of.h>
+#include <wondermacros/pointer/hidden_of.h>
 #include <wondermacros/meta/id.h>
 #include <wondermacros/meta/declare.h>
 #include <wondermacros/meta/wrap.h>

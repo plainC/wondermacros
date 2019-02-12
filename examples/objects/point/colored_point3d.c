@@ -1,6 +1,6 @@
 #ifndef WDEBUG_EXPAND
 # include <stdio.h>
-# include <wondermacros/compiler/unused.h>
+# include <wondermacros/misc/unused.h>
 #endif
 
 #include "colored_point3d.h"

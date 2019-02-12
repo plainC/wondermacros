@@ -30,7 +30,7 @@
 #include <boost/preprocessor/variadic/elem.hpp>
 #include <boost/preprocessor/seq/for_each_i.hpp>
 
-#include <wondermacros/compiler/hidden_of.h>
+#include <wondermacros/pointer/hidden_of.h>
 #include <wondermacros/array/move_left.h>
 
 

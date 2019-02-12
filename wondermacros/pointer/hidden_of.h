@@ -25,7 +25,7 @@
 #ifndef __W_HIDDEN_OF_H
 #define __W_HIDDEN_OF_H
 
-#include <wondermacros/compiler/ref_void_ptr.h>
+#include <wondermacros/pointer/ref_void_ptr.h>
 
 /***
  *** Name:        W_HIDDEN_CONTAINER_OF

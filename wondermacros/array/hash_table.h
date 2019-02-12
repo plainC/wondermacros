@@ -25,7 +25,7 @@
 #ifndef __W_HASH_TABLE_H
 #define __W_HASH_TABLE_H
 
-#include <wondermacros/compiler/hidden_of.h>
+#include <wondermacros/pointer/hidden_of.h>
 #include <wondermacros/meta/id.h>
 #include <wondermacros/meta/wrap.h>
 #include <wondermacros/meta/declare.h>

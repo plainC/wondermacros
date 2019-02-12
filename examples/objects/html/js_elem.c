@@ -1,7 +1,7 @@
 #ifndef WDEBUG_EXPAND
 # include <stdio.h>
 # include <stdlib.h>
-# include <wondermacros/compiler/unused.h>
+# include <wondermacros/misc/unused.h>
 # include <wondermacros/array/for_each.h>
 # include <wondermacros/array/dynamic_array.h>
 #endif

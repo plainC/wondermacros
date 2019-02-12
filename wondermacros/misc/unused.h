@@ -28,7 +28,7 @@
 /***
  *** Name:        W_UNUSED
  *** Proto:       W_UNUSED(id)
- *** Arg:         id   identifier name       The name of unused identifier.
+ *** Arg:         id   a name of unused identifier.
  *** Description: Use W_UNUSED to kill a warning if an identifier is unused.
  ***/
 #define W_UNUSED(id) \
