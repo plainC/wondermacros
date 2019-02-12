@@ -36,5 +36,17 @@
         (void) id;   \
     } while (0)
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_UNUSED,
+    int unused;
+
+    W_UNUSED(unused); /* should not issue a warning. */
+)
+
 #endif
 

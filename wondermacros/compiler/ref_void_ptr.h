@@ -35,5 +35,20 @@
 #define W_REF_VOID_PTR(ptr,offset) \
     ((void*)((char*) (ptr) + (offset)))
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_REF_VOID_PTR,
+    int array[] = { 1, 2, 3 };
+
+    W_TEST_ASSERT(*((int*) W_REF_VOID_PTR(array,sizeof(int) * 1)) == 2,
+        "Value mismatch");
+    W_TEST_ASSERT(*((int*) W_REF_VOID_PTR(array,sizeof(int) * 2)) == 3,
+        "Value mismatch");
+)
+
 #endif
 

@@ -8,4 +8,5 @@ W_TEST_GROUP("Meta")
 
 /**/
 
+#include <wondermacros/compiler/all.h>
 #include <wondermacros/array/all.h>
