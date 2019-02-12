@@ -23,6 +23,16 @@ J.P. Iivonen <wondermacros@yahoo.com>
 The package contains just header files. To install wondermacros directory
 under /usr/include, type 'make install' as root.
 
+## #xamples
+
+See some examples under examples directory.
+
+## Regression Test Set
+
+To run regression tests, go to under main level directory test and type make to compile.
+The regression tests are written directly to the macro files. To run all tests type ./wondermacros
+after building the test set.
+
 
 ## Macro Reference
 

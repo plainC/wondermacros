@@ -49,5 +49,31 @@
 #define W_NUMERIC_CMP_DESC(a, b) \
     (((a) < (b)) - ((a) > (b)))
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_NUMERIC_CMP_ASC,
+    W_TEST_ASSERT(W_NUMERIC_CMP_ASC(1,2) == -1, "Comparison failed");
+    W_TEST_ASSERT(W_NUMERIC_CMP_ASC(2,2) == 0, "Comparison failed");
+    W_TEST_ASSERT(W_NUMERIC_CMP_ASC(2,1) == 1, "Comparison failed");
+
+    W_TEST_ASSERT(W_NUMERIC_CMP_ASC(1.1,2.2) == -1, "Comparison failed");
+    W_TEST_ASSERT(W_NUMERIC_CMP_ASC(2.2,2.2) == 0, "Comparison failed");
+    W_TEST_ASSERT(W_NUMERIC_CMP_ASC(2.2,1.1) == 1, "Comparison failed");
+)
+
+W_TEST(W_NUMERIC_CMP_DESC,
+    W_TEST_ASSERT(W_NUMERIC_CMP_DESC(1,2) == 1, "Comparison failed");
+    W_TEST_ASSERT(W_NUMERIC_CMP_DESC(2,2) == 0, "Comparison failed");
+    W_TEST_ASSERT(W_NUMERIC_CMP_DESC(2,1) == -1, "Comparison failed");
+
+    W_TEST_ASSERT(W_NUMERIC_CMP_DESC(1.1,2.2) == 1, "Comparison failed");
+    W_TEST_ASSERT(W_NUMERIC_CMP_DESC(2.2,2.2) == 0, "Comparison failed");
+    W_TEST_ASSERT(W_NUMERIC_CMP_DESC(2.2,1.1) == -1, "Comparison failed");
+)
+
 #endif
 

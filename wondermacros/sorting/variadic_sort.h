@@ -33,7 +33,7 @@
 #include <boost/preprocessor/seq/for_each.hpp>
 #include <boost/preprocessor/variadic/size.hpp>
 
-#ifndef COMPARE
+#ifndef W_COMPARE
 # include "wondermacros/configs/compare.h"
 #endif
 
@@ -47,7 +47,7 @@
 
 /* A helpper macro for BOOST_PP_SEQ_FOR_EACH. */
 #define _W_SORT_SWAP(r,T,swap)                                                            \
-    if (COMPARE(BOOST_PP_SEQ_ELEM(0,swap),BOOST_PP_SEQ_ELEM(1,swap)) > 0)                 \
+    if (W_COMPARE(BOOST_PP_SEQ_ELEM(0,swap),BOOST_PP_SEQ_ELEM(1,swap)) > 0)                 \
         W_SWAP(T,BOOST_PP_SEQ_ELEM(0,swap),BOOST_PP_SEQ_ELEM(1,swap));
 
 
@@ -58,7 +58,7 @@
  *** Arg:   ...  variables to be sorted in-place
  *** Description: Use W_VARIADIC_SORT to sort variables (or array references etc.) in-place.
  ***              This is probably the fastest method to get the job done.
- ***              Redefine COMPARE to alter comparison method.
+ ***              Redefine W_COMPARE to alter comparison method.
  *** Returns:     This is a statement macro.
  *** Notes: The maximum number of arguments depends on the number of sorting networks supplied.
  ***        Redefine SORTING_NETWORK_TYPE to supply a different set of sorting networks.
@@ -70,12 +70,12 @@
  ***
  ***          now a=0, b=2, c=3, d=5 and e=9.
  ***/
-#define W_VARIADIC_SORT(T,...)                                                                   \
-    do {                                                                                         \
-        BOOST_PP_IF(BOOST_PP_GREATER(BOOST_PP_VARIADIC_SIZE(__VA_ARGS__),1), \
-            BOOST_PP_SEQ_FOR_EACH(_W_SORT_SWAP,T,                                                    \
+#define W_VARIADIC_SORT(T,...)                                                                        \
+    do {                                                                                              \
+        BOOST_PP_IF(BOOST_PP_GREATER(BOOST_PP_VARIADIC_SIZE(__VA_ARGS__),1),                          \
+            BOOST_PP_SEQ_FOR_EACH(_W_SORT_SWAP,T,                                                     \
                 BOOST_PP_CAT(SORTING_NETWORK_TYPE,BOOST_PP_VARIADIC_SIZE(__VA_ARGS__))(__VA_ARGS__)), \
-        ) \
+        )                                                                                             \
     } while (0)
 
 #define W_SORTING_NETWORK_OPTIMAL_2(_0,_1)                                                             \
@@ -89,5 +89,18 @@
 #define W_SORTING_NETWORK_OPTIMAL_6(_0,_1,_2,_3,_4,_5)                                                 \
     ((_0)(_1)) ((_2)(_3)) ((_4)(_5)) ((_0)(_2)) ((_3)(_5)) ((_1)(_4)) ((_0)(_1))                       \
     ((_2)(_3)) ((_4)(_5)) ((_1)(_2)) ((_3)(_4)) ((_2)(_3))
+
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_VARIADIC_SORT,
+    int a = 3, b = 1, c = 0, d = 7, e = 2;
+
+    W_VARIADIC_SORT(int, a, b, c, d, e);
+    W_TEST_ASSERT(a == 0 && b == 1 && c == 2 && d == 3 && e == 7, "Sorting failed");
+)
 
 #endif

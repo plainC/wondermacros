@@ -43,4 +43,16 @@
         (b) = W_ID(swap);   \
     } while (0)
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_SWAP,
+    int a=1, b=2;
+    W_SWAP(int, a, b);
+    W_TEST_ASSERT(a == 2 && b == 1, "Swap failed");
+)
+
 #endif
