@@ -55,4 +55,17 @@
 #define _W_MIN_4(a,b,c,d) (W_LE(W_COMPARE(_W_MIN_2(a,b),_W_MIN_2(c,d)), W_ZERO) \
     ? _W_MIN_2(a,b) : _W_MIN_2(c,d))
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_MIN,
+    W_TEST_ASSERT(W_MIN(1) == 1, "min failed");
+    W_TEST_ASSERT(W_MIN(2,1) == 1, "min failed");
+    W_TEST_ASSERT(W_MIN(2,3,1) == 1, "min failed");
+    W_TEST_ASSERT(W_MIN(2,1,3,4) == 1, "min failed");
+)
+
 #endif

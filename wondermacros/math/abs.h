@@ -46,5 +46,16 @@
  ***/
 #define W_ABS(a) (W_GE(a,W_ZERO) ? (a) : W_NEG(a))
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_ABS,
+    W_TEST_ASSERT(W_ABS(-1) == 1, "abs failed");
+    W_TEST_ASSERT(W_ABS(1) == 1, "abs failed");
+)
+
 #endif
 

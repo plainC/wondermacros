@@ -54,5 +54,18 @@
 #define _W_MAX_4(a,b,c,d) (W_GE(W_COMPARE(_W_MAX_2(a,b),_W_MAX_2(c,d)), W_ZERO) \
     ? _W_MAX_2(a,b) : _W_MAX_2(c,d))
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_MAX,
+    W_TEST_ASSERT(W_MAX(1) == 1, "max failed");
+    W_TEST_ASSERT(W_MAX(2,1) == 2, "max failed");
+    W_TEST_ASSERT(W_MAX(2,3,1) == 3, "max failed");
+    W_TEST_ASSERT(W_MAX(2,1,3,4) == 4, "max failed");
+)
+
 #endif
 

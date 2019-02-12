@@ -33,4 +33,17 @@
  ***/
 #define W_SIGN(x) (((x) > 0) - ((x) < 0))
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_SIGN,
+    W_TEST_ASSERT(W_SIGN(10) == 1, "sign failed");
+    W_TEST_ASSERT(W_SIGN(-12) == -1, "sign failed");
+    W_TEST_ASSERT(W_SIGN(0) == 0, "sign failed");
+    W_TEST_ASSERT(W_SIGN(-2.1) == -1, "sign failed");
+)
+
 #endif
