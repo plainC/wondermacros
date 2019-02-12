@@ -86,13 +86,14 @@
     W_DECLARE(W_CAT(node,1), T** W_ID(stack) = NULL)                           \
     W_DECLARE(W_CAT(node,2), T* node)                                          \
     W_DECLARE(W_CAT(node,3), T* W_ID(root) = (self))                           \
+    W_DECLARE(W_CAT(node,7), int W_ID(_finished_) = 0)                         \
     W_BEFORE(W_CAT(node,4),                                                    \
         W_DYNAMIC_STACK_PUSH(W_ID(stack), W_ID(root) );                        \
     )                                                                          \
     if (W_ID(root) == NULL)                                                    \
         ;                                                                      \
     else                                                                       \
-        while (!W_DYNAMIC_STACK_IS_EMPTY(W_ID(stack)))                         \
+        while (!W_ID(_finished_))                                              \
             W_BEFORE(W_CAT(node,5), (node) = W_DYNAMIC_STACK_POP(W_ID(stack))) \
             W_AFTER(W_CAT(node,6),                                             \
                 if (node) {                                                    \
@@ -102,6 +103,9 @@
                     (T,W_ID(tmp), node)                                        \
                         W_DYNAMIC_STACK_PUSH(W_ID(stack), W_ID(tmp));          \
                 }                                                              \
+                W_ID(_finished_) = W_DYNAMIC_STACK_IS_EMPTY(W_ID(stack));      \
+                if (W_ID(_finished_))                                          \
+                    W_DYNAMIC_STACK_FREE(W_ID(stack));                         \
             )                                                                  \
     /**/
 
@@ -116,15 +120,15 @@
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
  ***/
 #define W_TREE_FOR_EACH_POSTORDER(T,Child,self)                                                \
-    W_DECLARE(1, T *Child)                                                                     \
-    W_DECLARE(11, T* W_ID(node) = (self))                                                      \
-    W_DECLARE(2, T** W_ID(stack) = NULL )                                                      \
+    W_DECLARE(W_CAT(Child,po1), T *Child)                                                                     \
+    W_DECLARE(W_CAT(Child,po2), T* W_ID(node) = (self))                                                      \
+    W_DECLARE(W_CAT(Child,po3), T** W_ID(stack) = NULL )                                                      \
     if (W_ID(node) == NULL)                                                                    \
         ;                                                                                      \
     else                                                                                       \
-        W_BEFORE(4, goto W_LABEL(6,Child); )                                                   \
+        W_BEFORE(W_CAT(Child,po4), goto W_LABEL(6,Child); )                                                   \
         while (!W_DYNAMIC_STACK_IS_EMPTY(W_ID(stack)))                                         \
-            W_BEFORE (5,                                                                       \
+            W_BEFORE (W_CAT(Child,po5),                                                                       \
               W_LABEL(6,Child):                                                                \
                 while (W_ID(node)) {                                                           \
                     BOOST_PP_IF(W_REVERSED,                                                    \
