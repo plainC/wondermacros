@@ -135,5 +135,68 @@
     } while (0)
 
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#else
+# include <wondermacros/misc/struct_init.h>
+# include <wondermacros/misc/struct_new.h>
+#endif
+
+W_TEST(W_DLIST_APPEND,
+    struct int_list {
+        int value;
+        struct int_list* next;
+        struct int_list* prev;
+    };
+
+    struct int_list* a = W_STRUCT_NEW(struct int_list, .value=1);
+    struct int_list* b = W_STRUCT_NEW(struct int_list, .value=2);
+    struct int_list* c = W_STRUCT_NEW(struct int_list, .value=3);
+
+    struct int_list* list = NULL;
+    W_DLIST_APPEND(struct int_list, list, a);
+    W_DLIST_APPEND(struct int_list, list, b);
+    W_DLIST_APPEND(struct int_list, list, c);
+
+    int correct[] = { 1, 2, 3 };
+    int ix=0;
+
+    W_DLIST_FOR_EACH(struct int_list, node, list)
+        W_TEST_ASSERT(node->value == correct[ix++], "Value mismatch");
+    W_TEST_ASSERT(ix == 3, "FOR_EACH failed to go through all items");
+
+    W_DLIST_FOR_EACH(struct int_list, node, list)
+        free(node);
+)
+
+W_TEST(W_DLIST_PREPEND,
+    struct int_list {
+        int value;
+        struct int_list* next;
+        struct int_list* prev;
+    };
+
+    struct int_list* a = W_STRUCT_NEW(struct int_list, .value=1);
+    struct int_list* b = W_STRUCT_NEW(struct int_list, .value=2);
+    struct int_list* c = W_STRUCT_NEW(struct int_list, .value=3);
+
+    struct int_list* list = NULL;
+    W_DLIST_PREPEND(struct int_list, list, a);
+    W_DLIST_PREPEND(struct int_list, list, b);
+    W_DLIST_PREPEND(struct int_list, list, c);
+
+    int correct[] = { 3, 2, 1 };
+    int ix=0;
+
+    W_DLIST_FOR_EACH(struct int_list, node, list)
+        W_TEST_ASSERT(node->value == correct[ix++], "Value mismatch");
+    W_TEST_ASSERT(ix == 3, "FOR_EACH failed to go through all items");
+
+    W_DLIST_FOR_EACH(struct int_list, node, list)
+        free(node);
+)
+
 #endif
 

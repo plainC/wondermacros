@@ -53,11 +53,11 @@
  *** Arg:         list       a list to be traversed
  *** Description: Use W_CSLIST_FOR_EACH_NAMED to traverse all elements in a circular list.
  ***/
-#define W_CSLIST_FOR_EACH_NAMED(T,next,node,list) \
-    for (T* W_ID(l) = (list); W_ID(l); W_ID(l) = NULL) \
-        for (T* node = W_ID(l)->next, *W_ID(n);             \
-            node && (W_ID(n) = node->next, 1); \
-            node = W_ID(n) != W_ID(l)->next ? W_ID(n) : NULL)
+#define W_CSLIST_FOR_EACH_NAMED(T,next,node,list)             \
+    for (T* W_ID(l) = (list)->next; W_ID(l); W_ID(l) = NULL)  \
+        for (T* node = W_ID(l), *W_ID(n);                     \
+            node && (W_ID(n) = node->next, 1);                \
+            node = W_ID(n) != W_ID(l) ? W_ID(n) : NULL)
 
 
 /***
@@ -80,14 +80,16 @@
  *** Arg:         list       a list to be prepended
  *** Description: Use W_CSLIST_PREPEND_NAMED to prepend a circular list to another circular list.
  ***/
-#define W_CSLIST_PREPEND_NAMED(T,next,self,list)   \
-    do {                                           \
-        if (self) {                                \
-            T* W_ID(t) = self->next;               \
-            self->next = list->next;               \
-            list->next = W_ID(t);                  \
-        } else                                     \
-            self = list->next;                     \
+#define W_CSLIST_PREPEND_NAMED(T,next,self,list)             \
+    do {                                                     \
+        /* Check if next is null. */                         \
+        (list)->next = (list)->next ? (list)->next : (list); \
+        if (self) {                                          \
+            T* W_ID(t) = self->next;                         \
+            self->next = list->next;                         \
+            list->next = W_ID(t);                            \
+        } else                                               \
+            self = list->next;                               \
     } while (0)
 
 
@@ -112,18 +114,80 @@
  *** Arg:         list       a list to be prepended
  *** Description: Use W_CSLIST_APPEND_NAMED to append a circular list to another circular list.
  ***/
-#define W_CSLIST_APPEND_NAMED(T,next,self,list)  \
-    do {                                         \
-        if (!(self))                             \
-            self = list;                         \
-        else {                                   \
-            T* W_ID(t) = (self)->next;           \
-            (self)->next = (list);               \
-            (list)->next = W_ID(t);              \
-            (self) = (list);                     \
-        }                                        \
+#define W_CSLIST_APPEND_NAMED(T,next,self,list)              \
+    do {                                                     \
+        /* Check if next is null. */                         \
+        (list)->next = (list)->next ? (list)->next : (list); \
+        if (!(self))                                         \
+            self = list;                                     \
+        else {                                               \
+            T* W_ID(t) = (self)->next;                       \
+            (self)->next = (list);                           \
+            (list)->next = W_ID(t);                          \
+            (self) = (list);                                 \
+        }                                                    \
     } while (0)
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#else
+# include <wondermacros/misc/struct_init.h>
+# include <wondermacros/misc/struct_new.h>
+#endif
+
+W_TEST(W_CSLIST_APPEND,
+    struct int_list {
+        int value;
+        struct int_list* next;
+    };
+
+    struct int_list* a = W_STRUCT_NEW(struct int_list, .value=1);
+    struct int_list* b = W_STRUCT_NEW(struct int_list, .value=2);
+    struct int_list* c = W_STRUCT_NEW(struct int_list, .value=3);
+
+    struct int_list* list = NULL;
+    W_CSLIST_APPEND(struct int_list, list, a);
+    W_CSLIST_APPEND(struct int_list, list, b);
+    W_CSLIST_APPEND(struct int_list, list, c);
+
+    int correct[] = { 1, 2, 3 };
+    int ix=0;
+
+    W_CSLIST_FOR_EACH(struct int_list, node, list)
+        W_TEST_ASSERT(node->value == correct[ix++], "Value mismatch");
+    W_TEST_ASSERT(ix == 3, "FOR_EACH failed to go through all items");
+
+    W_CSLIST_FOR_EACH(struct int_list, node, list)
+        free(node);
+)
+
+W_TEST(W_CSLIST_PREPEND,
+    struct int_list {
+        int value;
+        struct int_list* next;
+    };
+
+    struct int_list* a = W_STRUCT_NEW(struct int_list, .value=1);
+    struct int_list* b = W_STRUCT_NEW(struct int_list, .value=2);
+    struct int_list* c = W_STRUCT_NEW(struct int_list, .value=3);
+
+    struct int_list* list = NULL;
+    W_CSLIST_PREPEND(struct int_list, list, a);
+    W_CSLIST_PREPEND(struct int_list, list, b);
+    W_CSLIST_PREPEND(struct int_list, list, c);
+
+    int correct[] = { 3, 2, 1 };
+    int ix=0;
+
+    W_CSLIST_FOR_EACH(struct int_list, node, list)
+        W_TEST_ASSERT(node->value == correct[ix++], "Value mismatch");
+    W_TEST_ASSERT(ix == 3, "FOR_EACH failed to go through all items");
+
+    W_CSLIST_FOR_EACH(struct int_list, node, list)
+        free(node);
+)
 
 #endif
 

@@ -155,6 +155,7 @@ W_TEST(W_SLIST_APPEND,
 
     W_SLIST_FOR_EACH(struct int_list, node, list)
         W_TEST_ASSERT(node->value == correct[ix++], "Value mismatch");
+    W_TEST_ASSERT(ix == 3, "FOR_EACH failed to go through all items");
 
     W_SLIST_FOR_EACH(struct int_list, node, list)
         free(node);
@@ -180,6 +181,7 @@ W_TEST(W_SLIST_PREPEND,
 
     W_SLIST_FOR_EACH(struct int_list, node, list)
         W_TEST_ASSERT(node->value == correct[ix++], "Value mismatch");
+    W_TEST_ASSERT(ix == 3, "FOR_EACH failed to go through all items");
 
     W_SLIST_FOR_EACH(struct int_list, node, list)
         free(node);
