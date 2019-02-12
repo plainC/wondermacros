@@ -28,7 +28,9 @@
 #include <boost/preprocessor/control/expr_if.hpp>
 
 #ifndef W_DEBUG_FUNC
-# include <stdio.h>
+# ifndef WDEBUG_EXPAND
+#  include <stdio.h>
+# endif
 # define W_DEBUG_FUNC fprintf
 #endif
 

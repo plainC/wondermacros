@@ -36,12 +36,16 @@
 
 
 #ifndef W_MALLOC
-# include <stdlib.h>
+# ifndef WDEBUG_EXPAND
+#  include <stdlib.h>
+# endif
 # define W_MALLOC(size) malloc(size)
 #endif
 
 #ifndef W_MALLOC0
-# include <string.h>
+# ifndef WDEBUG_EXPAND
+#  include <string.h>
+# endif
 # define W_MALLOC0(size) memset(malloc(size), 0, size)
 #endif
 

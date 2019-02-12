@@ -1,5 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef WDEBUG_EXPAND
+# include <stdio.h>
+# include <stdlib.h>
+#endif
+
 #include <wondermacros/test/test.h>
 
 #ifndef W_XFILE
