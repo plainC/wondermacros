@@ -1,5 +1,14 @@
 ## Compiler Tools
     
+### W_BYTE_OFFSET(ptr1,ptr2)
+#### Arguments
+```C
+ptr1                 a pointer
+ptr2                 a pointer
+```
+#### Description
+    Use W_BYTE_OFFSET to count the offset of two pointers. The offset is negative if ptr1 is before ptr2.
+    
 ### W_HIDDEN_CONTAINER_OF(ptr,T)
 #### Arguments
 ```C
