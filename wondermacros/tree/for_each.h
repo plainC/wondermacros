@@ -56,7 +56,7 @@
     W_TREE_NEXT(tree,W_TREE_GET_DEGREE(tree)-1)
 
 #define W_TREE_FOR_EACH_IMMEDIATE(T,node,tree)                                 \
-    W_DECLARE(10, T* node)                                                     \
+    W_DECLARE(W_CAT(node,10), T* node)                                         \
     for (int W_CAT(node,_ix)=0; W_CAT(node,_ix) < W_TREE_GET_DEGREE(node)      \
          && (node = W_TREE_NEXT(tree,W_CAT(node,_ix)),1); W_CAT(node,_ix)++)   \
         if (node == NULL)                                                      \
@@ -64,7 +64,7 @@
         else
 
 #define W_TREE_FOR_EACH_IMMEDIATE_REVERSED(T,node,tree)                        \
-    W_DECLARE(10, T* node)                                                     \
+    W_DECLARE(W_CAT(node,10), T* node)                                         \
     for (int W_CAT(node,_ix) = W_TREE_GET_DEGREE(node)-1;                      \
          W_CAT(node,_ix) >= 0                                                  \
          && (node = W_TREE_NEXT(tree, W_CAT(node,_ix)),1);                     \
@@ -164,6 +164,10 @@
             )                                                                                  \
             /**/
 
+#define W_TREE_FREE(T,root) \
+    W_TREE_FOR_EACH_POSTORDER(T,W_ID(_TREE_FREE_),root) \
+        W_FREE(W_ID(_TREE_FREE_))
+
 /*Unit Test*/
 
 #ifndef W_TEST
@@ -194,6 +198,8 @@ W_TEST(W_TREE_FOR_EACH_PREORDER,
 
     W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
     ix=0;
+
+    W_TREE_FREE(struct bintree, root);
 )
 
 W_TEST(W_TREE_FOR_EACH_PREORDER_reversed,
@@ -215,6 +221,59 @@ W_TEST(W_TREE_FOR_EACH_PREORDER_reversed,
 #define W_REVERSED 1
     W_TREE_FOR_EACH_PREORDER(struct bintree, n, root)
         W_TEST_ASSERT(n->value == correct[ix++], "Value mismatch");
+
+    W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
+    ix=0;
+
+    W_TREE_FREE(struct bintree, root);
+)
+
+
+W_TEST(W_TREE_FOR_EACH_POSTORDER,
+    struct bintree {
+        int value;
+        struct bintree* next[2];
+    };
+    struct bintree* root = W_STRUCT_NEW(struct bintree, .value=45,
+        .next[0] = W_STRUCT_NEW(struct bintree, .value=13,
+            .next[0] = W_STRUCT_NEW(struct bintree, .value=7),
+            .next[1] = W_STRUCT_NEW(struct bintree, .value=19)),
+        .next[1] = W_STRUCT_NEW(struct bintree, .value=74));
+
+    int correct[] = {7,19,13,74,45};
+    int ix=0;
+
+#undef W_REVERSED
+#define W_REVERSED 0
+    W_TREE_FOR_EACH_POSTORDER(struct bintree, np, root) {
+        W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch");
+        free(np);
+    }
+
+    W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
+    ix=0;
+)
+
+W_TEST(W_TREE_FOR_EACH_POSTORDER_reversed,
+    struct bintree {
+        int value;
+        struct bintree* next[2];
+    };
+    struct bintree* root = W_STRUCT_NEW(struct bintree, .value=45,
+        .next[0] = W_STRUCT_NEW(struct bintree, .value=13,
+            .next[0] = W_STRUCT_NEW(struct bintree, .value=7),
+            .next[1] = W_STRUCT_NEW(struct bintree, .value=19)),
+        .next[1] = W_STRUCT_NEW(struct bintree, .value=74));
+
+    int correct[] = {74,19,7,13,45};
+    int ix=0;
+
+#undef W_REVERSED
+#define W_REVERSED 1
+    W_TREE_FOR_EACH_POSTORDER(struct bintree, np, root) {
+        W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d (at %d)", correct[ix-1], ix-1);
+        free(np);
+    }
 
     W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
     ix=0;
