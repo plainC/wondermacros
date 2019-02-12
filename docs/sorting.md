@@ -47,7 +47,7 @@ T                    type name
 #### Description
     Use W_VARIADIC_SORT to sort variables (or array references etc.) in-place.
     This is probably the fastest method to get the job done.
-    Redefine COMPARE to alter comparison method.
+    Redefine W_COMPARE to alter comparison method.
 #### Return Value
 This is a statement macro.
 #### Notes

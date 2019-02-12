@@ -120,15 +120,16 @@
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
  ***/
 #define W_TREE_FOR_EACH_POSTORDER(T,Child,self)                                                \
-    W_DECLARE(W_CAT(Child,po1), T *Child)                                                                     \
-    W_DECLARE(W_CAT(Child,po2), T* W_ID(node) = (self))                                                      \
-    W_DECLARE(W_CAT(Child,po3), T** W_ID(stack) = NULL )                                                      \
+    W_DECLARE(W_CAT(Child,po1), T *Child)                                                      \
+    W_DECLARE(W_CAT(Child,po2), T* W_ID(node) = (self))                                        \
+    W_DECLARE(W_CAT(Child,po3), T** W_ID(stack) = NULL )                                       \
+    W_DECLARE(W_CAT(Child,po9), int W_ID(_finish_) = 0 )                                       \
     if (W_ID(node) == NULL)                                                                    \
         ;                                                                                      \
     else                                                                                       \
-        W_BEFORE(W_CAT(Child,po4), goto W_LABEL(6,Child); )                                                   \
-        while (!W_DYNAMIC_STACK_IS_EMPTY(W_ID(stack)))                                         \
-            W_BEFORE (W_CAT(Child,po5),                                                                       \
+        W_BEFORE(W_CAT(Child,po4), goto W_LABEL(6,Child); )                                    \
+        while (!W_ID(_finish_))                                                                \
+            W_BEFORE (W_CAT(Child,po5),                                                        \
               W_LABEL(6,Child):                                                                \
                 while (W_ID(node)) {                                                           \
                     BOOST_PP_IF(W_REVERSED,                                                    \
@@ -166,10 +167,24 @@
                 Child = W_ID(node);                                                            \
                 W_ID(node) = NULL;                                                             \
             )                                                                                  \
+            W_AFTER(W_CAT(Child,po8),                                                          \
+                W_ID(_finish_) = W_DYNAMIC_STACK_IS_EMPTY(W_ID(stack));                        \
+                if (W_ID(_finish_))                                                            \
+                    W_DYNAMIC_STACK_FREE(W_ID(stack));                                         \
+            )                                                                                  \
             /**/
 
-#define W_TREE_FREE(T,root) \
-    W_TREE_FOR_EACH_POSTORDER(T,W_ID(_TREE_FREE_),root) \
+
+/***
+ *** Name:        W_TREE_FREE
+ *** Proto:       W_TREE_FREE(T,self)
+ *** Arg:         T          type name of tree nodes
+ *** Arg:         self       a tree
+ *** Description: Use W_TREE_FREE to free all nodes in a tree.
+ *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
+ ***/
+#define W_TREE_FREE(T,root)                                              \
+    W_TREE_FOR_EACH_POSTORDER(T,W_ID(_TREE_FREE_),root)                  \
         W_FREE(W_ID(_TREE_FREE_))
 
 /*Unit Test*/
