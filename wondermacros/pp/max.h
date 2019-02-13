@@ -37,5 +37,25 @@
  ***/
 #define W_PP_MAX(a,b) BOOST_PP_IF(BOOST_PP_GREATER_EQUAL(a,b),a,b)
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_PP_MAX,
+#if W_PP_MAX(2,5) == 5
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+#if W_PP_MAX(8,4) == 8
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+)
+
 #endif
 

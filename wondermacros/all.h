@@ -10,6 +10,7 @@ W_TEST_GROUP("Meta")
 
 /**/
 
+#include <wondermacros/pp/all.h>
 #include <wondermacros/misc/all.h>
 #include <wondermacros/sorting/all.h>
 #include <wondermacros/math/all.h>

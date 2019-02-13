@@ -37,5 +37,25 @@
  ***/
 #define W_PP_MIN(a,b) BOOST_PP_IF(BOOST_PP_LESS_EQUAL(a,b),a,b)
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_PP_MIN,
+#if W_PP_MIN(2,5) == 2
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+#if W_PP_MIN(8,4) == 4
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+)
+
 #endif
 
