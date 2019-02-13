@@ -52,6 +52,8 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
     .meta.name = BOOST_PP_STRINGIZE(CLASS),
     .meta.size = sizeof(struct W_CAT_INNER(CLASS,__private)),
 
+    .free = W_CAT(CLASS,_free),
+
     /* Expand method interface. */
 # define VAR(...)
 # define OVERLOAD(C,name) \

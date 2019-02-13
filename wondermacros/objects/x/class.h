@@ -72,6 +72,9 @@ struct W_CAT(CLASS,__class_private) {
         int (*get_property_offset)(const char* name);
     } meta;
 
+    /* Add free method. */
+    void (*free)(struct W_CAT(CLASS,_PRIVATE)* self);
+
     /* Expand public method interface. */
 # define VAR(...)
 # define OVERLOAD(...)

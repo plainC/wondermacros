@@ -46,7 +46,7 @@ void W_CAT(CLASS,___finalize)(struct W_CAT(CLASS,__private)* self);
 #endif
 
 void
-W_CAT(CLASS,_free)(struct CLASS* self)
+W_CAT(CLASS,_free)(struct W_CAT(CLASS,__private)* self)
 #ifdef W_CLASS_DECLARE
 ;
 #endif
