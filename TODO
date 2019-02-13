@@ -1,0 +1,17 @@
+TODO:
+=====
+
+Data Structures
+* Add heap
+* Add Avl-tree
+
+FSM
+* Finish UML state machine macros
+
+W_HIDDEN_OF
+* Fix alignment issues
+
+Other
+* Add full test coverage
+* Improve docs
+

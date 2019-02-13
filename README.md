@@ -4,6 +4,9 @@
 
 Wondermacros package provides useful building blocks for C programmers from
 general purpose data structures to object-oriented programming frameworks.
+We provide various data structures and X-macros for more complex tasks like
+object-oriented programming in C.
+
 This project is still a work in progress, so stay tuned.
 
 We try not to reinvent the wheel and build on top of [Boost pre-processor
@@ -25,13 +28,16 @@ under /usr/include, type 'make install' as root.
 
 ## #xamples
 
-See some examples under examples directory.
+See some examples under examples directory. To build them, first install
+Wondermacros using 'make install' as root.  Then type 'make'. This will also
+build the regression test suite (see the next chapter).
+
 
 ## Regression Test Set
 
-To run regression tests, go to under main level directory test and type make to compile.
-The regression tests are written directly to the macro files. To run all tests type ./wondermacros
-after building the test set.
+To run regression tests, go to under main level directory test and type make
+to compile. The regression tests are written directly to the macro files.
+To run all tests type ./test/wondermacros after building the test set.
 
 
 ## Macro Reference
