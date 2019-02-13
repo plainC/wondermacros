@@ -1,5 +1,13 @@
 ## Hash Table
     
+### W_HASH_TABLE_GET_SIZE(H)
+#### Arguments
+```C
+H                    a pointer to a hash table.
+```
+#### Description
+    Use W_HASH_TABLE_GET_SIZE to get the number of mappings in a hash table.
+    
 ### W_HASH_TABLE_INIT(H,pow2_size)
 #### Arguments
 ```C

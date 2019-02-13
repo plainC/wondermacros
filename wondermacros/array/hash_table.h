@@ -80,6 +80,15 @@
 #define W_HASH_TABLE_SIZE(H)                                                       \
     W_HIDDEN_OF(H, W_HASH_TABLE_HEADER_TYPE, nbr_of_elems)
 
+/***
+ *** Name:        W_HASH_TABLE_GET_SIZE
+ *** Proto:       W_HASH_TABLE_GET_SIZE(H)
+ *** Arg:         H          a pointer to a hash table.
+ *** Description: Use W_HASH_TABLE_GET_SIZE to get the number of mappings in a hash table.
+ ***/
+#define W_HASH_TABLE_GET_SIZE(H)                                                       \
+    ((H) ? W_HASH_TABLE_SIZE(H) : 0)
+
 
 #define W_HASH_TABLE_ELEM_SIZE(H)                                                  \
     (sizeof((H)[0]))
@@ -195,9 +204,9 @@
  *** Description: Use W_HASH_TABLE_FREE to free a hash table.
  ***/
 #define W_HASH_TABLE_FOR_EACH_MATCH(T,match,H,Key)                                 \
-    W_DECLARE(1, T* match)                                                         \
-    W_DECLARE(2, int W_ID(slot))                                                   \
-    W_BEFORE(3,                                                                    \
+    W_DECLARE(W_CAT(match,1), T* match)                                                         \
+    W_DECLARE(W_CAT(match,2), int W_ID(slot))                                                   \
+    W_BEFORE(W_CAT(match,3),                                                                    \
         W_HASH(Key, W_ID(slot));                                                   \
         W_ID(slot) = W_HASH_TABLE_HASH_TO_SLOT(W_ID(slot),                         \
              W_HIDDEN_OF(H, W_HASH_TABLE_HEADER_TYPE, alloc_size));                \
@@ -249,5 +258,37 @@
         }                                                                          \
     )
 
+/*Unit test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
 #endif
 
+#ifndef W_TEST_GROUP
+# define W_TEST_GROUP(...)
+#endif
+
+W_TEST_GROUP("Hash Table")
+
+W_TEST(W_HASH_TABLE_PUSH,
+    struct map {
+        int key;
+        const char* value;
+    };
+    struct map* hash = NULL;
+    W_HASH_TABLE_PUSH(struct map, hash, 15, "eka");
+    W_HASH_TABLE_PUSH(struct map, hash, 2, "toka");
+    W_HASH_TABLE_PUSH(struct map, hash, 7, "kolmas");
+    W_HASH_TABLE_PUSH(struct map, hash, 44, "vika");
+
+    W_TEST_ASSERT(W_HASH_TABLE_GET_SIZE(hash) == 4, "Hash table size mismatch");
+
+    W_HASH_TABLE_FOR_EACH_MATCH(struct map, v, hash, 2)
+        W_TEST_ASSERT(strcmp(v->value, "toka")==0, "Invalid match");
+    W_HASH_TABLE_FOR_EACH_MATCH(struct map, v2, hash, 44)
+        W_TEST_ASSERT(strcmp(v2->value, "vika")==0, "Invalid match");
+
+    W_HASH_TABLE_FREE(hash);
+)
+
+#endif
