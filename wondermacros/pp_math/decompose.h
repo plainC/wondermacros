@@ -30,7 +30,7 @@
 #include <boost/preprocessor/arithmetic/mul.hpp>
 
 #include <wondermacros/meta/cat.h>
-#include <wondermacros/pp/pow.h>
+#include <wondermacros/pp_math/pow.h>
 
 
 #define W_PP_DECOMPOSE(n) W_CAT(_W_PP_DECOMPOSITION_,n)
