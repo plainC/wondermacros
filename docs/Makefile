@@ -12,6 +12,7 @@ DOCS =                   \
 	slist.md         \
 	math.md          \
 	misc.md          \
+	object_api.md    \
 	pp_math.md       \
 	pp_char.md       \
 	meta.md          \
@@ -21,6 +22,10 @@ DOCS =                   \
 	tree.md          \
 
 all: $(DOCS)
+
+object_api.md: ../wondermacros/objects/api.h
+	echo "## Object-Oriented Programming API" > object_api.md
+	cd ../wondermacros/objects && ../../tools/api_tool.pl api.h >> ../../docs/object_api.md
 
 array.md: ../wondermacros/array/get_size.h
 	echo "## Generic Array Macros" > array.md

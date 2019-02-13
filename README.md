@@ -57,6 +57,7 @@ To run all tests type ./test/wondermacros after building the test set.
 ### [Trees](https://github.com/plainC/wondermacros/blob/master/docs/tree.md)
 
 ## Others
+### [Object-Oriented API](https://github.com/plainC/wondermacros/blob/master/docs/object_api.md)
 ### [Generic Array Macros](https://github.com/plainC/wondermacros/blob/master/docs/array.md)
 ### [Pointer Macros](https://github.com/plainC/wondermacros/blob/master/docs/pointer.md)
 ### [Debugging](https://github.com/plainC/wondermacros/blob/master/docs/debug.md)

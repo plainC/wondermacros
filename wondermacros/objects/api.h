@@ -33,6 +33,13 @@
 #include <boost/preprocessor/variadic/size.hpp>
 #include <boost/preprocessor/variadic/elem.hpp>
 
+/***
+ *** Name:        W_NEW
+ *** Proto:       W_NEW(T [,...])
+ *** Arg:         T     a class name
+ *** Arg:         ...   values to be set (e.g. W_NEW(point, .x=1, .y=2))
+ *** Description: Use W_NEW to create (and to initialize) an object.
+ ***/
 #define W_NEW(...) (                                                    \
     (void*)                                                             \
     BOOST_PP_IF(BOOST_PP_EQUAL(BOOST_PP_VARIADIC_SIZE(__VA_ARGS__), 1), \
@@ -45,16 +52,57 @@
 
 
 
+/***
+ *** Name:        W_CALL
+ *** Proto:       W_CALL(self,method)(...)
+ *** Arg:         self     an object (an instance of a class)
+ *** Arg:         method   a method name to be called
+ *** Arg:         ...      arguments for the methods
+ *** Description: Use W_CALL to call a method of an object with arguments. The macro will expand self automatically as the first argument of the argument list in the method call.
+ ***/
 #define W_CALL(o,method) (((o)->klass->method) ((void*) o, W_CALL_CLOSE
 #define W_CALL_CLOSE(...) __VA_ARGS__))
 
+/***
+ *** Name:        W_CALL_VOID
+ *** Proto:       W_CALL_VOID(self,method)
+ *** Arg:         self     an object (an instance of a class)
+ *** Arg:         method   a method name to be called
+ *** Description: Use W_CALL_VOID to call a method of an object without any arguments.
+ ***/
 #define W_CALL_VOID(o,method) (((o)->klass->method)((void*) o))
 
+/***
+ *** Name:        W_CLASS
+ *** Proto:       W_CLASS(name)
+ *** Arg:         name     a class name
+ *** Description: Use W_CLASS to access the class instance.
+ ***/
 #define W_CLASS(name) W_CAT(name,__class_instance_ptr)
 
+/***
+ *** Name:        W_OBJECT_IS
+ *** Proto:       W_OBJECT_IS(self,T)
+ *** Arg:         self     an object
+ *** Arg:         T        a class name
+ *** Description: Use W_OBJECT_IS to test if an object is of a specific class.
+ ***/
 #define W_OBJECT_IS(o,type) ((void*) ((o)->klass) == W_CLASS(type))
+
+/***
+ *** Name:        W_OBJECT_AD
+ *** Proto:       W_OBJECT_AS(self,T)
+ *** Arg:         self     an object
+ *** Arg:         T        a class name
+ *** Description: Use W_OBJECT_AS to coerce an object to a specific class type.
+ ***/
 #define W_OBJECT_AS(o,type) ((struct type*)(o))
 
+/***
+ *** Name:        W_OBJECT_CLASS_NAME
+ *** Proto:       W_OBJECT_CLASS_NAME(self)
+ *** Description: Use W_OBJECT_CLASS_NAME to get a const char pointer to the name of the class.
+ ***/
 #define W_OBJECT_CLASS_NAME(o) ((o)->klass->meta.name)
 #define W_OBJECT_METHOD_BY_INDEX(o,ix) ((o)->klass->meta.method[(ix)])
 
