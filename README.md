@@ -26,7 +26,7 @@ J.P. Iivonen <wondermacros@yahoo.com>
 The package contains just header files. To install wondermacros directory
 under /usr/include, type 'make install' as root.
 
-## #xamples
+## Examples
 
 See some examples under examples directory. To build them, first install
 Wondermacros using 'make install' as root.  Then type 'make'. This will also
