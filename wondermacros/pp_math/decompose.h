@@ -33,6 +33,12 @@
 #include <wondermacros/pp_math/pow.h>
 
 
+/***
+ *** Name:        W_PP_DECOMPOSE
+ *** Proto:       W_PP_DECOMPOSE(n)
+ *** Arg:         n    an integer between 0...255
+ *** Description: Use W_PP_DECOMPOSE to get the decomposition of n at pre-processing time. The representation of the decomposition is a boost sequence. For example, W_PP_DECOMPOSE(156) expands to ((13)(1)) ((3)(1)) ((2)(2)), which means 13^1 * 3^1 * 2^2.
+ ***/
 #define W_PP_DECOMPOSE(n) W_CAT(_W_PP_DECOMPOSITION_,n)
 
 #define W_PP_COMPOSE(seq) W_CAT(_W_PP_COMPOSE_,BOOST_PP_SEQ_SIZE(seq))(seq)
@@ -304,5 +310,18 @@
 #define _W_PP_DECOMPOSITION_254 ((127)(1)) ((2)(1))
 #define _W_PP_DECOMPOSITION_255 ((17)(1)) ((5)(1)) ((3)(1))
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
 #endif
 
+W_TEST(W_PP_DECOMPOSED,
+#if BOOST_PP_SEQ_SIZE(W_PP_DECOMPOSE(7)) == 1
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+)
+
+#endif
