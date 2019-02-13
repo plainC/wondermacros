@@ -12,6 +12,7 @@ DOCS =                   \
 	slist.md         \
 	math.md          \
 	misc.md          \
+	pp_math.md       \
 	pp_char.md       \
 	meta.md          \
 	sorting.md       \
@@ -82,7 +83,6 @@ debug.md:
 meta.md:
 	echo "## Meta-programming" > meta.md
 	cd ../wondermacros/meta && ../../tools/api_tool.pl >> ../../docs/meta.md
-	cd ../wondermacros/pp && ../../tools/api_tool.pl >> ../../docs/meta.md
 
 math.md:
 	echo "## Mathematics" > math.md
@@ -95,6 +95,10 @@ misc.md:
 pp_char.md:
 	echo "## Pre-Processor Character and String Tools" > pp_char.md
 	cd ../wondermacros/pp_char && ../../tools/api_tool.pl >> ../../docs/pp_char.md
+
+pp_math.md:
+	echo "## Pre-Processor Mathematics" > pp_math.md
+	cd ../wondermacros/pp_math && ../../tools/api_tool.pl >> ../../docs/pp_math.md
 
 sorting.md:
 	echo "## Sorting" > sorting.md

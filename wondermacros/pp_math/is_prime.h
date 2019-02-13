@@ -32,9 +32,15 @@
 #include <boost/preprocessor/seq/elem.hpp>
 #include <boost/preprocessor/seq/size.hpp>
 
-#include <wondermacros/pp/decompose.h>
+#include <wondermacros/pp_math/decompose.h>
 
 
+/***
+ *** Name:        W_PP_IS_PRIME
+ *** Proto:       W_PP_IS_PRIME(n)
+ *** Arg:         n    an integer between 0...255
+ *** Description: Use W_PP_IS_PRIME to test if given argument is a prime number during pre-processing.
+ ***/
 #define W_PP_IS_PRIME(n)                                                                  \
     BOOST_PP_IF(BOOST_PP_GREATER(n,1),                                                    \
         BOOST_PP_AND(                                                                     \
@@ -43,5 +49,25 @@
         ),                                                                                \
         0                                                                                 \
     )
+
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_PP_IS_PRIME,
+#if W_PP_IS_PRIME(7)
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+#if W_PP_IS_PRIME(8)
+    W_TEST_ASSERT(0, "failed");
+#else
+    W_TEST_ASSERT(1, "ok");
+#endif
+)
 
 #endif
