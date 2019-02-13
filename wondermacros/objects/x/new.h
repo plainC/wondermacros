@@ -48,7 +48,7 @@ W_CAT(CLASS,_new)()
 #endif
 #ifdef W_CLASS_GENERATE
 {
-    struct W_CAT(CLASS,__private)* self = W_MALLOC(sizeof(struct W_CAT(CLASS,__private)));
+    struct W_CAT(CLASS,__private)* self = W_MALLOC0(sizeof(struct W_CAT(CLASS,__private)));
 
     if (!self)
         W_ERROR_ALLOCATION;
@@ -66,7 +66,7 @@ W_CAT(CLASS,_new_with)(struct CLASS* data)
 #endif
 #ifdef W_CLASS_GENERATE
 {
-    struct W_CAT(CLASS,__private)* self = W_MALLOC(sizeof(struct W_CAT(CLASS,__private)));
+    struct W_CAT(CLASS,__private)* self = W_MALLOC0(sizeof(struct W_CAT(CLASS,__private)));
 
     if (!self)
         W_ERROR_ALLOCATION;
