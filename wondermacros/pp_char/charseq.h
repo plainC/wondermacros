@@ -35,7 +35,7 @@
 #include <wondermacros/meta/cat.h>
 #include <wondermacros/meta/id.h>
 #include <wondermacros/math/min.h>
-#include <wondermacros/pp/min.h>
+#include <wondermacros/pp_math/min.h>
 #include <wondermacros/pp_char/to_int.h>
 #include <wondermacros/pp_char/to_char.h>
 

@@ -54,4 +54,29 @@
         }                                                            \
     )
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#else
+# include <wondermacros/pp_char/charseq.h>
+#endif
+
+W_TEST(W_FOR_STRING_AS_UINT,
+    const char* str = "Foo";
+    int ok = 0;
+
+    W_FOR_STRING_AS_UINT(unsigned, u, str) {
+        switch (u) {
+        case W_PP_CHARSEQ_TO_UINT(unsigned, (F)(o)(o)):
+            ok = 1;
+            break;
+        default:
+            W_TEST_ASSERT(0, "default branch");
+            break;
+        }
+    }
+    W_TEST_ASSERT(ok, "test failed");
+)
+
 #endif
