@@ -18,4 +18,5 @@ W_TEST_GROUP("Meta")
 #include <wondermacros/list/all.h>
 #include <wondermacros/array/all.h>
 #include <wondermacros/tree/all.h>
+#include <wondermacros/pp_char/all.h>
 #include <wondermacros/string/all.h>

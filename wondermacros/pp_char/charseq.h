@@ -143,4 +143,24 @@
 #define _W_PP_CHARSEQ_EQUAL_15(seq1,seq2) BOOST_PP_AND(_W_PP_CHARSEQ_EQUAL_14(seq1,seq2),_W_PP_CHARSEQ_EQUAL_N(seq1,seq2,14))
 #define _W_PP_CHARSEQ_EQUAL_16(seq1,seq2) BOOST_PP_AND(_W_PP_CHARSEQ_EQUAL_15(seq1,seq2),_W_PP_CHARSEQ_EQUAL_N(seq1,seq2,15))
 
+/*Unit Test*/
+
+#ifndef W_TEST
+# define W_TEST(...)
+#endif
+
+W_TEST(W_PP_CHARSEQ_EQUAL,
+#if W_PP_CHARSEQ_EQUAL((f)(o)(o),(f)(o)(o))
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+#if W_PP_CHARSEQ_EQUAL((f)(o)(o),(g)(o)(o))
+    W_TEST_ASSERT(0, "failed");
+#else
+    W_TEST_ASSERT(1, "ok");
+#endif
+)
+
 #endif
