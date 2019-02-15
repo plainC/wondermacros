@@ -38,6 +38,10 @@
 # define W_PREFIX
 #endif
 
+#ifndef W_INFIX
+# define W_INFIX(e) e
+#endif
+
 #ifndef W_POSTFIX
 # define W_POSTFIX
 #endif
@@ -50,7 +54,7 @@
 # define W_NAME_INDEX 0
 #endif
 
-#define W_VALUE(name) W_PREFIX name W_POSTFIX,
+#define W_VALUE(name) W_PREFIX W_INFIX(name) W_POSTFIX,
 
 #if W_NAME_INDEX == 0
 # define XMACRO(name,...) W_VALUE(name)
