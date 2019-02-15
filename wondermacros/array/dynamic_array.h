@@ -150,6 +150,8 @@
  ***/
 #define W_DYNAMIC_ARRAY_FREE(array)                                            \
     do {                                                                       \
+        if (!(array))                                                          \
+            break;                                                             \
         W_FREE(W_HIDDEN_CONTAINER_OF(array,W_DYNAMIC_ARRAY_HEADER_TYPE));      \
         (array) = NULL;                                                        \
     } while (0)
