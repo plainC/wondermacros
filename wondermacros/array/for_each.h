@@ -62,4 +62,11 @@
          elem ## _ix < W_ID(size) && (elem = W_GET(array, elem ## _ix), 1); \
          ++elem ## _ix)
 
+
+#define W_ARRAY_FOR_EACH_PTR(T,elemp,array,Size)                             \
+    W_DECLARE(_array_for_each_, T* elemp)                                    \
+    for (int elemp ## _ix=0, W_ID(size) = (Size);                             \
+         elemp ## _ix < W_ID(size) && (elemp = &W_GET(array, elemp ## _ix), 1); \
+         ++elemp ## _ix)
+
 #endif
