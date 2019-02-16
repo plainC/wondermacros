@@ -2,11 +2,12 @@
 
 ## Intro
 
-Wondermacros aims to bring in features of modern programming languages to C
+The mission of Wondermacros is to bring in features of modern programming languages to C
 through macros.  C macros in general are not recommended for a reason.  Most
 of the issues can be avoided by writting macros using strict guidelines but
 the biggest issue remains; programs having macros may be hard to debug and
-maintain. Thus, Wondermacros are just for the best and bravest C programmers.
+maintain. The good news is that there exists methods to overcome many of these
+issues but they require specific expertices. So a word of warning is in place.
 
 Wondermacros is for C11 standard at the moment. Most of the macros are fully
 functional with C99 as well.
@@ -21,9 +22,11 @@ Wondermacros aims to provide full programming platform toolkit including
   * Singly-linked list
   * Doubly-linked list
   * Singly-linked circular list
+* Unit testing framework
 * Various X-macros to expand code from compact specifications in consistent
 manner
 * Iterative generic tree traversal macros: for_each_preorder and for_each_postorder
+* Generic tuples
 * Generic array manipulation: get_size (for statically allocated arrays), for_each, for_each_reversed, move_left, and move_right
 * Pointer macros
 * Sorting macros
@@ -33,11 +36,13 @@ manner
 
 This project is still a work in progress, so stay tuned. The following major
 enhancements are planned:
-* Dynamic arrays and other data structures using W_HIDDEN macros underneath does not yet support propert alignment
 * AVL tree, and heap
+* Dynamic arrays and other data structures using W_HIDDEN macros underneath does not yet support propert alignment
 
 We try not to reinvent the wheel and build on top of [Boost pre-processor
 library](https://www.boost.org/doc/libs/1_67_0/libs/preprocessor/doc/index.html).
+So Boost must be installed. Boost in general is a C++ framework but the pre-processor
+library is just for pre-processor. Nothing in it is C++ specific.
 
 We will also incorporate some great macros of others. For instance, some
 macros build on Simon Tatham's [metaprogramming macros](https://www.chiark.greenend.org.uk/~sgtatham/mp/)
@@ -85,6 +90,7 @@ To run all tests type ./test/wondermacros after building the test set.
 ### [Doubly-Linked List](https://github.com/plainC/wondermacros/blob/master/docs/dlist.md)
 ### [Singly-Linked Circular List](https://github.com/plainC/wondermacros/blob/master/docs/cslist.md)
 ### [Trees](https://github.com/plainC/wondermacros/blob/master/docs/tree.md)
+### [Tuples](https://github.com/plainC/wondermacros/blob/master/docs/tuple.md)
 
 ## Others
 ### [Object-Oriented API](https://github.com/plainC/wondermacros/blob/master/docs/object_api.md)

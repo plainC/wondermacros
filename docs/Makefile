@@ -18,6 +18,7 @@ DOCS =                   \
 	meta.md          \
 	sorting.md       \
 	string.md        \
+	tuple.md         \
 	test.md          \
 	tree.md          \
 
@@ -92,6 +93,10 @@ meta.md:
 math.md:
 	echo "## Mathematics" > math.md
 	cd ../wondermacros/math && ../../tools/api_tool.pl >> ../../docs/math.md
+
+tuple.md:
+	echo "## Tuples" > tuple.md
+	cd ../wondermacros/tuples && ../../tools/api_tool.pl >> ../../docs/tuple.md
 
 misc.md:
 	echo "## Misc" > misc.md
