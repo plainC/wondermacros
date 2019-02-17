@@ -28,8 +28,8 @@
 /***
  *** Name:        W_REF_VOID_PTR
  *** Proto:       W_REF_VOID_PTR(ptr,offset)
- *** Arg:         ptr     a pointer       A pointer to be referenced by an offset.
- *** Arg:         offset  an offset       An offset in bytes.
+ *** Arg:         ptr      a pointer to be referenced by an offset.
+ *** Arg:         offset   an offset in bytes.
  *** Description: Use W_REF_VOID_PTR to reference a void pointer using an offset in bytes.
  ***/
 #define W_REF_VOID_PTR(ptr,offset) \

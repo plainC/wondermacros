@@ -9,6 +9,17 @@ ptr2                 a pointer
 #### Description
     Use W_BYTE_OFFSET to count the offset of two pointers. The offset is negative if ptr1 is before ptr2.
     
+### W_FOR_ALIGNED_PTR(T,alignedp,origp,pow2)
+#### Arguments
+```C
+T                    a type name (must be pointer type, e.g. `void*`)
+alignedp             a free identifier name for the aligned pointer
+origp                a pointer to be aligned
+pow2                 alignment (power of 2)
+```
+#### Description
+    Use W_FOR_ALIGNED_PTR to get a properly alinged pointer.
+    
 ### W_HIDDEN_CONTAINER_OF(ptr,T)
 #### Arguments
 ```C
@@ -31,8 +42,8 @@ member               member field name of the header.
 ### W_REF_VOID_PTR(ptr,offset)
 #### Arguments
 ```C
-ptr                  a pointer       A pointer to be referenced by an offset.
-offset               an offset       An offset in bytes.
+ptr                  a pointer to be referenced by an offset.
+offset               an offset in bytes.
 ```
 #### Description
     Use W_REF_VOID_PTR to reference a void pointer using an offset in bytes.
