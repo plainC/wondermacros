@@ -3,6 +3,7 @@
 #define ColoredPoint__define    \
     /* Inherits */              \
     Point__define               \
+    INHERIT(Point)              \
                                 \
     OVERLOAD(ColoredPoint,draw) \
                                 \
