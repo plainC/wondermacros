@@ -10,6 +10,16 @@ a                    a value
 #### Notes
 Redefine W_GE, W_ZERO and W_NEG to change the default operators.
     
+### W_FOR_CEILING_POW2(T,pow2,a)
+#### Arguments
+```C
+T                    an unsigned type name (e.g. `unsigned` or `uint64_t`)
+pow2                 a free variable name to be assigned
+a                    a value
+```
+#### Description
+    Use W_FOR_CEILING_POW2 to round up to next power of two.
+    
 ### W_MAX(...)
 #### Arguments
 ```C
