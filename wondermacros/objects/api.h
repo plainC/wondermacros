@@ -25,6 +25,12 @@
 #ifndef __W_OBJECTS_API_H
 #define __W_OBJECTS_API_H
 
+#ifdef W_OBJECT_CAST_TO_VOID
+# define W_OBJECT_CASTING 1
+#else
+# define W_OBJECT_CASTING 0
+#endif
+
 #ifndef WDEBUG_EXPAND
 # include <strings.h>
 #endif
@@ -41,13 +47,14 @@
  *** Description: Use W_NEW to create (and to initialize) an object.
  ***/
 #define W_NEW(...) (                                                    \
-    (void*)                                                             \
+    BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*))                          \
     BOOST_PP_IF(BOOST_PP_EQUAL(BOOST_PP_VARIADIC_SIZE(__VA_ARGS__), 1), \
         W_CAT(BOOST_PP_VARIADIC_ELEM(0,__VA_ARGS__),_new)(),            \
         _W_NEW(__VA_ARGS__)                                             \
     )                                                                   \
 )
-#define _W_NEW(T,...) \
+#define _W_NEW(T,...)                                                   \
+    BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*))                          \
     W_CAT(T,_new_with)(&((struct W_CAT(T)){__VA_ARGS__}))
 
 
@@ -60,7 +67,8 @@
  *** Arg:         ...      arguments for the methods
  *** Description: Use W_CALL to call a method of an object with arguments. The macro will expand self automatically as the first argument of the argument list in the method call.
  ***/
-#define W_CALL(o,method) (((o)->klass->method) ((void*) o, W_CALL_CLOSE
+#define W_CALL(o,method) (((o)->klass->method) \
+    (BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*))(o), W_CALL_CLOSE
 #define W_CALL_CLOSE(...) __VA_ARGS__))
 
 /***
@@ -70,7 +78,8 @@
  *** Arg:         method   a method name to be called
  *** Description: Use W_CALL_VOID to call a method of an object without any arguments.
  ***/
-#define W_CALL_VOID(o,method) (((o)->klass->method)((void*) o))
+#define W_CALL_VOID(o,method)                  \
+    (((o)->klass->method)(BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*)) (o)))
 
 /***
  *** Name:        W_CLASS

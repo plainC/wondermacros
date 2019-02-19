@@ -3,6 +3,7 @@
 #ifndef WDEBUG_EXPAND
 #include <wondermacros/meta/declare.h>
 # include <stdio.h>
+# define W_OBJECT_CAST_TO_VOID
 # include <wondermacros/objects/api.h>
 #endif
 

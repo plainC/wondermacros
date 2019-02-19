@@ -8,6 +8,7 @@ struct view_context {
 };
 
 #include "classes_declare.h"
+#define W_OBJECT_CAST_TO_VOID
 
 #include "model.h"
 

@@ -2,6 +2,7 @@
 
 #ifndef WDEBUG_EXPAND
 # include <stdio.h>
+# define W_OBJECT_CAST_TO_VOID
 # include <wondermacros/objects/api.h>
 # include <wondermacros/array/dynamic_array.h>
 #endif
@@ -17,12 +18,8 @@
 #include "css_selector.h"
 #include "css_elem.h"
 #include "js_elem.h"
-#include "ptr_string.h"
-#include "ptr_int.h"
-#include "ptr_double.h"
 #include "cond.h"
 #include "array.h"
-#include "tree.h"
 
 #include "var_int.h"
 #include "var_double.h"
