@@ -1,11 +1,12 @@
 DOCS =                   \
 	array.md         \
-	pointer.md      \
+	pointer.md       \
 	char.md          \
 	debug.md         \
 	deque.md         \
 	dynamic_array.md \
 	dynamic_stack.md \
+	exceptions.md    \
 	hash_table.md    \
 	dlist.md         \
 	cslist.md        \
@@ -64,6 +65,10 @@ test.md: ../wondermacros/test/test.h
 deque.md: ../wondermacros/array/deque.h
 	echo "## Deque" > deque.md
 	cd ../wondermacros/array && ../../tools/api_tool.pl deque.h >> ../../docs/deque.md
+
+exceptions.md: ../wondermacros/exceptions/exceptions.h
+	echo "## Exceptions" > exceptions.md
+	cd ../wondermacros/exceptions && ../../tools/api_tool.pl >> ../../docs/exceptions.md
 
 dynamic_stack.md: ../wondermacros/array/dynamic_stack.h
 	echo "## Dynamic Stack" > dynamic_stack.md
