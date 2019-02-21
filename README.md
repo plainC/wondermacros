@@ -23,6 +23,7 @@ Wondermacros aims to provide full programming platform toolkit including
   * Doubly-linked list
   * Singly-linked circular list
 * Unit testing framework
+* Exception framework
 * Various X-macros to expand code from compact specifications in consistent
 manner
 * Iterative generic tree traversal macros: for_each_preorder and for_each_postorder
@@ -94,6 +95,7 @@ To run all tests type ./test/wondermacros after building the test set.
 
 ## Others
 ### [Object-Oriented API](https://github.com/plainC/wondermacros/blob/master/docs/object_api.md)
+### [Exceptions](https://github.com/plainC/wondermacros/blob/master/docs/exceptions.md)
 ### [Generic Array Macros](https://github.com/plainC/wondermacros/blob/master/docs/array.md)
 ### [Pointer Macros](https://github.com/plainC/wondermacros/blob/master/docs/pointer.md)
 ### [Debugging](https://github.com/plainC/wondermacros/blob/master/docs/debug.md)
