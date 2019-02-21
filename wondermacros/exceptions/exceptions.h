@@ -25,6 +25,8 @@
 #define __W_EXCEPTIONS_H__
 
 
+#include <wondermacros/exceptions/default_policy.h>
+
 #include <setjmp.h>
 #include <assert.h>
 #include <string.h>
@@ -35,6 +37,7 @@
 #include <wondermacros/array/get_size.h>
 #include <wondermacros/meta/id.h>
 #include <wondermacros/meta/declare.h>
+#include <wondermacros/meta/after.h>
 #include <wondermacros/meta/before.h>
 #include <wondermacros/meta/finally.h>
 #include <boost/preprocessor/control/if.hpp>
@@ -68,6 +71,19 @@
         *w_exception_ptr = w_exception_stack            \
 
 /***
+ *** Name:        W_EXCEPTION_RESET_LAST
+ *** Proto:       W_EXCEPTION_RESET_LAST
+ *** Description: Use W_EXCEPTION_RESET_LAST to clear all data related to last exception. with extern prefix and with emphty size argument.
+ ***/
+#define W_EXCEPTION_RESET_LAST                          \
+    (*(w_exception_ptr+1)).status =                     \
+        (*(w_exception_ptr+1))._errno =                 \
+        (*(w_exception_ptr+1)).line =                   \
+        (*(w_exception_ptr+1)).message[0] = 0,          \
+    (*(w_exception_ptr+1)).func =                       \
+        (*(w_exception_ptr+1)).file = NULL 
+
+/***
  *** Name:        W_TRY
  *** Proto:       W_TRY
  *** Description: Use W_TRY to run code which may cause exceptions. Use W_THROW to throw an exception inside W_TRY block. Use W_CATCH or W_CATCH_ALL to catch exceptions after W_TRY block.
@@ -76,14 +92,16 @@
 #define W_TRY                                           \
     W_DECLARE(0, int W_ID(done))                        \
     W_BEFORE(1,                                         \
-        if (++w_exception_ptr == &w_exception_stack     \
+        if (w_exception_ptr+1 == &w_exception_stack     \
             [W_ARRAY_GET_SIZE(w_exception_stack)]) {    \
             fprintf(stderr, "FATAL ERROR: "             \
                 "Exception stack overflow. "            \
                 "Too many nested W_TRYs.\n");           \
             exit(1);                                    \
         }                                               \
-        (*w_exception_ptr).status = 0;                  \
+        errno = 0;                                      \
+        W_EXCEPTION_RESET_LAST;                         \
+        ++w_exception_ptr;                              \
         if (setjmp((*w_exception_ptr).buf))             \
             W_ID(done) = 1;                             \
         else                                            \
@@ -128,20 +146,22 @@
  *** Name:        W_CATCH
  *** Proto:       W_CATCH(err)
  *** Arg:         err   an integer other than zero
- *** Description: Use W_CATCH to catch exceptions of a given error class.
+ *** Description: Use W_CATCH to catch exceptions of a given error class. It will clear the last exception from memory so another catch following will not trigger.
  ***/
 #define W_CATCH(err)                                    \
-    if ((*(w_exception_ptr+1)).status != (err))         \
-    {} else
+    for (int W_ID(catch)=1; W_ID(catch) &&              \
+        (*(w_exception_ptr+1)).status == (err);         \
+        W_EXCEPTION_RESET_LAST,W_ID(catch)=0)           \
 
 /***
  *** Name:        W_CATCH_ALL
  *** Proto:       W_CATCH_ALL
- *** Description: Use W_CATCH_ALL to catch exceptions of all kinds.
+ *** Description: Use W_CATCH_ALL to catch exceptions of all kinds. It will clear the last exception from memory so another catch following will not trigger.
  ***/
 #define W_CATCH_ALL                                     \
-    if (!(*(w_exception_ptr+1)).status)                 \
-    {} else
+    for (int W_ID(catch)=1; W_ID(catch) &&              \
+        (*(w_exception_ptr+1)).status;                  \
+        W_EXCEPTION_RESET_LAST,W_ID(catch)=0)           \
 
 /***
  *** Name:        W_EXCEPTION_FPRINTF
@@ -149,16 +169,19 @@
  *** Description: Use W_EXCEPTION_FPRINTF to print an error message of latest exception into a file (e.g. stderr).
  ***/
 #define W_EXCEPTION_FPRINTF(out)                        \
-    fprintf(out, "[%s:%d:%s][%d%s%s] %s\n",             \
-        (*(w_exception_ptr+1)).file,                    \
-        (*(w_exception_ptr+1)).line,                    \
-        (*(w_exception_ptr+1)).func,                    \
-        (*(w_exception_ptr+1))._errno,                  \
-        (*(w_exception_ptr+1))._errno ? ":" : "",       \
-        (*(w_exception_ptr+1))._errno ?                 \
-            strerror((*(w_exception_ptr+1))._errno) :   \
-            "",                                         \
-        (*(w_exception_ptr+1)).message                  \
-    )
+    if ((*(w_exception_ptr+1)).status)                  \
+        fprintf(out, "[%s:%d:%s][%d%s%s] %s\n",         \
+            (*(w_exception_ptr+1)).file,                \
+            (*(w_exception_ptr+1)).line,                \
+            (*(w_exception_ptr+1)).func,                \
+            (*(w_exception_ptr+1))._errno,              \
+            (*(w_exception_ptr+1))._errno ? ":" : "",   \
+            (*(w_exception_ptr+1))._errno ?             \
+                strerror((*(w_exception_ptr+1))._errno):\
+                "",                                     \
+            (*(w_exception_ptr+1)).message              \
+        );                                              \
+    else                                                \
+        fprintf(out, "[no exceptions in the stack]\n")
 
 #endif
