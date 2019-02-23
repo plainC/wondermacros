@@ -17,6 +17,16 @@ pow2_size            size of the hash table (an exponent of power two)
 #### Description
     Use W_HASH_TABLE_FREE to free a hash table.
     
+### W_HASH_TABLE_FOR_EACH(T,map,H)
+#### Arguments
+```C
+T                    type name of a hash mapping
+map                  a free identifier for mappings
+H                    a pointer to a hash table
+```
+#### Description
+    Use W_HASH_TABLE_FOR_EACH to iterate all mappings in a hash table.
+    
 ### W_HASH_TABLE_PUSH(T,H,Key,Value)
 #### Arguments
 ```C

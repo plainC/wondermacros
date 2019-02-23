@@ -135,6 +135,22 @@
     (((slot) + 1) & ((1 << W_HIDDEN_OF(hash, W_HASH_TABLE_HEADER_TYPE, alloc_size))-1))
 
 /***
+ *** Name:        W_HASH_TABLE_FOR_EACH
+ *** Proto:       W_HASH_TABLE_FOR_EACH(T,map,H)
+ *** Arg:         T        type name of a hash mapping
+ *** Arg:         map      a free identifier for mappings
+ *** Arg:         H        a pointer to a hash table
+ *** Description: Use W_HASH_TABLE_FOR_EACH to iterate all mappings in a hash table.
+ ***/
+#define W_HASH_TABLE_FOR_EACH(T,node,H)                                            \
+    W_DECLARE(1,T* node)                                                           \
+    for (int W_ID(i)=0;                                                            \
+        W_ID(i) < W_HASH_TABLE_GET_SIZE(H) && (node = &(H)[W_ID(i)],1); W_ID(i)++) \
+        if (!W_HASH_TABLE_GET_SLOT(H,W_ID(i)))                                     \
+        { }                                                                        \
+        else
+
+/***
  *** Name:        W_HASH_TABLE_PUSH
  *** Proto:       W_HASH_TABLE_PUSH(T,H,Key,Value)
  *** Arg:         T        type name of a hash mapping
