@@ -145,7 +145,8 @@
 #define W_HASH_TABLE_FOR_EACH(T,node,H)                                            \
     W_DECLARE(1,T* node)                                                           \
     for (int W_ID(i)=0;                                                            \
-        W_ID(i) < W_HASH_TABLE_GET_SIZE(H) && (node = &(H)[W_ID(i)],1); W_ID(i)++) \
+        (H) != NULL && W_ID(i) < W_HASH_TABLE_ALLOC_SIZE(H) \
+            && (node = &(H)[W_ID(i)],1); W_ID(i)++) \
         if (!W_HASH_TABLE_GET_SLOT(H,W_ID(i)))                                     \
         { }                                                                        \
         else
