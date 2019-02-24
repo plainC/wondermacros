@@ -40,8 +40,13 @@
 
 #ifdef W_CLASS_GENERATE
 void W_CAT(CLASS,___finalize)(struct W_CAT(CLASS,__private)* self);
+void W_CAT(CLASS,____finalize)(struct CLASS* self)
+{
+    W_CAT(CLASS,___finalize)((struct W_CAT(CLASS,__private)*) self);
+}
 # define _PRIVATE __private
 #else
+void W_CAT(CLASS,____finalize)(struct CLASS* self);
 # define _PRIVATE
 #endif
 

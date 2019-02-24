@@ -39,6 +39,12 @@
 
 #ifdef W_CLASS_GENERATE
 void W_CAT(CLASS,___construct)(struct W_CAT(CLASS,__private)* self);
+void W_CAT(CLASS,____construct)(struct CLASS* self)
+{
+    W_CAT(CLASS,___construct)((struct W_CAT(CLASS,__private)*) self);
+}
+#else
+void W_CAT(CLASS,____construct)(struct CLASS* self);
 #endif
 
 struct CLASS*

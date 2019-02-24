@@ -81,6 +81,12 @@
 #define W_CALL_VOID(o,method)                  \
     (((o)->klass->method)(BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*)) (o)))
 
+#define W_CALL_CONSTRUCT(klass) \
+    klass ## ____construct((void*) self)
+
+#define W_CALL_FINALIZE(klass) \
+    klass ## ____finalize((void*) self)
+
 /***
  *** Name:        W_CLASS
  *** Proto:       W_CLASS(name)
