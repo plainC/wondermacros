@@ -204,9 +204,13 @@ METHOD(Point,public,void,draw)
 ```
 
 A constructor is provided in a block after `CONSTRUCT` macro, and a destructor in a similar manner after
-`FINALIZE`.  Each method is implemented using `METHOD` macro. Note that the name of the class must be
-repeated in each method. The object in all methods including constructor and destructor can be accessed in `self'.
-A method of an object can be called using `W_CALL' or `W_CALL_VOID'.
+`FINALIZE`. If you need to call the constructor of a superclass, you can use `W_CALL_CONSTRUCT` macro.
+For example, to call the constructor of Point in Point3D, add `W_CALL_CONSTRUCT(Point)` into the body
+of the constructor of `Point3D`. To call destructor in finalize block, use `W_CALL_FINALIZE(class_name)`.
+
+Each method is implemented using `METHOD` macro. Note that the name of the class must be
+repeated in each method. The object in all methods including constructor and destructor can be accessed in `self`.
+A method of an object can be called using `W_CALL` or `W_CALL_VOID`.
 
 ### How to call methods of an object
 
