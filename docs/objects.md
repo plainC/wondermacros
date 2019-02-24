@@ -5,14 +5,14 @@ There exists various libraries for object-oriented programming in C, e.g.
 [GObject](https://developer.gnome.org/gobject/stable/).  There are also
 compilers, pre-processors and tools which will build objects for C.  In
 Wondermacros we will take a different approach.  We will use a header file
-(e.g. a_class.h) which has a fixed-form and specific guidelines 
+(e.g. `a_class.h`) which has a fixed-form and specific guidelines 
 to define a class with properties and methods.  Then we will create another
-header file (e.g. a.h) which includes the first header and an
-X-macro, <wondermacros/objects/x_macro_expand_h.h>. This header may also
+header file (e.g. `a.h`) which includes the first header and an
+X-macro, `<wondermacros/objects/x_macro_expand_h.h>`. This header may also
 have other type definitions and declarations just like all headers if needed.
 Then we will implement the methods of the class in a separate C file (e.g.
 a.c). This C file also includes the first header (a_class.h) and
-an X-macro, <wondermacros/objects/x_macro_expand_c.h>.  This set-up will
+an X-macro, `<wondermacros/objects/x_macro_expand_c.h>`.  This set-up will
 give us object-oriented capabilities including:
 
 * Abstraction: we have class based objects with properties and methods
@@ -30,7 +30,7 @@ The first thing is to name the class.  We name it to `Point` by defining CLASS m
 ```
 
 Next we declare the superclass, properties and method of this class. This is done by
-defining Point__define macro.
+defining `Point__define` macro.
 
 ```C
 #define Point__define                                         \
@@ -53,10 +53,10 @@ Each method is defined inside `METHOD(class_name,scope,return_type,method_name,m
 The class name has to be present in each definition (i.g. Point in our example). `scope' can be
 public or private.  `return_type` is the return type of the method, `method_name` is the name of the
 method and method's arguments are given inside parenthisis after it.  If the method
-does not take arguments give only the first four arguments to METHOD.
+does not take arguments give only the first four arguments to `METHOD`.
 
-Properties are defined using VAR macro. The first argument specifies the scope which is private, read, or
-public.  Read means read-only so x and y can only be modified in the implementation of Point's methods.
+Properties are defined using `VAR` macro. The first argument specifies the scope which is private, read, or
+public.  Read means read-only so `x` and `y` can only be modified in the implementation of Point's methods.
 When we have created instances of a class, public and read-only properties can be accessed directly by
 `object->property`. Private properties must be accessed through class name, by `object->class_name.property`
 (e.g. `p->Point.x` if `x` property is declared private). 
@@ -82,8 +82,8 @@ defined `Point` class. The code is underneath.
     /**/
 ```
 
-We place Point__define as the first declaration to specify the inheritance. Next we declare draw method
-to be overloaded in ColoredPoint. The last line adds a color property which is read-only.
+We place `Point__define` as the first declaration to specify the inheritance. Next we declare draw method
+to be overloaded in `ColoredPoint`. The last line adds a color property which is read-only.
 
 ### How to expand the header file of a class
 
@@ -106,7 +106,7 @@ here anyway. In order to get the forward declarations we write the following int
 #endif
 ```
 
-Next we create `point.h'.
+Next we create `point.h`.
 
 ```C
 #ifndef __POINT_H
@@ -252,7 +252,7 @@ int main()
 }
 ```
 
-We created objects using W_NEW macro. It is defined, as well as other generic object macros, in `<wondermacros/objects/api.h>`.
+We created objects using `W_NEW` macro. It is defined, as well as other generic object macros, in `<wondermacros/objects/api.h>`.
 Its first argument is the class name and after that we can provide the initial
 values including read-only properties.  The syntax is the structure initialization syntax, so
 if property names are omitted the order of values must be the same than in the class definition (not recommended to
@@ -285,6 +285,8 @@ The source code of the previous example can be found
 [here](https://github.com/plainC/wondermacros/tree/master/examples/objects/point). There is 
 [another example](https://github.com/plainC/wondermacros/tree/master/examples/objects/html) which
 implements a simple web content generation classes (HTML elements, HTML attributes, strings and simple string templates).
+
+See also [Web Elements](https://github.com/plainC/web_elements).
 
 ```C
 int main()
