@@ -6,4 +6,6 @@
 #undef W_FORWARD_DECLARE
 
 #undef CLASS
-
+#undef ABSTRACT
+#undef NO_CONSTRUCT
+#undef NO_DESTRUCT

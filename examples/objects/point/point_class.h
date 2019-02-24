@@ -1,4 +1,6 @@
 #define CLASS Point
+#define NO_CONSTRUCT
+#define NO_DESTRUCT
 
 #define Point__define  \
     /* Inherits */     \

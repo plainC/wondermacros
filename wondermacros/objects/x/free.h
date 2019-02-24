@@ -38,16 +38,20 @@
 
 #undef _PRIVATE
 
+#ifndef ABSTRACT
 #ifdef W_CLASS_GENERATE
 void W_CAT(CLASS,___finalize)(struct W_CAT(CLASS,__private)* self);
 void W_CAT(CLASS,____finalize)(struct CLASS* self)
 {
+#ifndef NO_DESTRUCT
     W_CAT(CLASS,___finalize)((struct W_CAT(CLASS,__private)*) self);
+#endif
 }
 # define _PRIVATE __private
 #else
 void W_CAT(CLASS,____finalize)(struct CLASS* self);
 # define _PRIVATE
+#endif
 #endif
 
 void
@@ -57,7 +61,11 @@ W_CAT(CLASS,_free)(struct W_CAT(CLASS,__private)* self)
 #endif
 #ifdef W_CLASS_GENERATE
 {
+#ifndef ABSTRACT
+#ifndef NO_DESTRUCT
     W_CAT(CLASS,___finalize)((struct W_CAT(CLASS,__private)*) self);
+#endif
+#endif
     W_FREE(self);
 }
 

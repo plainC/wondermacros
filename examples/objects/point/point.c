@@ -12,17 +12,6 @@
 #include <wondermacros/objects/x/class_start.h>
 
 
-CONSTRUCT(Point) /* self */
-{
-    W_CALL(self,ping)("constructed");
-    W_UNUSED(self);
-}
-
-FINALIZE(Point) /* self */
-{
-    W_UNUSED(self);
-}
-
 METHOD(Point,private,void,ping,(const char* message))
 {
     printf("Message: %s\n", message);

@@ -52,8 +52,10 @@ W_CAT(CLASS,_dup)(struct CLASS* data, int flags)
 
     memcpy(self, data, sizeof(struct W_CAT(CLASS,__private)));
 
+#ifndef NO_CONSTRUCT
     if (flags & 1)
         W_CAT(CLASS,___construct)(self);
+#endif
 
     return (struct CLASS*) self;
 }

@@ -14,4 +14,7 @@
 #undef INHERIT
 
 #undef CLASS
+#undef ABSTRACT
+#undef NO_CONSTRUCT
+#undef NO_DESTRUCT
 

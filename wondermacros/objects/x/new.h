@@ -36,12 +36,15 @@
 # error "Macro CLASS is not defined"
 #endif
 
+#ifndef ABSTRACT
 
 #ifdef W_CLASS_GENERATE
 void W_CAT(CLASS,___construct)(struct W_CAT(CLASS,__private)* self);
 void W_CAT(CLASS,____construct)(struct CLASS* self)
 {
+#ifndef NO_CONSTRUCT
     W_CAT(CLASS,___construct)((struct W_CAT(CLASS,__private)*) self);
+#endif
 }
 #else
 void W_CAT(CLASS,____construct)(struct CLASS* self);
@@ -60,7 +63,9 @@ W_CAT(CLASS,_new)()
         W_ERROR_ALLOCATION;
 
     self->klass = &W_CAT(CLASS,__class_instance);
+#ifndef NO_CONSTRUCT
     W_CAT(CLASS,___construct)(self);
+#endif
     return (struct CLASS*) self;
 }
 #endif
@@ -80,8 +85,12 @@ W_CAT(CLASS,_new_with)(struct CLASS* data)
     memcpy(self, data, sizeof(struct CLASS));
 
     self->klass = &W_CAT(CLASS,__class_instance);
+#ifndef NO_CONSTRUCT
     W_CAT(CLASS,___construct)(self);
+#endif
     return (struct CLASS*) self;
 }
 
 #endif
+#endif
+

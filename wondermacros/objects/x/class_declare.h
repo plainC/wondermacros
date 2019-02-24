@@ -15,4 +15,6 @@ extern void* W_CAT(CLASS,__class_instance_ptr);
 #undef W_CLASS_DECLARE
 
 #undef CLASS
-
+#undef ABSTRACT
+#undef NO_CONSTRUCT
+#undef NO_DESTRUCT
