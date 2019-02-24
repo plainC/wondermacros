@@ -87,8 +87,9 @@ struct W_CAT(CLASS,__private) {
 # undef OVERLOAD
     /**/
 
-
+#ifdef W_CLASS_GENERATE
     /* Expand private properties. */
+    struct {
 # define public (0,)
 # define private (1,)
 # define read (0, )
@@ -110,6 +111,9 @@ struct W_CAT(CLASS,__private) {
 # undef _VAR_2
 # undef METHOD
 # undef OVERLOAD
+        char W_CAT(_,CLASS)[0];
+    } CLASS;
+#endif
     /**/
 
 };

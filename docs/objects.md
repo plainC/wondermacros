@@ -22,8 +22,8 @@ give us object-oriented capabilities including:
 * Introspection: we can study existing objects at runtime
 
 ### How to define a class
-In order to define a class, first create a new header file, e.g. 'point_class.h'.
-The first thing is to name the class.  We name it to 'Point' by defining CLASS macro.
+In order to define a class, first create a new header file, e.g. `point_class.h`.
+The first thing is to name the class.  We name it to `Point` by defining CLASS macro.
 
 ```C
 #define CLASS Point
@@ -57,6 +57,12 @@ does not take arguments give only the first four arguments to METHOD.
 
 Properties are defined using VAR macro. The first argument specifies the scope which is private, read, or
 public.  Read means read-only so x and y can only be modified in the implementation of Point's methods.
+When we have created instances of a class, public and read-only properties can be accessed directly by
+`object->property`. Private properties must be accessed through class name, by `object->class_name.property`
+(e.g. `p->Point.x` if `x` property is declared private). 
+This is because a class having a private property can be inherited later. If the subclass adds a property
+with the same name compiler would not notice possible conflicts in polymorphic use cases if the access
+would be direct.
 
 ### How to inherit a class
 
@@ -114,7 +120,7 @@ Next we create `point.h'.
 #endif
 ```
 
-In the subclass's header in `colored_point.h' we must include `point.h'. These header may include
+In the subclass's header in `colored_point.h` we must include `point.h`. These header may include
 other declarations if they are needed in the implementations.
 
 ```C
@@ -133,8 +139,8 @@ other declarations if they are needed in the implementations.
 
 ### How to implement a class
 
-In order to implement the class we will first include the header file of the class, i.g. `point.h'.
-The next step is to include the class file `point_class.h' and the X-macro which begins the class
+In order to implement the class we will first include the header file of the class, i.g. `point.h`.
+The next step is to include the class file `point_class.h` and the X-macro which begins the class
 implementation. The implementation is written between two X-macros. The file must end to another
 X-macro inclusion. See an example bellow.
 
@@ -313,3 +319,4 @@ int main()
     printf("%s\n", buffer);
 }
 ```
+
