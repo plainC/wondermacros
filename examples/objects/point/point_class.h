@@ -1,6 +1,8 @@
 #define CLASS Point
+
 #define NO_CONSTRUCT
 #define NO_DESTRUCT
+#define BUILD_JSON
 
 #define Point__define  \
     /* Inherits */     \

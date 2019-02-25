@@ -68,6 +68,19 @@ struct W_CAT(CLASS,__private) {
 # define private (0,)
 # define read (1,_READ_SPECIFIER )
 
+# define Array(...) BOOST_PP_OVERLOAD(Array_,__VA_ARGS__)(__VA_ARGS__)
+# define Array_1(_0) [_0]
+# define Array_2(_0,_1) [_0][_1]
+# define Array_3(_0,_1,_2) [_0][_1][_2]
+
+#ifdef USE_BIT_FIELDS
+# define Bits(size) : size
+#else
+# define Bits(size)
+#endif
+
+# define JSON(...)
+
 # define METHOD(...)
 # define OVERLOAD(...)
 # define VAR(P,type,...)          \
@@ -109,6 +122,12 @@ struct W_CAT(CLASS,__private) {
 # undef VAR
 # undef _VAR_1
 # undef _VAR_2
+# undef JSON
+# undef Array
+# undef Array_1
+# undef Array_2
+# undef Array_3
+# undef Bits
 # undef METHOD
 # undef OVERLOAD
         char W_CAT(_,CLASS)[0];

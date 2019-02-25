@@ -30,6 +30,9 @@
 #include <wondermacros/meta/cat.h>
 #include <wondermacros/meta/cat_inner.h>
 
+#ifdef BUILD_JSON
+# include <wondermacros/objects/json/types.h>
+#endif
 
 #ifndef CLASS
 # error "Macro CLASS is not defined"
@@ -44,6 +47,7 @@ struct W_CAT(CLASS,__class);
 #endif
 
 #ifdef W_CLASS_DECLARE
+struct w_json_class;
 struct W_CAT(CLASS,__class) {
 # define _PRIVATE
 # define _EXPAND_CLASS
@@ -60,10 +64,21 @@ struct W_CAT(CLASS,__class_private) {
     struct {
         const char* name;
         size_t size;
+        const char** property_name;
+        const size_t* property_len;
+        const size_t* property_offset;
+#ifdef BUILD_JSON
+        const struct w_json_class* property_type;
+#else
+        void* property_type;
+#endif
     } meta;
 
     /* Add free method. */
     void (*free)(struct W_CAT(CLASS,_PRIVATE)* self);
+#ifdef BUILD_JSON
+    int (*to_json)(struct W_CAT(CLASS,_PRIVATE)* self, char* buffer, size_t size);
+#endif
 
     /* Expand public method interface. */
 # define VAR(...)

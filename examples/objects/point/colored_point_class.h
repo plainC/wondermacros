@@ -1,5 +1,7 @@
 #define CLASS ColoredPoint
 
+#define BUILD_JSON
+
 #define ColoredPoint__define    \
     /* Inherits */              \
     Point__define               \
@@ -7,5 +9,5 @@
                                 \
     OVERLOAD(ColoredPoint,draw) \
                                 \
-    VAR(read,const char*,color) \
+    VAR(read,const char*,color,JSON(string)) \
     /**/

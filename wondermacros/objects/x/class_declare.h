@@ -7,6 +7,9 @@
 #include <wondermacros/objects/x/new.h>
 #include <wondermacros/objects/x/dup.h>
 #include <wondermacros/objects/x/free.h>
+#ifdef BUILD_JSON
+# include <wondermacros/objects/x/to_json.h>
+#endif
 #include <wondermacros/objects/x/method_forward_declares.h>
 #undef INHERIT
 

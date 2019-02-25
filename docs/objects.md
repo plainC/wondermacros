@@ -279,6 +279,38 @@ definition file. An abstract class does not need to implement
 a constructor or a destructor, and `W_NEW` cannot create instances of that
 class.
 
+### JSON Serialization
+
+Initial JSON serialization support has been started. To build JSON serialization automatically for a class add
+`#define BUILD_JSON` to the class file. Each property in the class must support serialization. This can be done
+by adding fourth argument to `VAR` macro. For example, `VAR(read,int,x,JSON(int))`. The proper callbacks must be
+linked with the exceutable. The type for each `to_string` method is the following:
+
+`int json_type_<type name>_to_string(void* self, char* buffer, size_t size)`
+
+### Array properties and bit fields
+
+It is possible to declare a fixed size array property using additional declaration with `Array(...)` macro.
+For example, `VAR(public,int,items,Array(2))` declares one-dimensional array of two integers. Multi-dimensional
+arrays are defined by adding dimensions to `Array` macro.
+
+Sometimes we might want to save space, and declare properties with bit field length. For example,
+`VAR(public,unsigned,tiny,Bits(3))` declares a property taking just three bits. This, however, saves space only
+when multiple properties are delared sequentially and they fit into a word boundary. Note that to use bit fields
+you must define `#define USE_BIT_FIELDS` in the class file, and JSON serialization cannot be used for that class.
+
+### Restrictions
+
+Do not use the following names when specifing the name of a property. They are reserved for other purposes.
+* the name of the class (e.g. `VAR(read,int,Point)` is not valid in `Point` class
+* `klass`
+* all reserved words in the C language
+
+Do not use the following names when specifing the name of a method. They are reserved for other purposes.
+* `meta`
+* `free`
+* all reserved words in the C language
+
 ### Source code and other examples
 
 The source code of the previous example can be found 

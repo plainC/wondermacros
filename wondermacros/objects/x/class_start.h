@@ -13,6 +13,9 @@
 #include <wondermacros/objects/x/new.h>
 #include <wondermacros/objects/x/dup.h>
 #include <wondermacros/objects/x/free.h>
+#ifdef BUILD_JSON
+# include <wondermacros/objects/x/to_json.h>
+#endif
 
 #include <wondermacros/objects/api.h>
 #undef W_CLASS_GENERATE

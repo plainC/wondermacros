@@ -29,7 +29,11 @@
 #include <boost/preprocessor/control/expr_if.hpp>
 #include <wondermacros/meta/cat.h>
 #include <wondermacros/meta/cat_inner.h>
+#include <wondermacros/pointer/ref_void_ptr.h>
 
+#ifndef WDEBUG_EXPAND
+# include <stddef.h>
+#endif
 
 #ifndef CLASS
 # error "Macro CLASS is not defined"
@@ -41,12 +45,109 @@ extern struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance);
 #endif
 
 #ifdef W_CLASS_GENERATE
+static const char* W_CAT_INNER(CLASS,__property_name)[] = {
+# define VAR(scope,type,name,...) # name,
+# define OVERLOAD(C,name)
+# define METHOD(C,P,type,...)
+
+    /**/
+    W_CAT(CLASS,__define)
+    /**/
+
+# undef OVERLOAD
+# undef METHOD
+# undef VAR
+    NULL
+};
+
+#ifndef USE_BIT_FIELDS
+static const size_t W_CAT_INNER(CLASS,__property_offset)[] = {
+# define VAR(scope,type,name,...) W_CAT_INNER(VAR_,scope)(name),
+# define VAR_public(name) offsetof(struct W_CAT_INNER(CLASS,__private),name)
+# define VAR_read(name) VAR_public(name)
+# define VAR_private(name) offsetof(struct W_CAT_INNER(CLASS,__private),CLASS.name)
+# define OVERLOAD(C,name)
+# define METHOD(C,P,type,...)
+
+    /**/
+    W_CAT(CLASS,__define)
+    /**/
+
+# undef OVERLOAD
+# undef METHOD
+# undef VAR
+# undef VAR_public
+# undef VAR_private
+# undef VAR_read
+
+    0
+};
+#endif
+
+static const size_t W_CAT_INNER(CLASS,__property_len)[] = {
+# define VAR(scope,type,name,...) sizeof(# name)-1,
+# define OVERLOAD(C,name)
+# define METHOD(C,P,type,...)
+
+    /**/
+    W_CAT(CLASS,__define)
+    /**/
+
+# undef OVERLOAD
+# undef METHOD
+# undef VAR
+    0
+};
+
+#ifdef BUILD_JSON
+
+struct w_json_class W_CAT_INNER(CLASS,__property_type)[] = {
+
+# define JSON(t) t
+# define VAR(scope,type,...) BOOST_PP_OVERLOAD(VAR_,__VA_ARGS__)(type,__VA_ARGS__)
+# define VAR_1(type,name) \
+    { .to_string = (int (*)(void* self, char* buffer, size_t size)) \
+        json_type_ ## type ## _to_string, \
+      .from_string = (int (*)(const char* buffer, size_t size, void** self)) \
+        json_type_ ## type ## _from_string },
+# define VAR_2(t,name,spec) \
+    { .to_string = (int (*)(void* self, char* buffer, size_t size)) \
+        W_CAT_INNER(json_type_,spec,_to_string), \
+      .from_string = (int (*)(const char* buffer, size_t size, void** self)) W_CAT_INNER(json_type_,spec,_from_string) },
+# define OVERLOAD(C,name)
+# define METHOD(C,P,type,...)
+
+    /**/
+    W_CAT(CLASS,__define)
+    /**/
+
+# undef JSON
+# undef OVERLOAD
+# undef METHOD
+# undef VAR
+# undef VAR_1
+# undef VAR_2
+
+};
+#endif
+
 struct W_CAT(CLASS,__private);
 struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
     .meta.name = BOOST_PP_STRINGIZE(CLASS),
     .meta.size = sizeof(struct W_CAT_INNER(CLASS,__private)),
+    .meta.property_name = W_CAT_INNER(CLASS,__property_name),
+    .meta.property_len = W_CAT_INNER(CLASS,__property_len),
+#ifndef USE_BIT_FIELDS
+    .meta.property_offset = W_CAT_INNER(CLASS,__property_offset),
+#endif
+#ifdef BUILD_JSON
+    .meta.property_type = &W_CAT_INNER(CLASS,__property_type)[0],
+#endif
 
     .free = W_CAT(CLASS,_free),
+#ifdef BUILD_JSON
+    .to_json = (int (*)(struct W_CAT(CLASS,_PRIVATE)* self, char* buffer, size_t size)) W_CAT(CLASS,_to_json),
+#endif
 
     /* Expand method interface. */
 # define VAR(...)
@@ -58,7 +159,11 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
     .name = W_CAT_INNER(C,__,name),
 # define _METHOD_2(C,P,type,name,args) \
     .name = W_CAT_INNER(C,__,name),
+
+    /**/
     W_CAT(CLASS,__define)
+    /**/
+
 # undef OVERLOAD
 # undef METHOD
 # undef _METHOD_1
@@ -67,7 +172,5 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
 };
 
 void* W_CAT(CLASS,__class_instance_ptr) = &W_CAT(CLASS,__class_instance);
-
-#undef TAGS
 
 #endif
