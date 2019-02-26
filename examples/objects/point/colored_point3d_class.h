@@ -9,5 +9,5 @@
                                   \
     OVERLOAD(ColoredPoint3D,draw) \
                                   \
-    VAR(read,int,z)               \
+    VAR(read,int,z,JSON(json_int))               \
     /**/

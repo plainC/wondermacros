@@ -13,6 +13,6 @@
     METHOD(Point,private,void,ping,(const char* message))     \
     METHOD(Point,public,void,draw)                            \
                        \
-    VAR(read,int,x)    \
-    VAR(read,int,y)    \
+    VAR(read,int,x,JSON(json_int))    \
+    VAR(read,int,y,JSON(json_int))    \
     /**/

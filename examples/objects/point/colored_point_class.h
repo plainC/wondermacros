@@ -9,5 +9,5 @@
                                 \
     OVERLOAD(ColoredPoint,draw) \
                                 \
-    VAR(read,const char*,color,JSON(string)) \
+    VAR(read,const char*,color,JSON(json_string)) \
     /**/

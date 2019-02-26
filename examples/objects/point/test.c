@@ -3,6 +3,9 @@
 #ifndef WDEBUG_EXPAND
 #include <wondermacros/meta/declare.h>
 # include <stdio.h>
+# include <stdlib.h>
+# include <limits.h>
+# include <ctype.h>
 # define W_OBJECT_CAST_TO_VOID
 # include <wondermacros/objects/api.h>
 #endif
@@ -11,56 +14,38 @@
 #include "colored_point.h"
 #include "colored_point3d.h"
 
-extern struct w_json_class Point__property_type[];
-
-int
-json_type_int_to_string(int* self, char* buffer, size_t size)
-{
-    char tmp[256];
-    int len = sprintf(tmp, "%d", *self);
-
-    if (len >= size)
-        return -1;
-
-    strncpy(buffer, tmp, len);
-
-    return len;
-}
-
-int
-json_type_int_from_string(const char* buffer, size_t size, int** self)
-{
-    return 0;
-}
-
-int
-json_type_string_to_string(char** self, char* buffer, size_t size)
-{
-    int len = strlen(*self);
-    if (len+2 >= size)
-        return -1;
-    *buffer++ = '\"';
-    strncpy(buffer, *self, len);
-    buffer += len;
-    *buffer++ = '\"';
-    return len+2;
-}
-
-int
-json_type_string_from_string(const char* buffer, size_t size, void** self)
-{
-    return 0;
-}
-
+#include <wondermacros/objects/json/int.c>
+#include <wondermacros/objects/json/string.c>
 
 int main()
 {
     struct Point* array[] = {
-        W_NEW(Point, .x = 2, .y = 7),
-        W_NEW(ColoredPoint, .x = 4, .y = 9, .color = "red"),
+        W_NEW(Point),
+        W_NEW(ColoredPoint),
         W_NEW(ColoredPoint3D, .x=5, .y=2, .z=8, .color="green"),
     };
 
+#include <wondermacros/meta/stringize.h>
+#define VAR(name,value) "\"" # name "\":" W_STRINGIZE(value)
+
+    const char* json = "{"
+        VAR(x,12) ","
+        VAR(y,99)
+    "},"
+    "{"
+        VAR(x,1) ","
+        VAR(y,2) ","
+        VAR(color,"black")
+    "}";
+
+#undef VAR
+
+    const char* end;
+    /* We will initialize the first two objects from JSON string. */
+    W_CALL(array[0],from_json)(json, &end);
+    W_CALL(array[1],from_json)(end, &end);
+
+    /* A buffer for JSON output. */
     char buffer[256];
 
     for (int i=0; i < 3; i++) {

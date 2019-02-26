@@ -32,6 +32,7 @@
 #include <wondermacros/meta/cat_inner.h>
 #include <wondermacros/configs/default_allocation.h>
 #include <stddef.h>
+#include <ctype.h>
 
 
 #ifndef CLASS
@@ -83,6 +84,86 @@ W_CAT(CLASS,_to_json)(struct CLASS* _self, char* buffer, size_t size)
     }
     WRITE_STR(" }",2);
     WRITE_CH(0);
+
+    return 0;
+}
+#undef WRITE_CH
+#undef WRITE_STR
+
+#endif
+
+/**/
+
+#define SKIP_WS \
+    while (isspace(*p)) \
+        ++p
+#define SKIP_UNTIL(ch) \
+    while (*p != ch) \
+        ++p
+
+#define ACCEPT(ch) \
+    if (*p++ == ch) \
+        {} \
+    else \
+        return 1
+
+#define LOOKUP_PROPERTY(index,self,name,len) \
+    do { \
+        (index) = -1; \
+        for (int W_ID(i) = 0; (self)->klass->meta.property_name[W_ID(i)]; W_ID(i)++) \
+            if (strncmp((self)->klass->meta.property_name[W_ID(i)],(name),(len))==0) { \
+                (index) = W_ID(i); \
+                break; \
+            } \
+    } while (0)
+
+int
+W_CAT(CLASS,_from_json)(struct CLASS* _self, const char* buffer, const char** endptr)
+#ifdef W_CLASS_DECLARE
+;
+#endif
+#ifdef W_CLASS_GENERATE
+{
+    struct W_CAT(CLASS,__private)* self = (struct W_CAT(CLASS,__private)*) _self;
+
+    const char* p = buffer;
+    const char* str;
+    int index=-1;
+
+    SKIP_WS;
+    if (*p == ',') {
+        ACCEPT(',');
+        SKIP_WS;
+    }
+    ACCEPT('{');
+    SKIP_WS;
+    while (*p != '}') {
+        if (index != -1) {
+            ACCEPT(',');
+            SKIP_WS;
+        }
+        ACCEPT('\"');
+        str = p;
+        SKIP_UNTIL('\"');
+        LOOKUP_PROPERTY(index, self, str, p-str);
+
+        if (index == -1)
+            return 1;
+
+        ACCEPT('\"');
+        SKIP_WS;
+        ACCEPT(':');
+        SKIP_WS;
+
+        if (self->klass->meta.property_type[index].from_string(p, endptr, W_REF_VOID_PTR(self, self->klass->meta.property_offset[index])))
+            return 1;
+
+        p = *endptr;        
+        SKIP_WS;
+    }
+    ACCEPT('}');
+
+    *endptr = p;
 
     return 0;
 }

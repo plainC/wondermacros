@@ -101,19 +101,38 @@ static const size_t W_CAT_INNER(CLASS,__property_len)[] = {
 
 #ifdef BUILD_JSON
 
+# define JSON(t) t
+# define VAR(scope,type,...) BOOST_PP_OVERLOAD(VAR_,__VA_ARGS__)(type,__VA_ARGS__)
+# define VAR_1(type,name)
+# define VAR_2(t,name,spec) \
+    int W_CAT_INNER(spec,_to_string)(void* self, char* buffer, size_t size); \
+    int W_CAT_INNER(spec,_from_string)(const char* buffer, size_t size, void** self);
+# define OVERLOAD(C,name)
+# define METHOD(C,P,type,...)
+
+    /**/
+    W_CAT(CLASS,__define)
+    /**/
+
+# undef JSON
+# undef OVERLOAD
+# undef METHOD
+# undef VAR
+# undef VAR_1
+# undef VAR_2
+
+
 struct w_json_class W_CAT_INNER(CLASS,__property_type)[] = {
 
 # define JSON(t) t
 # define VAR(scope,type,...) BOOST_PP_OVERLOAD(VAR_,__VA_ARGS__)(type,__VA_ARGS__)
 # define VAR_1(type,name) \
-    { .to_string = (int (*)(void* self, char* buffer, size_t size)) \
-        json_type_ ## type ## _to_string, \
-      .from_string = (int (*)(const char* buffer, size_t size, void** self)) \
-        json_type_ ## type ## _from_string },
+    { .to_string = NULL,  \
+      .from_string = NULL },
 # define VAR_2(t,name,spec) \
     { .to_string = (int (*)(void* self, char* buffer, size_t size)) \
-        W_CAT_INNER(json_type_,spec,_to_string), \
-      .from_string = (int (*)(const char* buffer, size_t size, void** self)) W_CAT_INNER(json_type_,spec,_from_string) },
+        W_CAT_INNER(spec,_to_string), \
+      .from_string = (int (*)(const char* buffer, const char** endptr, void* self)) W_CAT_INNER(spec,_from_string) },
 # define OVERLOAD(C,name)
 # define METHOD(C,P,type,...)
 
@@ -147,6 +166,7 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
     .free = W_CAT(CLASS,_free),
 #ifdef BUILD_JSON
     .to_json = (int (*)(struct W_CAT(CLASS,_PRIVATE)* self, char* buffer, size_t size)) W_CAT(CLASS,_to_json),
+    .from_json = (int (*)(struct W_CAT(CLASS,_PRIVATE)* self, const char* buffer, const char** endptr)) W_CAT(CLASS,_from_json),
 #endif
 
     /* Expand method interface. */

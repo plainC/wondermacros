@@ -7,13 +7,8 @@
 
 struct w_json_class {
     int (*to_string)(void* self, char* buffer, size_t size);
-    int (*from_string)(const char* buffer, size_t size, void** self);
+    int (*from_string)(const char* buffer, const char** endptr, void* self);
 };
-
-int json_type_int_to_string(int* self, char* buffer, size_t size);
-int json_type_int_from_string(const char* buffer, size_t size, int** self);
-int json_type_string_to_string(char** self, char* buffer, size_t size);
-int json_type_string_from_string(const char* buffer, size_t size, void** self);
 
 #endif
 

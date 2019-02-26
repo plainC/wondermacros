@@ -78,6 +78,7 @@ struct W_CAT(CLASS,__class_private) {
     void (*free)(struct W_CAT(CLASS,_PRIVATE)* self);
 #ifdef BUILD_JSON
     int (*to_json)(struct W_CAT(CLASS,_PRIVATE)* self, char* buffer, size_t size);
+    int (*from_json)(struct W_CAT(CLASS,_PRIVATE)* self, const char* buffer, const char** endptr);
 #endif
 
     /* Expand public method interface. */
