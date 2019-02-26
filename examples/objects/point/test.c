@@ -29,12 +29,12 @@ int main()
 #define VAR(name,value) "\"" # name "\":" W_STRINGIZE(value)
 
     const char* json = "{"
-        VAR(x,12) ","
-        VAR(y,99)
+        VAR(x,12)
+//      ","  VAR(y,99)
     "},"
     "{"
         VAR(x,1) ","
-        VAR(y,2) ","
+//        VAR(y,2) ","
         VAR(color,"black")
     "}";
 
@@ -42,8 +42,10 @@ int main()
 
     const char* end;
     /* We will initialize the first two objects from JSON string. */
-    W_CALL(array[0],from_json)(json, &end);
-    W_CALL(array[1],from_json)(end, &end);
+    if (W_CALL(array[0],from_json)(json, &end))
+        printf("ERROR: %d\n", end-json);
+    if (W_CALL(array[1],from_json)(end, &end))
+        printf("ERROR\n");
 
     /* A buffer for JSON output. */
     char buffer[256];

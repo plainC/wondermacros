@@ -67,9 +67,13 @@ W_CAT(CLASS,_to_json)(struct CLASS* _self, char* buffer, size_t size)
     struct W_CAT(CLASS,__private)* self = (struct W_CAT(CLASS,__private)*) _self;
 
     WRITE_STR("{ ",2);
+    int count = 0;
     for (int i=0; self->klass->meta.property_name[i]; i++) {
+        if (! self->klass->meta.property_type[i].to_string)
+            continue;
+
         /* Add comma if not the first. */
-        if (i > 0)
+        if (count > 0)
             WRITE_STR(", ",2);
 
         /* Write the name of the property. */
@@ -81,6 +85,7 @@ W_CAT(CLASS,_to_json)(struct CLASS* _self, char* buffer, size_t size)
         int len = self->klass->meta.property_type[i].to_string(W_REF_VOID_PTR(self, self->klass->meta.property_offset[i]), buffer, size);
         buffer += len;
         size -= len;
+        ++count;
     }
     WRITE_STR(" }",2);
     WRITE_CH(0);
@@ -154,6 +159,9 @@ W_CAT(CLASS,_from_json)(struct CLASS* _self, const char* buffer, const char** en
         SKIP_WS;
         ACCEPT(':');
         SKIP_WS;
+
+        if (!self->klass->meta.property_type[index].from_string)
+            return 1;
 
         if (self->klass->meta.property_type[index].from_string(p, endptr, W_REF_VOID_PTR(self, self->klass->meta.property_offset[index])))
             return 1;
