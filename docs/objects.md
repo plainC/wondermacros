@@ -279,14 +279,25 @@ definition file. An abstract class does not need to implement
 a constructor or a destructor, and `W_NEW` cannot create instances of that
 class.
 
-### JSON Serialization
+### JSON Serialization and Marshalling
 
-Initial JSON serialization support has been started. To build JSON serialization automatically for a class add
-`#define BUILD_JSON` to the class file. Each property in the class must support serialization. This can be done
-by adding fourth argument to `VAR` macro. For example, `VAR(read,int,x,JSON(int))`. The proper callbacks must be
-linked with the exceutable. The type for each `to_string` method is the following:
+Objects can be automatically serialized to JSON strings and marshalled from JSON as well. To build JSON support
+for a class add `#define BUILD_JSON` to the class file. Each property which is chosen to be including in JSON
+serialization and marshaling must be marked as such using the fourth argument position in `VAR` macro. The
+prefix of the C function which does the conversion must be given there inside `JSON(<function prefix>)` macro.
+For example, `VAR(public,int,x,JSON(json_int))` works for `int` type. Use `JSON(json_string)` for `const char*`
+and so on.
 
-`int json_type_<type name>_to_string(void* self, char* buffer, size_t size)`
+The JSON conversion callbacks must be linked into the exceutable. Some of these exists under `<wondermacros/objects/json>`
+directory. To implement JSON conversion for a type two functions must be provided. They are:
+
+* `int json_<type name>_to_string(void* value, char* buffer, size_t size)`
+* `int json_<type name>_from_string(const char* buffer, const char** endptr, void* value)`
+
+Both of them should return 0 on successfull conversion and 1 on error. The first argument of `to_string` is a pointer 
+to the value being converted. `buffer` is the character buffer for JSON output and `size` is the length of it.
+In `from_string` `buffer` is the JSON string and `endptr` is the pointer in `buffer` where `from_string` finished
+reading. The value is written to `value` pointer which points to the pre-allocated storage position of a property.
 
 ### Array properties and bit fields
 
