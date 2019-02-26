@@ -50,8 +50,8 @@ defining `Point__define` macro.
 
 Since this class is the superclass we do not inherit anything. 
 Each method is defined inside `METHOD(class_name,scope,return_type,method_name,method_args)` macro.
-The class name has to be present in each definition (i.g. Point in our example). `scope' can be
-public or private.  `return_type` is the return type of the method, `method_name` is the name of the
+The class name has to be present in each definition (i.g. `Point` in our example). `scope` can be
+`public` or `private`.  `return_type` is the return type of the method, `method_name` is the name of the
 method and method's arguments are given inside parenthisis after it.  If the method
 does not take arguments give only the first four arguments to `METHOD`.
 
@@ -288,13 +288,29 @@ prefix of the C function which does the conversion must be given there inside `J
 For example, `VAR(public,int,x,JSON(json_int))` works for `int` type. Use `JSON(json_string)` for `const char*`
 and so on.
 
-The JSON conversion callbacks must be linked into the exceutable. Some of these exists under `<wondermacros/objects/json>`
-directory. To implement JSON conversion for a type two functions must be provided. They are:
+The JSON conversion callbacks must be linked into the exceutable. Many of these exists under `<wondermacros/objects/json>`
+directory (e.g. `<wondermacros/objects/json/int.c>`.
+
+| C Type      | 4th argument to VAR    | As JSON         |
+| ----------- | ---------------------- | --------------- |
+| int         | JSON(json_int)         | ]-2^31, 2^31[   |
+| int         | JSON(json_boolean)     | true or false   |
+| int64_t     | JSON(json_int64)       | ]-2^63, 2^63[   |
+| unsigned    | JSON(json_unsigned)    | [0, 2^32[       |
+| uint64_t    | JSON(json_unsigned64)  | [0, 2^64[       |
+| char        | JSON(json_char)        | [0,255]         |
+| string      | JSON(json_string)      | \"...\"         |
+| float       | JSON(json_float)       | 32 bit float    |
+| double      | JSON(json_double)      | 64 bit float    |
+| long double | JSON(json_long_double) | 80 bit float    |
+
+If none of the types in the previous table does not apply, JSON conversion must be implemented.
+To implement JSON conversion for a type two functions must be provided. They are:
 
 * `int json_<type name>_to_string(void* value, char* buffer, size_t size)`
 * `int json_<type name>_from_string(const char* buffer, const char** endptr, void* value)`
 
-Both of them should return 0 on successfull conversion and 1 on error. The first argument of `to_string` is a pointer 
+Both of them should return 0 on successfull conversion, and 1 on error. The first argument of `to_string` is a pointer 
 to the value being converted. `buffer` is the character buffer for JSON output and `size` is the length of it.
 In `from_string` `buffer` is the JSON string and `endptr` is the pointer in `buffer` where `from_string` finished
 reading. The value is written to `value` pointer which points to the pre-allocated storage position of a property.
