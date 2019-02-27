@@ -321,6 +321,7 @@ JSON conversion for [int](https://github.com/plainC/wondermacros/blob/master/won
 If none of the types in the previous table does not apply, JSON conversion must be implemented.
 This is the case for array types, for example. There exists sample code for
 [int[2] array](https://github.com/plainC/wondermacros/blob/master/wondermacros/objects/json/int_array_2.c).
+That can be used for a property `VAR(public,foo,int,Array(2) JSON(int_array_2))`, for instance.
 To implement JSON conversion for a type two functions must be provided. They are:
 
 * `int json_<type name>_to_string(void* value, char* buffer, size_t size)`
