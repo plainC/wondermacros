@@ -279,6 +279,17 @@ definition file. An abstract class does not need to implement
 a constructor or a destructor, and `W_NEW` cannot create instances of that
 class.
 
+### Array properties and bit fields
+
+It is possible to declare a fixed size array property using additional declaration with `Array(...)` macro.
+For example, `VAR(public,int,items,Array(2))` declares one-dimensional array of two integers. Multi-dimensional
+arrays are defined by adding dimensions to `Array` macro.
+
+Sometimes we might want to save space, and declare properties with bit field length. For example,
+`VAR(public,unsigned,tiny,Bits(3))` declares a property taking just three bits. This, however, saves space only
+when multiple properties are delared sequentially and they fit into a word boundary. Note that to use bit fields
+you must define `#define USE_BIT_FIELDS` in the class file, and JSON serialization cannot be used for that class.
+
 ### JSON Serialization and Marshalling
 
 Objects can be automatically serialized to JSON strings and marshalled from JSON as well. To build JSON support
@@ -307,27 +318,18 @@ directory (e.g. `<wondermacros/objects/json/int.c>`.
 | long double | JSON(json_long_double) | 80 bit float    |
 
 If none of the types in the previous table does not apply, JSON conversion must be implemented.
+This is the case for array types, for example. There exists sample code for int[2] array in
+`<wondermacros/objects/json/int_array_2.c>`.
 To implement JSON conversion for a type two functions must be provided. They are:
 
 * `int json_<type name>_to_string(void* value, char* buffer, size_t size)`
 * `int json_<type name>_from_string(const char* buffer, const char** endptr, void* value)`
 
-`to_string` returns the number of characters writtent to buffer, or -1 on error. The `value` argument points
+`to_string` returns the number of characters written to buffer, or -1 on error. The `value` argument points
 to the storage location of the property.
 
 `from_string` returns 0 if the conversion is successful, 1 otherwise. The `value` argument points to the
 storage location of the property. `endptr` should point to the first character that was not used.
-
-### Array properties and bit fields
-
-It is possible to declare a fixed size array property using additional declaration with `Array(...)` macro.
-For example, `VAR(public,int,items,Array(2))` declares one-dimensional array of two integers. Multi-dimensional
-arrays are defined by adding dimensions to `Array` macro.
-
-Sometimes we might want to save space, and declare properties with bit field length. For example,
-`VAR(public,unsigned,tiny,Bits(3))` declares a property taking just three bits. This, however, saves space only
-when multiple properties are delared sequentially and they fit into a word boundary. Note that to use bit fields
-you must define `#define USE_BIT_FIELDS` in the class file, and JSON serialization cannot be used for that class.
 
 ### Restrictions
 
@@ -339,6 +341,8 @@ Do not use the following names when specifing the name of a property. They are r
 Do not use the following names when specifing the name of a method. They are reserved for other purposes.
 * `meta`
 * `free`
+* `to_json`
+* `from_json`
 * all reserved words in the C language
 
 ### Source code and other examples

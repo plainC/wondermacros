@@ -6,6 +6,7 @@
 
 /* Include class header. */
 #include "point.h"
+#include "owner.h"
 
 /* Begin class implementation. */
 #include "point_class.h"

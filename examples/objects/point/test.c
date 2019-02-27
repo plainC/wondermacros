@@ -18,6 +18,7 @@
 #include <wondermacros/objects/json/int.c>
 #include <wondermacros/objects/json/string.c>
 #include <wondermacros/objects/json/object.c>
+#include <wondermacros/objects/json/int_array_2.c>
 
 int main()
 {
@@ -31,6 +32,7 @@ int main()
 #define VAR(name,value) "\"" # name "\":" W_STRINGIZE(value)
 
     const char* json = "{"
+        "\"r\":[1,2],"
         VAR(x,12) "," VAR(y,99) ",\"a\": {" VAR(id,77) "," VAR(number,88) " }"
     "},"
     "{"
@@ -42,6 +44,7 @@ int main()
 
     const char* end;
     /* We will initialize the first two objects from JSON string. */
+printf("%s\n", json);
     if (W_CALL(array[0],from_json)(json, &end))
         printf("ERROR: %d\n", end-json);
 

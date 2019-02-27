@@ -12,6 +12,7 @@
     METHOD(Point,private,void,ping,(const char* message))     \
     METHOD(Point,public,void,draw)                            \
                        \
+    VAR(read,int,r,Array(2) JSON(json_int_array_2))    \
     VAR(read,int,x,JSON(json_int))    \
     VAR(read,int,y,JSON(json_int))    \
     VAR(read,struct Owner*,a,JSON(json_object))    \

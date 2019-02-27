@@ -143,7 +143,7 @@ W_CAT(CLASS,_from_json)(struct CLASS* _self, const char* buffer, const char** en
 
     const char* p = buffer;
     const char* str;
-    int index=-1;
+    int index = (-1);
 
     if (self == NULL)
         return 1;
@@ -162,7 +162,7 @@ W_CAT(CLASS,_from_json)(struct CLASS* _self, const char* buffer, const char** en
     ACCEPT('{');
     SKIP_WS;
     while (*p != '}') {
-        if (index != -1) {
+        if (index != (-1)) {
             ACCEPT(',');
             SKIP_WS;
         }
@@ -171,7 +171,7 @@ W_CAT(CLASS,_from_json)(struct CLASS* _self, const char* buffer, const char** en
         SKIP_UNTIL('\"');
         LOOKUP_PROPERTY(index, self, str, p-str);
 
-        if (index == -1)
+        if (index == (-1))
             return 1;
 
         ACCEPT('\"');
@@ -194,10 +194,15 @@ W_CAT(CLASS,_from_json)(struct CLASS* _self, const char* buffer, const char** en
 
     return 0;
 }
+
+#endif
+
+#endif
+
 #undef WRITE_CH
 #undef WRITE_STR
-
-#endif
-
-#endif
+#undef SKIP_WS
+#undef ACCEPT
+#undef SKIP_UNTIL
+#undef LOOKUP_PROPERTY
 

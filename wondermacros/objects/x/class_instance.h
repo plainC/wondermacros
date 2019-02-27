@@ -46,6 +46,7 @@ extern struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance);
 
 #ifdef W_CLASS_GENERATE
 static const char* W_CAT_INNER(CLASS,__property_name)[] = {
+# define Array(...)
 # define VAR(scope,type,name,...) # name,
 # define OVERLOAD(C,name)
 # define METHOD(C,P,type,...)
@@ -189,6 +190,7 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
 # undef _METHOD_1
 # undef _METHOD_2
 # undef VAR
+# undef Array
 };
 
 void* W_CAT(CLASS,__class_instance_ptr) = &W_CAT(CLASS,__class_instance);
