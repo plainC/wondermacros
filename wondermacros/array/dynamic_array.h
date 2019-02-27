@@ -219,10 +219,10 @@
 
 #define W_DYNAMIC_ARRAY_FOR_EACH(T,elem,array)                                         \
     for (void* W_ID(a) = (array); W_ID(a); W_ID(a) = NULL)                             \
-        W_ARRAY_FOR_EACH(T,elem,array,W_DYNAMIC_ARRAY_SIZE(array))
+        W_ARRAY_FOR_EACH(T,elem,array,W_DYNAMIC_ARRAY_GET_SIZE(array))
 
 #define W_DYNAMIC_ARRAY_FOR_EACH_PTR(T,elemp,array)                                    \
-    W_ARRAY_FOR_EACH_PTR(T,elemp,array,W_DYNAMIC_ARRAY_SIZE(array))
+    W_ARRAY_FOR_EACH_PTR(T,elemp,array,W_DYNAMIC_ARRAY_GET_SIZE(array))
 
 
 /*Unit Test*/
