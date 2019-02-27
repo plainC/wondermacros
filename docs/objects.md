@@ -299,8 +299,9 @@ prefix of the C function which does the conversion must be given there inside `J
 For example, `VAR(public,int,x,JSON(json_int))` works for `int` type. Use `JSON(json_string)` for `const char*`
 and so on.
 
-The JSON conversion callbacks must be linked into the exceutable. Many of these exists under `<wondermacros/objects/json>`
-directory (e.g. `<wondermacros/objects/json/int.c>`.
+The JSON conversion callbacks must be linked into the exceutable. Many of these exists under 
+[objects/json directory](https://github.com/plainC/wondermacros/blob/master/wondermacros/objects/json/) (e.g.
+JSON conversion for [int](https://github.com/plainC/wondermacros/blob/master/wondermacros/objects/json/int.c).
 
 | C Type      | 4th argument to VAR    | As JSON         |
 | ----------- | ---------------------- | --------------- |
@@ -318,8 +319,8 @@ directory (e.g. `<wondermacros/objects/json/int.c>`.
 | long double | JSON(json_long_double) | 80 bit float    |
 
 If none of the types in the previous table does not apply, JSON conversion must be implemented.
-This is the case for array types, for example. There exists sample code for int[2] array in
-`<wondermacros/objects/json/int_array_2.c>`.
+This is the case for array types, for example. There exists sample code for
+[int[2] array](https://github.com/plainC/wondermacros/blob/master/wondermacros/objects/json/int_array_2.c).
 To implement JSON conversion for a type two functions must be provided. They are:
 
 * `int json_<type name>_to_string(void* value, char* buffer, size_t size)`
