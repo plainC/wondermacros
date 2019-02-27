@@ -28,6 +28,38 @@ method               a method name to be called
 #### Description
     Use W_CALL_VOID to call a method of an object without any arguments.
     
+### W_CALL_CONSTRUCT(klass)
+#### Arguments
+```C
+klass                class name
+```
+#### Description
+    Use W_CALL_CONSTRUCT to call a constructor of a superclass by the name of the class.
+    
+### W_CALL_FINALIZE(klass)
+#### Arguments
+```C
+klass                class name
+```
+#### Description
+    Use W_CALL_FINALIZE to call a destructor of a superclass by the name of the class.
+    
+### W_CALL_ACONSTRUCT(klass)
+#### Arguments
+```C
+klass                class name
+```
+#### Description
+    Use W_CALL_ACONSTRUCT to call a constructor of an abstract superclass.
+    
+### W_CALL_AFINALIZE(klass)
+#### Arguments
+```C
+klass                class name
+```
+#### Description
+    Use W_CALL_AFINALIZE to call a destructor of an abstract superclass.
+    
 ### W_CLASS(name)
 #### Arguments
 ```C

@@ -22,14 +22,18 @@
  * SOFTWARE.
  */
 
-#ifndef __W_OBJECTS_API_H
-#define __W_OBJECTS_API_H
 
 #ifdef W_OBJECT_CAST_TO_VOID
+# undef W_OBJECT_CASTING
 # define W_OBJECT_CASTING 1
 #else
+# undef W_OBJECT_CASTING
 # define W_OBJECT_CASTING 0
 #endif
+
+
+#ifndef __W_OBJECTS_API_H
+#define __W_OBJECTS_API_H
 
 #ifndef WDEBUG_EXPAND
 # include <strings.h>
@@ -81,11 +85,43 @@
 #define W_CALL_VOID(o,method)                  \
     (((o)->klass->method)(BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*)) (o)))
 
+/***
+ *** Name:        W_CALL_CONSTRUCT
+ *** Proto:       W_CALL_CONSTRUCT(klass)
+ *** Arg:         klass    class name
+ *** Description: Use W_CALL_CONSTRUCT to call a constructor of a superclass by the name of the class.
+ ***/
 #define W_CALL_CONSTRUCT(klass) \
     klass ## ____construct((void*) self)
 
+/***
+ *** Name:        W_CALL_FINALIZE
+ *** Proto:       W_CALL_FINALIZE(klass)
+ *** Arg:         klass    class name
+ *** Description: Use W_CALL_FINALIZE to call a destructor of a superclass by the name of the class.
+ ***/
 #define W_CALL_FINALIZE(klass) \
     klass ## ____finalize((void*) self)
+
+/***
+ *** Name:        W_CALL_ACONSTRUCT
+ *** Proto:       W_CALL_ACONSTRUCT(klass)
+ *** Arg:         klass    class name
+ *** Description: Use W_CALL_ACONSTRUCT to call a constructor of an abstract superclass.
+ ***/
+#define W_CALL_ACONSTRUCT(klass) \
+    void klass ## ___construct(void* self); \
+    klass ## ___construct((void*) self)
+
+/***
+ *** Name:        W_CALL_AFINALIZE
+ *** Proto:       W_CALL_AFINALIZE(klass)
+ *** Arg:         klass    class name
+ *** Description: Use W_CALL_AFINALIZE to call a destructor of an abstract superclass.
+ ***/
+#define W_CALL_AFINALIZE(klass) \
+    void klass ## ___finalize(void* self); \
+    klass ## ___finalize((void*) self)
 
 /***
  *** Name:        W_CLASS
