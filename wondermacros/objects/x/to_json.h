@@ -44,14 +44,14 @@
 
 #define WRITE_CH(ch)                                  \
     if (!--size)                                      \
-        return 1;                                     \
+        return -1;                                     \
     else                                              \
         *buffer++ = (ch)
 
 #define WRITE_STR(str,len)                            \
     do {                                              \
         if (size <= (len))                            \
-            return 1;                                 \
+            return -1;                                 \
         for (int W_ID(i)=0; W_ID(i)<(len); W_ID(i)++) \
             *buffer++ = (str)[W_ID(i)];               \
         size -= (len);                                \
@@ -64,11 +64,19 @@ W_CAT(CLASS,_to_json)(struct CLASS* _self, char* buffer, size_t size)
 #endif
 #ifdef W_CLASS_GENERATE
 {
+    const char* orig = buffer;
     struct W_CAT(CLASS,__private)* self = (struct W_CAT(CLASS,__private)*) _self;
+
+    if (!self) {
+        WRITE_STR("null",4);
+        return 4;
+    }
 
     WRITE_STR("{ ",2);
     int count = 0;
+
     for (int i=0; self->klass->meta.property_name[i]; i++) {
+
         if (! self->klass->meta.property_type[i].to_string)
             continue;
 
@@ -83,14 +91,16 @@ W_CAT(CLASS,_to_json)(struct CLASS* _self, char* buffer, size_t size)
 
         /* Serialize the value of the property. */
         int len = self->klass->meta.property_type[i].to_string(W_REF_VOID_PTR(self, self->klass->meta.property_offset[i]), buffer, size);
+        if (len < 0)
+            return -1;
         buffer += len;
         size -= len;
         ++count;
     }
     WRITE_STR(" }",2);
-    WRITE_CH(0);
+    *buffer='\0';
 
-    return 0;
+    return buffer-orig;
 }
 #undef WRITE_CH
 #undef WRITE_STR
@@ -135,10 +145,19 @@ W_CAT(CLASS,_from_json)(struct CLASS* _self, const char* buffer, const char** en
     const char* str;
     int index=-1;
 
+    if (self == NULL)
+        return 1;
+
     SKIP_WS;
     if (*p == ',') {
         ACCEPT(',');
         SKIP_WS;
+    }
+    if (strncmp(p, "null",4)==0) {
+        p+=4;
+        SKIP_WS;
+        *endptr = p; //FIXME: set self=NULL and free the allocation
+        return 0;
     }
     ACCEPT('{');
     SKIP_WS;

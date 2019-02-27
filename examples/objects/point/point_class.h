@@ -1,6 +1,5 @@
 #define CLASS Point
 
-#define NO_CONSTRUCT
 #define NO_DESTRUCT
 #define BUILD_JSON
 
@@ -15,4 +14,5 @@
                        \
     VAR(read,int,x,JSON(json_int))    \
     VAR(read,int,y,JSON(json_int))    \
+    VAR(read,struct Owner*,a,JSON(json_object))    \
     /**/

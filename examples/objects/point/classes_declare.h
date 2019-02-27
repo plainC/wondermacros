@@ -1,6 +1,9 @@
 #ifndef __CLASSES_DECLARE_H
 #define __CLASSES_DECLARE_H
 
+#include "owner_class.h"
+#include <wondermacros/objects/x/forward_declare.h>
+
 #include "point_class.h"
 #include <wondermacros/objects/x/forward_declare.h>
 

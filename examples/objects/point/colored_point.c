@@ -11,7 +11,7 @@
 
 CONSTRUCT(ColoredPoint)
 {
-    W_UNUSED(self);
+    W_CALL_CONSTRUCT(Point);
 }
 
 FINALIZE(ColoredPoint)

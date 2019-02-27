@@ -11,6 +11,10 @@
 #include "point_class.h"
 #include <wondermacros/objects/x/class_start.h>
 
+CONSTRUCT(Point)
+{
+    self->a = W_NEW(Owner);
+}
 
 METHOD(Point,private,void,ping,(const char* message))
 {

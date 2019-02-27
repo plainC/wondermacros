@@ -293,13 +293,15 @@ directory (e.g. `<wondermacros/objects/json/int.c>`.
 
 | C Type      | 4th argument to VAR    | As JSON         |
 | ----------- | ---------------------- | --------------- |
-| int         | JSON(json_int)         | ]-2^31, 2^31[   |
+| Any object  | JSON(json_object)      | { ... }         |
+| bool        | JSON(json_bool)        | true or false   |
 | int         | JSON(json_boolean)     | true or false   |
+| int         | JSON(json_int)         | ]-2^31, 2^31[   |
 | int64_t     | JSON(json_int64)       | ]-2^63, 2^63[   |
 | unsigned    | JSON(json_unsigned)    | [0, 2^32[       |
 | uint64_t    | JSON(json_unsigned64)  | [0, 2^64[       |
 | char        | JSON(json_char)        | [0,255]         |
-| string      | JSON(json_string)      | \"...\"         |
+| string      | JSON(json_string)      | "..."           |
 | float       | JSON(json_float)       | 32 bit float    |
 | double      | JSON(json_double)      | 64 bit float    |
 | long double | JSON(json_long_double) | 80 bit float    |
@@ -310,10 +312,11 @@ To implement JSON conversion for a type two functions must be provided. They are
 * `int json_<type name>_to_string(void* value, char* buffer, size_t size)`
 * `int json_<type name>_from_string(const char* buffer, const char** endptr, void* value)`
 
-Both of them should return 0 on successfull conversion, and 1 on error. The first argument of `to_string` is a pointer 
-to the value being converted. `buffer` is the character buffer for JSON output and `size` is the length of it.
-In `from_string` `buffer` is the JSON string and `endptr` is the pointer in `buffer` where `from_string` finished
-reading. The value is written to `value` pointer which points to the pre-allocated storage position of a property.
+`to_string` returns the number of characters writtent to buffer, or -1 on error. The `value` argument points
+to the storage location of the property.
+
+`from_string` returns 0 if the conversion is successful, 1 otherwise. The `value` argument points to the
+storage location of the property. `endptr` should point to the first character that was not used.
 
 ### Array properties and bit fields
 

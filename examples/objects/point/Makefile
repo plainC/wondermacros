@@ -4,11 +4,13 @@ CFLAGS =            \
 
 
 SRCS =                    \
+	owner.c           \
 	point.c           \
 	colored_point.c   \
 	colored_point3d.c \
 
 CLASSES = \
+	owner_class.h \
 	point_class.h \
 	colored_point_class.h \
 
