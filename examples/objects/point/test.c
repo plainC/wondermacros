@@ -22,7 +22,7 @@
 
 int main()
 {
-    struct Point* array[] = {
+    Point_t* array[] = {
         W_NEW(Point),
         W_NEW(ColoredPoint),
         W_NEW(ColoredPoint3D, .x=5, .y=2, .z=8, .color="green"),

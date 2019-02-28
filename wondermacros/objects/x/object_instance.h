@@ -43,6 +43,9 @@
 #ifdef W_FORWARD_DECLARE
 struct CLASS;
 struct W_CAT(CLASS,__private);
+#ifdef USE_T_TYPE_SUFFIX
+typedef struct CLASS W_CAT(CLASS,_t);
+#endif
 #endif
 
 #ifdef W_CLASS_DECLARE

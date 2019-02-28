@@ -215,6 +215,19 @@ Each method is implemented using `METHOD` macro. Note that the name of the class
 repeated in each method. The object in all methods including constructor and destructor can be accessed in `self`.
 A method of an object can be called using `W_CALL` or `W_CALL_VOID`.
 
+### How to declare and create an object
+
+An object of class `Point` is declared `struct Point* a;`, for instance. If
+you prefer to avoid writting `struct` each time, define `USE_T_TYPE_SUFFIX`
+macro before including `<wondermacros/x/forward_declare.h>`. It will declare
+a type `Point_t` which can be used instead.
+
+To create an object use `W_NEW` macro. It will take the class name as the
+first argument. All, or just selected, public and read-only properties can be
+initialized with `W_NEW`. For example, `W_NEW(Point, .x=3, .y=8)` creates
+a `Point` object where properties x and y are set. If some of the properties
+are not initialized, they are set to zero.
+
 ### How to call methods of an object
 
 Let's now put it all together and provide a test program. We will also implement `ColoredPoint3D` in a similar way.
@@ -282,7 +295,7 @@ class.
 ### Common superclass
 
 Some object-oriented languages have a common superclass for all classes.
-To get a common class just include `<wondermacros/objects/object.h>` in a
+To get a common superclass just include `<wondermacros/objects/object.h>` in a
 header of the project. By default, it will create a type called `struct Object`
 which can be used as a superclass for all objects. If you prefer a lowercase
 name, define `LOWERCASE_OBJECT` macro before the inclusion. If you prefer
