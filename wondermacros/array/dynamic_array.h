@@ -97,6 +97,11 @@
  ***/
 #define W_DYNAMIC_ARRAY_STEAL_LAST(array) ((array)[--W_DYNAMIC_ARRAY_SIZE(array)])
 
+#define W_DYNAMIC_ARRAY_LAST(array) ((array)[W_DYNAMIC_ARRAY_SIZE(array)-1])
+#define W_DYNAMIC_ARRAY_LAST_PTR(array) \
+    (W_DYNAMIC_ARRAY_GET_SIZE(array) == 0 ? NULL : \
+        (&((array)[W_DYNAMIC_ARRAY_SIZE(array)-1])))
+
 /***
  *** Name:        W_DYNAMIC_ARRAY_PEEK_LAST
  *** Proto:       W_DYNAMIC_ARRAY_PEEK_LAST(array)
@@ -214,6 +219,25 @@
         array = W_REF_VOID_PTR(array,sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE));             \
     } while (0)
 
+#define W_DYNAMIC_ARRAY_GROW_AT_LEAST(array,min)                                       \
+    do {                                                                               \
+        if ((array) == NULL) {\
+            W_DYNAMIC_ARRAY_INIT(array,min); \
+            break; \
+        }\
+        int W_ID(old_size) = W_DYNAMIC_ARRAY_ALLOC_SIZE(array);                        \
+        if ((min) <= W_DYNAMIC_ARRAY_ALLOC_SIZE(array))                                \
+            break;                                                                     \
+        W_DYNAMIC_ARRAY_ALLOC_SIZE(array) = (min);                                     \
+        array = W_REALLOC(W_HIDDEN_CONTAINER_OF(array,W_DYNAMIC_ARRAY_HEADER_TYPE),    \
+            sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE) +                                      \
+            W_DYNAMIC_ARRAY_ALLOC_SIZE(array) * sizeof((array)[0]));                   \
+        if ((array) == NULL)                                                           \
+            W_ERROR_ALLOCATION;                                                        \
+        array = W_REF_VOID_PTR(array,sizeof(W_DYNAMIC_ARRAY_HEADER_TYPE));             \
+        bzero(array+W_ID(old_size)*sizeof((array)[0]),                                 \
+            ((min)-W_ID(old_size))*sizeof((array)[0]));                                \
+    } while (0)
 
 #include <wondermacros/array/for_each.h>
 
