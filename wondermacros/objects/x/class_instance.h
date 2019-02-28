@@ -48,14 +48,14 @@ extern struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance);
 static const char* W_CAT_INNER(CLASS,__property_name)[] = {
 # define Array(...)
 # define VAR(scope,type,name,...) # name,
-# define OVERLOAD(C,name)
+# define OVERRIDE(C,name)
 # define METHOD(C,P,type,...)
 
     /**/
     W_CAT(CLASS,__define)
     /**/
 
-# undef OVERLOAD
+# undef OVERRIDE
 # undef METHOD
 # undef VAR
     NULL
@@ -67,14 +67,14 @@ static const size_t W_CAT_INNER(CLASS,__property_offset)[] = {
 # define VAR_public(name) offsetof(struct W_CAT_INNER(CLASS,__private),name)
 # define VAR_read(name) VAR_public(name)
 # define VAR_private(name) offsetof(struct W_CAT_INNER(CLASS,__private),CLASS.name)
-# define OVERLOAD(C,name)
+# define OVERRIDE(C,name)
 # define METHOD(C,P,type,...)
 
     /**/
     W_CAT(CLASS,__define)
     /**/
 
-# undef OVERLOAD
+# undef OVERRIDE
 # undef METHOD
 # undef VAR
 # undef VAR_public
@@ -87,14 +87,14 @@ static const size_t W_CAT_INNER(CLASS,__property_offset)[] = {
 
 static const size_t W_CAT_INNER(CLASS,__property_len)[] = {
 # define VAR(scope,type,name,...) sizeof(# name)-1,
-# define OVERLOAD(C,name)
+# define OVERRIDE(C,name)
 # define METHOD(C,P,type,...)
 
     /**/
     W_CAT(CLASS,__define)
     /**/
 
-# undef OVERLOAD
+# undef OVERRIDE
 # undef METHOD
 # undef VAR
     0
@@ -108,7 +108,7 @@ static const size_t W_CAT_INNER(CLASS,__property_len)[] = {
 # define VAR_2(t,name,spec) \
     int W_CAT_INNER(spec,_to_string)(void* self, char* buffer, size_t size); \
     int W_CAT_INNER(spec,_from_string)(const char* buffer, size_t size, void** self);
-# define OVERLOAD(C,name)
+# define OVERRIDE(C,name)
 # define METHOD(C,P,type,...)
 
     /**/
@@ -116,7 +116,7 @@ static const size_t W_CAT_INNER(CLASS,__property_len)[] = {
     /**/
 
 # undef JSON
-# undef OVERLOAD
+# undef OVERRIDE
 # undef METHOD
 # undef VAR
 # undef VAR_1
@@ -134,7 +134,7 @@ struct w_json_class W_CAT_INNER(CLASS,__property_type)[] = {
     { .to_string = (int (*)(void* self, char* buffer, size_t size)) \
         W_CAT_INNER(spec,_to_string), \
       .from_string = (int (*)(const char* buffer, const char** endptr, void* self)) W_CAT_INNER(spec,_from_string) },
-# define OVERLOAD(C,name)
+# define OVERRIDE(C,name)
 # define METHOD(C,P,type,...)
 
     /**/
@@ -142,7 +142,7 @@ struct w_json_class W_CAT_INNER(CLASS,__property_type)[] = {
     /**/
 
 # undef JSON
-# undef OVERLOAD
+# undef OVERRIDE
 # undef METHOD
 # undef VAR
 # undef VAR_1
@@ -172,7 +172,7 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
 
     /* Expand method interface. */
 # define VAR(...)
-# define OVERLOAD(C,name) \
+# define OVERRIDE(C,name) \
     .name = /* kill warning */ (void*) W_CAT_INNER(C,__,name),
 # define METHOD(C,P,type,...)          \
     BOOST_PP_OVERLOAD(_METHOD_,__VA_ARGS__)(C,P,type,__VA_ARGS__)
@@ -185,7 +185,7 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
     W_CAT(CLASS,__define)
     /**/
 
-# undef OVERLOAD
+# undef OVERRIDE
 # undef METHOD
 # undef _METHOD_1
 # undef _METHOD_2

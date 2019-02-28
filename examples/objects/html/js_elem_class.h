@@ -4,7 +4,7 @@
     /* Inherits */                            \
     html__define                              \
                                               \
-    OVERLOAD(js_elem,to_string)               \
+    OVERRIDE(js_elem,to_string)               \
                                               \
     VAR(read,struct html*,script)             \
     /**/

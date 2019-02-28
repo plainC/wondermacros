@@ -4,7 +4,7 @@
     /* Inherits */                            \
     html__define                              \
                                               \
-    OVERLOAD(html_attr,to_string)             \
+    OVERRIDE(html_attr,to_string)             \
                                               \
     VAR(read,enum html_attr_tag,tag)          \
     VAR(read,struct html*,value)              \

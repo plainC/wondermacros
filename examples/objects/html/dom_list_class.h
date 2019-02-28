@@ -6,7 +6,7 @@
                                               \
     METHOD(dom_list,public,int,append_child,  \
         (struct html* child))                 \
-    OVERLOAD(dom_list,to_string)              \
+    OVERRIDE(dom_list,to_string)              \
                                               \
     VAR(read,struct html**,docs)              \
     /**/

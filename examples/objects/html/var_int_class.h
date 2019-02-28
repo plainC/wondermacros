@@ -4,7 +4,7 @@
     /* Inherits */                            \
     html__define                              \
                                               \
-    OVERLOAD(var_int,to_string)               \
+    OVERRIDE(var_int,to_string)               \
                                               \
     VAR(read,char*,name)                      \
     /**/

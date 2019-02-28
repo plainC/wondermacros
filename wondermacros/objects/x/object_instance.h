@@ -82,7 +82,7 @@ struct W_CAT(CLASS,__private) {
 # define JSON(...)
 
 # define METHOD(...)
-# define OVERLOAD(...)
+# define OVERRIDE(...)
 # define VAR(P,type,...)          \
     BOOST_PP_OVERLOAD(_VAR_,__VA_ARGS__)(P,type,__VA_ARGS__)
 # define _VAR_1(P,type,name)      \
@@ -97,7 +97,7 @@ struct W_CAT(CLASS,__private) {
 # undef _VAR_1
 # undef _VAR_2
 # undef METHOD
-# undef OVERLOAD
+# undef OVERRIDE
     /**/
 
 #ifdef W_CLASS_GENERATE
@@ -108,7 +108,7 @@ struct W_CAT(CLASS,__private) {
 # define read (0, )
 
 # define METHOD(...)
-# define OVERLOAD(...)
+# define OVERRIDE(...)
 # define VAR(P,type,...)          \
     BOOST_PP_OVERLOAD(_VAR_,__VA_ARGS__)(P,type,__VA_ARGS__)
 # define _VAR_1(P,type,name)      \
@@ -129,7 +129,7 @@ struct W_CAT(CLASS,__private) {
 # undef Array_3
 # undef Bits
 # undef METHOD
-# undef OVERLOAD
+# undef OVERRIDE
         char W_CAT(_,CLASS)[0];
     } CLASS;
 #endif

@@ -7,7 +7,7 @@
     Point__define               \
     INHERIT(Point)              \
                                 \
-    OVERLOAD(ColoredPoint,draw) \
+    OVERRIDE(ColoredPoint,draw) \
                                 \
     VAR(read,const char*,color,JSON(json_string)) \
     /**/

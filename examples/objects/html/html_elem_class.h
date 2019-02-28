@@ -6,7 +6,7 @@
                                               \
     METHOD(html_elem,public,int,append_child, \
         (struct html* child))                 \
-    OVERLOAD(html_elem,to_string)             \
+    OVERRIDE(html_elem,to_string)             \
                                               \
     VAR(read,enum html_elem_tag,tag)          \
     VAR(read,struct html_attr**,attrs)              \

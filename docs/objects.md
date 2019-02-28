@@ -76,14 +76,14 @@ defined `Point` class. The code is underneath.
     /* Inherits */              \
     Point__define               \
                                 \
-    OVERLOAD(ColoredPoint,draw) \
+    OVERRIDE(ColoredPoint,draw) \
                                 \
     VAR(read,char*,color)       \
     /**/
 ```
 
 We place `Point__define` as the first declaration to specify the inheritance. Next we declare draw method
-to be overloaded in `ColoredPoint`. The last line adds a color property which is read-only.
+to be overrided in `ColoredPoint`. The last line adds a color property which is read-only.
 
 ### How to expand the header file of a class
 

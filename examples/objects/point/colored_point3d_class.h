@@ -7,7 +7,7 @@
     ColoredPoint__define          \
     INHERIT(ColoredPoint)         \
                                   \
-    OVERLOAD(ColoredPoint3D,draw) \
+    OVERRIDE(ColoredPoint3D,draw) \
                                   \
     VAR(read,int,z,JSON(json_int))               \
     /**/

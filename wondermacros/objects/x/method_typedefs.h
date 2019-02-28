@@ -43,7 +43,7 @@
 #define private 0
 
 # define VAR(...)
-# define OVERLOAD(...)
+# define OVERRIDE(...)
 # define METHOD(C,P,type,...)          \
     BOOST_PP_OVERLOAD(_METHOD_,__VA_ARGS__)(C,P,type,__VA_ARGS__)
 # define _METHOD_1(C,P,type,name)      \
@@ -51,7 +51,7 @@
 # define _METHOD_2(C,P,type,name,args) \
     BOOST_PP_EXPR_IF(P, typedef type (*W_CAT_INNER(CLASS,__,name,__func))(struct CLASS* self, BOOST_PP_REMOVE_PARENS(args));)
     W_CAT(CLASS,__define)
-# undef OVERLOAD
+# undef OVERRIDE
 # undef METHOD
 # undef _METHOD_1
 # undef _METHOD_2
@@ -61,4 +61,3 @@
 # undef private
 
 #endif
-

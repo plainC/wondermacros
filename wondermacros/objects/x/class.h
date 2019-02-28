@@ -83,7 +83,7 @@ struct W_CAT(CLASS,__class_private) {
 
     /* Expand public method interface. */
 # define VAR(...)
-# define OVERLOAD(...)
+# define OVERRIDE(...)
 # define public 1
 # define private 0
 # define METHOD(C,P,type,...)          \
@@ -116,7 +116,7 @@ struct W_CAT(CLASS,__class_private) {
 #  undef METHOD
 #  undef _METHOD_1
 #  undef _METHOD_2
-#  undef OVERLOAD
+#  undef OVERRIDE
     /**/
 
 # endif
