@@ -347,6 +347,18 @@ Do not use the following names when specifing the name of a method. They are res
 * `from_json`
 * all reserved words in the C language
 
+### Writing other declarations directly to the class file
+
+To specify simple types and other declarations directly in the class file,
+it is possible to use `TO_HEADER` macro. Just define that macro in the class
+file and the content is expanded with `<wondermacros/objects/x/class_declare.h>`.
+For example, function callback types, simple enums and type definitions can
+be specified in the same place with the class.
+
+It is also possible to add file inclusions in the class file. Define `INCLUDE_0`
+...`INCLUDE_3` macros in the class. Each one of them is able to include one
+file, e.g. `#define INCLUDE_0 <stdio.h>`.
+
 ### Source code and other examples
 
 The source code of the previous example can be found 
