@@ -76,6 +76,18 @@
 #define W_CALL_CLOSE(...) __VA_ARGS__))
 
 /***
+ *** Name:        W_CALL_STATIC
+ *** Proto:       W_CALL_STATIC(klass,self,method)(...)
+ *** Arg:         klass    a name of a class whose method is to be called
+ *** Arg:         self     an object (an instance of a class)
+ *** Arg:         method   a method name to be called
+ *** Arg:         ...      arguments for the methods
+ *** Description: Use W_CALL_STATIC to call a method of a specified class for an object with arguments following.
+ ***/
+#define W_CALL_STATIC(klass,o,method) ((klass ## __ ## method) \
+    (BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*))(o), W_CALL_CLOSE
+
+/***
  *** Name:        W_CALL_VOID
  *** Proto:       W_CALL_VOID(self,method)
  *** Arg:         self     an object (an instance of a class)
@@ -84,6 +96,17 @@
  ***/
 #define W_CALL_VOID(o,method)                  \
     (((o)->klass->method)(BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*)) (o)))
+
+/***
+ *** Name:        W_CALL_STATIC_VOID
+ *** Proto:       W_CALL_STATIC_VOID(self,method)
+ *** Arg:         klass    a name of a class whose method is to be called
+ *** Arg:         self     an object (an instance of a class)
+ *** Arg:         method   a method name to be called
+ *** Description: Use W_CALL_STATIC_VOID to call a method of a specified class.
+ ***/
+#define W_CALL_STATIC_VOID(klass,o,method)                  \
+    (klass ## __ ## method(BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*)) (o)))
 
 /***
  *** Name:        W_CALL_CONSTRUCT
