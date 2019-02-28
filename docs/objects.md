@@ -279,6 +279,16 @@ definition file. An abstract class does not need to implement
 a constructor or a destructor, and `W_NEW` cannot create instances of that
 class.
 
+### Common superclass
+
+Some object-oriented languages have a common superclass for all classes.
+To get a common class just include `<wondermacros/objects/object.h>` in a
+header of the project. By default, it will create a type called `struct Object`
+which can be used as a superclass for all objects. If you prefer a lowercase
+name, define `LOWERCASE_OBJECT` macro before the inclusion. If you prefer
+`Object_t`, define `USE_T_TYPE_SUFFIX`. Both of them can be combined to get
+`object_t`.
+
 ### Array properties and bit fields
 
 It is possible to declare a fixed size array property using additional declaration with `Array(...)` macro.
