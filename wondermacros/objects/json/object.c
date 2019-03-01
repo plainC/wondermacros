@@ -1,27 +1,12 @@
-#include <stdlib.h>
+#ifndef WDEBUG_EXPAND
+# include <stdlib.h>
+#endif
 
-struct object;
-struct object_klass {
-  struct
-  {
-    const char *name;
-    size_t size;
-    const char **property_name;
-    const size_t *property_len;
-    const size_t *property_offset;
-    void *property_type;
-  } meta;
-  void (*free) (struct object* self);
-  int (*to_json)(struct object* self, char* buffer, size_t size);
-  int (*from_json)(struct object* self, const char* buffer, const char** endptr);
-};
-
-struct object {
-    struct object_klass* klass;
-};
+#include <wondermacros/objects/object.h>
+#include <wondermacros/objects/object_name.h>
 
 int
-json_object_to_string(struct object** self, char* buffer, size_t size)
+json_object_to_string(struct CLASS** self, char* buffer, size_t size)
 {
     if (!(*self)) {
         if (size < 5)
@@ -35,7 +20,7 @@ json_object_to_string(struct object** self, char* buffer, size_t size)
 }
 
 int
-json_object_from_string(const char* buffer, const char** endptr, struct object** self)
+json_object_from_string(const char* buffer, const char** endptr, struct CLASS** self)
 {
     /* The constructor of a class is responsible to create an initial empty object. */
     if (!(*self))

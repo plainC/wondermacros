@@ -48,6 +48,8 @@ struct W_CAT(CLASS,__class);
 
 #ifdef W_CLASS_DECLARE
 struct w_json_class;
+struct CLASS;
+struct W_CAT(CLASS,__class);
 struct W_CAT(CLASS,__class) {
 # define _PRIVATE
 # define _EXPAND_CLASS
@@ -62,6 +64,11 @@ struct W_CAT(CLASS,__class_private) {
 
 #ifdef _EXPAND_CLASS
     struct {
+#ifdef SUPER
+        struct W_CAT(SUPER,__class)* super;
+#else
+        void* super;
+#endif
         const char* name;
         size_t size;
         const char** property_name;

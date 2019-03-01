@@ -31,8 +31,11 @@
 #include <wondermacros/meta/id.h>
 #include <wondermacros/meta/cat_inner.h>
 #include <wondermacros/configs/default_allocation.h>
-#include <stddef.h>
-#include <ctype.h>
+
+#ifndef WDEBUG_EXPAND
+# include <stddef.h>
+# include <ctype.h>
+#endif
 
 
 #ifndef CLASS

@@ -151,8 +151,16 @@ struct w_json_class W_CAT_INNER(CLASS,__property_type)[] = {
 };
 #endif
 
+#ifdef SUPER
+extern struct W_CAT(SUPER,__class) W_CAT(SUPER,__class_instance);
+#endif
 struct W_CAT(CLASS,__private);
 struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
+#ifdef SUPER
+    .meta.super = &W_CAT(SUPER,__class_instance),
+#else
+    .meta.super = NULL,
+#endif
     .meta.name = BOOST_PP_STRINGIZE(CLASS),
     .meta.size = sizeof(struct W_CAT_INNER(CLASS,__private)),
     .meta.property_name = W_CAT_INNER(CLASS,__property_name),
