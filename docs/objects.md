@@ -71,6 +71,7 @@ defined `Point` class. The code is underneath.
 
 ```C
 #define CLASS ColoredPoint
+#define SUPER Point
 
 #define ColoredPoint__define    \
     /* Inherits */              \
@@ -84,6 +85,11 @@ defined `Point` class. The code is underneath.
 
 We place `Point__define` as the first declaration to specify the inheritance. Next we declare draw method
 to be overrided in `ColoredPoint`. The last line adds a color property which is read-only.
+Note that we also define macro `SUPER`. It is not used in generating the actual
+class, so `Point__define` must be the first declaration. `SUPER` macro is, however,
+used in filling the meta-data of the class, and in various other places, such
+as in generating UML class diagram from source code. Thus, it must be there
+even though things might work without it.
 
 ### How to expand the header file of a class
 
