@@ -6,18 +6,26 @@
 
 #ifndef LOWERCASE_OBJECT
 # ifdef USE_T_TYPE_SUFFIX
-#  define CLASS Object_t
-#  define Object_t__define
+#  define CLASS Object
+#  define Object__define
+#  define OBJECT_T Object_t
+#  define CLASS_T Object__class_t
 # else
 #  define CLASS Object
 #  define Object__define
+#  define OBJECT_T struct Object
+#  define CLASS_T struct Object__class
 # endif
 #else
 # ifdef USE_T_TYPE_SUFFIX
-#  define CLASS object_t
-#  define object_t__define
+#  define CLASS object
+#  define object__define
+#  define OBJECT_T object_t
+#  define CLASS_T object__class_t
 # else
 #  define CLASS object
 #  define object__define
+#  define OBJECT_T struct object
+#  define CLASS_T struct object__class
 # endif
 #endif

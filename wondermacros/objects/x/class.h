@@ -45,6 +45,7 @@
 
 #ifdef W_FORWARD_DECLARE
 struct W_CAT(CLASS,__class);
+typedef struct W_CAT(CLASS,__class) W_CAT(CLASS,__class_t);
 #endif
 
 #ifdef W_CLASS_DECLARE

@@ -20,6 +20,9 @@
 #include <wondermacros/objects/json/object.c>
 #include <wondermacros/objects/json/int_array_2.c>
 
+#include <wondermacros/objects/meta.h>
+
+
 int main()
 {
     Point_t* array[] = {
@@ -27,6 +30,10 @@ int main()
         W_NEW(ColoredPoint),
         W_NEW(ColoredPoint3D, .x=5, .y=2, .z=8, .color="green"),
     };
+
+printf("meta: %d %d %d\n", w_object_is_subclass_of(array[1],array[0]),
+w_object_is_superclass_of(array[0],array[2]),
+w_object_is_subclass_of(array[0],array[1]));
 
 #include <wondermacros/meta/stringize.h>
 #define VAR(name,value) "\"" # name "\":" W_STRINGIZE(value)

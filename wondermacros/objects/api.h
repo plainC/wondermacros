@@ -43,6 +43,7 @@
 #include <boost/preprocessor/variadic/size.hpp>
 #include <boost/preprocessor/variadic/elem.hpp>
 
+
 /***
  *** Name:        W_NEW
  *** Proto:       W_NEW(T [,...])
@@ -153,6 +154,14 @@
  *** Description: Use W_CLASS to access the class instance.
  ***/
 #define W_CLASS(name) W_CAT(name,__class_instance_ptr)
+
+/***
+ *** Name:        W_GET_SUPERCLASS
+ *** Proto:       W_GET_SUPERCLASS(o)
+ *** Arg:         o     an object
+ *** Description: Use W_GET_SUPERCLASS to get pointer to the class object of o's superclass.
+ ***/
+#define W_GET_SUPERCLASS(o) ((o)->klass->meta.super)
 
 /***
  *** Name:        W_OBJECT_IS
