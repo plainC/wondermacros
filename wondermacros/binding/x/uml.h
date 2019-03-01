@@ -68,9 +68,8 @@ CLASS [
 # define private (0,)
 # define read (1,(read only))
 
-# define INHERIT(...)
 # define METHOD(...)
-# define OVERLOAD(...)
+# define OVERRIDE(...)
 # define VAR(P,type,...)          \
     BOOST_PP_OVERLOAD(_VAR_,__VA_ARGS__)(P,type,__VA_ARGS__)
 # define _VAR_1(P,type,name)      \
@@ -85,14 +84,14 @@ CLASS [
 # undef _VAR_1
 # undef _VAR_2
 # undef METHOD
-# undef OVERLOAD
+# undef OVERRIDE
     /**/
 
     /* Expand public method interface. */
 # define public 1
 # define private 0
 # define VAR(...)
-# define OVERLOAD(C,name) <TR><TD>+</TD><TD ALIGN="left">name</TD><TD></TD><TD></TD><TD></TD><TD>(overload)</TD></TR>
+# define OVERRIDE(C,name) <TR><TD>+</TD><TD ALIGN="left">name</TD><TD></TD><TD></TD><TD></TD><TD>(overload)</TD></TR>
 # define METHOD(C,P,type,...)          \
     BOOST_PP_OVERLOAD(_METHOD_,__VA_ARGS__)(C,P,type,__VA_ARGS__)
 # define _METHOD_1(C,P,type,name)      \
@@ -106,7 +105,7 @@ CLASS [
 # undef VAR
 # undef _METHOD_1
 # undef _METHOD_2
-# undef OVERLOAD
+# undef OVERRIDE
     </TABLE>|
     /**/
 
@@ -119,9 +118,8 @@ CLASS [
 # define private (1,)
 # define read (0,(read only))
 
-# define INHERIT(...)
 # define METHOD(...)
-# define OVERLOAD(...)
+# define OVERRIDE(...)
 # define VAR(P,type,...)          \
     BOOST_PP_OVERLOAD(_VAR_,__VA_ARGS__)(P,type,__VA_ARGS__)
 # define _VAR_1(P,type,name)      \
@@ -136,14 +134,14 @@ CLASS [
 # undef _VAR_1
 # undef _VAR_2
 # undef METHOD
-# undef OVERLOAD
+# undef OVERRIDE
     /**/
 
     /* Expand private method interface. */
 #  define public 0
 #  define private 1
 #  define VAR(...)
-#  define OVERLOAD(C,name)
+#  define OVERRIDE(C,name)
 #  define METHOD(C,P,type,...)          \
     BOOST_PP_OVERLOAD(_METHOD_,__VA_ARGS__)(C,P,type,__VA_ARGS__)
 #  define _METHOD_1(C,P,type,name)      \
@@ -157,26 +155,18 @@ CLASS [
 #  undef METHOD
 #  undef _METHOD_1
 #  undef _METHOD_2
-#  undef OVERLOAD
+#  undef OVERRIDE
     </TABLE>
     /**/
 
-#undef INHERIT
 # undef VAR
     }>
 ]
 
 /* Add edges */
-#define METHOD(...)
-#define VAR(...)
-#define OVERLOAD(...)
-#define INHERIT(name) CLASS -> name
-W_CAT_INNER(CLASS,__define)
-#undef METHOD
-#undef VAR
-#undef OVERLOAD
-#undef INHERIT
+#ifdef SUPER
+CLASS -> SUPER
+#endif
 
 #undef _EXPAND_CLASS
 #undef CLASS
-

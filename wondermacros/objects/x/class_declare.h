@@ -20,7 +20,6 @@ TO_HEADER
 # include INCLUDE_3
 #endif
 
-#define INHERIT(...)
 #include <wondermacros/objects/x/class.h>
 #include <wondermacros/objects/x/object_instance.h>
 #include <wondermacros/objects/x/method_typedefs.h>
@@ -31,13 +30,13 @@ TO_HEADER
 # include <wondermacros/objects/x/to_json.h>
 #endif
 #include <wondermacros/objects/x/method_forward_declares.h>
-#undef INHERIT
 
 extern void* W_CAT(CLASS,__class_instance_ptr);
 
 #undef W_CLASS_DECLARE
 
 #undef CLASS
+#undef SUPER
 #undef ABSTRACT
 #undef NO_CONSTRUCT
 #undef NO_DESTRUCT

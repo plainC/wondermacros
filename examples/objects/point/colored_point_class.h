@@ -1,11 +1,11 @@
 #define CLASS ColoredPoint
+#define SUPER Point
 
 #define BUILD_JSON
 
 #define ColoredPoint__define    \
     /* Inherits */              \
     Point__define               \
-    INHERIT(Point)              \
                                 \
     OVERRIDE(ColoredPoint,draw) \
                                 \

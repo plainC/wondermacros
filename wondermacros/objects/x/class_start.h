@@ -1,5 +1,4 @@
 #define W_CLASS_GENERATE
-#define INHERIT(...)
 #include <wondermacros/objects/x/class.h>
 #include <wondermacros/objects/x/object_instance.h>
 #include <wondermacros/objects/x/method_forward_declares.h>
@@ -19,7 +18,6 @@
 
 #include <wondermacros/objects/api.h>
 #undef W_CLASS_GENERATE
-#undef INHERIT
 
 #define CONSTRUCT(C)                  \
     void W_CAT(C,___construct)(struct W_CAT(C,__private)* self)

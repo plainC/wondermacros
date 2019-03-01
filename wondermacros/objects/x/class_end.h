@@ -8,12 +8,11 @@
 #undef _METHOD_2
 
 #define W_CLASS_GENERATE
-#define INHERIT(...)
 #include <wondermacros/objects/x/class_instance.h>
 #undef W_CLASS_GENERATE
-#undef INHERIT
 
 #undef CLASS
+#undef SUPER
 #undef ABSTRACT
 #undef NO_CONSTRUCT
 #undef NO_DESTRUCT
