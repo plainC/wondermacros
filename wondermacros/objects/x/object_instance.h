@@ -27,6 +27,7 @@
 #include <boost/preprocessor/stringize.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/control/expr_if.hpp>
+#include <boost/preprocessor/control/if.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
 #include <wondermacros/meta/cat.h>
 
@@ -66,9 +67,9 @@ struct W_CAT(CLASS,__private) {
 #ifdef _EXPAND_CLASS
 
 
-    /* Expand public properties. */
+    /* Expand properties. */
 # define public (1,)
-# define private (0,)
+# define private (0,_READ_SPECIFIER )
 # define read (1,_READ_SPECIFIER )
 
 # define Array(...) BOOST_PP_OVERLOAD(Array_,__VA_ARGS__)(__VA_ARGS__)
@@ -84,15 +85,30 @@ struct W_CAT(CLASS,__private) {
 
 # define JSON(...)
 
+#ifdef W_CLASS_GENERATE
+# define PRIVATE_NAME(name) name
+#else
+# ifdef USE_GCC_EXTENSION_COUNTER
+#  define PRIVATE_NAME(name) W_CAT(__private__,__COUNTER__)
+# else
+#  define PRIVATE_NAME(name) W_CAT(__private__,name)
+# endif
+#endif
+
 # define METHOD(...)
 # define OVERRIDE(...)
 # define VAR(P,type,...)          \
     BOOST_PP_OVERLOAD(_VAR_,__VA_ARGS__)(P,type,__VA_ARGS__)
 # define _VAR_1(P,type,name)      \
-    BOOST_PP_EXPR_IF(BOOST_PP_TUPLE_ELEM(0,P),BOOST_PP_TUPLE_ELEM(1,P) type name;)
+    _VAR_2(P,type,name,)
 # define _VAR_2(P,type,name,decl) \
-    BOOST_PP_EXPR_IF(BOOST_PP_TUPLE_ELEM(0,P),BOOST_PP_TUPLE_ELEM(1,P) type name decl;)
+    BOOST_PP_IF(BOOST_PP_TUPLE_ELEM(0,P),BOOST_PP_TUPLE_ELEM(1,P) type name,BOOST_PP_TUPLE_ELEM(1,P) type PRIVATE_NAME(name)) decl;
+
+    /**/
     W_CAT_INNER(CLASS,__define)
+    /**/
+
+# undef PRIVATE_NAME
 # undef public
 # undef private
 # undef read
@@ -101,41 +117,11 @@ struct W_CAT(CLASS,__private) {
 # undef _VAR_2
 # undef METHOD
 # undef OVERRIDE
-    /**/
-
-#ifdef W_CLASS_GENERATE
-    /* Expand private properties. */
-    struct {
-# define public (0,)
-# define private (1,)
-# define read (0, )
-
-# define METHOD(...)
-# define OVERRIDE(...)
-# define VAR(P,type,...)          \
-    BOOST_PP_OVERLOAD(_VAR_,__VA_ARGS__)(P,type,__VA_ARGS__)
-# define _VAR_1(P,type,name)      \
-    BOOST_PP_EXPR_IF(BOOST_PP_TUPLE_ELEM(0,P),BOOST_PP_TUPLE_ELEM(1,P) type name;)
-# define _VAR_2(P,type,name,decl) \
-    BOOST_PP_EXPR_IF(BOOST_PP_TUPLE_ELEM(0,P),BOOST_PP_TUPLE_ELEM(1,P) type name decl;)
-    W_CAT_INNER(CLASS,__define)
-# undef public
-# undef private
-# undef read
-# undef VAR
-# undef _VAR_1
-# undef _VAR_2
 # undef JSON
 # undef Array
 # undef Array_1
 # undef Array_2
 # undef Array_3
-# undef Bits
-# undef METHOD
-# undef OVERRIDE
-        char W_CAT(_,CLASS)[0];
-    } CLASS;
-#endif
     /**/
 
 };

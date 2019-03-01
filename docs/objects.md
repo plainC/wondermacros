@@ -57,12 +57,11 @@ does not take arguments give only the first four arguments to `METHOD`.
 
 Properties are defined using `VAR` macro. The first argument specifies the scope which is private, read, or
 public.  Read means read-only so `x` and `y` can only be modified in the implementation of Point's methods.
-When we have created instances of a class, public and read-only properties can be accessed directly by
-`object->property`. Private properties must be accessed through class name, by `object->class_name.property`
-(e.g. `p->Point.x` if `x` property is declared private). 
-This is because a class having a private property can be inherited later. If the subclass adds a property
-with the same name compiler would not notice possible conflicts in polymorphic use cases if the access
-would be direct.
+When we have created instances of a class, properties can be accessed directly by
+`object->property`. Private properties are hidden in the public struct with a prefix. If `USE_GCC_EXTENSION_COUNTER`
+macro is defined also the name is hidden. In the implementation file, where X-macro `<wondermacros/objects/x/class_start.h>`
+is expanded, the private properties are visible. In a similary way, read-only properties get `const` definition
+in the public structure.
 
 ### How to inherit a class
 

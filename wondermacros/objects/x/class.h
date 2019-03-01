@@ -27,6 +27,7 @@
 #include <boost/preprocessor/stringize.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/control/expr_if.hpp>
+#include <boost/preprocessor/control/if.hpp>
 #include <wondermacros/meta/cat.h>
 #include <wondermacros/meta/cat_inner.h>
 
@@ -88,18 +89,29 @@ struct W_CAT(CLASS,__class_private) {
     int (*from_json)(struct W_CAT(CLASS,_PRIVATE)* self, const char* buffer, const char** endptr);
 #endif
 
-    /* Expand public method interface. */
+    /* Expand method interface. */
 # define VAR(...)
 # define OVERRIDE(...)
 # define public 1
 # define private 0
 # define METHOD(C,P,type,...)          \
     BOOST_PP_OVERLOAD(_METHOD_,__VA_ARGS__)(C,P,type,__VA_ARGS__)
+#ifdef W_CLASS_GENERATE
 # define _METHOD_1(C,P,type,name)      \
-    BOOST_PP_EXPR_IF(P,type (*name) (struct W_CAT(C,_PRIVATE)* self);)
+    type (*name) (struct W_CAT(C,_PRIVATE)* self);
 # define _METHOD_2(C,P,type,name,args) \
-    BOOST_PP_EXPR_IF(P,type (*name) (struct W_CAT(C,_PRIVATE)* self, BOOST_PP_REMOVE_PARENS(args));)
+    type (*name) (struct W_CAT(C,_PRIVATE)* self, BOOST_PP_REMOVE_PARENS(args));
+#else
+# define _METHOD_1(C,P,type,name)      \
+    BOOST_PP_IF(P,type (*name),type (*W_CAT(__private__,name))) (struct W_CAT(C,_PRIVATE)* self);
+# define _METHOD_2(C,P,type,name,args) \
+    BOOST_PP_IF(P,type (*name),type (*W_CAT(__private__,name))) (struct W_CAT(C,_PRIVATE)* self, BOOST_PP_REMOVE_PARENS(args));
+#endif
+
+    /**/
     W_CAT_INNER(CLASS,__define)
+    /**/
+
 # undef public
 # undef private
 # undef METHOD
@@ -107,26 +119,6 @@ struct W_CAT(CLASS,__class_private) {
 # undef _METHOD_2
     /**/
 
-# ifdef W_CLASS_GENERATE
-    /* Expand private method interface. */
-#  define public 0
-#  define private 1
-#  define METHOD(C,P,type,...)          \
-    BOOST_PP_OVERLOAD(_METHOD_,__VA_ARGS__)(C,P,type,__VA_ARGS__)
-#  define _METHOD_1(C,P,type,name)      \
-    BOOST_PP_EXPR_IF(P,type (*name) (struct W_CAT(C,__private)* self);)
-#  define _METHOD_2(C,P,type,name,args) \
-    BOOST_PP_EXPR_IF(P,type (*name) (struct W_CAT(C,__private)* self, BOOST_PP_REMOVE_PARENS(args));)
-    W_CAT_INNER(CLASS,__define)
-#  undef public
-#  undef private
-#  undef METHOD
-#  undef _METHOD_1
-#  undef _METHOD_2
-#  undef OVERRIDE
-    /**/
-
-# endif
 # undef VAR
 };
 #endif

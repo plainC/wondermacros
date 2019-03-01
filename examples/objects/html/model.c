@@ -17,12 +17,12 @@
 
 CONSTRUCT(model) /* self */
 {
-    self->model.variables = NULL;
+    self->variables = NULL;
 }
 
 FINALIZE(model) /* self */
 {
-    W_ARRAY_FOR_EACH(struct variable*,var, self->model.variables) {
+    W_ARRAY_FOR_EACH(struct variable*,var, self->variables) {
         free((void*) var->name);
         free(var);
     }
@@ -31,7 +31,7 @@ FINALIZE(model) /* self */
 METHOD(model,public,void*,get,
     (const char* name))
 {
-    W_ARRAY_FOR_EACH(struct variable*,var, self->model.variables, W_DYNAMIC_ARRAY_GET_SIZE(self->model.variables))
+    W_ARRAY_FOR_EACH(struct variable*,var, self->variables, W_DYNAMIC_ARRAY_GET_SIZE(self->variables))
         if (strcmp(var->name, name) == 0)
             return var->ptr;
     return NULL;
@@ -45,14 +45,14 @@ METHOD(model,public,int,bind_ptr,
     var->type = type;
     var->ptr = ptr;
 
-    W_ARRAY_FOR_EACH(struct variable*,v, self->model.variables, W_DYNAMIC_ARRAY_GET_SIZE(self->model.variables))
+    W_ARRAY_FOR_EACH(struct variable*,v, self->variables, W_DYNAMIC_ARRAY_GET_SIZE(self->variables))
         if (strcmp(v->name, name) == 0) {
             free(v);
-            self->model.variables[v_ix] = var;
+            self->variables[v_ix] = var;
             return 1;
         }
 
-    W_DYNAMIC_ARRAY_PUSH(self->model.variables, var);
+    W_DYNAMIC_ARRAY_PUSH(self->variables, var);
     return 0;
 }
 

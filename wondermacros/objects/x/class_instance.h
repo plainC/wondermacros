@@ -63,10 +63,7 @@ static const char* W_CAT_INNER(CLASS,__property_name)[] = {
 
 #ifndef USE_BIT_FIELDS
 static const size_t W_CAT_INNER(CLASS,__property_offset)[] = {
-# define VAR(scope,type,name,...) W_CAT_INNER(VAR_,scope)(name),
-# define VAR_public(name) offsetof(struct W_CAT_INNER(CLASS,__private),name)
-# define VAR_read(name) VAR_public(name)
-# define VAR_private(name) offsetof(struct W_CAT_INNER(CLASS,__private),CLASS.name)
+# define VAR(scope,type,name,...) offsetof(struct W_CAT_INNER(CLASS,__private),name),
 # define OVERRIDE(C,name)
 # define METHOD(C,P,type,...)
 
@@ -77,9 +74,6 @@ static const size_t W_CAT_INNER(CLASS,__property_offset)[] = {
 # undef OVERRIDE
 # undef METHOD
 # undef VAR
-# undef VAR_public
-# undef VAR_private
-# undef VAR_read
 
     0
 };
