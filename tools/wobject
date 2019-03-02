@@ -1,0 +1,233 @@
+#!/usr/bin/perl
+
+my @classes;
+my $class_name;
+my %var_scope;
+my %var_name;
+my %var_type;
+my %var_decl;
+my %m_scope;
+my %m_name;
+my %m_type;
+my %m_args;
+my @includes;
+my $to_header;
+my $abstract;
+my $json;
+my $construct;
+my $finalize;
+my @uses;
+my @uses_private;
+
+foreach my $infile (@ARGV) {
+    read_file($infile);
+}
+build_classes_h();
+build_forward_declare_h();
+
+exit;
+
+sub read_file {
+    my $infile = shift @_;
+
+    open IN, "<$infile" or die "Cannot open $infile";
+
+    while (<IN>) {
+        if (/^(abstract\s+)?(json\s+)?class\s*(\w+)\s*(\:\s*([\w]+))?/) {
+            if (defined $class_name) {
+                build_class();
+            }
+
+            $abstract = $1;
+            $json = $2;
+            $class_name = $3;
+            $super = $5;
+        } elsif (/uses\s+(\w+)(\s+private)?/) {
+            if (defined $class_name) {
+                build_class();
+            }
+
+            if (defined $2) {
+                push @uses_private, $1;
+            } else {
+                push @uses, $1;
+            }
+        } elsif (/^\/\/(.*)/) {
+        } elsif (/\s+([\w]+)\s+([\w\*]+)\s+([\w]+)\s*\(\s*([^\)]*)\)/) {
+            my $scope = $1;
+            my $type = $2;
+            my $name = $3;
+            my $args = $4;
+            $m_scope{$name} = $scope;
+            $m_type{$name} = $type;
+            $m_args{$name} = $args;
+        } elsif (/\s+([\w]+)\s+([\w\*]+)\s+([\w+])\s*(\:(\d+))?(\[([^\]]+)\])?/) {
+            my $scope = $1;
+            my $type = $2;
+            my $name = $3;
+            my $bits = $5;
+            my $array = $7;
+            $var_scope{$name} = $scope;
+            $var_type{$name} = $type;
+            if (defined $bits) {
+                $var_decl{$name} = "Bits($bits)";
+            }
+            if (defined $array) {
+                $var_decl{$name} = "Array($array)";
+            }
+        } elsif (/include\s+(.*)/) {
+            push @includes, $1;
+        } elsif (/construct/) {
+            $construct = 1;
+        } elsif (/finalize/) {
+            $finalize = 1;
+        } elsif (!defined $class_name && /([^\s](.*))/) {
+            $to_header .= "    " . $1 . " \\\n";
+        }
+    }
+
+    close IN;
+
+    if (defined $class_name) {
+        build_class();
+    }
+}
+
+sub build_forward_declare_h() {
+    open OUT, ">forward_declare.h";
+    foreach my $file (@classes) {
+        print OUT "#include \"$file" . "_class.h\"\n";
+        print OUT "#include <wondermacros/objects/x/forward_declare.h>\n";
+    }
+    close OUT;
+}
+
+sub build_classes_h {
+    open OUT, ">classes.h";
+    foreach my $file (@classes) {
+        print OUT "#include \"$file" . ".h\"\n";
+    }
+    close OUT;
+}
+
+sub build_class {
+    push @classes, $class_name;
+    build_h();
+    build_c();
+    build_class_h();
+}
+
+sub build_h {
+    open OUT,">$class_name" . ".h";
+    my $guard = uc $class_name . "_H";
+    print OUT "#ifndef __$guard\n";
+    print OUT "#define __$guard\n";
+    print OUT "\n";
+    print OUT "#include \"forward_declare.h\"\n";
+    if (defined $super) {
+        print OUT "#include \"$super" . ".h\"\n";
+    }
+    foreach my $u (@uses) {
+        print OUT "#include \"$u" . ".h\"\n";
+    }
+    print OUT "#include \"$class_name" . "_class.h\"\n";
+    print OUT "#include <wondermacros/objects/x/class_declare.h>\n";
+    print OUT "\n";
+    print OUT "#endif /* $class_name */\n";
+    close OUT;
+}
+
+sub build_c {
+    open OUT,">$class_name" . ".c";
+    print OUT "#include \"forward_declare.h\"\n";
+    print OUT "#include \"$class_name" . ".h\"\n";
+    foreach my $u (@uses_private) {
+        print OUT "#include \"$u" . ".h\"\n";
+    }
+    print OUT "#include \"$class_name" . "_class.h\"\n";
+    print OUT "#include <wondermacros/objects/x/class_start.h>\n";
+    print OUT "#include <wondermacros/objects/x/class_end.h>\n";
+    close OUT;
+}
+
+sub build_class_h {
+    open OUT,">$class_name" . "_class.h";
+
+    my $c=0;
+    foreach my $inc (@includes) {
+        print OUT "#define INCLUDE_$c $inc\n";
+        $c++;
+    }
+    if ($c) {
+        print OUT "\n";
+    }
+    print OUT "#define CLASS $class_name\n";
+    if (defined $super) {
+        print OUT "#define SUPER $super\n";
+    }
+    if (defined $abstract) {
+        printf OUT "#define ABSTRACT\n";
+    }
+    if (defined $json) {
+        printf OUT "#define BUILD_JSON\n";
+    }
+    if (!defined $construct) {
+        print OUT "#define NO_CONSTRUCT\n";
+    }
+    if (!defined $finalize) {
+        print OUT "#define NO_DESTRUCT\n";
+    }
+    print OUT "\n";
+    print OUT "#define $class_name" . "__define \\\n";
+    if (defined $super) {
+        print OUT "    /* Inherits: $super */ \\\n";
+        print OUT "    $super" . "__define \\\n    \\\n";
+    }
+
+    foreach my $name (keys %var_type) {
+        my $type = $var_type{$name};
+        my $scope = $var_scope{$name};
+        my $decl;
+        if (defined $var_decl{$name}) {
+            $decl = $var_decl{$name};
+        }
+        if (defined $decl) {
+            print OUT "    VAR($scope,$type,$name,$decl) \\\n";
+        } else {
+            print OUT "    VAR($scope,$type,$name) \\\n";
+        }
+    }
+
+    foreach my $name (keys %m_type) {
+        my $type = $m_type{$name};
+        my $scope = $m_scope{$name};
+        my $args = $m_args{$name};
+        print OUT "    METHOD($class_name,$scope,$type,$name,($args)) \\\n";
+    }
+    print OUT "    /**/\n";
+
+    if (defined $to_header) {
+        print OUT "\n#define TO_HEADER \\\n$to_header\n    /**/\n";
+    }
+
+    close OUT;
+
+    undef $to_header;
+    undef %m_scope;
+    undef %m_type;
+    undef %m_name;
+    undef %m_args;
+    undef %var_scope;
+    undef %var_type;
+    undef %var_name;
+    undef %var_decl;
+    undef @includes;
+    undef $abstract;
+    undef $super;
+    undef $json;
+    undef $construct;
+    undef $finalize;
+    undef @uses;
+    undef @uses_private;
+    undef $class_name;
+}
