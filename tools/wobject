@@ -18,6 +18,7 @@ my $construct;
 my $finalize;
 my @uses;
 my @uses_private;
+my $guard;
 
 foreach my $infile (@ARGV) {
     read_file($infile);
@@ -42,6 +43,8 @@ sub read_file {
             $json = $2;
             $class_name = $3;
             $super = $5;
+        } elsif (/guard\s+(\w+)/) {
+            $guard = $1;
         } elsif (/uses\s+(\w+)(\s+private)?/) {
             if (defined $class_name) {
                 build_class();
@@ -95,18 +98,24 @@ sub read_file {
 
 sub build_forward_declare_h() {
     open OUT, ">forward_declare.h";
+    print OUT "#ifndef __$guard" . "_FORWARD_DECLARE_H\n";
+    print OUT "#define __$guard" . "_FORWARD_DECLARE_H\n";
     foreach my $file (@classes) {
         print OUT "#include \"$file" . "_class.h\"\n";
         print OUT "#include <wondermacros/objects/x/forward_declare.h>\n";
     }
+    print OUT "#endif\n";
     close OUT;
 }
 
 sub build_classes_h {
     open OUT, ">classes.h";
+    print OUT "#ifndef __$guard" . "_CLASSES_H\n";
+    print OUT "#define __$guard" . "_CLASSES_H\n";
     foreach my $file (@classes) {
         print OUT "#include \"$file" . ".h\"\n";
     }
+    print OUT "#endif\n";
     close OUT;
 }
 
@@ -119,9 +128,9 @@ sub build_class {
 
 sub build_h {
     open OUT,">$class_name" . ".h";
-    my $guard = uc $class_name . "_H";
-    print OUT "#ifndef __$guard\n";
-    print OUT "#define __$guard\n";
+    my $g = uc $class_name . "_H";
+    print OUT "#ifndef __$guard" . "_" . "$g\n";
+    print OUT "#define __$guard" . "_" . "$g\n";
     print OUT "\n";
     print OUT "#include \"forward_declare.h\"\n";
     if (defined $super) {
@@ -138,6 +147,9 @@ sub build_h {
 }
 
 sub build_c {
+    if (-e "$class_name" . ".c") {
+        return;
+    }
     open OUT,">$class_name" . ".c";
     print OUT "#include \"forward_declare.h\"\n";
     print OUT "#include \"$class_name" . ".h\"\n";
@@ -146,6 +158,25 @@ sub build_c {
     }
     print OUT "#include \"$class_name" . "_class.h\"\n";
     print OUT "#include <wondermacros/objects/x/class_start.h>\n";
+    print OUT "\n";
+    if (defined $construct) {
+        print OUT "CONSTRUCT($class_name)\n";
+        print OUT "{\n";
+        print OUT "}\n\n";
+    }
+    if (defined $finalize) {
+        print OUT "FINALIZE($class_name)\n";
+        print OUT "{\n";
+        print OUT "}\n\n";
+    }
+    foreach my $name (keys %m_type) {
+        my $type = $m_type{$name};
+        my $scope = $m_scope{$name};
+        my $args = $m_args{$name};
+        print OUT "METHOD($class_name,$scope,$type,$name,($args))\n";
+        print OUT "{\n";
+        print OUT "}\n\n";
+    }
     print OUT "#include <wondermacros/objects/x/class_end.h>\n";
     close OUT;
 }
