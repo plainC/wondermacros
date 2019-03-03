@@ -1,0 +1,60 @@
+#include all "vehicles.h"
+
+guard VEHICLES
+
+abstract class Engine
+  public void start()
+  public void stop()
+  public int is_running()
+  public void add_rotations(int increment)
+  public float get_speed(int weight)
+  public int is_on
+  private int max_rotations
+  private int min_rotations
+  private int rotations
+
+class DieselEngine : Engine
+  construct
+  override start
+  override stop
+
+class JetEngine : Engine
+  override start
+  override stop
+
+abstract class Vehicle
+  public void turn(float angle)
+  public void add_speed(float increment)
+  public float x_pos
+  public float y_pos
+  public float speed
+  public float direction
+
+uses Engine
+abstract class MotorVehicle : Vehicle
+  public struct Engine* engine
+  public void start()
+  public void stop()
+
+class Bike : Vehicle
+  override turn
+  override add_speed
+
+uses DieselEngine
+class Car : MotorVehicle
+  construct
+  finalize
+  override start
+  override stop
+  override turn
+  override add_speed
+  private int weight
+
+class Aircraft : MotorVehicle
+  public void fly()
+  public void land()
+  override start
+  override stop
+  override turn
+  override add_speed
+

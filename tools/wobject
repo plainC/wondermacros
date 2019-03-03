@@ -10,7 +10,9 @@ my %m_scope;
 my %m_name;
 my %m_type;
 my %m_args;
+my @override;
 my @includes;
+my @includes_all;
 my $to_header;
 my $abstract;
 my $json;
@@ -56,20 +58,22 @@ sub read_file {
                 push @uses, $1;
             }
         } elsif (/^\/\/(.*)/) {
-        } elsif (/\s+([\w]+)\s+([\w\*]+)\s+([\w]+)\s*\(\s*([^\)]*)\)/) {
+        } elsif (/override\s+(\w+)/) {
+            push @override, $1;
+        } elsif (/\s+([\w]+)\s+((\w+\s+)?(\w+\s+)?[\w\*]+)\s+(\w+)\s*\(\s*([^\)]*)\)/) {
             my $scope = $1;
             my $type = $2;
-            my $name = $3;
-            my $args = $4;
+            my $name = $5;
+            my $args = $6;
             $m_scope{$name} = $scope;
             $m_type{$name} = $type;
             $m_args{$name} = $args;
-        } elsif (/\s+([\w]+)\s+([\w\*]+)\s+([\w+])\s*(\:(\d+))?(\[([^\]]+)\])?/) {
+        } elsif (/\s+([\w]+)\s+((\w+\s+)?(\w+\s+)?[\w\*]+)\s+(\w+)\s*(\:(\d+))?(\[([^\]]+)\])?/) {
             my $scope = $1;
             my $type = $2;
-            my $name = $3;
-            my $bits = $5;
-            my $array = $7;
+            my $name = $5;
+            my $bits = $7;
+            my $array = $9;
             $var_scope{$name} = $scope;
             $var_type{$name} = $type;
             if (defined $bits) {
@@ -78,8 +82,12 @@ sub read_file {
             if (defined $array) {
                 $var_decl{$name} = "Array($array)";
             }
-        } elsif (/include\s+(.*)/) {
-            push @includes, $1;
+        } elsif (/include\s+(all\s+)?(.*)/) {
+            if (defined $1) {
+                push @includes_all, $2;
+            } else {
+                push @includes, $2;
+            }
         } elsif (/construct/) {
             $construct = 1;
         } elsif (/finalize/) {
@@ -133,6 +141,11 @@ sub build_h {
     print OUT "#define __$guard" . "_" . "$g\n";
     print OUT "\n";
     print OUT "#include \"forward_declare.h\"\n";
+
+    foreach my $file (@includes_all) {
+        print OUT "#include $file\n";
+    }
+
     if (defined $super) {
         print OUT "#include \"$super" . ".h\"\n";
     }
@@ -173,7 +186,17 @@ sub build_c {
         my $type = $m_type{$name};
         my $scope = $m_scope{$name};
         my $args = $m_args{$name};
-        print OUT "METHOD($class_name,$scope,$type,$name,($args))\n";
+        if ($args ne "") {
+            print OUT "METHOD($class_name,$scope,$type,$name,($args))\n";
+        } else {
+            print OUT "METHOD($class_name,$scope,$type,$name)\n";
+        }
+        print OUT "{\n";
+        print OUT "}\n\n";
+    }
+    foreach my $name (@override) {
+        print OUT "/* Override: $name */\n";
+        print OUT "METHOD($class_name,/*FIXME:is public?*/ public,/*FIXME:is void?*/void,$name /*FIXME:has args?*/)\n";
         print OUT "{\n";
         print OUT "}\n\n";
     }
@@ -233,7 +256,14 @@ sub build_class_h {
         my $type = $m_type{$name};
         my $scope = $m_scope{$name};
         my $args = $m_args{$name};
-        print OUT "    METHOD($class_name,$scope,$type,$name,($args)) \\\n";
+        if ($args ne "") {
+            print OUT "    METHOD($class_name,$scope,$type,$name,($args)) \\\n";
+        } else {
+            print OUT "    METHOD($class_name,$scope,$type,$name) \\\n";
+        }
+    }
+    foreach $name (@override) {
+        print OUT "    OVERRIDE($class_name,$name) \\\n";
     }
     print OUT "    /**/\n";
 
@@ -260,5 +290,6 @@ sub build_class_h {
     undef $finalize;
     undef @uses;
     undef @uses_private;
+    undef @override;
     undef $class_name;
 }
