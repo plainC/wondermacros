@@ -21,6 +21,9 @@ give us object-oriented capabilities including:
 * Polymorphism: method calls lookup the actual method implementation from the class of the object being called
 * Introspection: we can study existing objects at runtime
 
+We also introduce a tool which creates all necessary boilerplate automatically
+from [simple class specifications](https://github.com/plainC/wondermacros/blob/master/examples/objects/vechiles/classes.wobject).
+
 ### How to define a class
 In order to define a class, first create a new header file, e.g. `point_class.h`.
 The first thing is to name the class.  We name it to `Point` by defining CLASS macro.
@@ -375,7 +378,7 @@ Do not use the following names when specifing the name of a method. They are res
 * `from_json`
 * all reserved words in the C language
 
-### Writing other declarations directly to the class file
+### Writting other declarations directly to the class file
 
 To specify simple types and other declarations directly in the class file,
 it is possible to use `TO_HEADER` macro. Just define that macro in the class
@@ -386,6 +389,27 @@ be specified in the same place with the class.
 It is also possible to add file inclusions in the class file. Define `INCLUDE_0`
 ...`INCLUDE_3` macros in the class. Each one of them is able to include one
 file, e.g. `#define INCLUDE_0 <stdio.h>`.
+
+### wobject Tool
+
+`wobject` tool helps to skip all steps in maintaining boilerplate code needed
+by the O-O framework. It takes a simple class specification and builds the
+necessary headers and initial C file, if it does not exist already. The format
+is the following:
+
+```
+// Define a class ClassName which inherits SuperClassName. It uses Other class
+uses Other
+class ClassName : SuperClassName
+  construct                       // we have a constructor
+  finalize                        // we have a destructor
+  public int x                    // defines a public property
+  private int y                   // defines a private property
+  public int foo()                // defines a method which does not take arguments
+  public int goo(struct Other* o) // defines a method with an argument
+  override superfunc              // we will override superfunc
+```
+
 
 ### Source code and other examples
 
