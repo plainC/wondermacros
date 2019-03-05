@@ -21,9 +21,14 @@ my $finalize;
 my @uses;
 my @uses_private;
 my $guard;
+my $separated_c;
 
 foreach my $infile (@ARGV) {
-    read_file($infile);
+    if ($infile eq "-c") {
+        $separated_c = 1;
+    } else {
+        read_file($infile);
+    }
 }
 build_classes_h();
 build_forward_declare_h();
@@ -92,7 +97,7 @@ sub read_file {
             $construct = 1;
         } elsif (/finalize/) {
             $finalize = 1;
-        } elsif (!defined $class_name && /([^\s](.*))/) {
+        } elsif (/([^\s](.*))/) {
             $to_header .= "    " . $1 . " \\\n";
         }
     }
@@ -155,14 +160,19 @@ sub build_h {
     print OUT "#include \"$class_name" . "_class.h\"\n";
     print OUT "#include <wondermacros/objects/x/class_declare.h>\n";
     print OUT "\n";
+
     print OUT "#endif /* $class_name */\n";
     close OUT;
 }
 
 sub build_c {
-    if (-e "$class_name" . ".c") {
+    if (!defined $separated_c && -e "$class_name" . ".c") {
         return;
     }
+    if (defined $separated_c) {
+        system "touch $class_name" . "_impl.c";
+    }
+
     open OUT,">$class_name" . ".c";
     print OUT "#include \"forward_declare.h\"\n";
     print OUT "#include \"$class_name" . ".h\"\n";
@@ -172,36 +182,65 @@ sub build_c {
     print OUT "#include \"$class_name" . "_class.h\"\n";
     print OUT "#include <wondermacros/objects/x/class_start.h>\n";
     print OUT "\n";
-    if (defined $construct) {
-        print OUT "CONSTRUCT($class_name)\n";
-        print OUT "{\n";
-        print OUT "}\n\n";
-    }
-    if (defined $finalize) {
-        print OUT "FINALIZE($class_name)\n";
-        print OUT "{\n";
-        print OUT "}\n\n";
-    }
-    foreach my $name (keys %m_type) {
-        my $type = $m_type{$name};
-        my $scope = $m_scope{$name};
-        my $args = $m_args{$name};
-        if ($args ne "") {
-            print OUT "METHOD($class_name,$scope,$type,$name,($args))\n";
-        } else {
-            print OUT "METHOD($class_name,$scope,$type,$name)\n";
+    if (!defined $separated_c) {
+        if (defined $construct) {
+            print OUT "CONSTRUCT($class_name)\n";
+            print OUT "{\n";
+            print OUT "}\n\n";
         }
-        print OUT "{\n";
-        print OUT "}\n\n";
+        if (defined $finalize) {
+            print OUT "FINALIZE($class_name)\n";
+            print OUT "{\n";
+            print OUT "}\n\n";
+        }
     }
-    foreach my $name (@override) {
-        print OUT "/* Override: $name */\n";
-        print OUT "METHOD($class_name,/*FIXME:is public?*/ public,/*FIXME:is void?*/void,$name /*FIXME:has args?*/)\n";
-        print OUT "{\n";
-        print OUT "}\n\n";
+    if (!defined $separated_c) {
+        foreach my $name (keys %m_type) {
+            my $type = $m_type{$name};
+            my $scope = $m_scope{$name};
+            my $args = $m_args{$name};
+
+            if ($args ne "") {
+                print OUT "METHOD($class_name,$scope,$type,$name,($args))\n";
+            } else {
+                print OUT "METHOD($class_name,$scope,$type,$name)\n";
+            }
+            if (!defined $separated_c) {
+                print OUT "{\n";
+                print OUT "}\n\n";
+
+                foreach my $name (@override) {
+                    print OUT "/* Override: $name */\n";
+                    print OUT "METHOD($class_name,/*FIXME:is public?*/ public,/*FIXME:is void?*/void,$name /*FIXME:has args?*/)\n";
+                    print OUT "{\n";
+                    print OUT "}\n\n";
+                }
+            }
+        }
+    }
+    if (defined $separated_c) {
+        foreach my $name (keys %m_type) {
+            my $type = $m_type{$name};
+            my $scope = $m_scope{$name};
+            my $args = $m_args{$name};
+            if (defined $separated_c) {
+                print OUT "#define M__" . "$name ";
+            }
+            if ($args ne "") {
+                print OUT "METHOD($class_name,$scope,$type,$name,($args))\n";
+            } else {
+                print OUT "METHOD($class_name,$scope,$type,$name)\n";
+            }
+        }
+    }
+    if (defined $separated_c) {
+        print OUT "#define EXPAND_C\n";
+        print OUT "#include \"$class_name" . "_impl.c\"\n\n";
+        print out "#undef EXPAND_C\n";
     }
     print OUT "#include <wondermacros/objects/x/class_end.h>\n";
     close OUT;
+
 }
 
 sub build_class_h {

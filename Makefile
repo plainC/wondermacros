@@ -7,6 +7,7 @@ all:
 
 install:
 	cp -r wondermacros $(DESTDIR)
+	cp -r tools $(DESTDIR)/wondermacros
 
 clean:
 	cd examples && make clean
