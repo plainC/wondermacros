@@ -22,3 +22,5 @@ give us object-oriented capabilities including:
 
 We also introduce a tool which creates all necessary boilerplate automatically
 from [simple class specifications](https://github.com/plainC/wondermacros/blob/master/examples/objects/vechiles/classes.wobject).
+
+###### Next: [Defining a Class](https://github.com/plainC/wondermacros/blob/master/docs/objects_class.md)

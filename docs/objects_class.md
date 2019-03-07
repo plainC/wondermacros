@@ -67,3 +67,5 @@ used in filling the meta-data of the class, and in various other places, such
 as in generating UML class diagram from source code. Thus, it must be there
 even though things might work without it.
 
+###### Prev: [Introduction](https://github.com/plainC/wondermacros/blob/master/docs/objects_introduction.md)
+###### Next: [Expanding to Source Code](https://github.com/plainC/wondermacros/blob/master/docs/objects_code.md)
