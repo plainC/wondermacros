@@ -89,6 +89,14 @@ name                 a class name
 #### Description
     Use W_CLASS to access the class instance.
     
+### W_GET_SUPERCLASS(o)
+#### Arguments
+```C
+o                    an object
+```
+#### Description
+    Use W_GET_SUPERCLASS to get pointer to the class object of o's superclass.
+    
 ### W_OBJECT_IS(self,T)
 #### Arguments
 ```C
@@ -110,3 +118,54 @@ T                    a class name
 ### W_OBJECT_CLASS_NAME(self)
 #### Description
     Use W_OBJECT_CLASS_NAME to get a const char pointer to the name of the class.
+    
+### W_OBJECT_SIGNAL_TYPE
+#### Description
+    Use W_OBJECT_SIGNAL_TYPE to declare a variable that stores a handle to a callback binding
+    
+### W_CONNECT(self,signal,callback,handle)
+#### Arguments
+```C
+self                 an object
+signal               signal name
+callback             a pointer to a callback (void (*)(struct CLASS* self, ...))
+handle               a variable of type W_OBJECT_SIGNAL_TYPE to store handle to the binding
+```
+#### Description
+    Use W_CONNECT to bind a callback to a signal of an object. The caller should save the handle to remove the binding when no longer needed.
+    
+### W_DISCONNECT(handle)
+#### Arguments
+```C
+handle               a handle to a signal binding (of type W_OBJECT_SIGNAL_TYPE)
+```
+#### Description
+    Use W_DISCONNECT to disconnect a binding to a signal.
+    
+### W_DISCONNECT_ALL(self,signal)
+#### Arguments
+```C
+self                 an object
+signal               signal name
+```
+#### Description
+    Use W_DISCONNECT_ALL to disconnect all bindings to a signal of an object. All handles are invalid after its use.
+    
+### W_EMIT(self,signal,...)
+#### Arguments
+```C
+self                 an object
+signal               signal name
+...                  optional arguments to the signal
+```
+#### Description
+    Use W_EMIT to emit a signal. All callbacks which are bind to the signal of the object are called.
+    
+### W_EMIT_VOID(self,signal)
+#### Arguments
+```C
+self                 an object
+signal               signal name
+```
+#### Description
+    Use W_EMIT_VOID to emit a signal without arguments. All callbacks which are bind to the signal of the object are called.
