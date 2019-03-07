@@ -40,20 +40,27 @@ int main()
     Point_t* p =  W_NEW(Point, .x=1, .y=7);
     W_CALL(p,move_up)(2);
     W_CALL_VOID(p,draw);
+
+    char buffer[256];
+    if (W_CALL(p,to_json)(buffer,256) < 0)
+        printf("Error\n");
+    else
+        printf("%s\n", buffer);
+           
     W_CALL_VOID(p,free);
 }
 ```
-## [Introduction](https://github.com/plainC/wondermacros/blob/master/docs/objects_introduction.md)
-## [Defining a Class](https://github.com/plainC/wondermacros/blob/master/docs/objects_class.md)
-## [Expanding to Source Code](https://github.com/plainC/wondermacros/blob/master/docs/objects_code.md)
-## [Implementing a class](https://github.com/plainC/wondermacros/blob/master/docs/objects_implementing.md)
-## [Objects API: W_NEW, W_CALL, etc](https://github.com/plainC/wondermacros/blob/master/docs/objects_api.md)
-## [Details of Class Definitions](https://github.com/plainC/wondermacros/blob/master/docs/objects_details.md)
-## [JSON Serialization and Marshalling](https://github.com/plainC/wondermacros/blob/master/docs/objects_json.md)
-## [Signals](https://github.com/plainC/wondermacros/blob/master/docs/objects_signals.md)
-## [wobject Tool: Erase all boilerplate code at once](https://github.com/plainC/wondermacros/blob/master/docs/objects_wobject.md)
-## [Restrictions and Debugging](https://github.com/plainC/wondermacros/blob/master/docs/objects_restrictions.md)
-## [Source Code and Examples](https://github.com/plainC/wondermacros/blob/master/docs/objects_examples.md)
+### [Introduction](https://github.com/plainC/wondermacros/blob/master/docs/objects_introduction.md)
+### [Defining a Class](https://github.com/plainC/wondermacros/blob/master/docs/objects_class.md)
+### [Expanding to Source Code](https://github.com/plainC/wondermacros/blob/master/docs/objects_code.md)
+### [Implementing a class](https://github.com/plainC/wondermacros/blob/master/docs/objects_implementing.md)
+### [Objects API: W_NEW, W_CALL, etc](https://github.com/plainC/wondermacros/blob/master/docs/objects_api.md)
+### [Details of Class Definitions](https://github.com/plainC/wondermacros/blob/master/docs/objects_details.md)
+### [JSON Serialization and Marshalling](https://github.com/plainC/wondermacros/blob/master/docs/objects_json.md)
+### [Signals](https://github.com/plainC/wondermacros/blob/master/docs/objects_signals.md)
+### [wobject Tool: Erase all boilerplate code at once](https://github.com/plainC/wondermacros/blob/master/docs/objects_wobject.md)
+### [Restrictions and Debugging](https://github.com/plainC/wondermacros/blob/master/docs/objects_restrictions.md)
+### [Source Code and Examples](https://github.com/plainC/wondermacros/blob/master/docs/objects_examples.md)
 
 
 
