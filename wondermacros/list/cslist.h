@@ -53,10 +53,10 @@
  *** Arg:         list       a list to be traversed
  *** Description: Use W_CSLIST_FOR_EACH_NAMED to traverse all elements in a circular list.
  ***/
-#define W_CSLIST_FOR_EACH_NAMED(T,next,node,list)             \
-    for (T* W_ID(l) = ((T*)(list))->next; W_ID(l); W_ID(l) = NULL)  \
+#define W_CSLIST_FOR_EACH_NAMED(T,next,node,list)                     \
+    for (T* W_ID(l) = ((T*)(list))->next; W_ID(l); W_ID(l) = NULL)    \
         for (T* node = (void*) W_ID(l), *W_ID(n);                     \
-            node && (W_ID(n) = node->next, 1);                \
+            node && (W_ID(n) = node->next, 1);                        \
             node = (void*) W_ID(n) != (void*) W_ID(l) ? W_ID(n) : NULL)
 
 
@@ -68,7 +68,7 @@
  *** Arg:         list       a list to be prepended
  *** Description: Use W_CSLIST_PREPEND to prepend a circular list to another circular list.
  ***/
-#define W_CSLIST_PREPEND(T,self,list)             \
+#define W_CSLIST_PREPEND(T,self,list)                         \
     W_CSLIST_PREPEND_NAMED(T,W_CSLIST_FIELD_NEXT,self,list)
 
 /***
@@ -114,18 +114,18 @@
  *** Arg:         list       a list to be prepended
  *** Description: Use W_CSLIST_APPEND_NAMED to append a circular list to another circular list.
  ***/
-#define W_CSLIST_APPEND_NAMED(T,next,self,list)              \
-    do {                                                     \
-        /* Check if next is null. */                         \
+#define W_CSLIST_APPEND_NAMED(T,next,self,list)                                \
+    do {                                                                       \
+        /* Check if next is null. */                                           \
         ((T*)(list))->next = ((T*)(list))->next ? ((T*)(list))->next : (list); \
-        if (!(self))                                         \
-            self = (void*)list;                                     \
-        else {                                               \
-            T* W_ID(t) = ((T*)(self))->next;                       \
-            ((T*)(self))->next = (list);                           \
-            ((T*)(list))->next = W_ID(t);                          \
-            (self) = (void*) (list);                                 \
-        }                                                    \
+        if (!(self))                                                           \
+            self = (void*)list;                                                \
+        else {                                                                 \
+            T* W_ID(t) = ((T*)(self))->next;                                   \
+            ((T*)(self))->next = (list);                                       \
+            ((T*)(list))->next = W_ID(t);                                      \
+            (self) = (void*) (list);                                           \
+        }                                                                      \
     } while (0)
 
 /*Unit Test*/

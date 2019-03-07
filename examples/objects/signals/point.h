@@ -5,6 +5,7 @@
 #include "classes_declare.h"
 
 #include <wondermacros/list/cslist.h>
+#include <wondermacros/objects/api.h>
 
 #include "point_class.h"
 #include <wondermacros/objects/x/class_declare.h>

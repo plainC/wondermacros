@@ -67,6 +67,21 @@ W_CAT(CLASS,_free)(struct W_CAT(CLASS,__private)* self)
     W_CAT(CLASS,___finalize)((struct W_CAT(CLASS,__private)*) self);
 #endif
 #endif
+
+# define METHOD(...)
+# define OVERRIDE(...)
+# define SIGNAL(name,...) W_DISCONNECT_ALL(self,name);
+# define VAR(...)
+
+    /**/
+    W_CAT_INNER(CLASS,__define)
+    /**/
+
+# undef METHOD
+# undef OVERRIDE
+# undef SIGNAL
+# undef VAR
+
     W_FREE(self);
 }
 

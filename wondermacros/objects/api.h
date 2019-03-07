@@ -189,32 +189,86 @@
 #define W_OBJECT_CLASS_NAME(o) ((o)->klass->meta.name)
 
 
-#define W_SIGNAL_CB_TYPE        \
-    struct {                    \
+/***
+ *** Name:        W_OBJECT_SIGNAL_TYPE
+ *** Proto:       W_OBJECT_SIGNAL_TYPE
+ *** Description: Use W_OBJECT_SIGNAL_TYPE to declare a variable that stores a handle to a callback binding
+ ***/
+#define W_OBJECT_SIGNAL_TYPE        \
+    struct {                        \
         void (*cb)(void* self,...); \
-        void* next;             \
+        void* next;                 \
     }
 
 
+/***
+ *** Name:        W_CONNECT
+ *** Proto:       W_CONNECT(self,signal,callback,handle)
+ *** Arg:         self      an object
+ *** Arg:         signal    signal name
+ *** Arg:         callback  a pointer to a callback (void (*)(struct CLASS* self, ...))
+ *** Arg:         handle    a variable of type W_OBJECT_SIGNAL_TYPE to store handle to the binding
+ *** Description: Use W_CONNECT to bind a callback to a signal of an object. The caller should save the handle to remove the binding when no longer needed.
+ ***/
 #define W_CONNECT(o,sig,Cb,handle)                           \
     do {                                                     \
-        handle = malloc(sizeof(W_SIGNAL_CB_TYPE));           \
+        handle = malloc(sizeof(W_OBJECT_SIGNAL_TYPE));       \
         handle->cb = (void (*)(void*,...)) Cb;               \
         handle->next = handle;                               \
-        W_CSLIST_APPEND(W_SIGNAL_CB_TYPE, (o)->sig, handle); \
+        W_CSLIST_APPEND(W_OBJECT_SIGNAL_TYPE, (o)->sig, handle); \
     } while (0)
 
+/***
+ *** Name:        W_DISCONNECT
+ *** Proto:       W_DISCONNECT(handle)
+ *** Arg:         handle    a handle to a signal binding (of type W_OBJECT_SIGNAL_TYPE)
+ *** Description: Use W_DISCONNECT to disconnect a binding to a signal.
+ ***/
+#define W_DISCONNECT(handle)                                 \
+    ((handle)->cb = NULL)
 
-#define W_EMIT(o,sig,...) \
-    W_CSLIST_FOR_EACH(W_SIGNAL_CB_TYPE,node, \
+/***
+ *** Name:        W_DISCONNECT_ALL
+ *** Proto:       W_DISCONNECT_ALL(self,signal)
+ *** Arg:         self      an object
+ *** Arg:         signal    signal name
+ *** Description: Use W_DISCONNECT_ALL to disconnect all bindings to a signal of an object. All handles are invalid after its use.
+ ***/
+#define W_DISCONNECT_ALL(self,sig)                             \
+    W_CSLIST_FOR_EACH(W_OBJECT_SIGNAL_TYPE, node, (self)->sig) \
+        free(node)
+
+/***
+ *** Name:        W_EMIT
+ *** Proto:       W_EMIT(self,signal,...)
+ *** Arg:         self      an object
+ *** Arg:         signal    signal name
+ *** Arg:         ...       optional arguments to the signal
+ *** Description: Use W_EMIT to emit a signal. All callbacks which are bind to the signal of the object are called.
+ ***/
+#define W_EMIT(o,sig,...)                                     \
+    W_CSLIST_FOR_EACH(W_OBJECT_SIGNAL_TYPE,node,                  \
         (BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*))(o)->sig)) \
-        node->cb(o,__VA_ARGS__)
-#define W_EMIT_VOID(o,sig)                               \
-    W_CSLIST_FOR_EACH(W_SIGNAL_CB_TYPE,node, \
+        if (!node->cb) {                                      \
+        } else node->cb(o,__VA_ARGS__)
+
+/***
+ *** Name:        W_EMIT_VOID
+ *** Proto:       W_EMIT_VOID(self,signal)
+ *** Arg:         self      an object
+ *** Arg:         signal    signal name
+ *** Description: Use W_EMIT_VOID to emit a signal without arguments. All callbacks which are bind to the signal of the object are called.
+ ***/
+#define W_EMIT_VOID(o,sig)                                    \
+    W_CSLIST_FOR_EACH(W_OBJECT_SIGNAL_TYPE,node,                  \
         (BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*))(o)->sig)) \
-        node->cb(o)
+        if (!node->cb) {                                      \
+        } else node->cb(o)
 
 
+
+
+/* FIXME: not yet complete */
 #define W_OBJECT_METHOD_BY_INDEX(o,ix) ((o)->klass->meta.method[(ix)])
 
 #define W_OBJECT_GET_METHOD_PTR(o,method) \

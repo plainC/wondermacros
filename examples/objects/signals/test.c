@@ -19,12 +19,17 @@ my_cb2(struct Point* self, int steps)
 int main()
 {
     struct Point* p = W_NEW(Point, .x=3, .y=7);
-    W_SIGNAL_CB_TYPE* handle;
+    W_OBJECT_SIGNAL_TYPE* handle;
 
     W_CONNECT(p,on_move,my_cb, handle);
     W_CONNECT(p,on_move,my_cb2, handle);
     W_CALL_VOID(p,draw);
     W_CALL(p,move_up)(2);
     W_CALL_VOID(p,draw);
+
+    W_DISCONNECT(handle);
+    W_CALL(p,move_up)(1);
+
+    W_CALL_VOID(p,free);
 }
 
