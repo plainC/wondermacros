@@ -36,7 +36,7 @@
 # error "Macro CLASS is not defined"
 #endif
 
-
+# define SIGNAL(...)
 # define VAR(...)
 # define OVERRIDE(...)
 # define METHOD(C,P,type,...)          \
@@ -51,3 +51,4 @@
 # undef _METHOD_1
 # undef _METHOD_2
 # undef VAR
+# undef SIGNAL

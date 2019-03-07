@@ -39,6 +39,7 @@
 # error "Macro CLASS is not defined"
 #endif
 
+#define SIGNAL(...)
 
 #ifdef W_CLASS_DECLARE
 extern struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance);
@@ -196,5 +197,7 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
 };
 
 void* W_CAT(CLASS,__class_instance_ptr) = &W_CAT(CLASS,__class_instance);
+
+# undef SIGNAL
 
 #endif

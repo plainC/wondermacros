@@ -364,6 +364,40 @@ to the storage location of the property.
 `from_string` returns 0 if the conversion is successful, 1 otherwise. The `value` argument points to the
 storage location of the property. `endptr` should point to the first character that was not used.
 
+### Signals
+
+It is possible to implement observer pattern using build-in signal mechanism
+in the O-O framework. To add signal into a class, use `SIGNAL` macro in the
+class file. E.g. To add signal `on_move` to `Point` class we could define it
+like this:
+
+```
+#define Point__define  \
+    /* Inherits */     \
+      /*none */        \
+                       \
+    METHOD(Point,public,int,move_up,(int steps))              \
+    METHOD(Point,public,int,move_left,(int steps))            \
+    METHOD(Point,private,void,ping,(const char* message))     \
+    METHOD(Point,public,void,draw)                            \
+    SIGNAL(on_move, int steps)                                     \
+                       \
+    VAR(read,int,x)    \
+    VAR(read,int,y)    \
+    /**/
+```
+Now to connect a signal into instance of `Point` we can use `W_CONNECT` macro.
+For instance, if we have an object `struct Point*` created in `p`, we
+can attach a callback `my_cb` to signal `on_move` using the following code:
+```
+W_SIGNAL_CB_TYPE* handle;
+
+W_CONNECT(p,on_move,my_cb, handle);
+```
+The `handle` is needed to deattach the callback later (not implemented yet).
+In the class implementation, we can emit signals using `W_EMIT`. For example,
+`W_EMIT(self,on_move,steps);` emits `on_move` signal with an argument `steps`.
+
 ### Restrictions
 
 Do not use the following names when specifing the name of a property. They are reserved for other purposes.

@@ -42,6 +42,7 @@
 #define public 1
 #define private 0
 
+# define SIGNAL(...)
 # define VAR(...)
 # define OVERRIDE(...)
 # define METHOD(C,P,type,...)          \
@@ -56,6 +57,7 @@
 # undef _METHOD_1
 # undef _METHOD_2
 # undef VAR
+# undef SIGNAL
 
 # undef public
 # undef private

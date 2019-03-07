@@ -54,10 +54,10 @@
  *** Description: Use W_CSLIST_FOR_EACH_NAMED to traverse all elements in a circular list.
  ***/
 #define W_CSLIST_FOR_EACH_NAMED(T,next,node,list)             \
-    for (T* W_ID(l) = (list)->next; W_ID(l); W_ID(l) = NULL)  \
-        for (T* node = W_ID(l), *W_ID(n);                     \
+    for (T* W_ID(l) = ((T*)(list))->next; W_ID(l); W_ID(l) = NULL)  \
+        for (T* node = (void*) W_ID(l), *W_ID(n);                     \
             node && (W_ID(n) = node->next, 1);                \
-            node = W_ID(n) != W_ID(l) ? W_ID(n) : NULL)
+            node = (void*) W_ID(n) != (void*) W_ID(l) ? W_ID(n) : NULL)
 
 
 /***
@@ -117,14 +117,14 @@
 #define W_CSLIST_APPEND_NAMED(T,next,self,list)              \
     do {                                                     \
         /* Check if next is null. */                         \
-        (list)->next = (list)->next ? (list)->next : (list); \
+        ((T*)(list))->next = ((T*)(list))->next ? ((T*)(list))->next : (list); \
         if (!(self))                                         \
-            self = list;                                     \
+            self = (void*)list;                                     \
         else {                                               \
-            T* W_ID(t) = (self)->next;                       \
-            (self)->next = (list);                           \
-            (list)->next = W_ID(t);                          \
-            (self) = (list);                                 \
+            T* W_ID(t) = ((T*)(self))->next;                       \
+            ((T*)(self))->next = (list);                           \
+            ((T*)(list))->next = W_ID(t);                          \
+            (self) = (void*) (list);                                 \
         }                                                    \
     } while (0)
 

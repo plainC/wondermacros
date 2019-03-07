@@ -187,6 +187,34 @@
  *** Description: Use W_OBJECT_CLASS_NAME to get a const char pointer to the name of the class.
  ***/
 #define W_OBJECT_CLASS_NAME(o) ((o)->klass->meta.name)
+
+
+#define W_SIGNAL_CB_TYPE        \
+    struct {                    \
+        void (*cb)(void* self,...); \
+        void* next;             \
+    }
+
+
+#define W_CONNECT(o,sig,Cb,handle)                           \
+    do {                                                     \
+        handle = malloc(sizeof(W_SIGNAL_CB_TYPE));           \
+        handle->cb = (void (*)(void*,...)) Cb;               \
+        handle->next = handle;                               \
+        W_CSLIST_APPEND(W_SIGNAL_CB_TYPE, (o)->sig, handle); \
+    } while (0)
+
+
+#define W_EMIT(o,sig,...) \
+    W_CSLIST_FOR_EACH(W_SIGNAL_CB_TYPE,node, \
+        (BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*))(o)->sig)) \
+        node->cb(o,__VA_ARGS__)
+#define W_EMIT_VOID(o,sig)                               \
+    W_CSLIST_FOR_EACH(W_SIGNAL_CB_TYPE,node, \
+        (BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*))(o)->sig)) \
+        node->cb(o)
+
+
 #define W_OBJECT_METHOD_BY_INDEX(o,ix) ((o)->klass->meta.method[(ix)])
 
 #define W_OBJECT_GET_METHOD_PTR(o,method) \

@@ -88,6 +88,9 @@ sub read_file {
                 $var_decl{$name} = "Array($array)";
             }
         } elsif (/include\s+(all\s+)?(.*)/) {
+            if (defined $class_name) {
+                build_class();
+            }
             if (defined $1) {
                 push @includes_all, $2;
             } else {
@@ -98,6 +101,9 @@ sub read_file {
         } elsif (/finalize/) {
             $finalize = 1;
         } elsif (/([^\s](.*))/) {
+            if (defined $class_name) {
+                build_class();
+            }
             $to_header .= "    " . $1 . " \\\n";
         }
     }
