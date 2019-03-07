@@ -398,6 +398,18 @@ The `handle` is needed to deattach the callback later (not implemented yet).
 In the class implementation, we can emit signals using `W_EMIT`. For example,
 `W_EMIT(self,on_move,steps);` emits `on_move` signal with an argument `steps`.
 
+Finally, a callback can be implemented like this.
+
+```
+void
+my_cb(struct Point* self, int steps)
+{
+    printf(" Moved: %d steps\n",steps);
+}
+```
+
+The first argument is always the object itself.
+
 ### Restrictions
 
 Do not use the following names when specifing the name of a property. They are reserved for other purposes.
