@@ -119,6 +119,15 @@ T                    a class name
 #### Description
     Use W_OBJECT_CLASS_NAME to get a const char pointer to the name of the class.
     
+### W_METHOD_GET(self,method)
+#### Arguments
+```C
+self                 an object
+method               a method name
+```
+#### Description
+    Use W_METHOD_GET to get a pointer to a method of an object by the name.
+    
 ### W_OBJECT_SIGNAL_TYPE
 #### Description
     Use W_OBJECT_SIGNAL_TYPE to declare a variable that stores a handle to a callback binding
