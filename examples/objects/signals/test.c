@@ -5,13 +5,13 @@
 #include "point.h"
 
 void
-my_cb(struct Point* self, int steps)
+my_cb(struct Point* self, void* data, int steps)
 {
     printf(" Moved: %d steps\n",steps);
 }
 
 void
-my_cb2(struct Point* self, int steps)
+my_cb2(struct Point* self, void* data, int steps)
 {
     printf(" Yes it dit move %d\n",steps);
 }
