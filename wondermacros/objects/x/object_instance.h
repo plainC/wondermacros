@@ -98,8 +98,8 @@ struct W_CAT(CLASS,__private) {
 # define METHOD(...)
 # define OVERRIDE(...)
 # define SIGNAL(...) BOOST_PP_OVERLOAD(_SIGNAL_,__VA_ARGS__)(__VA_ARGS__)
-# define _SIGNAL_1(name) struct { void (*cb)(void* self); void* next; } *name;
-# define _SIGNAL_2(name,...) struct { void (*cb)(void* self, __VA_ARGS__); void* next; } *name;
+# define _SIGNAL_1(name) W_OBJECT_SIGNAL_TYPE* name;
+# define _SIGNAL_2(name,...) W_OBJECT_SIGNAL_TYPE* name;
 # define VAR(P,type,...)          \
     BOOST_PP_OVERLOAD(_VAR_,__VA_ARGS__)(P,type,__VA_ARGS__)
 # define _VAR_1(P,type,name)      \
