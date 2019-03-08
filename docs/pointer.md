@@ -47,3 +47,11 @@ offset               an offset in bytes.
 ```
 #### Description
     Use W_REF_VOID_PTR to reference a void pointer using an offset in bytes.
+    
+### W_VARIADIC_TO_REFS(...)
+#### Arguments
+```C
+...                  arguments to be converted to references
+```
+#### Description
+    Use W_VARIADIC_TO_REFS to convert arguments to references. For instance, you have 'a,b,c,d' but you need '&a,&b,&c,&d'.
