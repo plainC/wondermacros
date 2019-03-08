@@ -38,10 +38,12 @@
 #ifndef WDEBUG_EXPAND
 # include <strings.h>
 #endif
+#include <boost/preprocessor/punctuation/is_begin_parens.hpp>
 #include <boost/preprocessor/control/if.hpp>
 #include <boost/preprocessor/comparison/equal.hpp>
 #include <boost/preprocessor/variadic/size.hpp>
 #include <boost/preprocessor/variadic/elem.hpp>
+#include <boost/preprocessor/tuple/elem.hpp>
 
 
 /***
@@ -188,6 +190,15 @@
  ***/
 #define W_OBJECT_CLASS_NAME(o) ((o)->klass->meta.name)
 
+/***
+ *** Name:        W_METHOD_GET
+ *** Proto:       W_METHOD_GET(self,method)
+ *** Arg:         self     an object
+ *** Arg:         method   a method name
+ *** Description: Use W_METHOD_GET to get a pointer to a method of an object by the name.
+ ***/
+#define W_METHOD_GET(o,method) ((o)->klass->method)
+
 
 /***
  *** Name:        W_OBJECT_SIGNAL_TYPE
@@ -197,6 +208,7 @@
 #define W_OBJECT_SIGNAL_TYPE        \
     struct {                        \
         void (*cb)(void* self,...); \
+        void* data;                 \
         void* next;                 \
     }
 
@@ -210,12 +222,20 @@
  *** Arg:         handle    a variable of type W_OBJECT_SIGNAL_TYPE to store handle to the binding
  *** Description: Use W_CONNECT to bind a callback to a signal of an object. The caller should save the handle to remove the binding when no longer needed.
  ***/
-#define W_CONNECT(o,sig,Cb,handle)                           \
-    do {                                                     \
-        handle = malloc(sizeof(W_OBJECT_SIGNAL_TYPE));       \
-        handle->cb = (void (*)(void*,...)) Cb;               \
-        handle->next = handle;                               \
-        W_CSLIST_APPEND(W_OBJECT_SIGNAL_TYPE, (o)->sig, handle); \
+#define W_CONNECT(o,sig,Cb,handle)                                        \
+    do {                                                                  \
+        handle = malloc(sizeof(W_OBJECT_SIGNAL_TYPE));                    \
+        BOOST_PP_IF(BOOST_PP_IS_BEGIN_PARENS(Cb),                         \
+            /* Bind a closure. */                                         \
+            handle->cb = (void (*)(void*,...)) BOOST_PP_TUPLE_ELEM(0,Cb); \
+            handle->data = BOOST_PP_TUPLE_ELEM(1,Cb);                     \
+        ,                                                                 \
+            /* Bind a callback. */                                        \
+            handle->cb = (void (*)(void*,...)) Cb;                        \
+            handle->data = NULL;                                          \
+        )                                                                 \
+        handle->next = handle;                                            \
+        W_CSLIST_APPEND(W_OBJECT_SIGNAL_TYPE, (o)->sig, handle);          \
     } while (0)
 
 /***
@@ -250,7 +270,7 @@
     W_CSLIST_FOR_EACH(W_OBJECT_SIGNAL_TYPE,node,                  \
         (BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*))(o)->sig)) \
         if (!node->cb) {                                      \
-        } else node->cb(o,__VA_ARGS__)
+        } else node->cb(o,node->data,__VA_ARGS__)
 
 /***
  *** Name:        W_EMIT_VOID
@@ -263,7 +283,7 @@
     W_CSLIST_FOR_EACH(W_OBJECT_SIGNAL_TYPE,node,                  \
         (BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*))(o)->sig)) \
         if (!node->cb) {                                      \
-        } else node->cb(o)
+        } else node->cb(o,node->data)
 
 
 
