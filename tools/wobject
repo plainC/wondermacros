@@ -6,6 +6,7 @@ my %var_scope;
 my %var_name;
 my %var_type;
 my %var_decl;
+my %sig_args;
 my %m_scope;
 my %m_name;
 my %m_type;
@@ -65,6 +66,10 @@ sub read_file {
         } elsif (/^\/\/(.*)/) {
         } elsif (/override\s+(\w+)/) {
             push @override, $1;
+        } elsif (/\s+signal\s+(\w+)\s*\(([^\)]*)\)/) {
+            my $name = $1;
+            my $args = $2;
+            $sig_args{$name} = $args;
         } elsif (/\s+([\w]+)\s+((\w+\s+)?(\w+\s+)?[\w\*]+)\s+(\w+)\s*\(\s*([^\)]*)\)/) {
             my $scope = $1;
             my $type = $2;
@@ -297,6 +302,10 @@ sub build_class_h {
         }
     }
 
+    foreach my $name (keys %sig_args) {
+        print OUT "    SIGNAL($name," . $sig_args{$name} . ") \\\n";
+    }
+
     foreach my $name (keys %m_type) {
         my $type = $m_type{$name};
         my $scope = $m_scope{$name};
@@ -327,6 +336,7 @@ sub build_class_h {
     undef %var_type;
     undef %var_name;
     undef %var_decl;
+    undef %sig_args;
     undef @includes;
     undef $abstract;
     undef $super;
