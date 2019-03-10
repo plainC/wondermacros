@@ -11,6 +11,7 @@ my %m_scope;
 my %m_name;
 my %m_type;
 my %m_args;
+my %json_types;
 my @override;
 my @includes;
 my @includes_all;
@@ -53,6 +54,8 @@ sub read_file {
             $super = $5;
         } elsif (/guard\s+(\w+)/) {
             $guard = $1;
+        } elsif (/JSON\s+(\w+)\s+(\w+)/) {
+            $json_types{$1} = $2;
         } elsif (/uses\s+(\w+)(\s+private)?/) {
             if (defined $class_name) {
                 build_class();
@@ -295,11 +298,17 @@ sub build_class_h {
         if (defined $var_decl{$name}) {
             $decl = $var_decl{$name};
         }
+        if (defined $json) {
+            if (defined $json_types{$type}) {
+                $decl .= " JSON($json_types{$type})";
+            }
+        }
         if (defined $decl) {
             print OUT "    VAR($scope,$type,$name,$decl) \\\n";
         } else {
             print OUT "    VAR($scope,$type,$name) \\\n";
         }
+        undef $decl;
     }
 
     foreach my $name (keys %sig_args) {
