@@ -129,7 +129,8 @@ W_CAT(CLASS,_to_json)(struct CLASS* _self, char* buffer, size_t size)
     do { \
         (index) = -1; \
         for (int W_ID(i) = 0; (self)->klass->meta.property_name[W_ID(i)]; W_ID(i)++) \
-            if (strncmp((self)->klass->meta.property_name[W_ID(i)],(name),(len))==0) { \
+            if ((len) == (self)->klass->meta.property_len[W_ID(i)] && \
+                strncmp((self)->klass->meta.property_name[W_ID(i)],(name),(len))==0) { \
                 (index) = W_ID(i); \
                 break; \
             } \
