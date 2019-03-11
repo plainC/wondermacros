@@ -54,7 +54,7 @@ sub read_file {
             $super = $5;
         } elsif (/guard\s+(\w+)/) {
             $guard = $1;
-        } elsif (/JSON\s+(\w+)\s+(\w+)/) {
+        } elsif (/JSON\s+([\w\*]+)\s+(\w+)/) {
             $json_types{$1} = $2;
         } elsif (/uses\s+(\w+)(\s+private)?/) {
             if (defined $class_name) {
