@@ -1,6 +1,15 @@
 int
 json_string_to_string(char** self, char* buffer, size_t size)
 {
+    if (!(*self)) {
+        if (size < 4)
+            return -1;
+        else {
+            strcpy(buffer, "null");
+            return 4;
+        }
+    }
+
     int len = strlen(*self);
     if (len+2 >= size)
         return -1;
@@ -16,6 +25,12 @@ int
 json_string_from_string(const char* buffer, const char** endptr, char** self)
 {
     const char* p = buffer;
+
+    if (strncmp(p, "null", 4) == 0) {
+        *self = NULL;
+        *endptr += 4;
+        return 0;
+    }
 
     if (*p != '\"')
         return 1;
@@ -34,5 +49,3 @@ json_string_from_string(const char* buffer, const char** endptr, char** self)
 
     return 0;
 }
-
-
