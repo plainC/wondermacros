@@ -221,15 +221,17 @@
  *** Description: Use W_HASH_TABLE_FREE to free a hash table.
  ***/
 #define W_HASH_TABLE_FOR_EACH_MATCH(T,match,H,Key)                                 \
-    W_DECLARE(W_CAT(match,1), T* match)                                                         \
-    W_DECLARE(W_CAT(match,2), int W_ID(slot))                                                   \
-    W_BEFORE(W_CAT(match,3),                                                                    \
-        W_HASH(Key, W_ID(slot));                                                   \
-        W_ID(slot) = W_HASH_TABLE_HASH_TO_SLOT(W_ID(slot),                         \
-             W_HIDDEN_OF(H, W_HASH_TABLE_HEADER_TYPE, alloc_size));                \
+    W_DECLARE(W_CAT(match,1), T* match)                                            \
+    W_DECLARE(W_CAT(match,2), int W_ID(slot))                                      \
+    W_BEFORE(W_CAT(match,3),                                                       \
+        if (H) {                                                                   \
+            W_HASH(Key, W_ID(slot));                                               \
+            W_ID(slot) = W_HASH_TABLE_HASH_TO_SLOT(W_ID(slot),                     \
+                W_HIDDEN_OF(H, W_HASH_TABLE_HEADER_TYPE, alloc_size));             \
+        }                                                                          \
     )                                                                              \
     for ( ;                                                                        \
-        W_HASH_TABLE_GET_SLOT(H, W_ID(slot)) && (match=&(H)[W_ID(slot)],1);        \
+        (H) && W_HASH_TABLE_GET_SLOT(H, W_ID(slot)) && (match=&(H)[W_ID(slot)],1); \
         W_ID(slot) = W_PROBE_NEXT(H, W_ID(slot))                                   \
     )                                                                              \
         for ( ; match && W_EQUAL(Key, match->key); match = NULL)
