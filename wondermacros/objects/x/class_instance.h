@@ -62,6 +62,22 @@ static const char* W_CAT_INNER(CLASS,__property_name)[] = {
     NULL
 };
 
+static const char* W_CAT_INNER(CLASS,__property_type_name)[] = {
+# define Array(...)
+# define VAR(scope,type,name,...) # type,
+# define OVERRIDE(C,name)
+# define METHOD(C,P,type,...)
+
+    /**/
+    W_CAT(CLASS,__define)
+    /**/
+
+# undef OVERRIDE
+# undef METHOD
+# undef VAR
+    NULL
+};
+
 #ifndef USE_BIT_FIELDS
 static const size_t W_CAT_INNER(CLASS,__property_offset)[] = {
 # define VAR(scope,type,name,...) offsetof(struct W_CAT_INNER(CLASS,__private),name),
@@ -102,7 +118,7 @@ static const size_t W_CAT_INNER(CLASS,__property_len)[] = {
 # define VAR_1(type,name)
 # define VAR_2(t,name,spec) \
     int W_CAT_INNER(spec,_to_string)(void* self, char* buffer, size_t size); \
-    int W_CAT_INNER(spec,_from_string)(const char* buffer, size_t size, void** self);
+    int W_CAT_INNER(spec,_from_string)(const char* buffer, size_t size, const char* type_name, void** self);
 # define OVERRIDE(C,name)
 # define METHOD(C,P,type,...)
 
@@ -128,7 +144,7 @@ struct w_json_class W_CAT_INNER(CLASS,__property_type)[] = {
 # define VAR_2(t,name,spec) \
     { .to_string = (int (*)(void* self, char* buffer, size_t size)) \
         W_CAT_INNER(spec,_to_string), \
-      .from_string = (int (*)(const char* buffer, const char** endptr, void* self)) W_CAT_INNER(spec,_from_string) },
+      .from_string = (int (*)(const char* buffer, const char** endptr, const char* type_name, void* self)) W_CAT_INNER(spec,_from_string) },
 # define OVERRIDE(C,name)
 # define METHOD(C,P,type,...)
 
@@ -160,6 +176,7 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
     .meta.size = sizeof(struct W_CAT_INNER(CLASS,__private)),
     .meta.property_name = W_CAT_INNER(CLASS,__property_name),
     .meta.property_len = W_CAT_INNER(CLASS,__property_len),
+    .meta.property_type_name = W_CAT_INNER(CLASS,__property_type_name),
 #ifndef USE_BIT_FIELDS
     .meta.property_offset = W_CAT_INNER(CLASS,__property_offset),
 #endif

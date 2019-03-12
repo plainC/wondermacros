@@ -301,6 +301,10 @@ sub build_class_h {
         if (defined $json) {
             if (defined $json_types{$type}) {
                 $decl .= " JSON($json_types{$type})";
+            } elsif ($type=~/struct\s+(\w+)\*\*/) {
+                $decl .= " JSON(json_dynamic_array_object)";
+            } elsif ($type=~/struct\s+(\w+)\*/) {
+                $decl .= " JSON(json_object)";
             }
         }
         if (defined $decl) {

@@ -4,14 +4,13 @@
 #include <wondermacros/objects/object.h>
 
 
-/* from http://www.cse.yorku.ca/~oz/hash.html */
 #define W_HASH(key,x)                                             \
     do {                                                          \
-        unsigned long W_ID(whash) = 5381;                         \
-        int W_ID(c);                                              \
-        while (W_ID(c) = *(key)++)                                \
-            x = (((x) << 5) + (x)) + W_ID(c); /* hash * 33 + c */ \
+        x = key[0]; \
+        x |= key[0] ? key[1] << 8 : 0; \
     } while (0)
+
+#define W_EQUAL(a,b) (strcmp(a,b) == 0)
 
 #include <wondermacros/array/hash_table.h>
 
@@ -40,6 +39,19 @@ w_class_lookup_by_name(const char* name)
         return map->value;
 
     return NULL;
+}
+
+typedef OBJECT_T* (*w_object_new_with_func)(OBJECT_T* o);
+
+static inline w_object_new_with_func
+w_class_lookup_new_by_name(const char* class_name)
+{
+    CLASS_T* klass = w_class_lookup_by_name(class_name);
+
+    if (!klass)
+        return NULL;
+
+    return (w_object_new_with_func) klass->new_with;
 }
 
 static inline int

@@ -15,7 +15,7 @@ json_unsigned_to_string(unsigned* self, char* buffer, size_t size)
 }
 
 int
-json_unsigned_from_string(const char* buffer, const char** endptr, unsigned* self)
+json_unsigned_from_string(const char* buffer, const char** endptr, const char* type_name, unsigned* self)
 {
     unsigned long value = strtoul(buffer, (char**) endptr, 10);
 

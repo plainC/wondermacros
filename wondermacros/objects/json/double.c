@@ -15,7 +15,7 @@ json_double_to_string(double* self, char* buffer, size_t size)
 }
 
 int
-json_double_from_string(const char* buffer, const char** endptr, double* self)
+json_double_from_string(const char* buffer, const char** endptr, const char* type_name, double* self)
 {
     double value = strtod(buffer, (char**) endptr);
 

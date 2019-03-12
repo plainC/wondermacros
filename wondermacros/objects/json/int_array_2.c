@@ -30,7 +30,7 @@ json_int_array_2_to_string(int* self, char* buffer, size_t size)
         return 1
 
 int
-json_int_array_2_from_string(const char* buffer, const char** endptr, int* self)
+json_int_array_2_from_string(const char* buffer, const char** endptr, const char* type_name, int* self)
 {
     const char* p = buffer;
     long value;

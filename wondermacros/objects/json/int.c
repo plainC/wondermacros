@@ -13,7 +13,7 @@ json_int_to_string(int* self, char* buffer, size_t size)
 }
 
 int
-json_int_from_string(const char* buffer, const char** endptr, int* self)
+json_int_from_string(const char* buffer, const char** endptr, const char* type_name, int* self)
 {
     long value = strtol(buffer, (char**) endptr, 10);
 

@@ -22,7 +22,7 @@ json_string_to_string(char** self, char* buffer, size_t size)
 }
 
 int
-json_string_from_string(const char* buffer, const char** endptr, char** self)
+json_string_from_string(const char* buffer, const char** endptr, const char* type_name, char** self)
 {
     const char* p = buffer;
 

@@ -83,7 +83,8 @@ W_CAT(CLASS,_new_with)(struct CLASS* data)
     if (!self)
         W_ERROR_ALLOCATION;
 
-    memcpy(self, data, sizeof(struct CLASS));
+    if (data)
+        memcpy(self, data, sizeof(struct CLASS));
 
     self->klass = &W_CAT(CLASS,__class_instance);
 # ifndef NO_CONSTRUCT

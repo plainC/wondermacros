@@ -75,6 +75,7 @@ struct W_CAT(CLASS,__class_private) {
         size_t size;
         const char** property_name;
         const size_t* property_len;
+        const char** property_type_name;
         const size_t* property_offset;
 #ifdef BUILD_JSON
         const struct w_json_class* property_type;

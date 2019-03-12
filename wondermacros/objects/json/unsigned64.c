@@ -15,7 +15,7 @@ json_unsigned64_to_string(uint64_t* self, char* buffer, size_t size)
 }
 
 int
-json_unsigned64_from_string(const char* buffer, const char** endptr, uint64_t* self)
+json_unsigned64_from_string(const char* buffer, const char** endptr, const char* type_name, uint64_t* self)
 {
     unsigned long long value = strtoull(buffer, (char**) endptr, 10);
 

@@ -186,7 +186,7 @@ W_CAT(CLASS,_from_json)(struct CLASS* _self, const char* buffer, const char** en
         if (!self->klass->meta.property_type[index].from_string)
             return 1;
 
-        if (self->klass->meta.property_type[index].from_string(p, endptr, W_REF_VOID_PTR(self, self->klass->meta.property_offset[index])))
+        if (self->klass->meta.property_type[index].from_string(p, endptr, self->klass->meta.property_type_name[index], W_REF_VOID_PTR(self, self->klass->meta.property_offset[index])))
             return 1;
 
         p = *endptr;        

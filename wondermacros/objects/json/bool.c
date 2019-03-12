@@ -15,7 +15,7 @@ json_bool_to_string(bool* self, char* buffer, size_t size)
 }
 
 int
-json_bool_from_string(const char* buffer, const char** endptr, bool* self)
+json_bool_from_string(const char* buffer, const char** endptr, const char* type_name, bool* self)
 {
     if (strncmp(buffer, "true", 4)==0) {
         *endptr = buffer + 4;

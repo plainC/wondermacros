@@ -13,7 +13,7 @@ json_char_to_string(char* self, char* buffer, size_t size)
 }
 
 int
-json_char_from_string(const char* buffer, const char** endptr, char* self)
+json_char_from_string(const char* buffer, const char** endptr, const char* type_name, char* self)
 {
     unsigned long value = strtoul(buffer, (char**) endptr, 10);
 

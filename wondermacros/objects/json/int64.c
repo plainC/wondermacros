@@ -15,7 +15,7 @@ json_int64_to_string(int64_t* self, char* buffer, size_t size)
 }
 
 int
-json_int64_from_string(const char* buffer, const char** endptr, int64_t* self)
+json_int64_from_string(const char* buffer, const char** endptr, const char* type_name, int64_t* self)
 {
     int64_t value = strtoll(buffer, (char**) endptr, 10);
 

@@ -15,7 +15,7 @@ json_float_to_string(float* self, char* buffer, size_t size)
 }
 
 int
-json_float_from_string(const char* buffer, const char** endptr, float* self)
+json_float_from_string(const char* buffer, const char** endptr, const char* type_name, float* self)
 {
     float value = strtof(buffer, (char**) endptr);
 
