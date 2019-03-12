@@ -4,6 +4,44 @@
 #include <wondermacros/objects/object.h>
 
 
+/* from http://www.cse.yorku.ca/~oz/hash.html */
+#define W_HASH(key,x)                                             \
+    do {                                                          \
+        unsigned long W_ID(whash) = 5381;                         \
+        int W_ID(c);                                              \
+        while (W_ID(c) = *(key)++)                                \
+            x = (((x) << 5) + (x)) + W_ID(c); /* hash * 33 + c */ \
+    } while (0)
+
+#include <wondermacros/array/hash_table.h>
+
+
+struct w_object_class_map {
+    const char* key;
+    CLASS_T* value;
+};
+
+extern struct w_object_class_map* w_object_classes;
+
+static inline int
+w_class_register_dynamic(const char* name, CLASS_T* klass)
+{
+    W_HASH_TABLE_FOR_EACH_MATCH(struct w_object_class_map, map, w_object_classes, name)
+        return 1;
+
+    W_HASH_TABLE_PUSH(struct w_object_class_map, w_object_classes, name, klass);
+    return 0;
+}
+
+static inline CLASS_T*
+w_class_lookup_by_name(const char* name)
+{
+    W_HASH_TABLE_FOR_EACH_MATCH(struct w_object_class_map, map, w_object_classes, name)
+        return map->value;
+
+    return NULL;
+}
+
 static inline int
 w_class_is_subclass_of(void* _klass, void* _super)
 {

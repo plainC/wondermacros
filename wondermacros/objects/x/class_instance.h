@@ -167,6 +167,7 @@ struct W_CAT(CLASS,__class_private) W_CAT(CLASS,__class_instance) = {
     .meta.property_type = &W_CAT_INNER(CLASS,__property_type)[0],
 #endif
 
+    .new_with = W_CAT(CLASS,_new_with),
     .free = W_CAT(CLASS,_free),
 #ifdef BUILD_JSON
     .to_json = (int (*)(struct W_CAT(CLASS,_PRIVATE)* self, char* buffer, size_t size)) W_CAT(CLASS,_to_json),

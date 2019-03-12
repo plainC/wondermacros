@@ -83,6 +83,9 @@ struct W_CAT(CLASS,__class_private) {
 #endif
     } meta;
 
+    /* Add new_with method. */
+    struct CLASS* (*new_with)(struct CLASS* o);
+
     /* Add free method. */
     void (*free)(struct W_CAT(CLASS,_PRIVATE)* self);
 #ifdef BUILD_JSON
