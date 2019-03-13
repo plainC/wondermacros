@@ -54,9 +54,9 @@
  *** Description: Use W_CSLIST_FOR_EACH_NAMED to traverse all elements in a circular list.
  ***/
 #define W_CSLIST_FOR_EACH_NAMED(T,next,node,list)                     \
-    for (T* W_ID(l) = ((T*)(list))->next; W_ID(l); W_ID(l) = NULL)    \
+    for (T* W_ID(l) = (list) ? ((T*)(list))->next : NULL; W_ID(l); W_ID(l) = NULL)    \
         for (T* node = (void*) W_ID(l), *W_ID(n);                     \
-            node && (W_ID(n) = node->next, 1);                        \
+            (node) && (W_ID(n) = node->next, 1);                        \
             node = (void*) W_ID(n) != (void*) W_ID(l) ? W_ID(n) : NULL)
 
 
