@@ -316,7 +316,7 @@ sub build_class_h {
     }
 
     foreach my $name (keys %sig_args) {
-        print OUT "    SIGNAL($name," . $sig_args{$name} . ") \\\n";
+        print OUT "    SIGNAL($name,(" . $sig_args{$name} . ")) \\\n";
     }
 
     foreach my $name (keys %m_type) {
