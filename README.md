@@ -54,7 +54,8 @@ Best Regards,
 J.P. Iivonen <wondermacros@yahoo.com>
 
 ## Projects using Wondermacros:
-* [Web Elements](https://github.com/plainC/web_elements)
+* [Wrest](https://github.com/plainC/wrest) - A Generic Dynamic Loading Based REST Server
+* [Web Elements](https://github.com/plainC/web_elements) - HTML & CSS Generation and String Template System in C
 
 
 ## Installation
