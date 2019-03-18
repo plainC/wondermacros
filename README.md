@@ -56,7 +56,7 @@ J.P. Iivonen <wondermacros@yahoo.com>
 ## Projects using Wondermacros:
 * [Wrest](https://github.com/plainC/wrest) - A Generic Dynamic Loading Based REST Server
 * [Web Elements](https://github.com/plainC/web_elements) - HTML & CSS Generation and String Template System in C
-
+* [Wfsm](https://github.com/plainC/wfsm) - A UML State Machine in C
 
 ## Installation
 
