@@ -184,7 +184,7 @@ sub build_c {
         return;
     }
     if (defined $separated_c) {
-        system "touch $class_name" . "_impl.c";
+#        system "touch $class_name" . "_impl.c";
     }
 
     open OUT,">$class_name" . ".c";
