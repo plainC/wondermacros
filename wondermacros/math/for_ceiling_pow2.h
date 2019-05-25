@@ -36,7 +36,7 @@
 #define W_FOR_CEILING_POW2(T,pow2,a)         \
     W_DECLARE(ceiling_pow2a, T pow2 = (a)-1) \
     W_BEFORE(ceiling_pow2b,                  \
-        for (int W_ID(shift)=1; W_ID(shift) <= (sizeof(T)<<2); W_ID(shift) <<= 1) \
+        for (size_t W_ID(shift)=1; W_ID(shift) <= (sizeof(T)<<2); W_ID(shift) <<= 1) \
             pow2 |= pow2 >> W_ID(shift);     \
         ++pow2;                              \
     )
@@ -49,7 +49,7 @@
 #endif
 
 W_TEST(W_FOR_CEILING_POW2,
-    for (int i=0; i < 1024; i++)
+    for (size_t i=0; i < 1024; i++)
         W_FOR_CEILING_POW2(unsigned,p, i) {
             int t = p;
             t = t - ((t >> 1) & 0x55555555);

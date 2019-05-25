@@ -25,6 +25,8 @@
 #ifndef __W_TEST_H
 #define __W_TEST_H
 
+#undef W_TEST
+
 /***
  *** Name:        W_TEST
  *** Proto:       W_TEST(name,...)
@@ -37,7 +39,7 @@
         char buf[256];                              \
         sprintf(buf,"[%s:%s] ", # name, __FILE__);  \
         printf("%s ", buf);                         \
-        for (int i=strlen(buf); i < 80; i++)        \
+        for (size_t i=strlen(buf); i < 80; i++)     \
             printf(" ");                            \
         __VA_ARGS__                                 \
         printf("Ok.\n");                            \

@@ -65,6 +65,9 @@
     W_CAT(T,_new_with)(&((struct W_CAT(T)){__VA_ARGS__}))
 
 
+#define W_NEW_BY_STRING(str,...)                                        \
+    w_class_lookup_new_by_name(str)(NULL)
+
 
 /***
  *** Name:        W_CALL

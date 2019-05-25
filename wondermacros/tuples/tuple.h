@@ -27,8 +27,9 @@
 #include <boost/preprocessor/facilities/overload.hpp>
 #include <boost/preprocessor/punctuation/remove_parens.hpp>
 #include <boost/preprocessor/seq/for_each_i.hpp>
-#include <string.h>
-
+#ifndef WDEBUG_EXPAND
+# include <string.h>
+#endif
 
 /***
  *** Name:        W_TUPLE_TYPE
@@ -52,6 +53,31 @@
 #define W_TUPLE_INIT(types,ptr,...)                              \
     memcpy((ptr), &(W_TUPLE_TYPE(types)) { __VA_ARGS__ },        \
         sizeof(W_TUPLE_TYPE(types)))
+
+#ifndef W_memcpy_safe
+# define W_memcpy_safe
+static inline void*
+memcpy_safe(void* dest, const void* source, int bytes)
+{
+    if (dest)
+        return memcpy(dest, source, bytes);
+    else
+        return NULL;
+}
+#endif
+
+/***
+ *** Name:        W_TUPLE_NEW
+ *** Proto:       W_TUPLE_NEW(type_seq,...)
+ *** Arg:         type_seq   a sequence of types (e.g. `(int)(double)(const char*)`
+ *** Arg:         ...        values of the tuple
+ *** Description: Use W_TUPLE_NEW to allocate and initialize a tuple.
+ ***/
+#define W_TUPLE_NEW(types,...)                                        \
+    ((W_TUPLE_TYPE(types)*) memcpy_safe(                              \
+        malloc(sizeof(W_TUPLE_TYPE(types))),                          \
+        &(W_TUPLE_TYPE(types)) { __VA_ARGS__ },                       \
+        sizeof(W_TUPLE_TYPE(types))))
 
 /***
  *** Name:        W_TUPLE_ELEM

@@ -1,12 +1,12 @@
 TODO:
 =====
+Objects
+* Add automatic array dimensions in JSON
+* Add W_OBJECT_SET(o,property,string) and W_OBJECT_SET(o,string)
 
 Data Structures
 * Add heap
 * Add Avl-tree
-
-FSM
-* Finish UML state machine macros
 
 W_HIDDEN_OF
 * Fix alignment issues
@@ -14,4 +14,24 @@ W_HIDDEN_OF
 Other
 * Add full test coverage
 * Improve docs
+  * Add configuration macros to docs
+  * Add examples
+
+Tests
+* move_right
+* for_each
+* for_each_reversed
+* variadic_testing
+* pow
+* tolower / toupper
+* to_int
+* to_char
+* charseq_to_string
+* charseq_to_int
+* charseq_tolower
+* charseq_toupper
+* variadic_rest
+
+* remove pp_pow2 (meta)
+
 

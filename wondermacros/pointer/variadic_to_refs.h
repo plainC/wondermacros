@@ -45,7 +45,7 @@
         BOOST_PP_SEQ_SIZE(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__)),   \
         BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
 #define _W_VARIADIC_TO_REFS(z,size,i,elem)                          \
-    &(elem) BOOST_PP_COMMA_IF(                                      \
+    (void*) &(elem) BOOST_PP_COMMA_IF(                                      \
         BOOST_PP_NOT(BOOST_PP_EQUAL(BOOST_PP_DEC(size),i)))
 
 #endif

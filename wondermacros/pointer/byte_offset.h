@@ -33,7 +33,7 @@
  *** Description: Use W_BYTE_OFFSET to count the offset of two pointers. The offset is negative if ptr1 is before ptr2.
  ***/
 #define W_BYTE_OFFSET(ptr1,ptr2) \
-    (((char*)(ptr1)) - ((char*)(ptr2)))
+    ((size_t) (((char*)(ptr1)) - ((char*)(ptr2))))
 
 /*Unit Test*/
 

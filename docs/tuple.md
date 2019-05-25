@@ -18,6 +18,15 @@ ptr                  a pointer for writting (sizeof(W_TUPLE_TYPE(type_seq))
 #### Description
     Use W_TUPLE_INIT to initialize a tuple.
     
+### W_TUPLE_NEW(type_seq,...)
+#### Arguments
+```C
+type_seq             a sequence of types (e.g. `(int)(double)(const char*)`
+...                  values of the tuple
+```
+#### Description
+    Use W_TUPLE_NEW to allocate and initialize a tuple.
+    
 ### W_TUPLE_ELEM(tuplep,ix)
 #### Arguments
 ```C
