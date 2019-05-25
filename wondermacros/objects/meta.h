@@ -22,6 +22,14 @@ struct w_object_class_map {
 
 extern struct w_object_class_map* w_object_classes;
 
+static inline CLASS_T*
+w_class_dup(CLASS_T* klass)
+{
+    CLASS_T* self = malloc(sizeof(CLASS_T));
+    memcpy(self, klass, sizeof(CLASS_T));
+    return self;
+}
+
 static inline int
 w_class_register_dynamic(const char* name, CLASS_T* klass)
 {
