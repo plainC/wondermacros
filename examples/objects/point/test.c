@@ -22,6 +22,8 @@
 
 #include <wondermacros/objects/meta.h>
 
+struct w_object_class_map* w_object_classes;
+
 
 int main()
 {

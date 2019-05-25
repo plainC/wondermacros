@@ -2,6 +2,7 @@
 # include <stdlib.h>
 #endif
 
+#include <wondermacros/objects/meta.h>
 #include <wondermacros/objects/object.h>
 #include <wondermacros/objects/object_name.h>
 

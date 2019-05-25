@@ -1,4 +1,4 @@
-CFLAGS=-g -I . -I../.. -Wall -Wextra
+CFLAGS=-g -I . -I .. -I ../.. -Wall -Wextra
 SRCS = $(wildcard *.c)
 PROGS = $(patsubst %.c,%,$(SRCS))
 LIBS =
