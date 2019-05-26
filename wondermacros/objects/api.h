@@ -103,6 +103,8 @@
 #define W_CALL_VOID(o,method)                  \
     (((o)->klass->method)(BOOST_PP_EXPR_IF(W_OBJECT_CASTING,(void*)) (o)))
 
+#define W_CALLV(o,m) W_CALL_VOID(o,m)
+
 /***
  *** Name:        W_CALL_STATIC_VOID
  *** Proto:       W_CALL_STATIC_VOID(self,method)
