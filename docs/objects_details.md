@@ -21,6 +21,11 @@ It is possible to declare a fixed size array property using additional declarati
 For example, `VAR(public,int,items,Array(2))` declares one-dimensional array of two integers. Multi-dimensional
 arrays are defined by adding dimensions to `Array` macro.
 
+A dynamic array is declared just using a pointer property with the desired element type.
+The pointer is initialized to NULL to represent an empty array. Use
+`W_DYNAMIC_ARRAY_PUSH` to add elements. The dynamic array is freed using
+`W_DYNAMIC_ARRAY_FREE`.
+
 Sometimes we might want to save space, and declare properties with bit field length. For example,
 `VAR(public,unsigned,tiny,Bits(3))` declares a property taking just three bits. This, however, saves space only
 when multiple properties are delared sequentially and they fit into a word boundary. Note that to use bit fields

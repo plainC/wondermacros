@@ -68,6 +68,6 @@
  *** Description: Use W_TEST_GROUP to group tests in unit testing.
  ***/
 #define W_TEST_GROUP(name)                    \
-    printf("\n\nGROUP: %s\n\n", name);
+    printf("\n\nGROUP: %s\n\n", # name);
 
 #endif
