@@ -11,6 +11,7 @@
 /* Expand class struct. */
 struct W_CLASS_STRUCT_NAME(CLASS) {
     ObjectMeta__define
+    size_t instance_size;
     W_CLASS_EXPAND(CLASS)
 };
 

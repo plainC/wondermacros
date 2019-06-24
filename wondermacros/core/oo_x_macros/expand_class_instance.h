@@ -18,13 +18,21 @@
 # endif
 #endif
 
-struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS) = {
+#if W_IS_PUBLIC
+extern
+#endif
+struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
+#if W_IS_PUBLIC
+;
+#else
+ = {
     .klass = &W_CLASS_INSTANCE_NAME(ObjectMeta),
     .name = W_STRINGIZE(CLASS),
     .kind = KIND,
-    .instance_size = sizeof(struct CLASS),
+    .instance_size = sizeof(struct W_CLASS_STRUCT_NAME(CLASS)),
     W_CLASS_EXPAND(CLASS)
 };
+#endif
 
 
 #undef CLASS_NAME

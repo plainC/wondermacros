@@ -6,7 +6,7 @@
 #define METHOD_WITH_ARGS(Class,Scope,RetType,Name,Args)
 #define VAR(Scope,Type,Name,...) Type Name;
 
-struct CLASS {
+struct W_INSTANCE_STRUCT_NAME(CLASS) {
     struct W_CLASS_STRUCT_NAME(CLASS)* klass;
     W_CLASS_EXPAND(CLASS)
 };

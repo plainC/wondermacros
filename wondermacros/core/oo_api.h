@@ -27,6 +27,12 @@
 /*
  * Names
  */
+#define W_INSTANCE_STRUCT_NAME(Class)     \
+    BOOST_PP_IF(                          \
+            W_IS_PUBLIC,                  \
+            Class,                        \
+            W_CAT(Class,__private))       \
+    /**/
 #define W_CLASS_STRUCT_NAME(Class)        \
     BOOST_PP_IF(                          \
             W_IS_PUBLIC,                  \
@@ -79,6 +85,8 @@ struct W_CLASS_STRUCT_NAME(ObjectMeta) {
     bool (*is_super)(Class* self, Class* other);
     bool (*is_sub)(Class* self, Class* other);
 };
+
+extern struct W_CLASS_STRUCT_NAME(ObjectMeta) W_CLASS_INSTANCE_NAME(ObjectMeta);
 
 /*
  * Object creation, casts and assignments.
@@ -134,7 +142,7 @@ struct W_CLASS_STRUCT_NAME(ObjectMeta) {
 /*
  * Base classes
  */
-#include "Object.h"
+//#include "Object.h"
 
 #endif
 

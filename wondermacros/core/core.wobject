@@ -17,5 +17,4 @@ interface IJson
 abstract class Object
     public Object* clone()
     public void free()
-    public Class* get_class()
     public int x

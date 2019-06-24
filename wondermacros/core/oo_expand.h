@@ -12,7 +12,6 @@
 #endif
 
 #ifdef CLASS
-# include "oo_x_macros/expand_class_meta_data.h"
 # include "oo_x_macros/expand_class_struct.h"
 # include "oo_x_macros/expand_class_instance.h"
 # include "oo_x_macros/expand_object_struct.h"
@@ -22,3 +21,6 @@
 #undef METHOD
 #undef _METHOD_1
 #undef _METHOD_2
+
+#undef W_IS_PUBLIC
+
