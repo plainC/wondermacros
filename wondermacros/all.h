@@ -2,11 +2,11 @@
 # define W_TEST_GROUP(...)
 #endif
 
+#include <wondermacros/config.h>
+
 W_TEST_GROUP("Meta")
 
 #include <wondermacros/meta/all.h>
-
-
 
 /**/
 

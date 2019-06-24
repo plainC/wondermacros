@@ -44,6 +44,10 @@
 #include <boost/preprocessor/comparison/greater.hpp>
 #include <boost/preprocessor/variadic/size.hpp>
 
+#ifndef EXTERN
+# define EXTERN extern
+#endif
+
 
 #ifndef W_EXCEPTION_ERROR_MESSAGE_LENGTH
 # define W_EXCEPTION_ERROR_MESSAGE_LENGTH 128

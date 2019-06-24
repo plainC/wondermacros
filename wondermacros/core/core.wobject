@@ -1,0 +1,21 @@
+interface IWriter
+    public int putc(char ch)
+    public int append(char* str, size_t size)
+
+
+interface IReader
+    public bool is_eof()
+    public char peek()
+    public char getc()
+    public size_t read(char* buf, size_t size)
+
+
+interface IJson
+    public int to_json(IWriter* writer)
+
+
+abstract class Object
+    public Object* clone()
+    public void free()
+    public Class* get_class()
+    public int x

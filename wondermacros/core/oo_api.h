@@ -51,9 +51,13 @@
 #define W_CLASS_EXPAND(Class)             \
     W_CAT_OUTER(CLASS,__define)           \
     /**/
+#define W_METHOD_NAME(Class,Name)         \
+    W_CAT(Class,__,Name)                  \
+    /**/
 
 
 struct Object;
+typedef struct Object Object;
 struct W_CLASS_STRUCT_NAME(Object);
 typedef struct W_CLASS_STRUCT_NAME(Object) Class;
 
