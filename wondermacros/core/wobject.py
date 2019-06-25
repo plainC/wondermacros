@@ -23,6 +23,8 @@ class ClassKind(enum.Enum):
     INTERFACE=1
     CLASS=2
     ABSTRACT=3
+    SINGLETON=4
+
 
 class Method:
     def __init__(self,scope,type,name,args=""):
@@ -55,6 +57,7 @@ class Class:
     def __init__(self,name,kind):
         self.name = name
         self.kind = kind
+        self.setting_name = ""
         self.methods = []
         self.vars = []
 
@@ -72,6 +75,10 @@ class Class:
             print ("#define CLASS %s" % (self.name), file=f)
         if (self.kind == ClassKind.ABSTRACT):
             print ("#define ABSTRACT", file=f)
+        if (self.kind == ClassKind.SINGLETON):
+            print ("#define SINGLETON", file=f)
+        if (self.setting_name != ""):
+            print ("#define NAME %s" % (self.setting_name), file=f)
         print ("#define %s__define \\" % (self.name), file=f)
         if (self.kind == ClassKind.INTERFACE):
             print ("    INTERFACE_NAME(%s) \\" % (self.name), file=f)
@@ -82,6 +89,7 @@ class Class:
         for var in self.vars:
             var.print(f)
         print ("    /**/", file=f)
+        print ("#define %s__private__define %s__define" % (self.name,self.name), file=f)
         f.close()
 
     def print_h(self):
@@ -137,14 +145,16 @@ class Parser:
             return False
 
     def parse_class(self,line):
-        matchObj = re.match( r'^(abstract\s+)?class\s+(\w+)', line )
+        matchObj = re.match( r'^((abstract)|(singleton)\s+)?class\s+(\w+)', line )
         if (matchObj):
             if (not self.klass is None):
                 self.klass.print()
             kind = ClassKind.CLASS
-            if (matchObj.group(1) != ""):
+            if (matchObj.group(2) == "abstract"):
                 kind = ClassKind.ABSTRACT
-            self.klass = Class(matchObj.group(2), kind)
+            if (matchObj.group(3) == "singleton"):
+                kind = ClassKind.SINGLETON
+            self.klass = Class(matchObj.group(4), kind)
             return True
         else:
             return False
@@ -165,6 +175,13 @@ class Parser:
         else:
             return False
 
+    def parse_setting(self,line):
+        matchObj = re.match( r'^\s+\[(\w+)]', line )
+        if (matchObj):
+            self.klass.setting_name = matchObj.group(1)
+            return True
+        return False
+
     def parse(self):
         while (not self.scanner.is_eof()):
             line = self.scanner.peek()
@@ -173,6 +190,9 @@ class Parser:
                     self.scanner.next()
                     continue
                 if (self.parse_var(line)):
+                    self.scanner.next()
+                    continue
+                if (self.parse_setting(line)):
                     self.scanner.next()
                     continue
 

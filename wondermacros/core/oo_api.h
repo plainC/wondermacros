@@ -6,7 +6,9 @@
 #include <wondermacros/meta/stringize.h>
 
 #include <boost/preprocessor/control/if.hpp>
+#include <boost/preprocessor/control/expr_if.hpp>
 #include <boost/preprocessor/facilities/overload.hpp>
+#include <boost/preprocessor/punctuation/remove_parens.hpp>
 
 
 #ifndef WDEBUG_EXPAND
@@ -28,16 +30,10 @@
  * Names
  */
 #define W_INSTANCE_STRUCT_NAME(Class)     \
-    BOOST_PP_IF(                          \
-            W_IS_PUBLIC,                  \
-            Class,                        \
-            W_CAT(Class,__private))       \
+    Class                                 \
     /**/
 #define W_CLASS_STRUCT_NAME(Class)        \
-    BOOST_PP_IF(                          \
-            W_IS_PUBLIC,                  \
-            W_CAT(Class,__class),         \
-            W_CAT(Class,__class_private)) \
+    W_CAT(Class,__class)                  \
     /**/
 #define W_CLASS_INSTANCE_NAME(Class)      \
     W_CAT(Class,__class_instance)         \
@@ -62,31 +58,33 @@
     /**/
 
 
-struct Object;
-typedef struct Object Object;
-struct W_CLASS_STRUCT_NAME(Object);
-typedef struct W_CLASS_STRUCT_NAME(Object) Class;
+struct Nothing;
+typedef struct Nothing Nothing;
+struct W_CLASS_STRUCT_NAME(Nothing);
+typedef struct W_CLASS_STRUCT_NAME(Nothing) Class;
 
 enum ClassKind {
     CLASS_KIND_META,
     CLASS_KIND_ABSTRACT,
     CLASS_KIND_CLASS,
     CLASS_KIND_INTERFACE,
+    CLASS_KIND_SINGLETON,
 };
 
-#define ObjectMeta__define                         \
-    struct W_CLASS_STRUCT_NAME(ObjectMeta)* klass; \
-    const char* name;                              \
-    enum ClassKind kind;                           \
+#define NothingMeta__define                         \
+    struct W_CLASS_STRUCT_NAME(NothingMeta)* klass; \
+    const char* name;                               \
+    enum ClassKind kind;                            \
+    Class** superclasses;                           \
     /**/
 
-struct W_CLASS_STRUCT_NAME(ObjectMeta) {
-    ObjectMeta__define
+struct W_CLASS_STRUCT_NAME(NothingMeta) {
+    NothingMeta__define
     bool (*is_super)(Class* self, Class* other);
     bool (*is_sub)(Class* self, Class* other);
 };
 
-extern struct W_CLASS_STRUCT_NAME(ObjectMeta) W_CLASS_INSTANCE_NAME(ObjectMeta);
+extern struct W_CLASS_STRUCT_NAME(NothingMeta) W_CLASS_INSTANCE_NAME(NothingMeta);
 
 /*
  * Object creation, casts and assignments.
@@ -102,7 +100,18 @@ extern struct W_CLASS_STRUCT_NAME(ObjectMeta) W_CLASS_INSTANCE_NAME(ObjectMeta);
  * Member function calls and signaling.
  */
 
-#define W_CALL(Object,Method)
+/***
+ *** Name:        W_CALL
+ *** Proto:       W_CALL(self,method)(...)
+ *** Arg:         self     an object (an instance of a class)
+ *** Arg:         method   a method name to be called
+ *** Arg:         ...      arguments for the methods
+ *** Description: Use W_CALL to call a method of an object with arguments. The macro will expand self automatically as the first argument of the argument list in the method call.
+ ***/
+#define W_CALL(o,method) (((o)->klass->method) \
+    ((void*)(o), W_CALL_CLOSE
+#define W_CALL_CLOSE(...) __VA_ARGS__))
+
 #define W_CALLV(Object,Method)
 #define W_EMIT(Object,Signal,...)
 
@@ -138,11 +147,6 @@ extern struct W_CLASS_STRUCT_NAME(ObjectMeta) W_CLASS_INSTANCE_NAME(ObjectMeta);
  */
 #define W_CLASS_OVERRIDE(Class,MethodName,Func) (Class)->MethodName = Func
 
-
-/*
- * Base classes
- */
-//#include "Object.h"
 
 #endif
 

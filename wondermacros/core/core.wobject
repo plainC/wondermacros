@@ -14,7 +14,9 @@ interface IJson
     public int to_json(IWriter* writer)
 
 
-abstract class Object
-    public Object* clone()
+singleton class Nothing
+  [None]
+    public Nothing* clone()
     public void free()
+    public bool eq(Nothing* other)
     public int x

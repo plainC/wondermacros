@@ -1,7 +1,7 @@
 #define METHOD_VOID(Interface,Scope,RetType,Name) \
-    RetType (*Name)();
+    RetType (*Name)(CLASS* self);
 #define METHOD_WITH_ARGS(Interface,Scope,RetType,Name,Args) \
-    RetType (*Name)Args;
+    RetType (*Name)(CLASS* self, BOOST_PP_REMOVE_PARENS(Args));
 
 #define INTERFACE_NAME(Name)                      \
     W_OO_CLASS(Name);
@@ -9,8 +9,8 @@
 #define VAR(...)
 
 /* Expand class struct. */
-struct W_CLASS_STRUCT_NAME(CLASS) {
-    ObjectMeta__define
+struct W_CAT(CLASS,__class) {
+    NothingMeta__define
     size_t instance_size;
     W_CLASS_EXPAND(CLASS)
 };
@@ -30,9 +30,9 @@ typedef struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_STRUCT_NAME(CLASS);
 #undef INTERFACE_NAME
 
 #define METHOD_VOID(Interface,Scope,RetType,Name) \
-    RetType W_METHOD_NAME(CLASS,Name)();
+    RetType W_METHOD_NAME(CLASS,Name)(CLASS* self);
 #define METHOD_WITH_ARGS(Interface,Scope,RetType,Name,Args) \
-    RetType W_METHOD_NAME(CLASS,Name)Args;
+    RetType W_METHOD_NAME(CLASS,Name)(CLASS* self, BOOST_PP_REMOVE_PARENS(Args));
 
 W_CLASS_EXPAND(CLASS)
 

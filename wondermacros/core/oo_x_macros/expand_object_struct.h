@@ -6,7 +6,7 @@
 #define METHOD_WITH_ARGS(Class,Scope,RetType,Name,Args)
 #define VAR(Scope,Type,Name,...) Type Name;
 
-struct W_INSTANCE_STRUCT_NAME(CLASS) {
+struct CLASS {
     struct W_CLASS_STRUCT_NAME(CLASS)* klass;
     W_CLASS_EXPAND(CLASS)
 };
@@ -16,4 +16,14 @@ struct W_INSTANCE_STRUCT_NAME(CLASS) {
 #undef METHOD_VOID
 #undef METHOD_WITH_ARGS
 #undef VAR
+
+
+
+#ifdef SINGLETON
+# if W_IS_PUBLIC
+extern struct W_CLASS_STRUCT_NAME(CLASS) NAME;
+# else
+struct W_INSTANCE_STRUCT_NAME(CLASS) NAME = { .klass = &W_CLASS_INSTANCE_NAME(CLASS) };
+# endif
+#endif
 
