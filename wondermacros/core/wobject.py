@@ -54,9 +54,10 @@ class Var:
 
 
 class Class:
-    def __init__(self,name,kind):
+    def __init__(self,name,kind,Super):
         self.name = name
         self.kind = kind
+        self.super = Super
         self.setting_name = ""
         self.methods = []
         self.vars = []
@@ -80,6 +81,8 @@ class Class:
         if (self.setting_name != ""):
             print ("#define NAME %s" % (self.setting_name), file=f)
         print ("#define %s__define \\" % (self.name), file=f)
+        if (self.super != ""):
+            print ("    %s__define \\" % (self.super), file=f)
         if (self.kind == ClassKind.INTERFACE):
             print ("    INTERFACE_NAME(%s) \\" % (self.name), file=f)
         else:
@@ -89,14 +92,16 @@ class Class:
         for var in self.vars:
             var.print(f)
         print ("    /**/", file=f)
+        print ("/* Aliases. */", file=f)
         print ("#define %s__private__define %s__define" % (self.name,self.name), file=f)
+        for method in self.methods:
+            print ("#define %s__%s %s__private__%s" % (self.name, method.name, self.name, method.name), file=f)
         f.close()
 
     def print_h(self):
         f = open(self.name + ".h","w")
         print("#ifndef __%s_H" % (self.name), file=f)
         print("#define __%s_H" % (self.name), file=f)
-        print("#define W_IS_PUBLIC 1", file=f)
         print("#include \"oo_api.h\"", file=f)
         print("#include \"%s__class.h\"" % (self.name), file=f)
         print("#include \"oo_expand.h\"", file=f)
@@ -135,17 +140,17 @@ class Parser:
         self.klass = None
 
     def parse_interface(self,line):
-        matchObj = re.match( r'^interface\s+(\w+)', line )
+        matchObj = re.match( r'^interface\s+(\w+)(\s*\:\s*(\w+))?', line )
         if (matchObj):
             if (not self.klass is None):
                 self.klass.print()
-            self.klass = Class(matchObj.group(1), ClassKind.INTERFACE)
+            self.klass = Class(matchObj.group(1), ClassKind.INTERFACE, matchObj.group(3) if matchObj.group(3) else "")
             return True
         else:
             return False
 
     def parse_class(self,line):
-        matchObj = re.match( r'^((abstract)|(singleton)\s+)?class\s+(\w+)', line )
+        matchObj = re.match( r'^((abstract)|(singleton)\s+)?class\s+(\w+)(\s*\:\s*(\w+))?', line )
         if (matchObj):
             if (not self.klass is None):
                 self.klass.print()
@@ -154,7 +159,7 @@ class Parser:
                 kind = ClassKind.ABSTRACT
             if (matchObj.group(3) == "singleton"):
                 kind = ClassKind.SINGLETON
-            self.klass = Class(matchObj.group(4), kind)
+            self.klass = Class(matchObj.group(4), kind, matchObj.group(6) if matchObj.group(6) else "")
             return True
         else:
             return False

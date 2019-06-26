@@ -9,6 +9,8 @@
 #include <boost/preprocessor/control/expr_if.hpp>
 #include <boost/preprocessor/facilities/overload.hpp>
 #include <boost/preprocessor/punctuation/remove_parens.hpp>
+#include <boost/preprocessor/variadic/elem.hpp>
+#include <boost/preprocessor/comparison/equal.hpp>
 
 
 #ifndef WDEBUG_EXPAND
@@ -17,14 +19,6 @@
 # include <stdbool.h>
 #endif
 
-/*
- * Configuration:
- *
- * W_IS_PUBLIC   [0..1]
- * W_HAS_CONSTRUCTOR
- * W_HAS_DESTRUCTOR
- * W_CLASS_TYPEDEF
- */
 
 /*
  * Names
@@ -90,7 +84,25 @@ extern struct W_CLASS_STRUCT_NAME(NothingMeta) W_CLASS_INSTANCE_NAME(NothingMeta
  * Object creation, casts and assignments.
  */
 
-#define W_NEW(Class,...)
+#define W_PP_IS_UNARY(...) BOOST_PP_EQUAL(BOOST_PP_VARIADIC_SIZE(__VA_ARGS__), 1)
+
+/***
+ *** Name:        W_NEW
+ *** Proto:       W_NEW(T [,...])
+ *** Arg:         T     a class name
+ *** Arg:         ...   values to be set (e.g. W_NEW(point, .x=1, .y=2))
+ *** Description: Use W_NEW to create (and to initialize) an object.
+ ***/
+#define W_NEW(...) (                                                             \
+    ((void*) BOOST_PP_IF(W_PP_IS_UNARY(__VA_ARGS__),                             \
+        W_CAT(BOOST_PP_VARIADIC_ELEM(0,__VA_ARGS__),__new)(),                    \
+        _W_NEW(__VA_ARGS__)                                                      \
+    )                                                                            \
+)
+#define _W_NEW(T,...)                                                            \
+    ((void*) W_CAT(T,__private__clone)(&((struct W_CAT(T)){__VA_ARGS__}))))
+
+
 #define W_OBJ_NEW(Class,Json)
 #define W_OBJECT_AS(Object,Class)
 #define W_FAT_PTR_GET(Object,Interface)
@@ -108,11 +120,13 @@ extern struct W_CLASS_STRUCT_NAME(NothingMeta) W_CLASS_INSTANCE_NAME(NothingMeta
  *** Arg:         ...      arguments for the methods
  *** Description: Use W_CALL to call a method of an object with arguments. The macro will expand self automatically as the first argument of the argument list in the method call.
  ***/
-#define W_CALL(o,method) (((o)->klass->method) \
-    ((void*)(o), W_CALL_CLOSE
+#define W_CALL(o,method) \
+    (((o)->klass->method) ((void*)(o), W_CALL_CLOSE
 #define W_CALL_CLOSE(...) __VA_ARGS__))
 
-#define W_CALLV(Object,Method)
+#define W_CALLV(o,method) \
+    (((o)->klass->method)())
+
 #define W_EMIT(Object,Signal,...)
 
 #define W_FATCALL(Interface,Object,Method)
@@ -147,6 +161,11 @@ extern struct W_CLASS_STRUCT_NAME(NothingMeta) W_CLASS_INSTANCE_NAME(NothingMeta
  */
 #define W_CLASS_OVERRIDE(Class,MethodName,Func) (Class)->MethodName = Func
 
+
+/*
+ * Global objects.
+ */
+#define None ((void*) (&_none))
 
 #endif
 

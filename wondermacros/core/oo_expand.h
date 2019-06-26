@@ -1,3 +1,11 @@
+#ifdef EXTERN
+# define IS_HEADER 0
+#else
+# define IS_HEADER 1
+# define EXTERN extern
+#endif
+
+
 /*
  * X-macro simplifiers.
  */
@@ -19,6 +27,7 @@ typedef struct CLASS CLASS;
 # include "oo_x_macros/expand_class_struct.h"
 # include "oo_x_macros/expand_class_instance.h"
 # include "oo_x_macros/expand_object_struct.h"
+# include "oo_x_macros/expand_common_methods.h"
 #endif
 
 
@@ -26,6 +35,17 @@ typedef struct CLASS CLASS;
 #undef _METHOD_1
 #undef _METHOD_2
 
-#undef W_IS_PUBLIC
+#if IS_HEADER
+#undef CLASS
+#undef NAME
+#endif
+
+#undef ABSTRACT
+#undef SINGLETON
+#undef INTERFACE
+#undef KIND
+
+#undef IS_HEADER
+#undef EXTERN
 
 #define METHOD(Name) W_CAT(CLASS,__,Name)

@@ -20,10 +20,10 @@ struct CLASS {
 
 
 #ifdef SINGLETON
-# if W_IS_PUBLIC
-extern struct W_CLASS_STRUCT_NAME(CLASS) NAME;
+EXTERN struct W_CLASS_STRUCT_NAME(CLASS) NAME
+# if IS_HEADER
+;
 # else
-struct W_INSTANCE_STRUCT_NAME(CLASS) NAME = { .klass = &W_CLASS_INSTANCE_NAME(CLASS) };
+ = { .klass = (void*) &W_CLASS_INSTANCE_NAME(CLASS) };
 # endif
 #endif
-

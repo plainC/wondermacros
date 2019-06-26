@@ -15,7 +15,7 @@
 /**/
 
 /* List superclasses. */
-#if W_IS_PUBLIC == 0
+#if IS_HEADER == 0
 
 #define INTERFACE_NAME(...)
 #define CLASS_NAME(Name) (void*) &W_CLASS_INSTANCE_NAME(CLASS),
@@ -48,11 +48,8 @@ static Class* superclasses[] = {
     /**/
 #define VAR(...)
 
-#if W_IS_PUBLIC
-extern
-#endif
-struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
-#if W_IS_PUBLIC
+EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
+#if IS_HEADER
 ;
 #else
  = {

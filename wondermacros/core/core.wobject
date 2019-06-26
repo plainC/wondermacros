@@ -15,8 +15,14 @@ interface IJson
 
 
 singleton class Nothing
-  [None]
+  [_none]
     public Nothing* clone()
     public void free()
     public bool eq(Nothing* other)
+
+class Point : Nothing
     public int x
+    public int y
+
+class Point3D : Point
+    public int z

@@ -12,13 +12,15 @@
 struct W_CAT(CLASS,__class) {
     NothingMeta__define
     size_t instance_size;
+    void (*constructor)(CLASS* self);
+    void (*destructor)(CLASS* self);
     W_CLASS_EXPAND(CLASS)
 };
 
 
 /* Expand typedef class struct. */
 #ifdef W_CLASS_TYPEDEF
-# if W_IS_PUBLIC
+# if IS_HEADER
 typedef struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_STRUCT_NAME(CLASS);
 # endif
 #endif
