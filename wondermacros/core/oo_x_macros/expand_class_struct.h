@@ -3,8 +3,7 @@
 #define METHOD_WITH_ARGS(Interface,Scope,RetType,Name,Args) \
     RetType (*Name)(CLASS* self, BOOST_PP_REMOVE_PARENS(Args));
 
-#define INTERFACE_NAME(Name)                      \
-    W_OO_CLASS(Name);
+#define INTERFACE_NAME(...)
 #define CLASS_NAME(...)
 #define VAR(...)
 
@@ -26,11 +25,21 @@ typedef struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_STRUCT_NAME(CLASS);
 #endif
 
 
+/* Expand fat pointer. */
+struct W_CAT(CLASS,FatPtr) {
+    Nothing* obj;
+    size_t offset;
+};
+typedef struct W_CAT(CLASS,FatPtr) W_CAT(CLASS,FatPtr);
+
+
+
 /* Expand forward declarations of methods. */
 #undef METHOD_VOID
 #undef METHOD_WITH_ARGS
 #undef INTERFACE_NAME
 
+#define INTERFACE_NAME(...)
 #define METHOD_VOID(Interface,Scope,RetType,Name) \
     RetType W_METHOD_NAME(CLASS,Name)(CLASS* self);
 #define METHOD_WITH_ARGS(Interface,Scope,RetType,Name,Args) \

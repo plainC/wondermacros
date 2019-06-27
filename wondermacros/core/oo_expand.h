@@ -19,10 +19,6 @@
 struct CLASS;
 typedef struct CLASS CLASS;
 
-#ifdef INTERFACE
-# include "oo_x_macros/expand_interface_struct.h"
-#endif
-
 #ifdef CLASS
 # include "oo_x_macros/expand_class_struct.h"
 # include "oo_x_macros/expand_class_instance.h"

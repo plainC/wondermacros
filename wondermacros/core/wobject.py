@@ -70,10 +70,10 @@ class Class:
 
     def print_class(self):
         f = open(self.name + "__class.h","w")
+        print ("#define CLASS %s" % (self.name), file=f)
+
         if (self.kind == ClassKind.INTERFACE):
-            print ("#define INTERFACE %s" % (self.name), file=f)
-        else:
-            print ("#define CLASS %s" % (self.name), file=f)
+            print ("#define INTERFACE", file=f)
         if (self.kind == ClassKind.ABSTRACT):
             print ("#define ABSTRACT", file=f)
         if (self.kind == ClassKind.SINGLETON):
