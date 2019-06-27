@@ -55,10 +55,11 @@ class Var:
 
 
 class Class:
-    def __init__(self,name,kind,Super):
+    def __init__(self,name,kind,Super,interfaces):
         self.name = name
         self.kind = kind
         self.super = Super
+        self.interfaces = interfaces
         self.setting_name = ""
         self.methods = []
         self.vars = []
@@ -84,6 +85,10 @@ class Class:
         print ("#define %s__define \\" % (self.name), file=f)
         if (self.super != ""):
             print ("    %s__define \\" % (self.super), file=f)
+        if (self.interfaces):
+            for interface in self.interfaces:
+                if (interface != None):
+                    print ("    %s__define \\" % (interface), file=f)
         if (self.kind == ClassKind.INTERFACE):
             print ("    INTERFACE_NAME(%s) \\" % (self.name), file=f)
         else:
@@ -162,17 +167,17 @@ class Parser:
         self.klass = None
 
     def parse_interface(self,line):
-        matchObj = re.match( r'^interface\s+(\w+)(\s*\:\s*(\w+))?', line )
+        matchObj = re.match( r'^interface\s+(\w+)(\s*\:\s*(\w+))?(\s*(\w+))?', line )
         if (matchObj):
             if (not self.klass is None):
                 self.klass.print()
-            self.klass = Class(matchObj.group(1), ClassKind.INTERFACE, matchObj.group(3) if matchObj.group(3) else "")
+            self.klass = Class(matchObj.group(1), ClassKind.INTERFACE, matchObj.group(3) if matchObj.group(3) else "", [matchObj.group(5)])
             return True
         else:
             return False
 
     def parse_class(self,line):
-        matchObj = re.match( r'^((abstract)|(singleton)\s+)?class\s+(\w+)(\s*\:\s*(\w+))?', line )
+        matchObj = re.match( r'^((abstract)|(singleton)\s+)?class\s+(\w+)(\s*\:\s*(\w+))?(\s*(\w+))?', line )
         if (matchObj):
             if (not self.klass is None):
                 self.klass.print()
@@ -181,7 +186,7 @@ class Parser:
                 kind = ClassKind.ABSTRACT
             if (matchObj.group(3) == "singleton"):
                 kind = ClassKind.SINGLETON
-            self.klass = Class(matchObj.group(4), kind, matchObj.group(6) if matchObj.group(6) else "")
+            self.klass = Class(matchObj.group(4), kind, matchObj.group(6) if matchObj.group(6) else "", [matchObj.group(8)])
             return True
         else:
             return False

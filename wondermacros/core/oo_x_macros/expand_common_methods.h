@@ -4,6 +4,9 @@
 #define CLASS_NAME(...)
 #define VAR(...)
 
+
+#ifndef INTERFACE
+
 /* Expand New method. */
 #if IS_HEADER
 CLASS*
@@ -38,6 +41,7 @@ W_CAT(CLASS,__clone)(CLASS* other)
 }
 #endif
 
+#endif /* INTERFACE */
 
 #undef INTERFACE_NAME
 #undef CLASS_NAME

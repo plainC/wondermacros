@@ -53,10 +53,14 @@ EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
 ;
 #else
  = {
+#ifdef INTERFACE
+    .CLASS = &W_CLASS_INSTANCE_NAME(NothingMeta),
+#else
     .klass = &W_CLASS_INSTANCE_NAME(NothingMeta),
     .name = W_STRINGIZE(CLASS),
     .kind = KIND,
     .superclasses = (void*) &superclasses,
+#endif
     W_CLASS_EXPAND(CLASS)
 };
 #endif

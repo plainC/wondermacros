@@ -1,4 +1,5 @@
 #include "Nothing.h"
+#include "ITest.h"
 #include "Point.h"
 #include "Point3D.h"
 
@@ -16,4 +17,7 @@ int main()
     printf("%d,%d\n", p->x, p->y);
     Point3D* p3 = W_NEW(Point3D, .x=3, .y=4, .z=2);
     printf("%d,%d,%d\n", p3->x, p3->y, p3->z);
+
+    Point__ITestFatPtr testable = W_FAT_PTR_GET(p,ITest);
+    W_FATCALL(testable,jump)(2);
 }

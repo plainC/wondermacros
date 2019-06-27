@@ -105,7 +105,7 @@ extern struct W_CLASS_STRUCT_NAME(NothingMeta) W_CLASS_INSTANCE_NAME(NothingMeta
 
 #define W_OBJ_NEW(Class,Json)
 #define W_OBJECT_AS(Object,Class)
-#define W_FAT_PTR_GET(Object,Interface)
+#define W_FAT_PTR_GET(Object,Interface) { .obj = (Object), .klass = (void*) &((Object)->klass->Interface) }
 
 
 /*
@@ -129,8 +129,11 @@ extern struct W_CLASS_STRUCT_NAME(NothingMeta) W_CLASS_INSTANCE_NAME(NothingMeta
 
 #define W_EMIT(Object,Signal,...)
 
-#define W_FATCALL(Interface,Object,Method)
-#define W_FATCALLV(Interface,Object,Method)
+#define W_FATCALL(fatPtr,method) \
+    (((fatPtr).klass->method) ((void*)((fatPtr).obj), W_CALL_CLOSE
+
+#define W_FATCALLV(fatPtr,method) \
+    ((fatPtr).klass->method((void*) ((fatPtr).obj)))
 #define W_FATEMIT(Object,Signal,...)
 
 #define W_STATIC_CALL(Class,Method)

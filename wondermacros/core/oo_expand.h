@@ -19,12 +19,11 @@
 struct CLASS;
 typedef struct CLASS CLASS;
 
-#ifdef CLASS
-# include "oo_x_macros/expand_class_struct.h"
-# include "oo_x_macros/expand_class_instance.h"
-# include "oo_x_macros/expand_object_struct.h"
-# include "oo_x_macros/expand_common_methods.h"
-#endif
+#include "oo_x_macros/expand_class_struct.h"
+#include "oo_x_macros/expand_class_instance.h"
+#include "oo_x_macros/expand_object_struct.h"
+#include "oo_x_macros/expand_common_methods.h"
+#include "oo_x_macros/expand_fat_ptr_structs.h"
 
 
 #undef METHOD

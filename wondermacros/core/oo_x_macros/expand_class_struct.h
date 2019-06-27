@@ -3,16 +3,26 @@
 #define METHOD_WITH_ARGS(Interface,Scope,RetType,Name,Args) \
     RetType (*Name)(CLASS* self, BOOST_PP_REMOVE_PARENS(Args));
 
-#define INTERFACE_NAME(...)
+#define INTERFACE_NAME(Name) \
+    struct NothingMeta__class* Name; \
+    const char* W_CAT(Name,__name);                               \
+    enum ClassKind W_CAT(Name,__kind);                            \
+    Class** W_CAT(Name,__superclasses);                           \
+  size_t W_CAT(Name,__instance_size); \
+  void (*W_CAT(Name,__constructor)) (ITest * self); \
+  void (*W_CAT(Name,__destructor)) (ITest * self); \
+
 #define CLASS_NAME(...)
 #define VAR(...)
 
 /* Expand class struct. */
 struct W_CAT(CLASS,__class) {
+#ifndef INTERFACE
     NothingMeta__define
     size_t instance_size;
     void (*constructor)(CLASS* self);
     void (*destructor)(CLASS* self);
+#endif
     W_CLASS_EXPAND(CLASS)
 };
 
@@ -23,15 +33,6 @@ struct W_CAT(CLASS,__class) {
 typedef struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_STRUCT_NAME(CLASS);
 # endif
 #endif
-
-
-/* Expand fat pointer. */
-struct W_CAT(CLASS,FatPtr) {
-    Nothing* obj;
-    size_t offset;
-};
-typedef struct W_CAT(CLASS,FatPtr) W_CAT(CLASS,FatPtr);
-
 
 
 /* Expand forward declarations of methods. */

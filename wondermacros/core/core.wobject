@@ -13,6 +13,9 @@ interface IReader
 interface IJson
     public int to_json(IWriter* writer)
 
+interface ITest
+    public void jump(int i)
+
 
 singleton class Nothing
   [_none]
@@ -20,7 +23,7 @@ singleton class Nothing
     public void free()
     public bool eq(Nothing* other)
 
-class Point : Nothing
+class Point : Nothing ITest
     public int x
     public int y
 
