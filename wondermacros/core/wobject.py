@@ -3,6 +3,7 @@
 import re
 import sys
 import enum
+import os.path
 
 
 simple = {
@@ -108,9 +109,30 @@ class Class:
         print("#endif", file=f)
         f.close()
 
+    def print_c(self):
+        if (not os.path.isfile(self.name + ".c")):
+            f = open(self.name + ".c","w")
+            print("#define EXTERN", file=f)
+            print("", file=f)
+            print("#include \"oo_api.h\"", file=f)
+            print("", file=f)
+            print("#include \"%s__class.h\"" % (self.name), file=f)
+            print("#define %s %s__private" % (self.name, self.name), file=f)
+            print("#include \"oo_expand.h\"", file=f)
+            print("", file=f)
+            for method in self.methods:
+                print("%s" % (method.type), file=f)
+                print("METHOD(%s)(%s* self%s%s)" % (method.name, self.name, "," if (method.args != "") else "", method.args), file=f)
+                print("{", file=f)
+                print("}", file=f)
+                print("", file=f)
+            f.close()
+
+
     def print(self):
         self.print_class()
         self.print_h()
+        self.print_c()
 
 
 class Scanner:
