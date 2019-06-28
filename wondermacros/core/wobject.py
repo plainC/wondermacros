@@ -20,6 +20,8 @@ simple = {
     'char*':    'cstring'
 }
 
+classes = {}
+
 class ClassKind(enum.Enum):
     INTERFACE=1
     CLASS=2
@@ -63,12 +65,20 @@ class Class:
         self.setting_name = ""
         self.methods = []
         self.vars = []
+        self.has_constructor(False)
+        self.has_destructor(False)
 
     def add_method(self,scope,type,name,args=""):
         self.methods.append(Method(scope,type,name,args))
 
     def add_var(self,scope,type,name):
         self.vars.append(Var(scope,type,name))
+
+    def has_constructor(self,val):
+        self.has_constructor = val
+
+    def has_destructor(self,val):
+        self.has_destructor = val
 
     def print_class(self):
         f = open(self.name + "__class.h","w")
@@ -82,6 +92,10 @@ class Class:
             print ("#define SINGLETON", file=f)
         if (self.setting_name != ""):
             print ("#define NAME %s" % (self.setting_name), file=f)
+        if (self.has_constructor):
+            print ("#define HAS_CONSTRUCTOR", file=f)
+        if (self.has_destructor):
+            print ("#define HAS_DESTRUCTOR", file=f)
         print ("#define %s__define \\" % (self.name), file=f)
         if (self.super != ""):
             print ("    %s__define \\" % (self.super), file=f)
@@ -109,6 +123,20 @@ class Class:
         print("#ifndef __%s_H" % (self.name), file=f)
         print("#define __%s_H" % (self.name), file=f)
         print("#include \"oo_api.h\"", file=f)
+        print("/*** Classes in this module */", file=f)
+        for klassname in classes:
+            print("struct %s; typedef struct %s %s;" % (klassname,klassname,klassname), file=f)
+        print("/**/", file=f)
+        if (self.super != ""):
+            print("/*** Include superclass */", file=f)
+            print("#include \"%s.h\"" % (self.super), file=f)
+            print("/**/", file=f)
+        if (self.interfaces != None):
+            print("/*** Include interfaces */", file=f)
+            for interface in self.interfaces:
+                if (interface != None):
+                    print("#include \"%s.h\"" % (interface), file=f)
+            print("/**/", file=f)
         print("#include \"%s__class.h\"" % (self.name), file=f)
         print("#include \"oo_expand.h\"", file=f)
         print("#endif", file=f)
@@ -121,9 +149,15 @@ class Class:
             print("", file=f)
             print("#include \"oo_api.h\"", file=f)
             print("", file=f)
+            if (self.super != ""):
+                print("/*** Include superclass */", file=f)
+                print("#include \"%s.h\"" % (self.super), file=f)
+                print("/**/", file=f)
+            print("/*** Expand %s */" % (self.name), file=f)
             print("#include \"%s__class.h\"" % (self.name), file=f)
             print("#define %s %s__private" % (self.name, self.name), file=f)
             print("#include \"oo_expand.h\"", file=f)
+            print("/**/", file=f)
             print("", file=f)
             for method in self.methods:
                 print("%s" % (method.type), file=f)
@@ -172,12 +206,13 @@ class Parser:
             if (not self.klass is None):
                 self.klass.print()
             self.klass = Class(matchObj.group(1), ClassKind.INTERFACE, matchObj.group(3) if matchObj.group(3) else "", [matchObj.group(5)])
+            classes[matchObj.group(1)] = self.klass
             return True
         else:
             return False
 
     def parse_class(self,line):
-        matchObj = re.match( r'^((abstract)|(singleton)\s+)?class\s+(\w+)(\s*\:\s*(\w+))?(\s*(\w+))?', line )
+        matchObj = re.match( r'^((abstract)|(singleton)\s+)?class\s+(\w+)(\s*\:\s*(\w+))?((\s*(\w+))*)', line )
         if (matchObj):
             if (not self.klass is None):
                 self.klass.print()
@@ -186,7 +221,12 @@ class Parser:
                 kind = ClassKind.ABSTRACT
             if (matchObj.group(3) == "singleton"):
                 kind = ClassKind.SINGLETON
-            self.klass = Class(matchObj.group(4), kind, matchObj.group(6) if matchObj.group(6) else "", [matchObj.group(8)])
+            if (matchObj.group(7)):
+                interfaces = matchObj.group(7).split()
+            else:
+                interfaces = []
+            self.klass = Class(matchObj.group(4), kind, matchObj.group(6) if matchObj.group(6) else "", interfaces)
+            classes[matchObj.group(4)] = self.klass
             return True
         else:
             return False
@@ -207,6 +247,22 @@ class Parser:
         else:
             return False
 
+    def parse_constructor(self,line):
+        matchObj = re.match( r'^\s+construct', line)
+        if (matchObj):
+            self.klass.has_constructor=True
+            return True
+        else:
+            return False
+
+    def parse_destructor(self,line):
+        matchObj = re.match( r'^\s+destruct', line)
+        if (matchObj):
+            self.klass.has_destructor(True)
+            return True
+        else:
+            return False
+
     def parse_setting(self,line):
         matchObj = re.match( r'^\s+\[(\w+)]', line )
         if (matchObj):
@@ -222,6 +278,12 @@ class Parser:
                     self.scanner.next()
                     continue
                 if (self.parse_var(line)):
+                    self.scanner.next()
+                    continue
+                if (self.parse_constructor(line)):
+                    self.scanner.next()
+                    continue
+                if (self.parse_destructor(line)):
                     self.scanner.next()
                     continue
                 if (self.parse_setting(line)):

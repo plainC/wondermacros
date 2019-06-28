@@ -40,6 +40,9 @@ typedef struct CLASS CLASS;
 #undef INTERFACE
 #undef KIND
 
+#undef HAS_CONSTRUCTOR
+#undef HAS_DESTRUCTOR
+
 #undef IS_HEADER
 #undef EXTERN
 

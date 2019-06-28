@@ -26,6 +26,7 @@ singleton class Nothing
 class Point : Nothing ITest
     public int x
     public int y
+    construct
 
 class Point3D : Point
     public int z

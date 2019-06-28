@@ -4,13 +4,13 @@
     RetType (*Name)(CLASS* self, BOOST_PP_REMOVE_PARENS(Args));
 
 #define INTERFACE_NAME(Name) \
-    struct NothingMeta__class* Name; \
+    struct NothingMeta__class* Name;                              \
     const char* W_CAT(Name,__name);                               \
     enum ClassKind W_CAT(Name,__kind);                            \
     Class** W_CAT(Name,__superclasses);                           \
-  size_t W_CAT(Name,__instance_size); \
-  void (*W_CAT(Name,__constructor)) (ITest * self); \
-  void (*W_CAT(Name,__destructor)) (ITest * self); \
+  size_t W_CAT(Name,__instance_size);                             \
+  void (*W_CAT(Name,__constructor)) (ITest * self);               \
+  void (*W_CAT(Name,__destructor)) (ITest * self);                \
 
 #define CLASS_NAME(...)
 #define VAR(...)
@@ -54,4 +54,12 @@ W_CLASS_EXPAND(CLASS)
 #undef METHOD_VOID
 #undef METHOD_WITH_ARGS
 #undef VAR
+
+
+#ifdef HAS_CONSTRUCTOR
+    void W_METHOD_NAME(CLASS,_construct)(CLASS* self);
+#endif
+#ifdef HAS_DESTRUCTOR
+    void W_METHOD_NAME(CLASS,_destruct)(CLASS* self);
+#endif
 

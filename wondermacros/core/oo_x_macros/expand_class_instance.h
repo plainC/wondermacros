@@ -18,7 +18,7 @@
 #if IS_HEADER == 0
 
 #define INTERFACE_NAME(...)
-#define CLASS_NAME(Name) (void*) &W_CLASS_INSTANCE_NAME(CLASS),
+#define CLASS_NAME(Name) (void*) &W_CLASS_INSTANCE_NAME(Name),
 #define METHOD_VOID(...)
 #define METHOD_WITH_ARGS(...)
 #define VAR(...)
@@ -60,10 +60,17 @@ EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
     .name = W_STRINGIZE(CLASS),
     .kind = KIND,
     .superclasses = (void*) &superclasses,
+#ifdef HAS_CONSTRUCTOR
+    .constructor = (void*) W_METHOD_NAME(CLASS,_construct),
+#endif
+#ifdef HAS_DESTRUCTOR
+    .destructor = (void*) W_METHOD_NAME(CLASS,_destruct),
+#endif
 #endif
     W_CLASS_EXPAND(CLASS)
 };
-#endif
+#endif /* IS_HEADER */
+
 
 #undef CLASS_NAME
 #undef INTERFACE_NAME

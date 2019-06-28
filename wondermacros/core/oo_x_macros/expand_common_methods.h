@@ -7,6 +7,23 @@
 
 #ifndef INTERFACE
 
+#ifndef __NOTHING_CLASS
+#define __NOTHING_CLASS
+
+//FIXME: Clean up
+struct __Nothing__class
+{
+  struct NothingMeta__class *klass;
+  const char *name;
+  enum ClassKind kind;
+  Class **superclasses;
+  size_t instance_size;
+  void (*constructor) (Nothing* self);
+  void (*destructor) (Nothing* self);
+};
+
+#endif
+
 /* Expand New method. */
 #if IS_HEADER
 CLASS*
@@ -17,8 +34,13 @@ W_CAT(CLASS,__new)()
 {
     CLASS* self = malloc(sizeof(CLASS));
     self->klass = (void*) &W_CLASS_INSTANCE_NAME(CLASS);
-    if (self->klass->constructor)
-        self->klass->constructor(self);
+
+    /* Call constructors. */
+    struct __Nothing__class* klass = (void*) self->klass->superclasses[0];
+    for (int i=0; klass; klass = (void*) self->klass->superclasses[++i]) {
+        if (klass->constructor)
+            klass->constructor((Nothing*) self);
+    }
     return self;
 }
 #endif
