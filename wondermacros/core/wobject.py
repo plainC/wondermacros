@@ -114,6 +114,7 @@ class Class:
         print ("    /**/", file=f)
         print ("/* Aliases. */", file=f)
         print ("#define %s__private__define %s__define" % (self.name,self.name), file=f)
+        print ("#define %s__class_instance %s__private__class_instance" % (self.name,self.name), file=f)
         for method in self.methods:
             print ("#define %s__%s %s__private__%s" % (self.name, method.name, self.name, method.name), file=f)
         f.close()

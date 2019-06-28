@@ -2,11 +2,12 @@
 #define METHOD_WITH_ARGS(Interface,Scope,RetType,Name,Args)
 
 #define INTERFACE_NAME(Interface)                           \
-    struct W_CAT(CLASS,__,Interface,FatPtr) {               \
+    struct W_CAT(CLASS,__,Interface,_FatPtr) {              \
         CLASS* obj;                                         \
         struct W_CAT(Interface,__class)* klass;             \
     };                                                      \
-    typedef struct W_CAT(CLASS,__,Interface,FatPtr) W_CAT(CLASS,__,Interface,FatPtr); \
+    typedef struct W_CAT(CLASS,__,Interface,_FatPtr)        \
+        W_CAT(CLASS,__,Interface,_FatPtr);                  \
     /**/
 
 #define CLASS_NAME(...)

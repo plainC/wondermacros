@@ -18,7 +18,7 @@
 #if IS_HEADER == 0
 
 #define INTERFACE_NAME(...)
-#define CLASS_NAME(Name) (void*) &W_CLASS_INSTANCE_NAME(Name),
+#define CLASS_NAME(Name) (Class*) &W_CLASS_INSTANCE_NAME(Name),
 #define METHOD_VOID(...)
 #define METHOD_WITH_ARGS(...)
 #define VAR(...)
@@ -59,7 +59,7 @@ EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
     .klass = &W_CLASS_INSTANCE_NAME(NothingMeta),
     .name = W_STRINGIZE(CLASS),
     .kind = KIND,
-    .superclasses = (void*) &superclasses,
+    .superclasses = superclasses,
 #ifdef HAS_CONSTRUCTOR
     .constructor = (void*) W_METHOD_NAME(CLASS,_construct),
 #endif

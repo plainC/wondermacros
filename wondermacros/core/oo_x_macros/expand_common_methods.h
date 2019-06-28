@@ -57,8 +57,12 @@ W_CAT(CLASS,__clone)(CLASS* other)
     CLASS* self = malloc(sizeof(CLASS));
     *self = *other;
     self->klass = (void*) &W_CLASS_INSTANCE_NAME(CLASS);
-    if (self->klass->constructor)
-        self->klass->constructor(self);
+    /* Call constructors. */
+    struct __Nothing__class* klass = (void*) self->klass->superclasses[0];
+    for (int i=0; klass; klass = (void*) self->klass->superclasses[++i]) {
+        if (klass->constructor)
+            klass->constructor((Nothing*) self);
+    }
     return (Nothing*) self;
 }
 #endif

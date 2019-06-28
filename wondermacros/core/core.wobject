@@ -30,3 +30,4 @@ class Point : Nothing ITest
 
 class Point3D : Point
     public int z
+    construct
