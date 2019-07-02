@@ -3,6 +3,7 @@
 #define INTERFACE_NAME(Name)
 #define CLASS_NAME(...)
 #define VAR(...)
+#define OVERRIDE(...)
 
 
 #ifndef INTERFACE
@@ -74,4 +75,6 @@ W_CAT(CLASS,__clone)(CLASS* other)
 #undef METHOD_VOID
 #undef METHOD_WITH_ARGS
 #undef VAR
+#undef OVERRIDE
+
 

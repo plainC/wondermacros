@@ -3,6 +3,11 @@
 #define METHOD_WITH_ARGS(C,RetType,Name,Args)                   \
     RetType W_CAT(CLASS,__,Name)(CLASS* self, BOOST_PP_REMOVE_PARENS(Args));
 
+#define API_VOID(C,RetType,Name)                             \
+    RetType W_CAT(CLASS,__,Name)(W_CAT(C,FatPtr) self);
+#define API_WITH_ARGS(C,RetType,Name,Args)                   \
+    RetType W_CAT(CLASS,__,Name)(W_CAT(C,FatPtr) self, BOOST_PP_REMOVE_PARENS(Args));
+
 #define INTERFACE_NAME(Name)
 #define CLASS_NAME(...)
 #define VAR(...)
@@ -15,6 +20,8 @@ W_CLASS_EXPAND(CLASS)
 
 #undef METHOD_VOID
 #undef METHOD_WITH_ARGS
+#undef API_VOID
+#undef API_WITH_ARGS
 #undef INTERFACE_NAME
 #undef OVERRIDE
 #undef CLASS_NAME

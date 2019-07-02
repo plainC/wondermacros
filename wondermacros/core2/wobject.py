@@ -35,11 +35,12 @@ class Method:
         self.name = name
         self.args = args
 
-    def print(self,name,f):
+    def print(self,name,is_interface,f):
+        map = {False:"METHOD",True:"API"}
         if (self.args == ""):
-            print ("    METHOD(%s,%s,%s) \\" % (name,self.type,self.name), file=f)
+            print ("    %s(%s,%s,%s) \\" % (map[is_interface],name,self.type,self.name), file=f)
         else:
-            print ("    METHOD(%s,%s,%s,(%s)) \\" % (name,self.type,self.name,self.args), file=f)
+            print ("    %s(%s,%s,%s,(%s)) \\" % (map[is_interface],name,self.type,self.name,self.args), file=f)
 
 class Var:
     def __init__(self,type,name):
@@ -110,7 +111,7 @@ class Class:
         else:
             print ("    CLASS_NAME(%s) \\" % (self.name), file=f)
         for method in self.methods:
-            method.print(self.name, f)
+            method.print(self.name, self.kind==ClassKind.INTERFACE, f)
         for method in self.override:
             print("    OVERRIDE(%s,%s) \\" % (self.name,method), file=f)
         for var in self.vars:
@@ -138,7 +139,7 @@ class Class:
                     print("#include \"%s.h\"" % (interface), file=f)
             print("/**/", file=f)
         print("#include \"%s__class.h\"" % (self.name), file=f)
-        print("#include \"oo_expand.h\"", file=f)
+        print("#include \"oo_expand_header.h\"", file=f)
         print("#endif", file=f)
         f.close()
 
@@ -155,8 +156,7 @@ class Class:
                 print("/**/", file=f)
             print("/*** Expand %s */" % (self.name), file=f)
             print("#include \"%s__class.h\"" % (self.name), file=f)
-            print("#define %s %s__private" % (self.name, self.name), file=f)
-            print("#include \"oo_expand.h\"", file=f)
+            print("#include \"oo_expand_begin.h\"", file=f)
             print("/**/", file=f)
             print("", file=f)
             for method in self.methods:
@@ -165,6 +165,8 @@ class Class:
                 print("{", file=f)
                 print("}", file=f)
                 print("", file=f)
+            print("/**/", file=f)
+            print("#include \"oo_expand_vtable.h\"", file=f)
             f.close()
 
 

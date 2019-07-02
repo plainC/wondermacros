@@ -100,7 +100,7 @@ struct w_oo_meta {
 
 #define W_OBJ_NEW(Class,Json)
 #define W_OBJECT_AS(Object,Class)
-#define W_FAT_PTR_GET(Object,Interface) { .obj = (Object), .klass = (void*) &((Object)->klass->Interface) }
+#define W_FAT_PTR_GET(Object,Interface) { .obj = (Interface*)(Object), .klass = (W_CLASS_STRUCT_NAME(Interface)*) &((Object)->klass->Interface) }
 
 
 /*
@@ -125,10 +125,11 @@ struct w_oo_meta {
 #define W_EMIT(Object,Signal,...)
 
 #define W_FATCALL(fatPtr,method) \
-    (((fatPtr).klass->method) ((void*)((fatPtr).obj), W_CALL_CLOSE
+    (((fatPtr).klass->method) ((fatPtr), W_CALL_CLOSE
 
 #define W_FATCALLV(fatPtr,method) \
-    ((fatPtr).klass->method((void*) ((fatPtr).obj)))
+    ((fatPtr).klass->method(fatPtr))
+
 #define W_FATEMIT(Object,Signal,...)
 
 #define W_STATIC_CALL(Class,Method)

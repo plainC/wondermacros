@@ -16,12 +16,18 @@
 
 
 /* List superclasses. */
+
+/****************************************************************************
+ * These do not go into a header.
+ */
 #ifndef IS_HEADER
 
 #define INTERFACE_NAME(...)
 #define CLASS_NAME(Name) (Class*) &W_CLASS_INSTANCE_NAME(Name),
 #define METHOD_VOID(...)
 #define METHOD_WITH_ARGS(...)
+#define API_VOID(...)
+#define API_WITH_ARGS(...)
 #define VAR(...)
 #define OVERRIDE(...)
 extern struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS);
@@ -33,16 +39,26 @@ static Class* superclasses[] = {
 #undef CLASS_NAME
 #undef METHOD_VOID
 #undef METHOD_WITH_ARGS
+#undef API_VOID
+#undef API_WITH_ARGS
 #undef VAR
 #undef OVERRIDE
 
+static struct w_oo_meta class_meta = {
+    .name = W_STRINGIZE(CLASS),
+    .superclasses = superclasses,
+};
+
 #endif
-/**/
+
+/*****************************************************************************/
 
 
 
 /* Expand class instance. */
-#define INTERFACE_NAME(Name)
+#define INTERFACE_NAME(Name) \
+    .Name = &W_CLASS_INSTANCE_NAME(Name), \
+    /**/
 #define CLASS_NAME(Name)
 #define METHOD_VOID(Class,RetType,Name)           \
     .Name = (void*) W_METHOD_NAME(Class,Name),          \
@@ -50,6 +66,10 @@ static Class* superclasses[] = {
 #define METHOD_WITH_ARGS(Class,RetType,Name,Args) \
     .Name = (void*) W_METHOD_NAME(Class,Name),          \
     /**/
+#define API_VOID(Interface,RetType,Name) \
+    .Name = (void*) W_METHOD_NAME(Interface,Name),
+#define API_WITH_ARGS(Interface,RetType,Name,Args) \
+    .Name = (void*) W_METHOD_NAME(Interface,Name),
 #define VAR(...)
 #define OVERRIDE(Class,Name) \
     .Name = (void*) W_METHOD_NAME(Class,Name), \
@@ -60,7 +80,8 @@ EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
 ;
 #else
  = {
-    .klass = (void*) &W_CLASS_INSTANCE_NAME(NothingMeta),
+    .CLASS = (void*) &W_CLASS_INSTANCE_NAME(NothingMeta),
+    .W_CAT(CLASS,__meta) = &class_meta,
     W_CLASS_EXPAND(CLASS)
 };
 #endif /* IS_HEADER */
@@ -70,6 +91,8 @@ EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
 #undef INTERFACE_NAME
 #undef METHOD_VOID
 #undef METHOD_WITH_ARGS
+#undef API_VOID
+#undef API_WITH_ARGS
 #undef VAR
 #undef OVERRIDE
 #undef KIND

@@ -4,7 +4,9 @@
 #define IS_HEADER
 
 #include "oo_api.h"
+#include "x/expand_types.h"
 #include "x/define_x_macro_simplifiers.h"
+#include "x/expand_fat_ptr_struct.h"
 #include "x/expand_class_struct.h"
 #include "x/expand_object_struct.h"
 #include "x/expand_declare_methods.h"
@@ -13,4 +15,6 @@
 
 #undef IS_HEADER
 #undef EXTERN
+
 #undef CLASS
+#undef INTERFACE

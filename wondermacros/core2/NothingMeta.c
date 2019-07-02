@@ -4,13 +4,14 @@
 bool
 NothingMeta__is_super(Class* self, Class* other)
 {
-    if (!other || !other->_meta->superclasses || self == other)
+#if 0
+    if (!other || !other->__meta->superclasses || self == other)
         return false;
 
-    for (int i=0; other->_meta->superclasses[i]; i++)
-        if (self == other->_meta->superclasses[i])
+    for (int i=0; other->__meta->superclasses[i]; i++)
+        if (self == other->__meta->superclasses[i])
             return true;
-
+#endif
     return false;
 }
 

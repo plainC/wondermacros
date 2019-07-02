@@ -10,3 +10,4 @@
 #undef METHOD
 
 #undef CLASS
+#undef INTERFACE

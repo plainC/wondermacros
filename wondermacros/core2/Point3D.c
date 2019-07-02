@@ -10,7 +10,11 @@
 #include "oo_expand_begin.h"
 /**/
 
-
+void
+METHOD(shout)(ITestFatPtr self, int i)
+{
+    printf("SHOUT %d:\n",i*2);
+}
 
 /**/
 #include "oo_expand_vtable.h"

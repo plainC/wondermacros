@@ -17,16 +17,19 @@ int main()
 
     printf("%d,%d,%d\n", p3->x, p3->y, p3->z);
 
-// FIXME: ITestFatPtr
-/*
-    Point__ITest_FatPtr testable = W_FAT_PTR_GET(p,ITest);
+    ITestFatPtr testable = W_FAT_PTR_GET(p,ITest);
     W_FATCALL(testable,jump)(2);
+
+    ITestFatPtr testable2 = W_FAT_PTR_GET(p3,ITest);
+    W_FATCALL(testable2,jump)(2);
+
+/*
 
     printf("p3 is super of p: %d\n", W_CALL(p3->klass,is_super)((Class*) (p->klass)));
     printf("p is super of p3: %d\n", W_CALL(p->klass,is_super)((Class*) (p3->klass)));
 */
-    printf("p eq p3: %d\n", W_CALL(p,eq)((Nothing*) p3));
-    printf("p eq p: %d\n", W_CALL(p,eq)((Nothing*) p));
+//    printf("p eq p3: %d\n", W_CALL(p,eq)((Nothing*) p3));
+//    printf("p eq p: %d\n", W_CALL(p,eq)((Nothing*) p));
 }
 
 

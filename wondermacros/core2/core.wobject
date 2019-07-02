@@ -15,6 +15,7 @@ interface IJson
 
 interface ITest
     void jump(int i)
+    void shout(int i)
 
 
 singleton class Nothing
@@ -34,3 +35,4 @@ class Point : Nothing ITest
 class Point3D : Point
     int z
     construct
+    override shout

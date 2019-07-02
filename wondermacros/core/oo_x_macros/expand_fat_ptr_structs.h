@@ -12,6 +12,7 @@
 
 #define CLASS_NAME(...)
 #define VAR(...)
+#define OVERRIDE(...)
 
 
 /* Expand fat pointer interfaces. */
@@ -23,4 +24,4 @@ W_CLASS_EXPAND(CLASS)
 #undef METHOD_VOID
 #undef METHOD_WITH_ARGS
 #undef VAR
-
+#undef OVERRIDE

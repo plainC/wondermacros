@@ -19,12 +19,14 @@
 struct CLASS;
 typedef struct CLASS CLASS;
 
-#include "oo_x_macros/expand_class_struct.h"
-#include "oo_x_macros/expand_class_instance.h"
-#include "oo_x_macros/expand_object_struct.h"
-#include "oo_x_macros/expand_common_methods.h"
-#include "oo_x_macros/expand_fat_ptr_structs.h"
-
+#ifndef EXPAND_VTABLE
+# include "oo_x_macros/expand_class_struct.h"
+# include "oo_x_macros/expand_object_struct.h"
+# include "oo_x_macros/expand_common_methods.h"
+# include "oo_x_macros/expand_fat_ptr_structs.h"
+#else
+# include "oo_x_macros/expand_class_instance.h"
+#endif
 
 #undef METHOD
 #undef _METHOD_1
@@ -35,6 +37,7 @@ typedef struct CLASS CLASS;
 #undef NAME
 #endif
 
+#ifndef EXPAND_VTABLE
 #undef ABSTRACT
 #undef SINGLETON
 #undef INTERFACE
@@ -45,5 +48,6 @@ typedef struct CLASS CLASS;
 
 #undef IS_HEADER
 #undef EXTERN
+#endif
 
 #define METHOD(Name) W_CAT(CLASS,__,Name)

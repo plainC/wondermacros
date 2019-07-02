@@ -15,7 +15,16 @@ METHOD(eq)(Nothing* self, Nothing* other)
     return self == other;
 }
 
+bool
+METHOD(equal)(Nothing* self, Nothing* other)
+{
+    return self == other;
+}
+
 void
 METHOD(free)(Nothing* self)
 {
 }
+
+#define EXPAND_VTABLE
+#include "oo_expand.h"

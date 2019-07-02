@@ -2,6 +2,8 @@
 #define CLASS_NAME(Name)
 #define METHOD_VOID(Class,RetType,Name)
 #define METHOD_WITH_ARGS(Class,RetType,Name,Args)
+#define API_VOID(...)
+#define API_WITH_ARGS(...)
 #define VAR(Type,Name,...) Type Name;
 #define OVERRIDE(...)
 
@@ -14,6 +16,8 @@ struct CLASS {
 #undef CLASS_NAME
 #undef METHOD_VOID
 #undef METHOD_WITH_ARGS
+#undef API_VOID
+#undef API_WITH_ARGS
 #undef VAR
 #undef OVERRIDE
 

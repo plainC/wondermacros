@@ -24,4 +24,3 @@ METHOD(equal)(Point* self, Nothing* other)
 
 /**/
 #include "oo_expand_vtable.h"
-
