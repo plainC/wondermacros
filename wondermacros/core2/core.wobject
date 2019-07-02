@@ -1,0 +1,36 @@
+interface IWriter
+    int putc(char ch)
+    int append(char* str, size_t size)
+
+
+interface IReader
+    bool is_eof()
+    char peek()
+    char getc()
+    size_t read(char* buf, size_t size)
+
+
+interface IJson
+    int to_json(IWriter* writer)
+
+interface ITest
+    void jump(int i)
+
+
+singleton class Nothing
+  [_none]
+    Nothing* clone()
+    void free()
+    bool eq(Nothing* other)
+    bool equal(Nothing* other)
+
+
+class Point : Nothing ITest
+    int x
+    int y
+    construct
+    override equal
+
+class Point3D : Point
+    int z
+    construct
