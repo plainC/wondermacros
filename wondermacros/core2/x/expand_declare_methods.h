@@ -12,6 +12,7 @@
 #define CLASS_NAME(...)
 #define VAR(...)
 #define OVERRIDE(...)
+#define SIGNAL(...)
 
 
 /* Expand methods. */
@@ -26,6 +27,7 @@ W_CLASS_EXPAND(CLASS)
 #undef OVERRIDE
 #undef CLASS_NAME
 #undef VAR
+#undef SIGNAL
 
 
 /* Forward declare constructor and destructor. */

@@ -55,6 +55,15 @@ class Var:
         print ("    VAR(%s,%s%s) \\" % (self.type,self.name,spec), file=f)
 
 
+class Signal:
+    def __init__(self,name,args):
+        self.name = name
+        self.args = args
+
+    def print(self,f):
+        print ("    SIGNAL(%s,(%s)) \\" % (self.name,self.args), file=f)
+
+
 class Class:
     def __init__(self,name,kind,Super,interfaces):
         self.name = name
@@ -65,6 +74,7 @@ class Class:
         self.methods = []
         self.override = []
         self.vars = []
+        self.signals = []
         self.has_constructor(False)
         self.has_destructor(False)
 
@@ -76,6 +86,9 @@ class Class:
 
     def add_var(self,type,name):
         self.vars.append(Var(type,name))
+
+    def add_signal(self,name,args):
+        self.signals.append(Signal(name,args))
 
     def has_constructor(self,val):
         self.has_constructor = val
@@ -114,6 +127,8 @@ class Class:
             method.print(self.name, self.kind==ClassKind.INTERFACE, f)
         for method in self.override:
             print("    OVERRIDE(%s,%s) \\" % (self.name,method), file=f)
+        for signal in self.signals:
+            signal.print(f)
         for var in self.vars:
             var.print(f)
         print ("    /**/", file=f)
@@ -257,6 +272,14 @@ class Parser:
         else:
             return False
 
+    def parse_signal(self,line):
+        matchObj = re.match( r'^\s+signal\s+(\w+)\s*\(([^\)]+)\)', line )
+        if (matchObj):
+            self.klass.add_signal(matchObj.group(1),matchObj.group(2))
+            return True
+        else:
+            return False
+
     def parse_constructor(self,line):
         matchObj = re.match( r'^\s+construct', line)
         if (matchObj):
@@ -284,6 +307,9 @@ class Parser:
         while (not self.scanner.is_eof()):
             line = self.scanner.peek()
             if (not self.klass is None):
+                if (self.parse_signal(line)):
+                    self.scanner.next()
+                    continue
                 if (self.parse_method(line)):
                     self.scanner.next()
                     continue

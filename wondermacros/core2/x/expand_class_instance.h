@@ -31,6 +31,7 @@
 #define API_WITH_ARGS(...)
 #define VAR(...)
 #define OVERRIDE(...)
+#define SIGNAL(...)
 extern struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS);
 static Class* superclasses[] = {
     W_CLASS_EXPAND(CLASS)
@@ -44,6 +45,7 @@ static Class* superclasses[] = {
 #undef API_WITH_ARGS
 #undef VAR
 #undef OVERRIDE
+#undef SIGNAL
 /**/
 
 
@@ -56,6 +58,7 @@ static Class* superclasses[] = {
 #define API_WITH_ARGS(...)
 #define VAR(...)
 #define OVERRIDE(...)
+#define SIGNAL(...)
 static Class* interfaces[] = {
     W_CLASS_EXPAND(CLASS)
     NULL
@@ -68,6 +71,66 @@ static Class* interfaces[] = {
 #undef API_WITH_ARGS
 #undef VAR
 #undef OVERRIDE
+#undef SIGNAL
+/**/
+
+
+/* Properties. */
+#define INTERFACE_NAME(Name)
+#define CLASS_NAME(...)
+#define METHOD_VOID(...)
+#define METHOD_WITH_ARGS(...)
+#define API_VOID(...)
+#define API_WITH_ARGS(...)
+#define VAR(Type,Name,...) \
+    static Property W_CAT(CLASS,__property__,Name) = { \
+        .name = W_STRINGIZE(Name), \
+        .offset = offsetof(CLASS, Name), \
+        .klass = NULL, \
+    };
+#define OVERRIDE(...)
+#define SIGNAL(...)
+
+W_CLASS_EXPAND(CLASS)
+
+#undef INTERFACE_NAME
+#undef CLASS_NAME
+#undef METHOD_VOID
+#undef METHOD_WITH_ARGS
+#undef API_VOID
+#undef API_WITH_ARGS
+#undef VAR
+#undef OVERRIDE
+#undef SIGNAL
+/**/
+
+
+/* List of properties. */
+#define INTERFACE_NAME(Name)
+#define CLASS_NAME(...)
+#define METHOD_VOID(...)
+#define METHOD_WITH_ARGS(...)
+#define API_VOID(...)
+#define API_WITH_ARGS(...)
+#define VAR(Type,Name,...) \
+    &W_CAT(CLASS,__property__,Name),
+#define OVERRIDE(...)
+#define SIGNAL(...)
+
+static Property* properties[] = {
+    W_CLASS_EXPAND(CLASS)
+    NULL
+};
+
+#undef INTERFACE_NAME
+#undef CLASS_NAME
+#undef METHOD_VOID
+#undef METHOD_WITH_ARGS
+#undef API_VOID
+#undef API_WITH_ARGS
+#undef VAR
+#undef OVERRIDE
+#undef SIGNAL
 /**/
 
 
@@ -77,6 +140,7 @@ static struct w_oo_meta class_meta = {
     .size = sizeof(CLASS),
     .superclasses = superclasses,
     .interfaces = interfaces,
+    .properties = properties,
 };
 /**/
 
@@ -106,6 +170,7 @@ static struct w_oo_meta class_meta = {
 #define OVERRIDE(Class,Name) \
     .Name = (void*) W_METHOD_NAME(Class,Name), \
     /**/
+#define SIGNAL(...)
 
 EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
 #ifdef IS_HEADER
@@ -127,6 +192,7 @@ EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
 #undef API_WITH_ARGS
 #undef VAR
 #undef OVERRIDE
+#undef SIGNAL
 #undef KIND
 /**/
 

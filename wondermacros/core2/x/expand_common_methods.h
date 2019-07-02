@@ -4,6 +4,7 @@
 #define CLASS_NAME(...)
 #define VAR(...)
 #define OVERRIDE(...)
+#define SIGNAL(...)
 
 
 #define W_OO_FOREACH_SUPERCLASS(klass,Klass) for (Class* klass; 0; )
@@ -60,5 +61,5 @@ W_CAT(CLASS,__clone)(CLASS* other)
 #undef METHOD_WITH_ARGS
 #undef VAR
 #undef OVERRIDE
-
+#undef SIGNAL
 

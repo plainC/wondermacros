@@ -85,11 +85,11 @@
         /* Check if next is null. */                         \
         (list)->next = (list)->next ? (list)->next : (list); \
         if (self) {                                          \
-            T* W_ID(t) = self->next;                         \
-            self->next = list->next;                         \
-            list->next = W_ID(t);                            \
+            T* W_ID(t) = (self)->next;                       \
+            (self)->next = (list)->next;                     \
+            (list)->next = W_ID(t);                          \
         } else                                               \
-            self = list->next;                               \
+            (self) = (list)->next;                           \
     } while (0)
 
 
@@ -119,7 +119,7 @@
         /* Check if next is null. */                                           \
         ((T*)(list))->next = ((T*)(list))->next ? ((T*)(list))->next : (list); \
         if (!(self))                                                           \
-            self = (void*)list;                                                \
+            self = (void*) (list);                                             \
         else {                                                                 \
             T* W_ID(t) = ((T*)(self))->next;                                   \
             ((T*)(self))->next = (list);                                       \

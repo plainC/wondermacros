@@ -6,6 +6,7 @@
 #define API_WITH_ARGS(...)
 #define VAR(Type,Name,...) Type Name;
 #define OVERRIDE(...)
+#define SIGNAL(Name,Args) Signal* Name;
 
 struct CLASS {
     struct W_CLASS_STRUCT_NAME(CLASS)* klass;
@@ -20,4 +21,4 @@ struct CLASS {
 #undef API_WITH_ARGS
 #undef VAR
 #undef OVERRIDE
-
+#undef SIGNAL

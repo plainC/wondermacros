@@ -4,6 +4,10 @@
 #include <wondermacros/meta/cat.h>
 #include <wondermacros/meta/cat_outer.h>
 #include <wondermacros/meta/stringize.h>
+#include <wondermacros/meta/declare.h>
+#include <wondermacros/meta/id.h>
+#include <wondermacros/pointer/ref_void_ptr.h>
+#include <wondermacros/list/cslist.h>
 
 #include <boost/preprocessor/control/if.hpp>
 #include <boost/preprocessor/control/expr_if.hpp>
@@ -18,6 +22,8 @@
 # include <stdint.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include <string.h>
+# include <stddef.h>
 #endif
 
 
@@ -68,10 +74,27 @@ enum ClassKind {
     CLASS_KIND_SINGLETON,
 };
 
+struct w_oo_signal {
+    void (*func)(Nothing* self, void* context, ...);
+    void* context;
+    struct w_oo_signal* next;
+};
+typedef struct w_oo_signal Signal;
+
 struct w_oo_property {
     const char* name;
     Class* klass;
+    size_t offset;
 };
+
+typedef struct w_oo_property Property;
+
+struct w_oo_reference {
+    Property* property;
+    Nothing* object;
+};
+
+typedef struct w_oo_reference PropertyRef;
 
 /* Each class has some meta data. */
 struct w_oo_meta {
@@ -79,7 +102,28 @@ struct w_oo_meta {
     size_t size;
     Class** superclasses;
     Class** interfaces;
+    Property** properties;
 };
+
+static inline void
+w_oo_signal_connect(Signal** slot, void (*func)(Nothing* self,void* context, ...), void* context)
+{
+    Signal* s = malloc(sizeof(Signal));
+    s->func = func;
+    s->context = context;
+    if (*slot)
+        s->next = *slot;
+    else
+        s->next = s;
+    W_CSLIST_PREPEND(Signal, *slot, s);
+}
+
+static inline void
+w_oo_signal_disconnect_all(Signal** slot)
+{
+    W_CSLIST_FOR_EACH(Signal, s, *slot)
+        free(s);
+}
 
 /*
  * Object creation, casts and assignments.
@@ -108,8 +152,15 @@ struct w_oo_meta {
 
 #define W_OBJ_NEW(Class,Json)
 #define W_OBJECT_AS(Object,Class)
-#define W_FAT_PTR_GET(Object,Interface) { .obj = (Interface*)(Object), .klass = (W_CLASS_STRUCT_NAME(Interface)*) &((Object)->klass->Interface) }
+#define W_FAT_PTR_GET(Object,Interface) { \
+    .obj = (Interface*)(Object), \
+    .klass = (W_CLASS_STRUCT_NAME(Interface)*) &((Object)->klass->Interface) \
+}
 
+#define W_FAT_PTR_LOOKUP(Object,Interface) { \
+    .obj = (void*)(Object), \
+    .klass = (void*) w_oo_lookup_interface((Class*) ((Object)->klass), Interface) \
+}
 
 /*
  * Member function calls and signaling.
@@ -130,17 +181,26 @@ struct w_oo_meta {
 #define W_CALLV(o,method) \
     (((o)->klass->method)())
 
-#define W_EMIT(Object,Signal,...)
+#define W_CONNECT(Object,SigName,Func,Context) \
+    w_oo_signal_connect(&(Object)->SigName, (void*) Func, (void*) (Context))
+
+#define W_EMIT(Object,...) \
+    BOOST_PP_IF(BOOST_PP_EQUAL(BOOST_PP_VARIADIC_SIZE(__VA_ARGS__),1), \
+        _W_EMIT_1,_W_EMIT_VA)(Object,__VA_ARGS__)
+
+#define _W_EMIT_1(Object,SigName,...) \
+    W_CSLIST_FOR_EACH(Signal,s,(Object)->SigName) \
+        s->func((void*) Object, s->context)
+#define _W_EMIT_VA(Object,SigName,...) \
+    W_CSLIST_FOR_EACH(Signal,s,(Object)->SigName) \
+        s->func((void*) Object, s->context, __VA_ARGS__)
+
 
 #define W_FATCALL(fatPtr,method) \
     (((fatPtr).klass->method) ((fatPtr), W_CALL_CLOSE
 
 #define W_FATCALLV(fatPtr,method) \
     ((fatPtr).klass->method(fatPtr))
-
-#define W_FATEMIT(Object,Signal,...)
-
-#define W_STATIC_CALL(Class,Method)
 
 #define W_CALL_IF_DEFINED(Object,Method)
 #define W_CALLV_IF_DEFINED(Object,Method)
@@ -150,17 +210,35 @@ struct w_oo_meta {
  * Property handling.
  */
 
-#define W_OBJ_SET(Obj,Property,Json)
-#define W_OBJ_SET_IF_HAS(Obj,Name,Json)
+#define W_OBJECT_HAS_PROPERTY(Obj,Name) \
+    (w_oo_lookup_property((Class*)((Obj)->klass), Name) != NULL)
+#define W_OBJECT_HAS_INTERFACE(Obj,Name) \
+    (w_oo_lookup_interface((Class*)((Obj)->klass), Name) != NULL)
 
+#define W_FOR_OBJECT_PROPERTY(...)                                                     \
+    BOOST_PP_OVERLOAD(_W_FOR_OBJECT_PROPERTY_,__VA_ARGS__)(__VA_ARGS__)
+
+#define _W_FOR_OBJECT_PROPERTY_2(Obj,Name)                                             \
+    _W_FOR_OBJECT_PROPERTY_3(Obj,Name,void)
+
+#define _W_FOR_OBJECT_PROPERTY_3(Obj,Name,Type)                                        \
+    _W_FOR_OBJECT_PROPERTY_4(Obj,Name,Type,Name)
+
+#define _W_FOR_OBJECT_PROPERTY_4(Obj,Name,Type,Id)                                     \
+    W_DECLARE(0, Type* Id)                                                             \
+    for (Property* W_ID(Property) =                                                    \
+        w_oo_lookup_property((Class*)((Obj)->klass), # Name);                          \
+        W_ID(Property) && (Id = (Type*) W_REF_VOID_PTR(Obj, W_ID(Property)->offset));  \
+        W_ID(Property) = NULL)
+
+#define W_OBJECT_REFERENCE_GET(Obj,Name) \
+    { .object = (void*) (Obj), .property = w_oo_lookup_property((Class*) ((Obj)->klass), Name) }
 
 /*
  * Class meta data introspection through object.
  */
-#define W_OBJ_IS(Obj,Class)
-#define W_OBJ_GET_CLASS(Obj) ((Obj)->klass)
-#define W_OBJ_GET_CLASS_NAME(Obj) (W_OBJ_GET_CLASS(Obj)->meta->name)
-#define W_OBJ_GET_PROPERTY_HANDLE(Obj,Property)
+#define W_OBJECT_IS(Obj,Class) \
+    ((Obj)->klass == &W_CLASS_INSTANCE_NAME(Class))
 
 
 /*
@@ -194,9 +272,36 @@ w_oo_is_super(Class* _super, Class* _klass)
     return false;
 }
 
+static inline Class*
+w_oo_lookup_interface(Class* _klass, const char* name)
+{
+    struct NothingMeta__class* klass = (void*) _klass;
+
+    for (int i=0; klass->__meta->interfaces[i]; ++i)
+        if (strcmp(((struct NothingMeta__class*) (klass->__meta->interfaces[i]))->__meta->name, name) == 0)
+            return klass->__meta->interfaces[i];
+
+    return NULL;
+}
+
+static inline Property*
+w_oo_lookup_property(Class* _klass, const char* name)
+{
+    struct NothingMeta__class* klass = (void*) _klass;
+
+    for (int i=0; klass->__meta->properties[i]; ++i)
+        if (strcmp(klass->__meta->properties[i]->name, name) == 0)
+            return klass->__meta->properties[i];
+
+    return NULL;
+}
+
 #define W_IS_SUPER(SuperClass,TestClass) \
     w_oo_is_super((Class*) (SuperClass), (Class*) (TestClass))
-
+#define W_CLASS_HAS_PROPERTY(Klass,Name) \
+    (w_oo_lookup_property((Class*) (Klass), Name) != NULL)
+#define W_CLASS_HAS_INTERFACE(Klass,Name) \
+    (w_oo_lookup_interface((Class*) (Klass), Name) != NULL)
 
 
 #define None ((void*) (&_none))

@@ -18,6 +18,7 @@
     struct w_oo_meta* W_CAT(Name,__meta);
 #define VAR(...)
 #define OVERRIDE(...)
+#define SIGNAL(...)
 
 
 /* Expand class struct. */
@@ -45,4 +46,4 @@ typedef struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_STRUCT_NAME(CLASS);
 #undef OVERRIDE
 #undef CLASS_NAME
 #undef VAR
-
+#undef SIGNAL

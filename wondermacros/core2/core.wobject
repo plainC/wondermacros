@@ -29,6 +29,7 @@ singleton class Nothing
 class Point : Nothing ITest
     int x
     int y
+    signal ping(int x)
     construct
     override equal
 
