@@ -60,6 +60,7 @@ struct W_CLASS_STRUCT_NAME(Nothing);
 typedef struct W_CLASS_STRUCT_NAME(Nothing) Class;
 
 enum ClassKind {
+    CLASS_KIND_NONE,
     CLASS_KIND_META,
     CLASS_KIND_ABSTRACT,
     CLASS_KIND_CLASS,
@@ -67,10 +68,17 @@ enum ClassKind {
     CLASS_KIND_SINGLETON,
 };
 
+struct w_oo_property {
+    const char* name;
+    Class* klass;
+};
+
 /* Each class has some meta data. */
 struct w_oo_meta {
     const char* name;
+    size_t size;
     Class** superclasses;
+    Class** interfaces;
 };
 
 /*
@@ -166,9 +174,30 @@ struct w_oo_meta {
  */
 struct NothingMeta__class {
     Class* klass;
-    struct w_oo_meta* _meta;
+    struct w_oo_meta* __meta;
 };
 extern struct W_CLASS_STRUCT_NAME(NothingMeta) W_CLASS_INSTANCE_NAME(NothingMeta);
+
+static inline bool
+w_oo_is_super(Class* _super, Class* _klass)
+{
+    struct NothingMeta__class* super = (void*) _super;
+    struct NothingMeta__class* klass = (void*) _klass;
+
+    if (super == klass)
+        return false;
+
+    for (int i=0; klass->__meta->superclasses[i]; ++i)
+        if (super == (void*) klass->__meta->superclasses[i])
+            return true;
+
+    return false;
+}
+
+#define W_IS_SUPER(SuperClass,TestClass) \
+    w_oo_is_super((Class*) (SuperClass), (Class*) (TestClass))
+
+
 
 #define None ((void*) (&_none))
 

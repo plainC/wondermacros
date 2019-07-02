@@ -15,13 +15,14 @@
 /**/
 
 
-/* List superclasses. */
 
 /****************************************************************************
  * These do not go into a header.
  */
 #ifndef IS_HEADER
 
+
+/* List of superclasses. */
 #define INTERFACE_NAME(...)
 #define CLASS_NAME(Name) (Class*) &W_CLASS_INSTANCE_NAME(Name),
 #define METHOD_VOID(...)
@@ -43,11 +44,41 @@ static Class* superclasses[] = {
 #undef API_WITH_ARGS
 #undef VAR
 #undef OVERRIDE
+/**/
 
+
+/* List of interfaces. */
+#define INTERFACE_NAME(Name) (Class*) &W_CLASS_INSTANCE_NAME(Name),
+#define CLASS_NAME(...)
+#define METHOD_VOID(...)
+#define METHOD_WITH_ARGS(...)
+#define API_VOID(...)
+#define API_WITH_ARGS(...)
+#define VAR(...)
+#define OVERRIDE(...)
+static Class* interfaces[] = {
+    W_CLASS_EXPAND(CLASS)
+    NULL
+};
+#undef INTERFACE_NAME
+#undef CLASS_NAME
+#undef METHOD_VOID
+#undef METHOD_WITH_ARGS
+#undef API_VOID
+#undef API_WITH_ARGS
+#undef VAR
+#undef OVERRIDE
+/**/
+
+
+/* Meta data header. */
 static struct w_oo_meta class_meta = {
     .name = W_STRINGIZE(CLASS),
+    .size = sizeof(CLASS),
     .superclasses = superclasses,
+    .interfaces = interfaces,
 };
+/**/
 
 #endif
 
@@ -59,7 +90,8 @@ static struct w_oo_meta class_meta = {
 #define INTERFACE_NAME(Name) \
     .Name = &W_CLASS_INSTANCE_NAME(Name), \
     /**/
-#define CLASS_NAME(Name)
+#define CLASS_NAME(Name) \
+    .W_CAT(Name,__meta) = &class_meta,
 #define METHOD_VOID(Class,RetType,Name)           \
     .Name = (RetType (*)(CLASS*)) W_METHOD_NAME(Class,Name),          \
     /**/
