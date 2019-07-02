@@ -61,15 +61,15 @@ static struct w_oo_meta class_meta = {
     /**/
 #define CLASS_NAME(Name)
 #define METHOD_VOID(Class,RetType,Name)           \
-    .Name = (void*) W_METHOD_NAME(Class,Name),          \
+    .Name = (RetType (*)(CLASS*)) W_METHOD_NAME(Class,Name),          \
     /**/
 #define METHOD_WITH_ARGS(Class,RetType,Name,Args) \
-    .Name = (void*) W_METHOD_NAME(Class,Name),          \
+    .Name = (RetType (*)(CLASS*, BOOST_PP_REMOVE_PARENS(Args))) W_METHOD_NAME(Class,Name),          \
     /**/
 #define API_VOID(Interface,RetType,Name) \
-    .Name = (void*) W_METHOD_NAME(Interface,Name),
+    .Name = W_METHOD_NAME(Interface,Name),
 #define API_WITH_ARGS(Interface,RetType,Name,Args) \
-    .Name = (void*) W_METHOD_NAME(Interface,Name),
+    .Name = W_METHOD_NAME(Interface,Name),
 #define VAR(...)
 #define OVERRIDE(Class,Name) \
     .Name = (void*) W_METHOD_NAME(Class,Name), \
@@ -81,7 +81,7 @@ EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
 #else
  = {
     .CLASS = (void*) &W_CLASS_INSTANCE_NAME(NothingMeta),
-    .W_CAT(CLASS,__meta) = &class_meta,
+    .W_CAT(CLASS,__meta) = (void*) &class_meta,
     W_CLASS_EXPAND(CLASS)
 };
 #endif /* IS_HEADER */
