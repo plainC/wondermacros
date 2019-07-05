@@ -76,6 +76,7 @@ enum ClassKind {
 
 struct w_oo_signal {
     void (*func)(Nothing* self, void* context, ...);
+    void (*context_free_func)(void* context);
     void* context;
     struct w_oo_signal* next;
 };
@@ -106,23 +107,33 @@ struct w_oo_meta {
 };
 
 static inline void
-w_oo_signal_connect(Signal** slot, void (*func)(Nothing* self,void* context, ...), void* context)
+w_oo_signal_connect(
+        Signal** slot,
+        void (*func)(Nothing* self,void* context, ...),
+        void* context,
+        void (*free_func)(void* context))
 {
     Signal* s = malloc(sizeof(Signal));
+
     s->func = func;
+    s->context_free_func = free_func;
     s->context = context;
     if (*slot)
         s->next = *slot;
     else
         s->next = s;
+
     W_CSLIST_PREPEND(Signal, *slot, s);
 }
 
 static inline void
 w_oo_signal_disconnect_all(Signal** slot)
 {
-    W_CSLIST_FOR_EACH(Signal, s, *slot)
+    W_CSLIST_FOR_EACH(Signal, s, *slot) {
+        if (s->context_free_func)
+            s->context_free_func(s->context);
         free(s);
+    }
 }
 
 /*
@@ -181,8 +192,16 @@ w_oo_signal_disconnect_all(Signal** slot)
 #define W_CALLV(o,method) \
     (((o)->klass->method)())
 
-#define W_CONNECT(Object,SigName,Func,Context) \
-    w_oo_signal_connect(&(Object)->SigName, (void*) Func, (void*) (Context))
+
+#define W_CONNECT(Object,SigName,...) \
+    BOOST_PP_OVERLOAD(_W_CONNECT_,__VA_ARGS__)(Object,SigName,__VA_ARGS__)
+
+#define _W_CONNECT_1(Object,SigName,Func) \
+    w_oo_signal_connect(&(Object)->SigName, (void*) Func, NULL, NULL)
+#define _W_CONNECT_2(Object,SigName,Func,Context) \
+    w_oo_signal_connect(&(Object)->SigName, (void*) Func, (void*) (Context), NULL)
+#define _W_CONNECT_3(Object,SigName,Func,Context,FreeFunc) \
+    w_oo_signal_connect(&(Object)->SigName, (void*) Func, (void*) (Context), FreeFunc)
 
 #define W_EMIT(Object,...) \
     BOOST_PP_IF(BOOST_PP_EQUAL(BOOST_PP_VARIADIC_SIZE(__VA_ARGS__),1), \

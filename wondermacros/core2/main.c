@@ -58,7 +58,9 @@ int main()
 
 /*
  * TODO:
- * - has interface
+ * - constructors
+ * - destructors
+ * - free
  * - json
  * - Lisp interpreter
  * - reference counting
