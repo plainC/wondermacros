@@ -7,12 +7,6 @@
 #include "oo_expand_begin.h"
 /**/
 
-void
-METHOD(free)(Nothing* self)
-{
-    free(self);
-}
-
 bool
 METHOD(eq)(Nothing* self,Nothing* other)
 {

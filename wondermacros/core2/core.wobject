@@ -21,7 +21,6 @@ interface ITest
 singleton class Nothing
   [_none]
     Nothing* clone()
-    void free()
     bool eq(Nothing* other)
     bool equal(Nothing* other)
 

@@ -163,4 +163,29 @@ W_TEST(W_PP_CHARSEQ_EQUAL,
 #endif
 )
 
+
+/***
+ *** Name:        W_PP_CHARSEQ_TO_COMPACT_UINT
+ *** Proto:       W_PP_CHARSEQ_TO_COMPACT_UINT(T,seq)
+ *** Arg:         T     An unsigned integer type name, e.g. unsigned or uint64_t
+ *** Arg:         seq   A character sequence, e.g. (R)(E)(A)(D)
+ *** Description: Use W_PP_CHARSEQ_TO_COMPACT_UINT to convert a sequence of characters to an unsigned integer. This macro uses just 6 bits to store each character.
+ *** Notes:       If the string is longer than the unsigned type can handle it is truncated.
+ *** Example:     'printf("%x", W_PP_CHARSEQ_TO_COMPACT_UINT(unsigned, (A)(B)(C)(D)) );'
+ ***/
+#define W_PP_CHARSEQ_TO_COMPACT_UINT(T,seq) \
+    W_CAT(_W_PP_CHARSEQ_TO_COMPACT_UINT_,BOOST_PP_SEQ_SIZE(seq))(T,seq)
+
+#define _W_PP_CHARSEQ_TO_COMPACT_UINT_1(T,seq) ((T) (W_PP_CHAR_TO_NBR(BOOST_PP_SEQ_ELEM(0,seq))) << 0)
+#define _W_PP_CHARSEQ_TO_COMPACT_UINT_2(T,seq) (_W_PP_CHARSEQ_TO_COMPACT_UINT_1(T,seq) | ((T) (W_PP_CHAR_TO_NBR(BOOST_PP_SEQ_ELEM(1,seq))) << 6))
+#define _W_PP_CHARSEQ_TO_COMPACT_UINT_3(T,seq) (_W_PP_CHARSEQ_TO_COMPACT_UINT_2(T,seq) | ((T) (W_PP_CHAR_TO_NBR(BOOST_PP_SEQ_ELEM(2,seq))) << 12))
+#define _W_PP_CHARSEQ_TO_COMPACT_UINT_4(T,seq) (_W_PP_CHARSEQ_TO_COMPACT_UINT_3(T,seq) | ((T) (W_PP_CHAR_TO_NBR(BOOST_PP_SEQ_ELEM(3,seq))) << 18))
+#define _W_PP_CHARSEQ_TO_COMPACT_UINT_5(T,seq) (_W_PP_CHARSEQ_TO_COMPACT_UINT_4(T,seq) | ((T) (W_PP_CHAR_TO_NBR(BOOST_PP_SEQ_ELEM(4,seq))) << 24))
+#define _W_PP_CHARSEQ_TO_COMPACT_UINT_6(T,seq) (_W_PP_CHARSEQ_TO_COMPACT_UINT_5(T,seq) | ((T) (W_PP_CHAR_TO_NBR(BOOST_PP_SEQ_ELEM(5,seq))) << 30))
+#define _W_PP_CHARSEQ_TO_COMPACT_UINT_7(T,seq) (_W_PP_CHARSEQ_TO_COMPACT_UINT_6(T,seq) | ((T) (W_PP_CHAR_TO_NBR(BOOST_PP_SEQ_ELEM(6,seq))) << 36))
+#define _W_PP_CHARSEQ_TO_COMPACT_UINT_8(T,seq) (_W_PP_CHARSEQ_TO_COMPACT_UINT_7(T,seq) | ((T) (W_PP_CHAR_TO_NBR(BOOST_PP_SEQ_ELEM(7,seq))) << 42))
+#define _W_PP_CHARSEQ_TO_COMPACT_UINT_9(T,seq) (_W_PP_CHARSEQ_TO_COMPACT_UINT_8(T,seq) | ((T) (W_PP_CHAR_TO_NBR(BOOST_PP_SEQ_ELEM(8,seq))) << 48))
+#define _W_PP_CHARSEQ_TO_COMPACT_UINT_10(T,seq) (_W_PP_CHARSEQ_TO_COMPACT_UINT_9(T,seq) | ((T) (W_PP_CHAR_TO_NBR(BOOST_PP_SEQ_ELEM(9,seq))) << 54))
+
+
 #endif

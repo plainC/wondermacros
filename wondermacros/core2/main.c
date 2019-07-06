@@ -53,6 +53,8 @@ int main()
     W_EMIT(p,ping,3);
 
     w_oo_signal_disconnect_all(&p->ping);
+    W_CALLV(p,free);
+    W_CALLV(p3,free);
 }
 
 

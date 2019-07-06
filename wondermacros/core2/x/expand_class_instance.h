@@ -179,6 +179,7 @@ EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
  = {
     .CLASS = (void*) &W_CLASS_INSTANCE_NAME(NothingMeta),
     .W_CAT(CLASS,__meta) = (void*) &class_meta,
+    .free = (void (*)(void* self)) W_CAT(CLASS,__free),
     W_CLASS_EXPAND(CLASS)
 };
 #endif /* IS_HEADER */

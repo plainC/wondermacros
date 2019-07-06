@@ -53,6 +53,18 @@ W_CAT(CLASS,__clone)(CLASS* other)
 }
 #endif
 
+/* Expand free method. */
+void
+W_CAT(CLASS,__free)(CLASS* self)
+#ifdef IS_HEADER
+;
+#else
+{
+    free(self);
+}
+#endif
+
+
 //#endif /* INTERFACE */
 
 #undef INTERFACE_NAME

@@ -275,6 +275,7 @@ struct NothingMeta__class {
 };
 extern struct W_CLASS_STRUCT_NAME(NothingMeta) W_CLASS_INSTANCE_NAME(NothingMeta);
 
+
 static inline bool
 w_oo_is_super(Class* _super, Class* _klass)
 {
@@ -289,6 +290,18 @@ w_oo_is_super(Class* _super, Class* _klass)
             return true;
 
     return false;
+}
+
+static inline Class*
+w_oo_lookup_superclass(Class* _klass, const char* name)
+{
+    struct NothingMeta__class* klass = (void*) _klass;
+
+    for (int i=0; klass->__meta->superclasses[i]; ++i)
+        if (strcmp(((struct NothingMeta__class*) (klass->__meta->superclasses[i]))->__meta->name, name) == 0)
+            return klass->__meta->superclasses[i];
+
+    return NULL;
 }
 
 static inline Class*

@@ -37,6 +37,19 @@
 
 #define _W_PP_CHAR_TO_INT(ch) _W_PP_CHAR_TO_INT_ ## ch
 
+
+/***
+ *** Name:        W_PP_CHAR_TO_NBR
+ *** Proto:       W_PP_CHAR_TO_NBR(ch)
+ *** Arg:         ch   A character to be converted to a number (1..63).
+ *** Description: Use W_PP_CHAR_TO_NBR to convert a single character to a number.
+ *** Notes:       ch must be a valid character to be used in an identifer, i.g. [a-zA-Z_0-9].
+ *** Example:     'W_PP_CHAR_TO_NBR(a)' expands to 38.
+ ***/
+#define W_PP_CHAR_TO_NBR(ch) _W_PP_CHAR_TO_NBR(ch)
+
+#define _W_PP_CHAR_TO_NBR(ch) _W_PP_CHAR_TO_NBR_ ## ch
+
 #define _W_PP_CHAR_TO_INT_0 48
 #define _W_PP_CHAR_TO_INT_1 49
 #define _W_PP_CHAR_TO_INT_2 50
@@ -101,5 +114,68 @@
 #define _W_PP_CHAR_TO_INT_y 121
 #define _W_PP_CHAR_TO_INT_z 122
 
-#endif
+#define _W_PP_CHAR_TO_NBR_0 1
+#define _W_PP_CHAR_TO_NBR_1 2
+#define _W_PP_CHAR_TO_NBR_2 3
+#define _W_PP_CHAR_TO_NBR_3 4
+#define _W_PP_CHAR_TO_NBR_4 5
+#define _W_PP_CHAR_TO_NBR_5 6
+#define _W_PP_CHAR_TO_NBR_6 7
+#define _W_PP_CHAR_TO_NBR_7 8
+#define _W_PP_CHAR_TO_NBR_8 9
+#define _W_PP_CHAR_TO_NBR_9 10
+#define _W_PP_CHAR_TO_NBR_A 11
+#define _W_PP_CHAR_TO_NBR_B 12
+#define _W_PP_CHAR_TO_NBR_C 13
+#define _W_PP_CHAR_TO_NBR_D 14
+#define _W_PP_CHAR_TO_NBR_E 15
+#define _W_PP_CHAR_TO_NBR_F 16
+#define _W_PP_CHAR_TO_NBR_G 17
+#define _W_PP_CHAR_TO_NBR_H 18
+#define _W_PP_CHAR_TO_NBR_I 19
+#define _W_PP_CHAR_TO_NBR_J 20
+#define _W_PP_CHAR_TO_NBR_K 21
+#define _W_PP_CHAR_TO_NBR_L 22
+#define _W_PP_CHAR_TO_NBR_M 23
+#define _W_PP_CHAR_TO_NBR_N 24
+#define _W_PP_CHAR_TO_NBR_O 25
+#define _W_PP_CHAR_TO_NBR_P 26
+#define _W_PP_CHAR_TO_NBR_Q 27
+#define _W_PP_CHAR_TO_NBR_R 28
+#define _W_PP_CHAR_TO_NBR_S 29
+#define _W_PP_CHAR_TO_NBR_T 30
+#define _W_PP_CHAR_TO_NBR_U 31
+#define _W_PP_CHAR_TO_NBR_V 32
+#define _W_PP_CHAR_TO_NBR_W 33
+#define _W_PP_CHAR_TO_NBR_X 34
+#define _W_PP_CHAR_TO_NBR_Y 35
+#define _W_PP_CHAR_TO_NBR_Z 36
+#define _W_PP_CHAR_TO_NBR__ 37
+#define _W_PP_CHAR_TO_NBR_a 38
+#define _W_PP_CHAR_TO_NBR_b 39
+#define _W_PP_CHAR_TO_NBR_c 40
+#define _W_PP_CHAR_TO_NBR_d 41
+#define _W_PP_CHAR_TO_NBR_e 42
+#define _W_PP_CHAR_TO_NBR_f 43
+#define _W_PP_CHAR_TO_NBR_g 44
+#define _W_PP_CHAR_TO_NBR_h 45
+#define _W_PP_CHAR_TO_NBR_i 46
+#define _W_PP_CHAR_TO_NBR_j 47
+#define _W_PP_CHAR_TO_NBR_k 48
+#define _W_PP_CHAR_TO_NBR_l 49
+#define _W_PP_CHAR_TO_NBR_m 50
+#define _W_PP_CHAR_TO_NBR_n 51
+#define _W_PP_CHAR_TO_NBR_o 52
+#define _W_PP_CHAR_TO_NBR_p 53
+#define _W_PP_CHAR_TO_NBR_q 54
+#define _W_PP_CHAR_TO_NBR_r 55
+#define _W_PP_CHAR_TO_NBR_s 56
+#define _W_PP_CHAR_TO_NBR_t 57
+#define _W_PP_CHAR_TO_NBR_u 58
+#define _W_PP_CHAR_TO_NBR_v 59
+#define _W_PP_CHAR_TO_NBR_w 60
+#define _W_PP_CHAR_TO_NBR_x 61
+#define _W_PP_CHAR_TO_NBR_y 62
+#define _W_PP_CHAR_TO_NBR_z 63
 
+#endif

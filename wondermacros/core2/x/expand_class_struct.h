@@ -12,10 +12,13 @@
 #define INTERFACE_NAME(Name)                                    \
     struct W_CLASS_STRUCT_NAME(Name)* Name;                            \
     struct oo_class_meta* W_CAT(Name,__meta);                  \
+    void (*free)(void* self);
 
 #define CLASS_NAME(Name) \
     Class* Name; \
-    struct w_oo_meta* W_CAT(Name,__meta);
+    struct w_oo_meta* W_CAT(Name,__meta); \
+    void (*free)(void* self);
+
 #define VAR(...)
 #define OVERRIDE(...)
 #define SIGNAL(...)
