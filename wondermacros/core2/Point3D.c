@@ -11,7 +11,13 @@
 /**/
 
 void
-METHOD(shout)(ITestFatPtr self, int i)
+METHOD(_construct)(Point3D* self)
+{
+    printf("Point3D constructor\n");
+}
+
+void
+METHOD(shout)(void* self, int i)
 {
     printf("SHOUT %d:\n",i*2);
 }

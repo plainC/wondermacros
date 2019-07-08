@@ -25,6 +25,7 @@
 # include <string.h>
 # include <stddef.h>
 #endif
+# include <wondermacros/pp_char/charseq.h>
 
 
 /*
@@ -60,10 +61,26 @@
 
 
 /* O-O Data Structures. */
+struct w_oo_meta;
 struct Nothing;
 typedef struct Nothing Nothing;
-struct W_CLASS_STRUCT_NAME(Nothing);
-typedef struct W_CLASS_STRUCT_NAME(Nothing) Class;
+
+#define W_OO_CLASS_FIELDS(T)              \
+    struct w_oo_meta* _meta;              \
+    void (*_new)();                       \
+    void (*_clone)(T* self);              \
+    void (*_construct)(T* self);          \
+    void (*_destruct)(T* self);           \
+    void (*_equal)(T* self, T* other);    \
+    int (*_ifmap)(uint64_t i); \
+    void (*free)(T* self)                 \
+    /**/
+
+struct Class {
+    W_OO_CLASS_FIELDS(struct Class);
+};
+
+typedef struct Class Class;
 
 enum ClassKind {
     CLASS_KIND_NONE,
@@ -103,6 +120,7 @@ struct w_oo_meta {
     size_t size;
     Class** superclasses;
     Class** interfaces;
+    size_t nbr_superclasses;
     Property** properties;
 };
 
@@ -190,7 +208,7 @@ w_oo_signal_disconnect_all(Signal** slot)
 #define W_CALL_CLOSE(...) __VA_ARGS__))
 
 #define W_CALLV(o,method) \
-    (((o)->klass->method)())
+    (((o)->klass->method)((void*)(o)))
 
 
 #define W_CONNECT(Object,SigName,...) \
@@ -266,37 +284,68 @@ w_oo_signal_disconnect_all(Signal** slot)
 #define W_CLASS_OVERRIDE(Class,MethodName,Func) (Class)->MethodName = Func
 
 
-/*
- * Global objects.
- */
-struct NothingMeta__class {
-    Class* klass;
-    struct w_oo_meta* __meta;
-};
-extern struct W_CLASS_STRUCT_NAME(NothingMeta) W_CLASS_INSTANCE_NAME(NothingMeta);
-
-
 static inline bool
-w_oo_is_super(Class* _super, Class* _klass)
+w_oo_is_super(Class* super, Class* klass)
 {
-    struct NothingMeta__class* super = (void*) _super;
-    struct NothingMeta__class* klass = (void*) _klass;
-
     if (super == klass)
         return false;
 
-    for (int i=0; klass->__meta->superclasses[i]; ++i)
-        if (super == (void*) klass->__meta->superclasses[i])
+    for (int i=0; klass->_meta->superclasses[i]; ++i)
+        if (super == (void*) klass->_meta->superclasses[i])
             return true;
 
     return false;
 }
 
-static inline Class*
-w_oo_lookup_superclass(Class* _klass, const char* name)
+static inline Property*
+w_oo_lookup_property(Class* klass, const char* name)
 {
-    struct NothingMeta__class* klass = (void*) _klass;
+    for (int i=0; klass->_meta->properties[i]; ++i)
+        if (strcmp(klass->_meta->properties[i]->name, name) == 0)
+            return klass->_meta->properties[i];
 
+    return NULL;
+}
+
+typedef struct {
+    const char* name;
+} Interface;
+
+static inline Class*
+w_oo_lookup_interface(Class* klass, const char* name)
+{
+    for (int i=0; klass->_meta->interfaces[i]; ++i)
+        if (strcmp(((Interface*) (klass->_meta->interfaces[i]))->name, name) == 0)
+            return klass->_meta->interfaces[i];
+
+    return NULL;
+}
+
+static inline Class*
+w_oo_lookup_interface_checked(Class* klass, uint64_t interface)
+{
+    int i_mapped = klass->_ifmap(interface);
+printf("Looked up: %d\n", i_mapped);
+    if (i_mapped < 0) {
+        printf("ERROR: Interface not supported\n");
+        exit(1);
+    }
+    return klass->_meta->interfaces[i_mapped];
+}
+
+#define W_ICALLV(Interface,Obj,Method) \
+    (((struct W_CAT(Interface,__class)*) w_oo_lookup_interface_checked((Class*) ((Obj)->klass), W_PP_CHARSEQ_TO_COMPACT_UINT(uint64_t, W_CAT(Interface,__name))))->Method(Obj))
+
+/*
+ * Global objects.
+ */
+//extern struct W_CLASS_STRUCT_NAME(NothingMeta) W_CLASS_INSTANCE_NAME(NothingMeta);
+
+
+/*
+static inline Class*
+w_oo_lookup_superclass(Class* klass, const char* name)
+{
     for (int i=0; klass->__meta->superclasses[i]; ++i)
         if (strcmp(((struct NothingMeta__class*) (klass->__meta->superclasses[i]))->__meta->name, name) == 0)
             return klass->__meta->superclasses[i];
@@ -304,30 +353,9 @@ w_oo_lookup_superclass(Class* _klass, const char* name)
     return NULL;
 }
 
-static inline Class*
-w_oo_lookup_interface(Class* _klass, const char* name)
-{
-    struct NothingMeta__class* klass = (void*) _klass;
 
-    for (int i=0; klass->__meta->interfaces[i]; ++i)
-        if (strcmp(((struct NothingMeta__class*) (klass->__meta->interfaces[i]))->__meta->name, name) == 0)
-            return klass->__meta->interfaces[i];
 
-    return NULL;
-}
-
-static inline Property*
-w_oo_lookup_property(Class* _klass, const char* name)
-{
-    struct NothingMeta__class* klass = (void*) _klass;
-
-    for (int i=0; klass->__meta->properties[i]; ++i)
-        if (strcmp(klass->__meta->properties[i]->name, name) == 0)
-            return klass->__meta->properties[i];
-
-    return NULL;
-}
-
+*/
 #define W_IS_SUPER(SuperClass,TestClass) \
     w_oo_is_super((Class*) (SuperClass), (Class*) (TestClass))
 #define W_CLASS_HAS_PROPERTY(Klass,Name) \

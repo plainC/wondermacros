@@ -16,6 +16,7 @@ interface IJson
 interface ITest
     void jump(int i)
     void shout(int i)
+    void fooo()
 
 
 singleton class Nothing

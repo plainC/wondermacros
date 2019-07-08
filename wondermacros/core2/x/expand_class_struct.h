@@ -1,23 +1,19 @@
-#define METHOD_VOID(C,RetType,Name)                             \
+#define METHOD_VOID(C,RetType,Name)                                    \
     RetType (*Name)(CLASS* self);
-#define METHOD_WITH_ARGS(C,RetType,Name,Args)                   \
+#define METHOD_WITH_ARGS(C,RetType,Name,Args)                          \
     RetType (*Name)(CLASS* self, BOOST_PP_REMOVE_PARENS(Args));
 
-#define API_VOID(C,RetType,Name)                             \
-    RetType (*Name)(W_CAT(C,FatPtr) self);
-#define API_WITH_ARGS(C,RetType,Name,Args)                   \
-    RetType (*Name)(W_CAT(C,FatPtr) self, BOOST_PP_REMOVE_PARENS(Args));
+#define API_VOID(C,RetType,Name)                                       \
+    RetType (*Name)(void* self);
+#define API_WITH_ARGS(C,RetType,Name,Args)                             \
+    RetType (*Name)(void* self, BOOST_PP_REMOVE_PARENS(Args));
 
 
-#define INTERFACE_NAME(Name)                                    \
-    struct W_CLASS_STRUCT_NAME(Name)* Name;                            \
-    struct oo_class_meta* W_CAT(Name,__meta);                  \
-    void (*free)(void* self);
+#define INTERFACE_NAME(Name)                                           \
+    const char* Name;                                                  \
+    /**/
 
-#define CLASS_NAME(Name) \
-    Class* Name; \
-    struct w_oo_meta* W_CAT(Name,__meta); \
-    void (*free)(void* self);
+#define CLASS_NAME(Name)
 
 #define VAR(...)
 #define OVERRIDE(...)
@@ -28,6 +24,9 @@
 struct CLASS;
 typedef struct CLASS CLASS;
 struct W_CAT(CLASS,__class) {
+#ifndef INTERFACE
+    W_OO_CLASS_FIELDS(CLASS);
+#endif
     W_CLASS_EXPAND(CLASS)
 };
 

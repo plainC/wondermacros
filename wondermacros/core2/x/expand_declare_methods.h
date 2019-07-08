@@ -4,9 +4,9 @@
     RetType W_CAT(CLASS,__,Name)(CLASS* self, BOOST_PP_REMOVE_PARENS(Args));
 
 #define API_VOID(C,RetType,Name)                             \
-    RetType W_CAT(CLASS,__,Name)(W_CAT(C,FatPtr) self);
+    RetType W_CAT(CLASS,__,Name)(void* self);
 #define API_WITH_ARGS(C,RetType,Name,Args)                   \
-    RetType W_CAT(CLASS,__,Name)(W_CAT(C,FatPtr) self, BOOST_PP_REMOVE_PARENS(Args));
+    RetType W_CAT(CLASS,__,Name)(void* self, BOOST_PP_REMOVE_PARENS(Args));
 
 #define INTERFACE_NAME(Name)
 #define CLASS_NAME(...)

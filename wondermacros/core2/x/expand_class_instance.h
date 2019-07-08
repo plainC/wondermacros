@@ -139,6 +139,7 @@ static struct w_oo_meta class_meta = {
     .name = W_STRINGIZE(CLASS),
     .size = sizeof(CLASS),
     .superclasses = superclasses,
+    .nbr_superclasses = sizeof(superclasses)/sizeof(superclasses[0]) - 1,
     .interfaces = interfaces,
     .properties = properties,
 };
@@ -152,10 +153,9 @@ static struct w_oo_meta class_meta = {
 
 /* Expand class instance. */
 #define INTERFACE_NAME(Name) \
-    .Name = &W_CLASS_INSTANCE_NAME(Name), \
+    .Name = W_STRINGIZE(Name), \
     /**/
-#define CLASS_NAME(Name) \
-    .W_CAT(Name,__meta) = &class_meta,
+#define CLASS_NAME(Name)
 #define METHOD_VOID(Class,RetType,Name)           \
     .Name = (RetType (*)(CLASS*)) W_METHOD_NAME(Class,Name),          \
     /**/
@@ -177,9 +177,15 @@ EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
 ;
 #else
  = {
-    .CLASS = (void*) &W_CLASS_INSTANCE_NAME(NothingMeta),
-    .W_CAT(CLASS,__meta) = (void*) &class_meta,
-    .free = (void (*)(void* self)) W_CAT(CLASS,__free),
+//    .CLASS = (void*) &W_CLASS_INSTANCE_NAME(NothingMeta),
+#ifndef INTERFACE
+    ._meta = (void*) &class_meta,
+    ._ifmap = W_CAT(CLASS,__ifmap),
+#ifdef HAS_CONSTRUCTOR
+    ._construct = W_CAT(CLASS,___construct),
+#endif /* HAS_CONSTRUCTOR */
+#endif /* INTERFACE */
+   // .free = (void (*)(void* self)) W_CAT(CLASS,__free),
     W_CLASS_EXPAND(CLASS)
 };
 #endif /* IS_HEADER */

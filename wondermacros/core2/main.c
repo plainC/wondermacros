@@ -22,12 +22,6 @@ int main()
 
     printf("%d,%d,%d\n", p3->x, p3->y, p3->z);
 
-    ITestFatPtr testable = W_FAT_PTR_LOOKUP(p,"ITest");
-    W_FATCALL(testable,jump)(2);
-
-    ITestFatPtr testable2 = W_FAT_PTR_GET(p3,ITest);
-    W_FATCALL(testable2,jump)(2);
-
     printf("p3 is super of p: %d\n", W_IS_SUPER(p3->klass,p->klass));
     printf("p is super of p3: %d\n", W_IS_SUPER(p->klass,p3->klass));
 
@@ -43,18 +37,29 @@ int main()
     printf("p has 'ITest': %d\n", W_OBJECT_HAS_INTERFACE(p, "ITest"));
     printf("p has 'IFoobar': %d\n", W_OBJECT_HAS_INTERFACE(p, "IFoobar"));
 
-    printf("p eq p3: %d\n", W_CALL(p,eq)((Nothing*) p3));
-    printf("p eq p: %d\n", W_CALL(p,eq)((Nothing*) p));
-
-    PropertyRef ref = W_OBJECT_REFERENCE_GET(p, "x");
+    W_ICALLV(ITest,p,fooo);
 
     int jj=432;
     W_CONNECT(p,ping,foobar,&jj);
     W_EMIT(p,ping,3);
 
+/*
+    ITestFatPtr testable = W_FAT_PTR_LOOKUP(p,"ITest");
+    W_FATCALL(testable,jump)(2);
+
+    ITestFatPtr testable2 = W_FAT_PTR_GET(p3,ITest);
+    W_FATCALL(testable2,jump)(2);
+
+
+    printf("p eq p3: %d\n", W_CALL(p,eq)((Nothing*) p3));
+    printf("p eq p: %d\n", W_CALL(p,eq)((Nothing*) p));
+
+    PropertyRef ref = W_OBJECT_REFERENCE_GET(p, "x");
+
     w_oo_signal_disconnect_all(&p->ping);
-    W_CALLV(p,free);
-    W_CALLV(p3,free);
+//    W_CALLV(p,free);
+//    W_CALLV(p3,free);
+*/
 }
 
 

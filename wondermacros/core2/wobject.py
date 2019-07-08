@@ -99,6 +99,10 @@ class Class:
     def print_class(self):
         f = open(self.name + "__class.h","w")
         print ("#define CLASS %s" % (self.name), file=f)
+        print ("#define %s__name \\" % (self.name), file=f)
+        for ch in self.name:
+            print ("    (%s) \\" % (ch), file=f)
+        print ("    /**/", file=f)
 
         if (self.kind == ClassKind.INTERFACE):
             print ("#define INTERFACE", file=f)
