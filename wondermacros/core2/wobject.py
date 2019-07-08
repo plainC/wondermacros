@@ -295,7 +295,7 @@ class Parser:
     def parse_destructor(self,line):
         matchObj = re.match( r'^\s+destruct', line)
         if (matchObj):
-            self.klass.has_destructor(True)
+            self.klass.has_destructor=True
             return True
         else:
             return False

@@ -12,3 +12,4 @@
 #undef CLASS
 #undef INTERFACE
 #undef HAS_CONSTRUCTOR
+#undef HAS_DESTRUCTOR

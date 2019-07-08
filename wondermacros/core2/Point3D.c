@@ -17,6 +17,12 @@ METHOD(_construct)(Point3D* self)
 }
 
 void
+METHOD(_destruct)(Point3D* self)
+{
+    printf("Point3D destructor\n");
+}
+
+void
 METHOD(shout)(void* self, int i)
 {
     printf("SHOUT %d:\n",i*2);

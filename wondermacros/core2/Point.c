@@ -15,6 +15,12 @@ METHOD(_construct)(Point* self)
     printf("Point constructor\n");
 }
 
+void
+METHOD(_destruct)(Point* self)
+{
+    printf("Point destruct\n");
+}
+
 bool
 METHOD(equal)(Point* self, Nothing* other)
 {

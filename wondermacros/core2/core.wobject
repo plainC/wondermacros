@@ -31,9 +31,11 @@ class Point : Nothing ITest
     int y
     signal ping(int x)
     construct
+    destruct
     override equal
 
 class Point3D : Point
     int z
     construct
+    destruct
     override shout

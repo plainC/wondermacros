@@ -43,6 +43,9 @@ int main()
     W_CONNECT(p,ping,foobar,&jj);
     W_EMIT(p,ping,3);
 
+    W_CALLV(p,free);
+    W_CALLV(p3,free);
+
 /*
     ITestFatPtr testable = W_FAT_PTR_LOOKUP(p,"ITest");
     W_FATCALL(testable,jump)(2);
@@ -57,8 +60,6 @@ int main()
     PropertyRef ref = W_OBJECT_REFERENCE_GET(p, "x");
 
     w_oo_signal_disconnect_all(&p->ping);
-//    W_CALLV(p,free);
-//    W_CALLV(p3,free);
 */
 }
 

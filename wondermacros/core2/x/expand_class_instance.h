@@ -181,9 +181,13 @@ EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
 #ifndef INTERFACE
     ._meta = (void*) &class_meta,
     ._ifmap = W_CAT(CLASS,__ifmap),
+    .free = W_CAT(CLASS,__free),
 #ifdef HAS_CONSTRUCTOR
     ._construct = W_CAT(CLASS,___construct),
 #endif /* HAS_CONSTRUCTOR */
+#ifdef HAS_DESTRUCTOR
+    ._destruct = W_CAT(CLASS,___destruct),
+#endif /* HAS_DESTRUCTOR */
 #endif /* INTERFACE */
    // .free = (void (*)(void* self)) W_CAT(CLASS,__free),
     W_CLASS_EXPAND(CLASS)

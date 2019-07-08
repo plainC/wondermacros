@@ -85,8 +85,8 @@ W_CAT(CLASS,__free)(CLASS* self)
 #undef SIGNAL
 
     W_FOR_EACH_SUPERCLASS_REVERSED(k, self->klass) {
-        if (k->_construct)
-            k->_construct((void*) self);
+        if (k->_destruct)
+            k->_destruct((void*) self);
     }
 
     free(self);
