@@ -1,0 +1,41 @@
+#include <stdlib.h>
+
+simple bool : wobject_bool
+simple int : wobject_int
+simple char* : wobject_cstring
+simple const char* : wobject_cstring
+
+class String
+    void appendc(const char* str)
+
+class StringRef : String
+    Object* object
+    ClassProperty* property
+
+class Test
+    construct
+    destruct
+
+    int a
+    int b[53]
+    int c[22][56]
+    int d[1][2][3]
+    int e[dynamic]
+    int f[stack]
+    int g[deque]
+    int h[hash:int]
+    char* i
+    const char* j
+    const char* k[3][2]
+
+    Test* next[4]
+
+    void foo()
+    void goo(int x)
+    void boo(int x, int y)
+
+    static void foo_s()
+    static void goo_s(int x)
+
+    signal jump()
+    signal moved(int x, int y)
