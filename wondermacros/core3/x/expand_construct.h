@@ -6,12 +6,13 @@
 #define SIGNALV(...)
 #define SIGNAL(...)
 
-static inline void*
-W_CAT(CLASS,__new)(CLASS* template)
+static inline void
+W_CAT(CLASS,__construct)(CLASS* self)
 {
-    CLASS* self = malloc(sizeof(CLASS));
-    W_CAT(CLASS,__construct)(self);
-    return self;
+    self->klass = &W_CAT(CLASS,__class_instance);
+#if HAS_CONSTRUCT
+    W_CAT(CLASS,__user_construct)(self);
+#endif
 }
 
 #undef CLASS_NAME

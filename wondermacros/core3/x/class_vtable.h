@@ -1,3 +1,7 @@
+#undef TEST
+#undef METHOD
+#undef METHODV
+
 #include "expand_api.h"
 
 #include "expand_tests.h"

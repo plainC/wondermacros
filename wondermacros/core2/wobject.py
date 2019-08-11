@@ -17,7 +17,8 @@ simple = {
     'float':    'float',
     'double':   'double',
     'char':     'char',
-    'char*':    'cstring'
+    'char*':    'cstring',
+    'size_t':   'size_t'
 }
 
 classes = {}

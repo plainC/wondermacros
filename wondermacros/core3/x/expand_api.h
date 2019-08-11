@@ -14,5 +14,6 @@
 
 #include "oo_types_macros.h"
 #include "oo_types.h"
+#include "oo_api.h"
 
 #endif

@@ -64,6 +64,8 @@
 struct w_oo_meta;
 struct Nothing;
 typedef struct Nothing Nothing;
+struct IWriter;
+typedef struct IWriter IWriter;
 
 #define W_OO_CLASS_FIELDS(T)              \
     struct w_oo_meta* _meta;              \
@@ -73,7 +75,8 @@ typedef struct Nothing Nothing;
     void (*_destruct)(T* self);           \
     void (*_equal)(T* self, T* other);    \
     int (*_ifmap)(uint64_t i); \
-    void (*free)(T* self)                 \
+    void (*free)(T* self);                 \
+    int (*to_json)(T* self, IWriter* writer, void* context) \
     /**/
 
 struct Class {
@@ -203,6 +206,8 @@ w_oo_signal_disconnect_all(Signal** slot)
  *** Arg:         ...      arguments for the methods
  *** Description: Use W_CALL to call a method of an object with arguments. The macro will expand self automatically as the first argument of the argument list in the method call.
  ***/
+#ifndef WDEBUG_EXPAND
+
 #define W_CALL(o,method) \
     (((o)->klass->method) ((void*)(o), W_CALL_CLOSE
 #define W_CALL_CLOSE(...) __VA_ARGS__))
@@ -210,6 +215,19 @@ w_oo_signal_disconnect_all(Signal** slot)
 #define W_CALLV(o,method) \
     (((o)->klass->method)((void*)(o)))
 
+#define W_ICALLV(Interface,Obj,Method)    \
+    (((struct W_CAT(Interface,__class)*)  \
+        w_oo_lookup_interface_checked(    \
+            (Class*) ((Obj)->klass),      \
+            W_PP_CHARSEQ_TO_COMPACT_UINT(uint64_t, W_CAT(Interface,__name))))->Method(Obj))
+
+#define W_ICALL(Interface,Obj,Method)     \
+    (((struct W_CAT(Interface,__class)*)  \
+        w_oo_lookup_interface_checked(    \
+            (Class*) ((Obj)->klass),      \
+            W_PP_CHARSEQ_TO_COMPACT_UINT(uint64_t, W_CAT(Interface,__name))))->Method((Obj), W_CALL_CLOSE
+
+#endif /* WDEBUG_EXPAND */
 
 #define W_CONNECT(Object,SigName,...) \
     BOOST_PP_OVERLOAD(_W_CONNECT_,__VA_ARGS__)(Object,SigName,__VA_ARGS__)
@@ -232,15 +250,6 @@ w_oo_signal_disconnect_all(Signal** slot)
     W_CSLIST_FOR_EACH(Signal,s,(Object)->SigName) \
         s->func((void*) Object, s->context, __VA_ARGS__)
 
-
-#define W_FATCALL(fatPtr,method) \
-    (((fatPtr).klass->method) ((fatPtr), W_CALL_CLOSE
-
-#define W_FATCALLV(fatPtr,method) \
-    ((fatPtr).klass->method(fatPtr))
-
-#define W_CALL_IF_DEFINED(Object,Method)
-#define W_CALLV_IF_DEFINED(Object,Method)
 
 
 /*
@@ -325,7 +334,7 @@ static inline Class*
 w_oo_lookup_interface_checked(Class* klass, uint64_t interface)
 {
     int i_mapped = klass->_ifmap(interface);
-printf("Looked up: %d\n", i_mapped);
+
     if (i_mapped < 0) {
         printf("ERROR: Interface not supported\n");
         exit(1);
@@ -333,8 +342,6 @@ printf("Looked up: %d\n", i_mapped);
     return klass->_meta->interfaces[i_mapped];
 }
 
-#define W_ICALLV(Interface,Obj,Method) \
-    (((struct W_CAT(Interface,__class)*) w_oo_lookup_interface_checked((Class*) ((Obj)->klass), W_PP_CHARSEQ_TO_COMPACT_UINT(uint64_t, W_CAT(Interface,__name))))->Method(Obj))
 
 /*
  * Global objects.

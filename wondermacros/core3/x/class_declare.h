@@ -5,9 +5,14 @@
 #include "expand_class_struct.h"
 #include "expand_object_struct.h"
 
-extern struct W_CAT(CLASS,__class) W_CAT(CLASS,__class_instance);
-extern struct W_CAT(CLASS,__class) W_CAT(CLASS,__class_instance);
-extern struct UnitTest W_CAT(CLASS,__tests)[];
+#include "expand_forward_declares.h"
 
+#include "expand_construct.h"
 #include "expand_new.h"
 #include "expand_free.h"
+
+#undef NAME
+#undef CLASS
+#undef HAS_CONSTRUCT
+#undef HAS_DESTRUCT
+

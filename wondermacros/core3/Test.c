@@ -1,16 +1,26 @@
 #define UNITTEST_FILE "tests/Test.h"
 
-#include "Test.h"
+#undef NAME
+#undef CLASS
+#define NAME Test
+#include "x/class_generate.h"
 
-void Test__foo()
+CONSTRUCT
 {
 }
 
-void Test__boo()
+void
+METHODV(foo)
 {
 }
 
-void Test__goo()
+void
+METHOD(boo)(int x, int y)
+{
+}
+
+void
+METHOD(goo)(int x)
 {
 }
 

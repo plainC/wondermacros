@@ -42,6 +42,7 @@ struct ClassMeta {
     struct ClassMethod* methods;
 };
 
+#if 0
 #define CLASS Object
 struct Class {
     W_CLASS_INTERFACE;
@@ -57,6 +58,7 @@ struct Reader__class {
     void    (*next)(Reader* self);
 };
 #undef CLASS
+#endif
 
 struct UnitTest {
     int (*func)(void*);

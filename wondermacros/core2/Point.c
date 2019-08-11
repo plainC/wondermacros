@@ -3,6 +3,7 @@
 /*** Include superclass */
 #include "Nothing.h"
 /**/
+#include "IWriter.h"
 #include "ITest.h"
 /*** Expand Point */
 #include "Point__class.h"

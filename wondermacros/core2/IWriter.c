@@ -8,13 +8,15 @@
 /**/
 
 int
-METHOD(putc)(IWriter* self,char ch)
+METHOD(put)(void* self,char ch)
 {
+printf("PUT\n");
 }
 
 int
-METHOD(append)(IWriter* self,char* str, size_t size)
+METHOD(append)(void* self,char* str, size_t size)
 {
+printf("APPEND\n");
 }
 
 /**/

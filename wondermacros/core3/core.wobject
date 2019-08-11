@@ -5,6 +5,10 @@ simple int : wobject_int
 simple char* : wobject_cstring
 simple const char* : wobject_cstring
 
+class Object
+    construct
+    Object* eval(Object* context)
+
 class String
     void appendc(const char* str)
 

@@ -15,7 +15,6 @@
     int      (*compare)(void* self, void* other);          \
     int      (*equal)(void* self, void* other);            \
     uint64_t (*hash)(void* self);                          \
-    void*    (*eval)(void* self, struct Context* context)  \
     /**/
 
 #define W_CLASS_SERIALIZE_INTERFACE                        \

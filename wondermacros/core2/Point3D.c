@@ -3,6 +3,7 @@
 #include "oo_api.h"
 
 /*** Include superclass */
+#include "IWriter.h"
 #include "Point.h"
 /**/
 /*** Expand Point3D */

@@ -2,11 +2,71 @@
 #include "ITest.h"
 #include "Point.h"
 #include "Point3D.h"
+#include "StdoutWriter.h"
 
 #ifndef WDEBUG_EXPAND
 #include <stdio.h>
 #include <math.h>
 #endif
+
+/**/
+
+int
+int32__to_json (int32_t* self, IWriter * writer, void *context)
+{
+    char buf[256];
+    sprintf(buf, "%d", *self);
+    W_ICALL (IWriter, writer, append) (buf, strlen(buf));
+}
+
+static struct w_oo_meta int32_meta = {
+    .name = "int32_t",
+    .size = sizeof (int32_t),
+};
+
+Class int32__class_instance = {
+    ._meta = (void *) &int32_meta,
+    .to_json = (void*) int32__to_json,
+};
+
+// size_t
+
+int
+size_t__to_json (size_t* self, IWriter * writer, void *context)
+{
+    char buf[256];
+    sprintf(buf, "%zd", *self);
+    W_ICALL (IWriter, writer, append) (buf, strlen(buf));
+}
+
+static struct w_oo_meta size_t_meta = {
+    .name = "size_t",
+    .size = sizeof (size_t),
+};
+
+Class size_t__class_instance = {
+    ._meta = (void *) &size_t_meta,
+    .to_json = (void*) size_t__to_json,
+};
+
+// cstring
+int
+cstring__to_json (const char* self, IWriter * writer, void *context)
+{
+    W_ICALL (IWriter, writer, append) ((char*)self, strlen(self));
+}
+
+static struct w_oo_meta cstring_meta = {
+    .name = "cstring",
+    .size = sizeof(char*),
+};
+
+Class cstring__class_instance = {
+    ._meta = (void *) &cstring_meta,
+    .to_json = (void*) cstring__to_json,
+};
+/**/
+
 
 void foobar(Point* self, int* xx, int x)
 {
@@ -43,6 +103,9 @@ int main()
     W_CONNECT(p,ping,foobar,&jj);
     W_EMIT(p,ping,3);
 
+    StdoutWriter* out = W_NEW(StdoutWriter);
+    W_CALL(p,to_json)((IWriter*) out, NULL);
+
     W_CALLV(p,free);
     W_CALLV(p3,free);
 
@@ -66,9 +129,6 @@ int main()
 
 /*
  * TODO:
- * - constructors
- * - destructors
- * - free
  * - json
  * - Lisp interpreter
  * - reference counting

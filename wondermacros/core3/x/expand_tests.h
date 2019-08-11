@@ -1,3 +1,5 @@
+#undef TEST
+
 #ifdef UNITTEST_FILE
 # define EXPECT_TEST_CASE(code) \
     code \

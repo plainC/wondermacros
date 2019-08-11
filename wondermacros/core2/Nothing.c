@@ -2,6 +2,7 @@
 
 #include "oo_api.h"
 
+#include "IWriter.h"
 /*** Expand Nothing */
 #include "Nothing__class.h"
 #include "oo_expand_begin.h"

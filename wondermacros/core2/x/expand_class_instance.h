@@ -50,7 +50,7 @@ static Class* superclasses[] = {
 
 
 /* List of interfaces. */
-#define INTERFACE_NAME(Name) (Class*) &W_CLASS_INSTANCE_NAME(Name),
+#define INTERFACE_NAME(Name) (Class*) (&W_CLASS_INSTANCE_NAME(CLASS).Name),
 #define CLASS_NAME(...)
 #define METHOD_VOID(...)
 #define METHOD_WITH_ARGS(...)
@@ -82,17 +82,29 @@ static Class* interfaces[] = {
 #define METHOD_WITH_ARGS(...)
 #define API_VOID(...)
 #define API_WITH_ARGS(...)
-#define VAR(Type,Name,...) \
+#define SIMPLE(T) T ## __class_instance
+#define VAR(Type,...) BOOST_PP_OVERLOAD(_VAR_,__VA_ARGS__)(Type,__VA_ARGS__)
+#define _VAR_1(Type,Name) \
     static Property W_CAT(CLASS,__property__,Name) = { \
         .name = W_STRINGIZE(Name), \
         .offset = offsetof(CLASS, Name), \
-        .klass = NULL, \
+        .klass = &Type ## __class_instance, \
+    };
+#define _VAR_2(Type,Name,Spec) \
+    extern Class Spec; \
+    static Property W_CAT(CLASS,__property__,Name) = { \
+        .name = W_STRINGIZE(Name), \
+        .offset = offsetof(CLASS, Name), \
+        .klass = &Spec, \
     };
 #define OVERRIDE(...)
 #define SIGNAL(...)
 
 W_CLASS_EXPAND(CLASS)
 
+#undef _VAR_1
+#undef _VAR_2
+#undef SIMPLE
 #undef INTERFACE_NAME
 #undef CLASS_NAME
 #undef METHOD_VOID
@@ -182,6 +194,7 @@ EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
     ._meta = (void*) &class_meta,
     ._ifmap = W_CAT(CLASS,__ifmap),
     .free = W_CAT(CLASS,__free),
+    .to_json = W_CAT(CLASS,__to_json),
 #ifdef HAS_CONSTRUCTOR
     ._construct = W_CAT(CLASS,___construct),
 #endif /* HAS_CONSTRUCTOR */
@@ -189,7 +202,6 @@ EXTERN struct W_CLASS_STRUCT_NAME(CLASS) W_CLASS_INSTANCE_NAME(CLASS)
     ._destruct = W_CAT(CLASS,___destruct),
 #endif /* HAS_DESTRUCTOR */
 #endif /* INTERFACE */
-   // .free = (void (*)(void* self)) W_CAT(CLASS,__free),
     W_CLASS_EXPAND(CLASS)
 };
 #endif /* IS_HEADER */

@@ -1,7 +1,6 @@
 interface IWriter
-    int putc(char ch)
+    int put(char ch)
     int append(char* str, size_t size)
-
 
 interface IReader
     bool is_eof()
@@ -24,6 +23,24 @@ singleton class Nothing
     Nothing* clone()
     bool eq(Nothing* other)
     bool equal(Nothing* other)
+
+class StdoutWriter : Nothing IWriter
+    override put
+    override append
+
+
+class String : Nothing
+    int to_string(IWriter* writer)
+
+
+class String8 : String
+    char* buf
+    size_t size
+    override to_string
+
+
+class StringTemplate : String
+    StringTemplate* next
 
 
 class Point : Nothing ITest

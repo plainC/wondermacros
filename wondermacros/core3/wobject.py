@@ -349,7 +349,7 @@ if (sys.argv[1][-8:] != ".wobject"):
 
 includes = []
 simples = {}
-classes = {"Object":None, "Variant":None, "Writer":None, "Reader":None}
+classes = {"Variant":None, "Writer":None, "Reader":None}
 scanner = Scanner(sys.argv[1])
 parser = Parser(scanner)
 parser.parse()
