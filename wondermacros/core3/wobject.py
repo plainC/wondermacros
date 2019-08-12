@@ -127,6 +127,8 @@ class Klass:
         self.name = name
         self.kind = kind
         self.superName = superName
+        if (not self.superName) and (name != "Object"):
+            self.superName = "Object"
         self.interfaces = interfaces
         self.properties = []
         self.methods = []

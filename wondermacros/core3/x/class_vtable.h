@@ -8,5 +8,6 @@
 
 /* Include class definition. */
 #include W_STRINGIZE(NAME)
+#include "expand_class_properties.h"
 #include "expand_class_instance.h"
 

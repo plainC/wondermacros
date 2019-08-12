@@ -1,5 +1,7 @@
 #define UNITTEST_FILE "tests/Test.h"
 
+#include "Object.h"
+
 #undef NAME
 #undef CLASS
 #define NAME Test
@@ -28,7 +30,7 @@ void Test__foo_s()
 {
 }
 
-void Test__goo_s()
+void Test__goo_s(int x)
 {
 }
 

@@ -5,16 +5,14 @@
     enum ClassKind kind;                                   \
     struct Class* super;                                   \
     const char* name;                                      \
+    struct ClassProperty* properties;                     \
     size_t size                                            \
     /**/
 
 #define W_CLASS_CORE_INTERFACE                             \
-    void     (*free)(CLASS* self);                         \
-    void*    (*dup)(void* other);                          \
-    void     (*destructor)(void* self);                    \
-    int      (*compare)(void* self, void* other);          \
-    int      (*equal)(void* self, void* other);            \
-    uint64_t (*hash)(void* self);                          \
+    void (*construct)(CLASS* self);                        \
+    void* (*_new)(CLASS* self, CLASS* templ);              \
+    void (*free)(CLASS* self);                             \
     /**/
 
 #define W_CLASS_SERIALIZE_INTERFACE                        \

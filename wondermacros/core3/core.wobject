@@ -1,13 +1,26 @@
-#include <stdlib.h>
-
 simple bool : wobject_bool
 simple int : wobject_int
 simple char* : wobject_cstring
 simple const char* : wobject_cstring
 
+
 class Object
     construct
     Object* eval(Object* context)
+    bool equal(Object* other)
+    bool to_json(Writer* writer)
+
+class Writer
+    bool put_char(char ch)
+    bool put_cstr(const char* str)
+
+class Symbol
+    char* name
+    Object* value
+
+
+class EvalContext
+    Symbol* intern(const char* name)
 
 class String
     void appendc(const char* str)

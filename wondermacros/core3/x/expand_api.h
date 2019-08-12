@@ -12,6 +12,10 @@
 #include <wondermacros/meta/cat_outer.h>
 #include <wondermacros/meta/stringize.h>
 
+#ifndef WDEBUG_EXPAND
+# include <strings.h>
+#endif
+
 #include "oo_types_macros.h"
 #include "oo_types.h"
 #include "oo_api.h"

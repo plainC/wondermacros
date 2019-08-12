@@ -15,12 +15,12 @@
  ***/
 #define W_NEW(...) (                                                             \
     ((void*) BOOST_PP_IF(W_PP_IS_UNARY(__VA_ARGS__),                             \
-        W_CAT(BOOST_PP_VARIADIC_ELEM(0,__VA_ARGS__),__new)(NULL),                \
+        W_CAT(BOOST_PP_VARIADIC_ELEM(0,__VA_ARGS__),__new)(NULL,NULL),           \
         _W_NEW(__VA_ARGS__)                                                      \
     )                                                                            \
 )
 #define _W_NEW(T,...)                                                            \
-    ((void*) W_CAT(T,__new)(&((struct W_CAT(T)){__VA_ARGS__}))))
+    ((void*) W_CAT(T,__new)(NULL,&((struct W_CAT(T)){__VA_ARGS__}))))
 
 #define W_CALLV(o,method) \
     (((o)->klass->method)((void*)(o)))

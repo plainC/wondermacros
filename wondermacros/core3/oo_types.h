@@ -1,10 +1,13 @@
 #ifndef __W_OO_TYPES_H
 #define __W_OO_TYPES_H
 
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef WDEBUG_EXPAND
+# include <stdbool.h>
+# include <stdint.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <stddef.h>
+#endif
 
 #include "oo_types_macros.h"
 

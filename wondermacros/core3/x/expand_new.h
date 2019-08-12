@@ -7,10 +7,18 @@
 #define SIGNAL(...)
 
 static inline void*
-W_CAT(CLASS,__new)(CLASS* template)
+W_CAT(CLASS,__new)(CLASS* self, CLASS* templ)
 {
-    CLASS* self = malloc(sizeof(CLASS));
+    if (!self)
+        self = malloc(sizeof(CLASS));
+
+    if (templ)
+        *self = *templ;
+    else
+        bzero(self, sizeof(CLASS));
+
     W_CAT(CLASS,__construct)(self);
+
     return self;
 }
 
