@@ -1,3 +1,5 @@
+#include "platform.h"
+
 simple bool : wobject_bool
 simple int : wobject_int
 simple char* : wobject_cstring
@@ -6,9 +8,10 @@ simple const char* : wobject_cstring
 
 class Object
     construct
-    Object* eval(Object* context)
+    Object* eval(EvalContext* context)
     bool equal(Object* other)
-    bool to_json(Writer* writer)
+    void print(FILE* out)
+    static bool to_json(Object** self, Writer* writer)
 
 class Writer
     bool put_char(char ch)
@@ -17,10 +20,35 @@ class Writer
 class Symbol
     char* name
     Object* value
+    override print
 
+class Lisp
+    readtable_func readtable[256]
+
+    construct
+    Object* read()
+    void repl()
+
+class Int
+    int64_t value
+    override print
+
+class Cons
+    Object* car
+    Object* cdr
+    override print
 
 class EvalContext
     Symbol* intern(const char* name)
+    intern_map_t* interned
+
+
+class BinOp
+    bin_op_t type
+    Object* lhs
+    Object* rhs
+    override eval
+
 
 class String
     void appendc(const char* str)

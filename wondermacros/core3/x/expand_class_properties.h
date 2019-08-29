@@ -1,8 +1,9 @@
 #define CLASS_NAME(...)
 #define INTERFACE_NAME(...)
-#define VAR(Name,T,...) { \
+#define VAR(Name,T,Dims,Class,...) { \
     .name = # Name, \
-    .offset = offsetof(CLASS,Name) \
+    .offset = offsetof(CLASS,Name), \
+    .klass = (void*) Class \
 },
 #define OVERRIDE(...)
 #define METHODV(...)
@@ -13,7 +14,7 @@
 
 struct ClassProperty W_CAT(CLASS,__properties)[] = {
     W_CAT_OUTER(CLASS,__define)
-    NULL
+    {.name = NULL}
 };
 
 #undef CLASS_NAME

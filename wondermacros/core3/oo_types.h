@@ -7,21 +7,24 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <stddef.h>
+# include <wondermacros/pointer/ref_void_ptr.h>
 #endif
 
 #include "oo_types_macros.h"
 
 struct Object;
-struct Class;
+struct Object__class;
 struct Context;
 struct Reader;
 struct Writer;
+struct EvalContext;
 
 typedef struct Object Object;
-typedef struct Class Class;
+typedef struct Object__class Class;
 typedef struct Context Context;
 typedef struct Reader Reader;
 typedef struct Writer Writer;
+typedef struct EvalContext EvalContext;
 
 enum ClassKind {
     ClassKindSimpleType,
@@ -31,8 +34,8 @@ enum ClassKind {
 
 struct ClassProperty {
     const char* name;
-    struct Class* type;
     size_t offset;
+    Class* klass;
 };
 
 struct ClassMethod {

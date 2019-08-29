@@ -13,6 +13,7 @@
     /**/
 #define SIGNALV(...)
 #define SIGNAL(...)
+#define OVERRIDE(...)
 
 struct CLASS;
 typedef struct CLASS CLASS;
@@ -29,4 +30,4 @@ struct W_CAT(CLASS,__class) {
 #undef METHOD
 #undef SIGNALV
 #undef SIGNAL
-
+#undef OVERRIDE

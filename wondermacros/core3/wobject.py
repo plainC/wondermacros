@@ -133,6 +133,8 @@ class Klass:
         self.properties = []
         self.methods = []
         self.signals = []
+        self.includes = []
+        self.overrides = []
         self.hasConstruct = False
         self.hasDestruct = False
 
@@ -156,6 +158,9 @@ class Klass:
         for method in self.methods:
             method.write(self.name,f)
 
+        for override in self.overrides:
+            print("    OVERRIDE(%s,%s) \\" % (self.name, override), file=f)
+
         for s in self.signals:
             s.write(f)
 
@@ -169,6 +174,9 @@ class Klass:
         print("#define __%s_H\n" % (upName), file=f)
         print("#include \"oo_api.h\"", file=f)
         print("#include \"%s.h\"\n" % (mainName), file=f)
+
+        for include in self.includes:
+            print("#include %s" % (include), file=f)
 
         if (self.superName):
             print("/* Include superclass */", file=f)
@@ -196,6 +204,13 @@ class Parser:
         matchObj = re.match( r'^simple\s+((const\s+)?[\w\*]+)\s*\:\s*(\w+)', line )
         if (matchObj):
             simples[ matchObj.group(1) ] = matchObj.group(3)
+            return True
+        return False
+
+    def parse_include_in_class(self,line):
+        matchObj = re.match( r'^\s+include\s+(.*)', line )
+        if (matchObj):
+            self.klass.includes.append(matchObj.group(1))
             return True
         return False
 
@@ -241,6 +256,13 @@ class Parser:
             return True
         return False
 
+    def parse_override(self,line):
+        matchObj = re.match( r'^\s+override\s+(\w+)', line )
+        if (matchObj):
+            self.klass.overrides.append(matchObj.group(1))
+            return True
+        return False
+
     def parse_signal(self,line):
         matchObj = re.match( r'^\s+signal\s+(\w+)\s*\(([^\)]*)\)', line )
         if (matchObj):
@@ -275,9 +297,11 @@ class Parser:
             if (self.parse_simple(line)
                 or self.parse_construct(line)
                 or self.parse_destruct(line)
+                or self.parse_include_in_class(line)
                 or self.parse_include(line)
                 or self.parse_class(line)
                 or self.parse_signal(line)
+                or self.parse_override(line)
                 or self.parse_method(line)
                 or self.parse_property(line)):
                 self.scanner.next()

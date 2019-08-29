@@ -8,6 +8,7 @@
     int (**name)(CLASS* self, void* arg);
 #define SIGNAL(name,args)                             \
     int (**name)(CLASS* self, BOOST_PP_REMOVE_PARENS(args), void* arg);
+#define OVERRIDE(...)
 
 
 struct CLASS {
@@ -22,4 +23,4 @@ struct CLASS {
 #undef METHOD
 #undef SIGNALV
 #undef SIGNAL
-
+#undef OVERRIDE

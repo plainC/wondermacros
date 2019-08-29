@@ -1,4 +1,5 @@
 #include "oo_types.h"
+#include <wondermacros/pointer/ref_void_ptr.h>
 
 struct Object;
 typedef struct Object Object;
@@ -15,7 +16,7 @@ struct Writer__class
     void (*free) (Writer * self);;
     int (*to_string) (void *self, struct Writer * writer);
     int (*from_string) (void *self, struct Reader * reader);
-    Object *(*eval) (Object * self, Object * context);
+    Object *(*eval) (Object * self, EvalContext* context);
       bool (*equal) (Object * self, Object * other);
       bool (*to_json) (Object * self, Writer * writer);
       bool (*put_char) (Writer * self, char ch);
@@ -39,9 +40,15 @@ CONSTRUCT
 }
 
 Object*
-METHOD(eval)(Object* context)
+METHOD(eval)(EvalContext* context)
 {
     return self;
+}
+
+void
+METHOD(print)(FILE* out)
+{
+    fprintf(out, "<%s: %p>", self->klass->name, self);
 }
 
 bool
@@ -51,20 +58,28 @@ METHOD(equal)(Object* other)
 }
 
 bool
-METHOD(to_json)(Writer* writer)
+STATIC_METHOD(to_json)(Object** self, Writer* writer)
 {
+    if (!(*self)) {
+        W_CALL(writer,put_cstr)("null");
+        return false;
+    }
+
     W_CALL(writer,put_char)('{');
-    for (int i=0; self->klass->properties[i].name; i++) {
+    for (int i=0; (*self)->klass->properties[i].name; i++) {
+printf("I=%d\n", i);
         if (i)
             W_CALL(writer,put_char)(',');
         W_CALL(writer,put_char)('\"');
-        W_CALL(writer,put_cstr)(self->klass->properties[i].name);
+        W_CALL(writer,put_cstr)((*self)->klass->properties[i].name);
         W_CALL(writer,put_cstr)("\":");
-        W_CALL(writer,put_char)('0');
+        (*self)->klass->properties[i].klass->to_json(
+                W_REF_VOID_PTR(*self, (*self)->klass->properties[i].offset),
+                writer);
     }
     W_CALL(writer,put_char)('}');
+    return false;
 }
 
 #define NAME Object
 #include "x/class_vtable.h"
-

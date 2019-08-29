@@ -30,4 +30,6 @@
     struct W_CAT(CLASS,__class)* klass                     \
     /**/
 
+#define W_OBJECT_AS(o,T) ((T*) (o))
+
 #endif

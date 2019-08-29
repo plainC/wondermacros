@@ -15,6 +15,7 @@ W_CAT(CLASS,__do_construct)(CLASS* self)
 #define METHOD(...)
 #define SIGNALV(...)
 #define SIGNAL(...)
+#define OVERRIDE(...)
 
 static inline void
 W_CAT(CLASS,__construct)(CLASS* self)
@@ -29,4 +30,4 @@ W_CAT(CLASS,__construct)(CLASS* self)
 #undef METHOD
 #undef SIGNALV
 #undef SIGNAL
-
+#undef OVERRIDE

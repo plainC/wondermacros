@@ -12,16 +12,17 @@ void W_CAT(CLASS,__user_construct)(CLASS* self);
 #define VAR(...)
 #define METHODV(C,is_member,type,name)                        \
     BOOST_PP_IF(is_member,                                    \
-        type W_CAT(CLASS,__,name)(C* self);,                  \
+        type W_CAT(CLASS,__,name)(CLASS* self);,                  \
         type W_CAT(CLASS,__,name)();)                         \
     /**/
 #define METHOD(C,is_member,type,name,args) \
     BOOST_PP_IF(is_member,                                    \
-        type W_CAT(CLASS,__,name)(C* self, BOOST_PP_REMOVE_PARENS(args));, \
+        type W_CAT(CLASS,__,name)(CLASS* self, BOOST_PP_REMOVE_PARENS(args));, \
         type W_CAT(CLASS,__,name)(BOOST_PP_REMOVE_PARENS(args));)          \
     /**/
 #define SIGNALV(...)
 #define SIGNAL(...)
+#define OVERRIDE(...)
 
 W_CAT_OUTER(CLASS,__define)
 
@@ -32,4 +33,4 @@ W_CAT_OUTER(CLASS,__define)
 #undef METHOD
 #undef SIGNALV
 #undef SIGNAL
-
+#undef OVERRIDE

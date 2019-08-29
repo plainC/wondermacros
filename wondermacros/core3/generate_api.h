@@ -15,6 +15,8 @@
 #define W_CALL_CLOSE(...) __VA_ARGS__))
 
 #define W_METHOD_CLOSE(...) __VA_ARGS__)
+#define STATIC_METHOD(name) \
+    W_CAT(CLASS,__,name)
 #define METHOD(name) \
     W_CAT(CLASS,__,name)(CLASS* self, W_METHOD_CLOSE
 #define METHODV(name) \

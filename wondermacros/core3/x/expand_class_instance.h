@@ -7,7 +7,7 @@
 #define METHODV(C,is_member,type,Name)      \
     METHOD(C,is_member,type,Name,/*empty*/)
 #define METHOD(C,is_member,type,Name,args)  \
-    .Name = W_CAT(C,__,Name),
+    .Name = (void*) W_CAT(C,__,Name),
 #define SIGNALV(...)
 #define SIGNAL(...)
 
