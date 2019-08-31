@@ -14,6 +14,7 @@
 
 struct W_CAT(CLASS,__class) W_CAT(CLASS,__class_instance) = {
     .properties = W_CAT(CLASS,__properties),
+    .methods = W_CAT(CLASS,__methods),
     .construct = W_CAT(CLASS,__construct),
     ._new = W_CAT(CLASS,__new),
     .free = W_CAT(CLASS,__free),

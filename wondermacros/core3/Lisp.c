@@ -5,98 +5,80 @@
 #include "Int.h"
 #include "Symbol.h"
 #include "Cons.h"
+#include "WhiteSpace.h"
+#include "EvalContext.h"
+#include "hash_func.h"
+#include "oo_introspection.h"
 
 #include <string.h>
+
+#define W_EQUAL(a,b) (strcmp((const char*) (a), (const char*) (b)) == 0)
+#define W_HASH(key,h) (h = strhash(key))
+#include <wondermacros/array/hash_table.h>
+
 
 #define NAME Lisp
 #include "x/class_generate.h"
 
-static Object* read_(char** str, size_t* size, Lisp* lisp);
-
-static Object*
-read_number(char** str, size_t* size, Lisp* lisp)
-{
-    char* endptr;
-    int64_t val = strtoll(*str, &endptr, 10);
-
-    *size -= endptr - *str;
-    *str = endptr;
-
-    return W_NEW(Int, .value = val);
-}
-
-static Object*
-read_symbol(char** str, size_t* size, Lisp* lisp)
-{
-    int pos;
-    for (pos = 0; lisp->readtable[(*str)[pos]] == read_symbol
-            || lisp->readtable[(*str)[pos]] == read_number; ++pos)
-        ;
-
-    char* s = strndup(*str, pos);
-    *str += pos;
-    *size -= pos;
-
-    return W_NEW(Symbol, .name = s); 
-}
-
-static Object*
-read_ws(char** str, size_t* size, Lisp* lisp)
-{
-    while (lisp->readtable[**str] == read_ws)
-        *str += 1, *size -= 1;
-
-    return NULL;
-}
-
-static Object*
-read_cons(char** str, size_t* size, Lisp* lisp)
-{
-    /* Eat '(' */
-    *str += 1;
-    *size -= 1;
-    read_ws(str, size, lisp);
-
-    Cons* list = NULL;
-    Cons* last;
-    do {
-        Cons* new_item = W_NEW(Cons, .car = read_(str, size, lisp), .cdr = NULL);
-
-        if (!list)
-            list = last = new_item;
-        else {
-            last->cdr = new_item;
-            last = new_item;
-        }
-        read_ws(str, size, lisp);
-    } while (**str != ')');
-
-    /* Eat ')' */
-    *str += 1;
-    *size -= 1;
-
-    return list;
-}
 
 CONSTRUCT
 {
-    for (int ch = 0; ch < 256; ++ch)
-        self->readtable[ch] = read_symbol;
+    W_DYNAMIC_ARRAY_PUSH(self->readtable[' '], WhiteSpace___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['\n'], WhiteSpace___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['\r'], WhiteSpace___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['\t'], WhiteSpace___read);
 
-    self->readtable[' '] = read_ws;
-    self->readtable['\n'] = read_ws;
+    for (int ch = '0'; ch <= '9'; ++ch) {
+        W_DYNAMIC_ARRAY_PUSH(self->readtable[ch], Int___read);
+    }
+    for (char ch = 'A'; ch <= 'Z'; ++ch)
+        W_DYNAMIC_ARRAY_PUSH(self->readtable[ch], Symbol___read);
+    for (char ch = 'a'; ch <= 'z'; ++ch)
+        W_DYNAMIC_ARRAY_PUSH(self->readtable[ch], Symbol___read);
 
-    for (char ch = '0'; ch <= '9'; ++ch)
-        self->readtable[ch] = read_number;
+    char table[] = { '*', '+', '-', '/', '<', '=', '>', '?', '_', 0 };
+    for (int i=0; table[i]; ++i)
+        W_DYNAMIC_ARRAY_PUSH(self->readtable[table[i]], Symbol___read);
 
-    self->readtable['('] = read_cons;
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['('], Cons___read);
 }
 
-static Object*
-read_(char** str, size_t* size, Lisp* lisp)
+w_read_status_t
+STATIC_METHOD(_read)(const char** str, size_t* size, Lisp* lisp, Object** ret)
 {
-    read_ws(str, size, lisp);
-    return lisp->readtable[**str](str, size, lisp);
+  again:
+    W_DYNAMIC_ARRAY_FOR_EACH(readtable_func, func, lisp->readtable[**str]) {
+        w_read_status_t status = func(str, size, lisp, ret);
+        if (status == W_READ_OK)
+            return W_READ_OK;
+        if (status == W_READ_EATEN)
+            goto again;
+    }
+    printf("Error\n");
+    return W_READ_NOK;
+}
+
+bool
+METHOD(register_reader)(int priority, char ch, bool (*accept)(const char*, const char**))
+{
+    self->readtable[ch] = accept;
+}
+
+Symbol*
+METHOD(intern)(const char* name, size_t len)
+{
+    char buf[64];
+    strncpy(buf, name, len);
+    buf[len] = 0;
+
+    W_HASH_TABLE_FOR_EACH_MATCH(intern_map_t, match, self->interned, buf) {
+        return match->value;
+    }
+
+    Symbol* sym = W_NEW(Symbol, .name = strndup(name, len));
+    W_HASH_TABLE_PUSH(intern_map_t, self->interned, name, sym);
+
+    return sym;
 }
 
 Object*
@@ -107,19 +89,38 @@ METHODV(read)
 
     char* str = buf;
     size_t len = strlen(buf);
+    Object* ret;
 
-    return read_(&str, &len, self);
+    w_read_status_t status = Lisp___read(&str, &len, self, &ret);
+    if (status == W_READ_OK)
+        return ret;
+    else
+        printf("ERROR\n");
+    return NULL;
+}
+
+bool
+METHOD(add_class)(Class* klass)
+{
+    
 }
 
 void
 METHODV(repl)
 {
     Object* o;
+    EvalContext* ctxt = W_NEW(EvalContext, .lisp = self);
+
     do {
         printf("\n> ");
         fflush(stdout);
         o = W_CALLV(self,read);
-        W_CALL(o,print)(stdout);
+        if (o)
+            o = W_CALL(o,eval)(ctxt);
+        if (o)
+            W_CALL(o,print)(stdout);
+        else
+            printf("NIL");
     } while (true);
 }
 

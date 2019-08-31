@@ -3,6 +3,12 @@
 
 #include "oo_types.h"
 
+typedef enum read_status {
+    W_READ_NOK,
+    W_READ_OK,
+    W_READ_EATEN,
+} w_read_status_t;
+
 enum bcode {
     W_INSTR_NOP,
     W_INSTR_PUSH,
@@ -33,7 +39,8 @@ typedef struct intern_map {
     Symbol* value;
 } intern_map_t;
 
-typedef Object* (*readtable_func)(char** str, size_t* size, Lisp* lisp);
+typedef w_read_status_t (*readtable_func)(char** str, size_t* size, Lisp* lisp, Object** ret);
+typedef Object* (*prim_func)(Object* args);
 
 /**/
 

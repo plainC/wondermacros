@@ -11,7 +11,9 @@ class Object
     Object* eval(EvalContext* context)
     bool equal(Object* other)
     void print(FILE* out)
+    static w_read_status_t _read(const char** str, size_t* size, Lisp* lisp, Object** ret)
     static bool to_json(Object** self, Writer* writer)
+    static void _test(int x)
 
 class Writer
     bool put_char(char ch)
@@ -20,27 +22,51 @@ class Writer
 class Symbol
     char* name
     Object* value
+
     override print
+    override eval
+
+class PrimFunc
+    char* name
+    char* cname
+    prim_func func
+
+    override print
+    construct
 
 class Lisp
-    readtable_func readtable[256]
+    intern_map_t* interned
+    readtable_func* readtable[256]
 
     construct
+    bool add_class(Class* klass)
+    Symbol* intern(const char* name, size_t len)
     Object* read()
     void repl()
+
+    override _read
 
 class Int
     int64_t value
     override print
+    override _read
+
+class WhiteSpace
+    override _read
 
 class Cons
     Object* car
     Object* cdr
     override print
+    override eval
 
 class EvalContext
-    Symbol* intern(const char* name)
-    intern_map_t* interned
+    Lisp* lisp
+    Object* list
+
+    construct
+    Object* assoc(Object* key)
+    void extend(Symbol* sym, Object* value)
 
 
 class BinOp

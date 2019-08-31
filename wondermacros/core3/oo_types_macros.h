@@ -6,6 +6,7 @@
     struct Class* super;                                   \
     const char* name;                                      \
     struct ClassProperty* properties;                     \
+    struct ClassMethod* methods;                     \
     size_t size                                            \
     /**/
 

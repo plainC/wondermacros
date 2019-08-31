@@ -1,3 +1,4 @@
+#include "platform.h"
 #include "oo_types.h"
 #include <wondermacros/pointer/ref_void_ptr.h>
 
@@ -45,6 +46,12 @@ METHOD(eval)(EvalContext* context)
     return self;
 }
 
+w_read_status_t
+STATIC_METHOD(_read)(const char** str, size_t* size, Lisp* lisp, Object** ret)
+{
+    return false;
+}
+
 void
 METHOD(print)(FILE* out)
 {
@@ -60,6 +67,7 @@ METHOD(equal)(Object* other)
 bool
 STATIC_METHOD(to_json)(Object** self, Writer* writer)
 {
+#if 0
     if (!(*self)) {
         W_CALL(writer,put_cstr)("null");
         return false;
@@ -79,6 +87,13 @@ printf("I=%d\n", i);
     }
     W_CALL(writer,put_char)('}');
     return false;
+#endif
+}
+
+void
+STATIC_METHOD(_test)(int x)
+{
+    printf("Test: %d\n", x);
 }
 
 #define NAME Object

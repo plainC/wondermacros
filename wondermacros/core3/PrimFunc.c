@@ -1,53 +1,48 @@
-#define UNITTEST_FILE "tests/Symbol.h"
+//#define UNITTEST_FILE "tests/Symbol.h"
 
 #include "Object.h"
 #include "Writer.h"
 #include "Lisp.h"
-#include "EvalContext.h"
+#include "Int.h"
 #include "Cons.h"
 #include <ctype.h>
+#include <string.h>
 
 
-#define NAME Symbol
+#define NAME PrimFunc
 #include "x/class_generate.h"
 
+#define FUNC(cname,name,body)                     \
+static Object* W_CAT(__,cname)(Object* args) \
+{                                           \
+    body                                    \
+}
+#include "primfunc.h"
+#undef FUNC
+
+
+CONSTRUCT
+{
+    static const struct {
+        char* name;
+        Object* (*func)(Object* args);
+    } map[] = {
+#define FUNC(Cname,Name,body) { .name = # Name, .func = W_CAT(__,Cname), },
+#include "primfunc.h"
+#undef FUNC
+        {NULL,NULL}
+    };
+
+    if (self->name)
+        for (int i=0; map[i].name; i++)
+            if (strcmp(map[i].name, self->name) == 0)
+                self->func = map[i].func;
+}
 
 void
 METHOD(print)(FILE* out)
 {
-    fprintf(out, "%s", self->name);
-}
-
-Object*
-METHOD(eval)(EvalContext* context)
-{
-    Cons* o = W_CALL(context,assoc)(self);
-    if (!o) {
-        printf("ERROR: Unbounded symbol\n");
-        return NULL;
-    }
-    return o->cdr;
-}
-
-w_read_status_t
-STATIC_METHOD(_read)(const char** str, size_t* size, Lisp* lisp, Object** ret)
-{
-    if (*size == 0)
-        return W_READ_NOK;
-
-    const char* p = *str+1;
-
-printf("%p %d '%c'\n",p, *size, *p);
-    while ((*size - (p - *str)) && lisp->readtable[*p] && lisp->readtable[*p][0] == Symbol___read) {
-printf("'%c'\n", *p);
-        ++p;
-    }
-
-    *size -= p - *str;
-    *ret = W_CALL(lisp,intern)(*str, p - *str);
-    *str = p;
-
-    return W_READ_OK;
+    fprintf(out, "<PrimFunc:%p>", self);
 }
 
 bool
@@ -76,6 +71,6 @@ STATIC_METHOD(to_json)(Object** self, Writer* writer)
 }
 
 
-#define NAME Symbol
+#define NAME PrimFunc
 #include "x/class_vtable.h"
 

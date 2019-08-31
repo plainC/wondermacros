@@ -1,42 +1,57 @@
 #include "Object.h"
 #include "Symbol.h"
+#include "Cons.h"
+#include "Int.h"
+#include "Lisp.h"
+#include "PrimFunc.h"
 #include <string.h>
 
 
 #define NAME EvalContext
 #include "x/class_generate.h"
 
-static inline unsigned long
-hash(const char *str)
-{
-    unsigned long hash = 5381;
-    int c;
 
-    while (c = *str++)
-        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
-
-    return hash;
-}
-
-#define W_EQUAL(a,b) (strcmp((const char*) (a), (const char*) (b)) == 0)
-#define W_HASH(key,h) (h = hash(key))
-#include <wondermacros/array/hash_table.h>
+#define Intern(Name) W_CALL(self->lisp,intern)(# Name, sizeof(# Name)-1)
+#define Extend(Name,Value) \
+do { \
+    Object* sym = Intern(Name); \
+    W_CALL(self,extend)(sym, Value); \
+} while (0)
 
 CONSTRUCT
 {
+    Extend(a, W_NEW(Int, .value=55));
+#define FUNC(Cname,Name,...) \
+    Extend(Name, W_NEW(PrimFunc, .name=#Name));
+#include "primfunc.h"
+#undef FUNC
 }
 
-Symbol*
-METHOD(intern)(const char* name)
+void
+METHOD(extend)(Symbol* sym, Object* value)
 {
-    W_HASH_TABLE_FOR_EACH_MATCH(intern_map_t, match, self->interned, name)
-        return match->value;
+    self->list = W_NEW(Cons,
+        .car = W_NEW(Cons, .car = sym, .cdr = value),
+        .cdr = self->list);
 
-    Symbol* sym = W_NEW(Symbol, .name = strdup(name));
-    W_HASH_TABLE_PUSH(intern_map_t, self->interned, name, sym);
-
-    return sym;
+    return self->list;
 }
+
+
+Object*
+METHOD(assoc)(Object* key)
+{
+    Object* alist = self->list;
+    while (alist) {
+        if (CAR(CAR(alist)) == key) {
+            return CAR(alist);
+        }
+        alist = CDR(alist);
+    }
+
+    return NULL;
+}
+
 
 #define NAME EvalContext
 #include "x/class_vtable.h"

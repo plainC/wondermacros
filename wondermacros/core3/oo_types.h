@@ -39,36 +39,17 @@ struct ClassProperty {
 };
 
 struct ClassMethod {
-    const char* key;
-    int (*value)(void);
+    const char* name;
+    void (*func)(void);
 };
 
-struct ClassMeta {
-    struct ClassProperty** properties;
-    struct ClassMethod* methods;
-};
-
-#if 0
-#define CLASS Object
-struct Class {
-    W_CLASS_INTERFACE;
-};
-#undef CLASS
-
-#define CLASS Reader
-struct Reader__class {
-    W_CLASS_INTERFACE;
-    bool    (*is_eof)(Reader* self);
-    bool    (*is_ready)(Reader* self);
-    uint8_t (*peek)(Reader* self);
-    void    (*next)(Reader* self);
-};
-#undef CLASS
-#endif
 
 struct UnitTest {
     int (*func)(void*);
     const char* name;
 };
+
+#define W_OBJECT_IS(o,Class) ((o)->klass = &W_CAT(Class,__class_instance))
+#include "lisp.h"
 
 #endif
