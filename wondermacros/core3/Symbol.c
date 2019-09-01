@@ -37,9 +37,7 @@ STATIC_METHOD(_read)(const char** str, size_t* size, Lisp* lisp, Object** ret)
 
     const char* p = *str+1;
 
-printf("%p %d '%c'\n",p, *size, *p);
     while ((*size - (p - *str)) && lisp->readtable[*p] && lisp->readtable[*p][0] == Symbol___read) {
-printf("'%c'\n", *p);
         ++p;
     }
 

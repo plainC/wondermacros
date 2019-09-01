@@ -2,6 +2,7 @@
 
 simple bool : wobject_bool
 simple int : wobject_int
+simple int64_t : wobject_int64
 simple char* : wobject_cstring
 simple const char* : wobject_cstring
 
@@ -26,6 +27,14 @@ class Symbol
     override print
     override eval
 
+class SpecialForm
+    Object* eval_special(Object* args, EvalContext* context)
+
+class Quote : SpecialForm
+    override print
+    override eval
+    override eval_special
+
 class PrimFunc
     char* name
     char* cname
@@ -37,6 +46,7 @@ class PrimFunc
 class Lisp
     intern_map_t* interned
     readtable_func* readtable[256]
+    Quote* quote
 
     construct
     bool add_class(Class* klass)
@@ -77,7 +87,9 @@ class BinOp
 
 
 class String
-    void appendc(const char* str)
+    char* cstr
+    override print
+    override _read
 
 class StringRef : String
     Object* object

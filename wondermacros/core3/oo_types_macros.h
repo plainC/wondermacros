@@ -7,6 +7,7 @@
     const char* name;                                      \
     struct ClassProperty* properties;                     \
     struct ClassMethod* methods;                     \
+    Class** superclasses; \
     size_t size                                            \
     /**/
 
@@ -20,6 +21,7 @@
     int (*to_string)(void* self, struct Writer* writer);   \
     int (*from_string)(void* self, struct Reader* reader)  \
     /**/
+
 
 #define W_CLASS_INTERFACE                                  \
     W_CLASS_PROPERTIES;                                    \

@@ -4,7 +4,10 @@
 #include "Writer.h"
 #include "Lisp.h"
 #include "PrimFunc.h"
-
+#include "SpecialForm.h"
+#include "Symbol.h"
+#include "Int.h"
+#include <wondermacros/meta/id.h>
 
 #define NAME Cons
 #include "x/class_generate.h"
@@ -31,32 +34,44 @@ METHOD(print)(FILE* out)
 static Object*
 apply(Object* proc, Object* args, EvalContext* context)
 {
-printf("In apply\n");
+    if (!proc)
+        goto error;
+
     if (W_OBJECT_IS(proc, PrimFunc)) {
-printf("Primfunc\n");
         return W_OBJECT_AS(proc, PrimFunc)->func(args);
     }
+
+  error:
+    printf("First argument in a list not a function: %s\n",
+            proc ? proc->klass->name : "nil");
+
+    exit(0);
 }
 
 static Object*
 evlis(Cons* exprs, EvalContext* context)
 {
-printf("Evlis\n");
     Cons* list = NULL;
     while (exprs) {
         list = W_NEW(Cons, .car = W_CALL(exprs->car,eval)(context), .cdr = list);
         exprs = exprs->cdr;
     }
+    REVERSE(list);
 
     return list;
 }
 
+#define IS_SPECIAL_FORM(o) ((Cons*)((o)->klass->superclasses[1]) == &SpecialForm__class_instance)
 Object*
 METHOD(eval)(EvalContext* context)
 {
-    /* Todo special forms */
-    return apply(W_CALL(self->car,eval)(context), evlis(self->cdr, context), context);
+    if (IS_SPECIAL_FORM(self->car))
+        return W_CALL(W_OBJECT_AS(self->car, SpecialForm),eval_special)(self->cdr, context);
+
+    Object* func = W_CALL(self->car,eval)(context);
+    return apply(func, evlis(self->cdr, context), context);
 }
+
 
 w_read_status_t
 STATIC_METHOD(_read)(const char** str, size_t* size, Lisp* lisp, Object** ret)
@@ -80,6 +95,7 @@ STATIC_METHOD(_read)(const char** str, size_t* size, Lisp* lisp, Object** ret)
         WhiteSpace___read(str, size, lisp, ret);
     } while (**str != ')');
 
+//    reverse(list);
     /* Eat ')' */
     ++(*str);
     --(*size);

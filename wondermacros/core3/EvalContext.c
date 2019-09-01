@@ -4,6 +4,7 @@
 #include "Int.h"
 #include "Lisp.h"
 #include "PrimFunc.h"
+#include "Test.h"
 #include <string.h>
 
 
@@ -21,6 +22,8 @@ do { \
 CONSTRUCT
 {
     Extend(a, W_NEW(Int, .value=55));
+    Test* t = W_NEW(Test, .a=42, .i="Foobar");
+    Extend(t, t);
 #define FUNC(Cname,Name,...) \
     Extend(Name, W_NEW(PrimFunc, .name=#Name));
 #include "primfunc.h"

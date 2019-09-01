@@ -5,8 +5,10 @@
 #include "Lisp.h"
 #include "Int.h"
 #include "Cons.h"
+#include "Symbol.h"
 #include <ctype.h>
 #include <string.h>
+#include "oo_introspection.h"
 
 
 #define NAME PrimFunc

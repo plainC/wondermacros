@@ -27,6 +27,7 @@ typedef enum bin_op bin_op_t;
 
 extern Class wobject_cstring__simple_instance;
 extern Class wobject_int__simple_instance;
+extern Class wobject_int64__simple_instance;
 
 /* EvalContext types */
 struct Symbol;

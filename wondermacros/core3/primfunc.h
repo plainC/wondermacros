@@ -13,6 +13,24 @@
         arg && W_OBJECT_IS(arg, T); args = CDR(args), arg = args ? CAR(args):NULL)
 
 
+FUNC(pr,pr,
+    FOR_EACH_ARG(Int,arg)
+        printf(" %d\n", arg->value);
+    return NULL;
+)
+
+FUNC(slot_value,slot-value,
+    Object* obj = CAR(args);
+    Symbol* sym = CADR(args);
+    struct ClassProperty* property = w_oo_lookup_property(obj->klass, sym->name);
+    if (!property) {
+        printf("Not found\n");
+        exit(1);
+    }
+
+    return property->klass->_new(NULL, W_REF_VOID_PTR(obj, property->offset));
+)
+
 FUNC(add,+,
     int sum = 0;
     FOR_EACH_ARG(Int, arg)

@@ -5,8 +5,10 @@
 #include "Int.h"
 #include "Symbol.h"
 #include "Cons.h"
+#include "String.h"
 #include "WhiteSpace.h"
 #include "EvalContext.h"
+#include "Quote.h"
 #include "hash_func.h"
 #include "oo_introspection.h"
 
@@ -41,6 +43,10 @@ CONSTRUCT
         W_DYNAMIC_ARRAY_PUSH(self->readtable[table[i]], Symbol___read);
 
     W_DYNAMIC_ARRAY_PUSH(self->readtable['('], Cons___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['\"'], String___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['\''], Quote___read);
+
+    self->quote = W_NEW(Quote);
 }
 
 w_read_status_t
