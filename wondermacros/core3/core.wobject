@@ -45,6 +45,7 @@ class PrimFunc
 
 class Lisp
     intern_map_t* interned
+    intern_map_t* classes
     readtable_func* readtable[256]
     Quote* quote
 
@@ -60,6 +61,10 @@ class Int
     int64_t value
     override print
     override _read
+
+class _Class
+    Class* _klass
+    override print
 
 class WhiteSpace
     override _read

@@ -38,7 +38,7 @@ apply(Object* proc, Object* args, EvalContext* context)
         goto error;
 
     if (W_OBJECT_IS(proc, PrimFunc)) {
-        return W_OBJECT_AS(proc, PrimFunc)->func(args);
+        return W_OBJECT_AS(proc, PrimFunc)->func(args, context);
     }
 
   error:

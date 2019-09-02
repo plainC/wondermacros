@@ -41,7 +41,7 @@ typedef struct intern_map {
 } intern_map_t;
 
 typedef w_read_status_t (*readtable_func)(char** str, size_t* size, Lisp* lisp, Object** ret);
-typedef Object* (*prim_func)(Object* args);
+typedef Object* (*prim_func)(Object* args, EvalContext* context);
 
 /**/
 

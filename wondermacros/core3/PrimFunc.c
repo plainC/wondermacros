@@ -3,19 +3,26 @@
 #include "Object.h"
 #include "Writer.h"
 #include "Lisp.h"
+#include "EvalContext.h"
 #include "Int.h"
 #include "Cons.h"
 #include "Symbol.h"
+#include "_Class.h"
 #include <ctype.h>
 #include <string.h>
 #include "oo_introspection.h"
+
+#include "hash_func.h"
+#define W_EQUAL(a,b) (strcmp((const char*) (a), (const char*) (b)) == 0)
+#define W_HASH(key,h) (h = strhash(key))
+#include <wondermacros/array/hash_table.h>
 
 
 #define NAME PrimFunc
 #include "x/class_generate.h"
 
 #define FUNC(cname,name,body)                     \
-static Object* W_CAT(__,cname)(Object* args) \
+static Object* W_CAT(__,cname)(Object* args, EvalContext* context) \
 {                                           \
     body                                    \
 }
@@ -27,7 +34,7 @@ CONSTRUCT
 {
     static const struct {
         char* name;
-        Object* (*func)(Object* args);
+        Object* (*func)(Object* args, EvalContext* context);
     } map[] = {
 #define FUNC(Cname,Name,body) { .name = # Name, .func = W_CAT(__,Cname), },
 #include "primfunc.h"

@@ -47,6 +47,11 @@ CONSTRUCT
     W_DYNAMIC_ARRAY_PUSH(self->readtable['\''], Quote___read);
 
     self->quote = W_NEW(Quote);
+
+
+    W_HASH_TABLE_PUSH(intern_map_t, self->classes, "Int", &Int__class_instance);
+    W_HASH_TABLE_PUSH(intern_map_t, self->classes, "String", &String__class_instance);
+
 }
 
 w_read_status_t

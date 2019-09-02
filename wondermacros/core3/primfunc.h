@@ -13,12 +13,6 @@
         arg && W_OBJECT_IS(arg, T); args = CDR(args), arg = args ? CAR(args):NULL)
 
 
-FUNC(pr,pr,
-    FOR_EACH_ARG(Int,arg)
-        printf(" %d\n", arg->value);
-    return NULL;
-)
-
 FUNC(slot_value,slot-value,
     Object* obj = CAR(args);
     Symbol* sym = CADR(args);
@@ -29,6 +23,25 @@ FUNC(slot_value,slot-value,
     }
 
     return property->klass->_new(NULL, W_REF_VOID_PTR(obj, property->offset));
+)
+
+
+FUNC(find_class,find-class,
+    Symbol* sym = CAR(args);
+
+    W_HASH_TABLE_FOR_EACH_MATCH(intern_map_t, match, context->lisp->classes, sym->name) {
+        _Class* klass = W_NEW(_Class, ._klass = match->value);
+        return klass;
+    }
+
+    return NULL;
+)
+
+FUNC(class_name,class-name,
+    _Class* klass = CAR(args);
+    Symbol* sym = W_CALL(context->lisp,intern)(klass->_klass->name, strlen(klass->_klass->name));
+
+    return sym;
 )
 
 FUNC(add,+,
