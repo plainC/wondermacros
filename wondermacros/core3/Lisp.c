@@ -8,6 +8,9 @@
 #include "String.h"
 #include "WhiteSpace.h"
 #include "EvalContext.h"
+#include "True.h"
+#include "Nil.h"
+#include "Character.h"
 #include "Quote.h"
 #include "hash_func.h"
 #include "oo_introspection.h"
@@ -33,6 +36,10 @@ CONSTRUCT
     for (int ch = '0'; ch <= '9'; ++ch) {
         W_DYNAMIC_ARRAY_PUSH(self->readtable[ch], Int___read);
     }
+
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['t'], True___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['n'], Nil___read);
+
     for (char ch = 'A'; ch <= 'Z'; ++ch)
         W_DYNAMIC_ARRAY_PUSH(self->readtable[ch], Symbol___read);
     for (char ch = 'a'; ch <= 'z'; ++ch)
@@ -45,12 +52,16 @@ CONSTRUCT
     W_DYNAMIC_ARRAY_PUSH(self->readtable['('], Cons___read);
     W_DYNAMIC_ARRAY_PUSH(self->readtable['\"'], String___read);
     W_DYNAMIC_ARRAY_PUSH(self->readtable['\''], Quote___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['#'], Character___read);
 
     self->quote = W_NEW(Quote);
-
+    self->t = W_NEW(True);
 
     W_HASH_TABLE_PUSH(intern_map_t, self->classes, "Int", &Int__class_instance);
     W_HASH_TABLE_PUSH(intern_map_t, self->classes, "String", &String__class_instance);
+    W_HASH_TABLE_PUSH(intern_map_t, self->classes, "Symbol", &Symbol__class_instance);
+    W_HASH_TABLE_PUSH(intern_map_t, self->classes, "Lisp", &Lisp__class_instance);
+    W_HASH_TABLE_PUSH(intern_map_t, self->classes, "True", &True__class_instance);
 
 }
 
@@ -73,6 +84,16 @@ bool
 METHOD(register_reader)(int priority, char ch, bool (*accept)(const char*, const char**))
 {
     self->readtable[ch] = accept;
+}
+
+bool
+METHOD(has_mapping)(char ch, readtable_func* func)
+{
+    size_t size = W_DYNAMIC_ARRAY_GET_SIZE(self->readtable[ch]);
+    for (size_t i = 0; i < size; i++)
+        if (self->readtable[ch][i] == func)
+            return true;
+    return false;
 }
 
 Symbol*
@@ -131,7 +152,7 @@ METHODV(repl)
         if (o)
             W_CALL(o,print)(stdout);
         else
-            printf("NIL");
+            printf("nil");
     } while (true);
 }
 

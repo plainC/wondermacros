@@ -48,8 +48,10 @@ class Lisp
     intern_map_t* classes
     readtable_func* readtable[256]
     Quote* quote
+    True* t
 
     construct
+    bool has_mapping(char ch, readtable_func* func)
     bool add_class(Class* klass)
     Symbol* intern(const char* name, size_t len)
     Object* read()
@@ -60,6 +62,18 @@ class Lisp
 class Int
     int64_t value
     override print
+    override _read
+
+class True
+    override print
+    override _read
+
+class Character
+    char value
+    override print
+    override _read
+
+class Nil
     override _read
 
 class _Class

@@ -26,6 +26,25 @@ FUNC(slot_value,slot-value,
 )
 
 
+FUNC(class_of,class-of,
+    Object* obj = CAR(args);
+
+    return W_NEW(_Class, ._klass = obj->klass);
+)
+
+
+FUNC(class_slots,class-slots,
+    _Class* _klass = CAR(args);
+    Class* klass = _klass->_klass;
+
+    Object* slots = NULL;
+    for (int i=0; klass->properties[i].name; i++) {
+        slots = W_NEW(Cons, .car = W_CALL(context->lisp,intern)(klass->properties[i].name, strlen(klass->properties[i].name)), .cdr = slots);
+    }
+    return slots;
+)
+
+
 FUNC(find_class,find-class,
     Symbol* sym = CAR(args);
 
@@ -33,7 +52,7 @@ FUNC(find_class,find-class,
         _Class* klass = W_NEW(_Class, ._klass = match->value);
         return klass;
     }
-
+    printf("Not found\n");
     return NULL;
 )
 

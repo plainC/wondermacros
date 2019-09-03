@@ -37,7 +37,7 @@ STATIC_METHOD(_read)(const char** str, size_t* size, Lisp* lisp, Object** ret)
 
     const char* p = *str+1;
 
-    while ((*size - (p - *str)) && lisp->readtable[*p] && lisp->readtable[*p][0] == Symbol___read) {
+    while ((*size - (p - *str)) && W_CALL(lisp,has_mapping)(*p, Symbol___read)) {
         ++p;
     }
 
