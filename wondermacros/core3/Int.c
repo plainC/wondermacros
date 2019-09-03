@@ -32,8 +32,12 @@ STATIC_METHOD(_read)(const char** str, size_t* size, Lisp* lisp, Object** ret)
     if (!first_is_digit && p - *str == 1)
         return W_READ_NOK;
 
+    char buf[p - *str + 1];
+    memcpy(buf, *str, p-*str);
+    buf[p-*str] = 0;
+
     *size -= p - *str;
-    *ret = W_NEW(Int, .value = atoi(*str));
+    *ret = W_NEW(Int, .value = atoi(buf));
     *str = p;
     return W_READ_OK;
 }

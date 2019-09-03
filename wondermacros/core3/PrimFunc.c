@@ -8,6 +8,8 @@
 #include "Cons.h"
 #include "Symbol.h"
 #include "_Class.h"
+#include "String.h"
+#include "Character.h"
 #include <ctype.h>
 #include <string.h>
 #include "oo_introspection.h"
@@ -24,6 +26,7 @@
 #define FUNC(cname,name,body)                     \
 static Object* W_CAT(__,cname)(Object* args, EvalContext* context) \
 {                                           \
+    static const char* _fn_ = # name; \
     body                                    \
 }
 #include "primfunc.h"

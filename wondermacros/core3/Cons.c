@@ -23,11 +23,12 @@ METHOD(print)(FILE* out)
         if (!W_OBJECT_IS(self->cdr, Cons)) {
             fprintf(out, ". ");
             W_CALL(self->cdr,print)(out);
-            break;
+            goto done;
         }
         self = self->cdr;
     }
     W_CALL(self->car,print)(out);
+  done:
     fprintf(out, ")");
 }
 
@@ -53,7 +54,8 @@ evlis(Cons* exprs, EvalContext* context)
 {
     Cons* list = NULL;
     while (exprs) {
-        list = W_NEW(Cons, .car = W_CALL(exprs->car,eval)(context), .cdr = list);
+        Object* obj = exprs->car ? W_CALL(exprs->car,eval)(context) : NULL; 
+        list = W_NEW(Cons, .car = obj, .cdr = list);
         exprs = exprs->cdr;
     }
     REVERSE(list);
@@ -71,7 +73,6 @@ METHOD(eval)(EvalContext* context)
     Object* func = W_CALL(self->car,eval)(context);
     return apply(func, evlis(self->cdr, context), context);
 }
-
 
 w_read_status_t
 STATIC_METHOD(_read)(const char** str, size_t* size, Lisp* lisp, Object** ret)
@@ -95,7 +96,6 @@ STATIC_METHOD(_read)(const char** str, size_t* size, Lisp* lisp, Object** ret)
         WhiteSpace___read(str, size, lisp, ret);
     } while (**str != ')');
 
-//    reverse(list);
     /* Eat ')' */
     ++(*str);
     --(*size);
