@@ -3,6 +3,8 @@
 #include "Object.h"
 #include "Writer.h"
 #include "Int.h"
+#include "Float.h"
+#include "Ratio.h"
 #include "Symbol.h"
 #include "Cons.h"
 #include "String.h"
@@ -34,8 +36,18 @@ CONSTRUCT
     W_DYNAMIC_ARRAY_PUSH(self->readtable['\t'], WhiteSpace___read);
 
     for (int ch = '0'; ch <= '9'; ++ch) {
+        W_DYNAMIC_ARRAY_PUSH(self->readtable[ch], Float___read);
+        W_DYNAMIC_ARRAY_PUSH(self->readtable[ch], Ratio___read);
         W_DYNAMIC_ARRAY_PUSH(self->readtable[ch], Int___read);
     }
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['.'], Float___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['-'], Float___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['+'], Float___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['.'], Ratio___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['-'], Ratio___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['+'], Ratio___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['-'], Int___read);
+    W_DYNAMIC_ARRAY_PUSH(self->readtable['+'], Int___read);
 
     W_DYNAMIC_ARRAY_PUSH(self->readtable['t'], True___read);
     W_DYNAMIC_ARRAY_PUSH(self->readtable['n'], Nil___read);
@@ -57,6 +69,7 @@ CONSTRUCT
     self->quote = W_NEW(Quote);
     self->t = W_NEW(True);
 
+    W_HASH_TABLE_PUSH(intern_map_t, self->classes, "Float", &Int__class_instance);
     W_HASH_TABLE_PUSH(intern_map_t, self->classes, "Int", &Int__class_instance);
     W_HASH_TABLE_PUSH(intern_map_t, self->classes, "String", &String__class_instance);
     W_HASH_TABLE_PUSH(intern_map_t, self->classes, "Symbol", &Symbol__class_instance);

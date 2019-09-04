@@ -8,6 +8,7 @@
     struct ClassProperty* properties;                     \
     struct ClassMethod* methods;                     \
     Class** superclasses; \
+    int nbr_superclasses; \
     size_t size                                            \
     /**/
 

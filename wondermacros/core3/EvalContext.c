@@ -15,8 +15,8 @@
 #define Intern(Name) W_CALL(self->lisp,intern)(# Name, sizeof(# Name)-1)
 #define Extend(Name,Value) \
 do { \
-    Object* sym = Intern(Name); \
-    W_CALL(self,extend)(sym, Value); \
+    Symbol* sym = Intern(Name); \
+    W_CALL(self,extend)(sym, (Object*) (Value)); \
 } while (0)
 
 CONSTRUCT
@@ -34,10 +34,8 @@ void
 METHOD(extend)(Symbol* sym, Object* value)
 {
     self->list = W_NEW(Cons,
-        .car = W_NEW(Cons, .car = sym, .cdr = value),
+        .car = W_NEW(Cons, .car = (Object*) sym, .cdr = value),
         .cdr = self->list);
-
-    return self->list;
 }
 
 

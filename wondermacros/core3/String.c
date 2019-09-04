@@ -2,6 +2,7 @@
 
 #include "Object.h"
 #include <ctype.h>
+#include <string.h>
 
 
 #define NAME String

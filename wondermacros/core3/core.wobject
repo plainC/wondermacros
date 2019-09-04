@@ -59,10 +59,34 @@ class Lisp
 
     override _read
 
-class Int
+class Number
+    Number* abs()
+    bool accept_rhs(Number* rhs, void* value)
+    void add(void* value)
+
+class Int : Number
     int64_t value
     override print
     override _read
+    override abs
+    override accept_rhs
+    override add
+
+class Float : Number
+    float value
+    override print
+    override _read
+    override abs
+    override accept_rhs
+    override add
+
+class Ratio : Number
+    int64_t value[2]
+    override print
+    override _read
+    override abs
+    override accept_rhs
+    override add
 
 class True
     override print

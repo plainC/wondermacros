@@ -17,6 +17,7 @@ struct W_CAT(CLASS,__class) W_CAT(CLASS,__class_instance) = {
     .methods = W_CAT(CLASS,__methods),
     .construct = W_CAT(CLASS,__construct),
     .superclasses = W_CAT(CLASS,__superclasses),
+    .nbr_superclasses = sizeof(W_CAT(CLASS,__superclasses))/sizeof(W_CAT(CLASS,__superclasses)[0])-1,
     ._new = W_CAT(CLASS,__new),
     .free = W_CAT(CLASS,__free),
     W_CAT_OUTER(CLASS,__define)

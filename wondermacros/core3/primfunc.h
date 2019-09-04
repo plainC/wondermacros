@@ -40,17 +40,59 @@
 
 FUNC(add,+,
     CHECK_MIN_ARGC(1);
-    int sum = 0;
-    FOR_EACH_ARG(Int, arg)
-        sum += arg->value;
 
-    return W_NEW(Int, .value = sum);
+    Number* sum = CAR(args);
+    sum = sum->klass->_new(NULL, sum);
+    args = CDR(args);
+    while (args) {
+        char buf[32];
+        Number* arg = CAR(args);
+        if (W_CALL(sum,accept_rhs)(arg, buf))
+            W_CALL(sum,add)(buf);
+        else {
+            Number* _sum = arg->klass->_new(NULL, NULL);
+            if (W_CALL(_sum,accept_rhs)(sum, buf)) {
+                W_CALL(_sum,add)(buf);
+                sum = _sum;
+                W_CALL(sum,accept_rhs)(arg, buf);
+                W_CALL(sum,add)(buf);
+            } else
+                exception("%s: unable to convert type",_fn_);
+        }
+        args = CDR(args);
+    }
+
+    return sum;
+)
+
+
+FUNC(abs,abs,
+    CHECK_ARGC(1);
+    Number* nbr = NUMBER(CAR(args));
+    return W_CALLV(nbr,abs);
 )
 
 
 FUNC(cons,cons,
     CHECK_ARGC(2);
     return CONS(CAR(args),CADR(args));
+)
+
+
+FUNC(car,car,
+    CHECK_ARGC(1);
+    if (!CAR(args))
+        return NULL;
+    CHECK_ARG_TYPE(0, Cons);
+    return CAAR(args);
+)
+
+FUNC(cdr,cdr,
+    CHECK_ARGC(1);
+    if (!CAR(args))
+        return NULL;
+    CHECK_ARG_TYPE(0, Cons);
+    return CDAR(args);
 )
 
 

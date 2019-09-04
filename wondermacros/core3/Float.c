@@ -2,27 +2,32 @@
 
 #include "Object.h"
 #include "Number.h"
+#include "Int.h"
 #include <ctype.h>
 #include <string.h>
 
 
-#define NAME Int
+#define NAME Float
 #include "x/class_generate.h"
 
 Number*
 METHODV(abs)
 {
     if (self->value < 0)
-        return W_NEW(Int, .value = -self->value);
+        return W_NEW(Float, .value = -self->value);
     else
-        return W_NEW(Int, .value = self->value);
+        return W_NEW(Float, .value = self->value);
 }
 
 bool
 METHOD(accept_rhs)(Number* rhs, void* value)
 {
+    if (W_OBJECT_IS(rhs, Float)) {
+        *((float*) value) = FLOAT(rhs);
+        return true;
+    }
     if (W_OBJECT_IS(rhs, Int)) {
-        *((int*) value) = INT(rhs);
+        *((float*) value) = INT(rhs);
         return true;
     }
     return false;
@@ -31,13 +36,13 @@ METHOD(accept_rhs)(Number* rhs, void* value)
 void
 METHOD(add)(void* value)
 {
-    self->value += *((int*) value);
+    self->value += *((float*) value);
 }
 
 void
 METHOD(print)(FILE* out)
 {
-    fprintf(out, "%lld", self->value);
+    fprintf(out, "%f", self->value);
 }
 
 w_read_status_t
@@ -46,16 +51,22 @@ STATIC_METHOD(_read)(const char** str, size_t* size, Lisp* lisp, Object** ret)
     if (*size == 0)
         return W_READ_NOK;
 
+    int commas = 0;
     const char* p = *str;
     bool first_is_digit = isdigit(*p);
-    if (first_is_digit || *p == '+' || *p == '-')
+    if (first_is_digit || *p == '+' || *p == '-' || *p == '.')
         ++p;
     else
         return W_READ_NOK;
 
-    while (isdigit(*p))
+    while (*p == '.' || isdigit(*p)) {
+        if (*p == '.')
+            ++commas;
         ++p;
+    }
 
+    if (commas != 1)
+        return W_READ_NOK;
     if (!first_is_digit && p - *str == 1)
         return W_READ_NOK;
 
@@ -64,11 +75,11 @@ STATIC_METHOD(_read)(const char** str, size_t* size, Lisp* lisp, Object** ret)
     buf[p-*str] = 0;
 
     *size -= p - *str;
-    *ret = W_NEW(Int, .value = atoi(buf));
+    *ret = W_NEW(Float, .value = atof(buf));
     *str = p;
     return W_READ_OK;
 }
 
 
-#define NAME Int
+#define NAME Float
 #include "x/class_vtable.h"

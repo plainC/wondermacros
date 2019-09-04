@@ -1,4 +1,4 @@
-#define CLASS_NAME(Name) &W_CAT(Name,__class_instance),
+#define CLASS_NAME(Name) (Class*) &W_CAT(Name,__class_instance),
 #define INTERFACE_NAME(...)
 #define VAR(...)
 #define OVERRIDE(...)

@@ -49,7 +49,7 @@ struct UnitTest {
     const char* name;
 };
 
-#define W_OBJECT_IS(o,Class) ((o)->klass == &W_CAT(Class,__class_instance))
+#define W_OBJECT_IS(o,Class) ((o)->klass == (void*) (&W_CAT(Class,__class_instance)))
 #include "lisp.h"
 
 #endif

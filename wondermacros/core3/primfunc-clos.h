@@ -7,11 +7,48 @@ FUNC(class_name,class-name,
     return sym;
 )
 
+
 FUNC(class_of,class-of,
     CHECK_ARGC(1);
     Object* obj = CAR(args);
 
     return W_NEW(_Class, ._klass = obj->klass);
+)
+
+
+FUNC(class_precedence_list,class-precedence-list,
+    CHECK_ARGC(1);
+    CHECK_ARG_TYPE(0, _Class);
+    Class* klass = ((_Class*) CAR(args))->_klass;
+    Cons* list = NULL;
+    for (int i=0; klass->superclasses[i]; i++)
+        list = CONS(W_NEW(_Class, ._klass = klass->superclasses[i]), list);
+
+    return list;
+)
+
+
+FUNC(class_direct_superclass,class-direct-superclass,
+    CHECK_ARGC(1);
+    CHECK_ARG_TYPE(0, _Class);
+    Class* klass = ((_Class*) CAR(args))->_klass;
+
+    return klass->nbr_superclasses > 1 ? W_NEW(_Class, ._klass = klass->superclasses[klass->nbr_superclasses - 2]) : NULL;
+)
+
+
+FUNC(subtypep,subtypep,
+    CHECK_ARGC(2);
+    CHECK_ARG_TYPE(0, _Class);
+    CHECK_ARG_TYPE(1, Symbol);
+    Class* klass = ((_Class*) CAR(args))->_klass;
+    Symbol* sym = SYMBOL(CADR(args));
+
+    for (int i=0; klass->superclasses[i]; i++)
+        if (strcmp(sym->name, klass->superclasses[i]->name) == 0)
+            return context->lisp->t;
+
+    return NULL;
 )
 
 
