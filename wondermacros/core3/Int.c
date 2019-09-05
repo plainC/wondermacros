@@ -35,6 +35,12 @@ METHOD(add)(void* value)
 }
 
 void
+METHOD(mul)(void* value)
+{
+    self->value *= *((int*) value);
+}
+
+void
 METHOD(print)(FILE* out)
 {
     fprintf(out, "%lld", self->value);

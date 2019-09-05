@@ -65,6 +65,33 @@ FUNC(add,+,
     return sum;
 )
 
+FUNC(mul,*,
+    CHECK_MIN_ARGC(1);
+
+    Number* prod = CAR(args);
+    prod = prod->klass->_new(NULL, prod);
+    args = CDR(args);
+    while (args) {
+        char buf[32];
+        Number* arg = CAR(args);
+        if (W_CALL(prod,accept_rhs)(arg, buf))
+            W_CALL(prod,mul)(buf);
+        else {
+            Number* _prod = arg->klass->_new(NULL, NULL);
+            if (W_CALL(_prod,accept_rhs)(prod, buf)) {
+                W_CALL(_prod,add)(buf);
+                prod = _prod;
+                W_CALL(prod,accept_rhs)(arg, buf);
+                W_CALL(prod,mul)(buf);
+            } else
+                exception("%s: unable to convert type",_fn_);
+        }
+        args = CDR(args);
+    }
+
+    return prod;
+)
+
 
 FUNC(abs,abs,
     CHECK_ARGC(1);

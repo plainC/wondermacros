@@ -43,6 +43,13 @@ METHOD(add)(void* value)
 }
 
 void
+METHOD(mul)(void* value)
+{
+    self->value[0] = ((int64_t*) value)[0] * self->value[0];
+    self->value[1] = ((int64_t*) value)[1] * self->value[1];
+}
+
+void
 METHOD(print)(FILE* out)
 {
     fprintf(out, "%lld/%lld", self->value[0], self->value[1]);

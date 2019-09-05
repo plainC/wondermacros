@@ -24,5 +24,11 @@ METHOD(add)(void* value)
 {
 }
 
+void
+METHOD(mul)(void* value)
+{
+}
+
+
 #define NAME Number
 #include "x/class_vtable.h"

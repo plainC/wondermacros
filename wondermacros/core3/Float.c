@@ -40,6 +40,12 @@ METHOD(add)(void* value)
 }
 
 void
+METHOD(mul)(void* value)
+{
+    self->value *= *((float*) value);
+}
+
+void
 METHOD(print)(FILE* out)
 {
     fprintf(out, "%f", self->value);

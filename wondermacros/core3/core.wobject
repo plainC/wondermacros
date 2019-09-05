@@ -63,6 +63,7 @@ class Number
     Number* abs()
     bool accept_rhs(Number* rhs, void* value)
     void add(void* value)
+    void mul(void* value)
 
 class Int : Number
     int64_t value
@@ -71,6 +72,7 @@ class Int : Number
     override abs
     override accept_rhs
     override add
+    override mul
 
 class Float : Number
     float value
@@ -79,6 +81,7 @@ class Float : Number
     override abs
     override accept_rhs
     override add
+    override mul
 
 class Ratio : Number
     int64_t value[2]
@@ -87,6 +90,7 @@ class Ratio : Number
     override abs
     override accept_rhs
     override add
+    override mul
 
 class True
     override print
