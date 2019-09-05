@@ -126,13 +126,6 @@ class EvalContext
     void extend(Symbol* sym, Object* value)
 
 
-class BinOp
-    bin_op_t type
-    Object* lhs
-    Object* rhs
-    override eval
-
-
 class String
     char* cstr
     override print

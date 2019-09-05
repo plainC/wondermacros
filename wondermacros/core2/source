@@ -1,4 +1,0 @@
-#!/bin/sh
-
-gcc -DWDEBUG_EXPAND=1 -E -P -I . -I .. $1 | indent -l 500 -i 4
-
