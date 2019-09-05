@@ -1,0 +1,16 @@
+#define CLASS _Class
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define _Class__define \
+    Object__define \
+    CLASS_NAME(_Class) \
+    VAR(_klass, /* name */ \
+        Class*, /* C type */ \
+        , /* Array dimensions */ \
+        NULL, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    OVERRIDE(_Class,print) \
+    /**/

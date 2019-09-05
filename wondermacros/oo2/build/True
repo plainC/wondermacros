@@ -1,0 +1,11 @@
+#define CLASS True
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define True__define \
+    Object__define \
+    CLASS_NAME(True) \
+    OVERRIDE(True,print) \
+    OVERRIDE(True,_read) \
+    /**/

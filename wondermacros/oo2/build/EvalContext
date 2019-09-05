@@ -1,0 +1,31 @@
+#define CLASS EvalContext
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 1
+#define HAS_DESTRUCT 0
+
+#define EvalContext__define \
+    Object__define \
+    CLASS_NAME(EvalContext) \
+    VAR(lisp, /* name */ \
+        Lisp*, /* C type */ \
+        , /* Array dimensions */ \
+        &Lisp__class_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    VAR(list, /* name */ \
+        Object*, /* C type */ \
+        , /* Array dimensions */ \
+        &Object__class_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    METHOD(EvalContext, /* Class name */ \
+        1, /* Is member */ \
+        Object*, /* C return type */ \
+        assoc, /* Name */ \
+        (Object* key)  /* Arguments */) \
+    METHOD(EvalContext, /* Class name */ \
+        1, /* Is member */ \
+        void, /* C return type */ \
+        extend, /* Name */ \
+        (Symbol* sym, Object* value)  /* Arguments */) \
+    /**/

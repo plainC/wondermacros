@@ -1,0 +1,38 @@
+#define CLASS Object
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 1
+#define HAS_DESTRUCT 0
+
+#define Object__define \
+    CLASS_NAME(Object) \
+    METHOD(Object, /* Class name */ \
+        1, /* Is member */ \
+        Object*, /* C return type */ \
+        eval, /* Name */ \
+        (EvalContext* context)  /* Arguments */) \
+    METHOD(Object, /* Class name */ \
+        1, /* Is member */ \
+        bool, /* C return type */ \
+        equal, /* Name */ \
+        (Object* other)  /* Arguments */) \
+    METHOD(Object, /* Class name */ \
+        1, /* Is member */ \
+        void, /* C return type */ \
+        print, /* Name */ \
+        (FILE* out)  /* Arguments */) \
+    METHOD(Object, /* Class name */ \
+        0, /* Is member */ \
+        w_read_status_t, /* C return type */ \
+        _read, /* Name */ \
+        (const char** str, size_t* size, Lisp* lisp, Object** ret)  /* Arguments */) \
+    METHOD(Object, /* Class name */ \
+        0, /* Is member */ \
+        bool, /* C return type */ \
+        to_json, /* Name */ \
+        (Object** self, Writer* writer)  /* Arguments */) \
+    METHOD(Object, /* Class name */ \
+        0, /* Is member */ \
+        void, /* C return type */ \
+        _test, /* Name */ \
+        (int x)  /* Arguments */) \
+    /**/

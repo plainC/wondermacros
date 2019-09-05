@@ -1,0 +1,21 @@
+#define CLASS Int
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define Int__define \
+    Number__define \
+    CLASS_NAME(Int) \
+    VAR(value, /* name */ \
+        int64_t, /* C type */ \
+        , /* Array dimensions */ \
+        &wobject_int64__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    OVERRIDE(Int,print) \
+    OVERRIDE(Int,_read) \
+    OVERRIDE(Int,abs) \
+    OVERRIDE(Int,accept_rhs) \
+    OVERRIDE(Int,add) \
+    OVERRIDE(Int,mul) \
+    /**/

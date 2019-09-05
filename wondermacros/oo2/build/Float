@@ -1,0 +1,21 @@
+#define CLASS Float
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define Float__define \
+    Number__define \
+    CLASS_NAME(Float) \
+    VAR(value, /* name */ \
+        float, /* C type */ \
+        , /* Array dimensions */ \
+        NULL, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    OVERRIDE(Float,print) \
+    OVERRIDE(Float,_read) \
+    OVERRIDE(Float,abs) \
+    OVERRIDE(Float,accept_rhs) \
+    OVERRIDE(Float,add) \
+    OVERRIDE(Float,mul) \
+    /**/

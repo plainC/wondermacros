@@ -1,0 +1,17 @@
+#define CLASS String
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define String__define \
+    Object__define \
+    CLASS_NAME(String) \
+    VAR(cstr, /* name */ \
+        char*, /* C type */ \
+        , /* Array dimensions */ \
+        &wobject_cstring__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    OVERRIDE(String,print) \
+    OVERRIDE(String,_read) \
+    /**/

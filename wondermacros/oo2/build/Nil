@@ -1,0 +1,10 @@
+#define CLASS Nil
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define Nil__define \
+    Object__define \
+    CLASS_NAME(Nil) \
+    OVERRIDE(Nil,_read) \
+    /**/

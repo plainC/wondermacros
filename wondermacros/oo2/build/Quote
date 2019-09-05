@@ -1,0 +1,12 @@
+#define CLASS Quote
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define Quote__define \
+    SpecialForm__define \
+    CLASS_NAME(Quote) \
+    OVERRIDE(Quote,print) \
+    OVERRIDE(Quote,eval) \
+    OVERRIDE(Quote,eval_special) \
+    /**/

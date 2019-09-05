@@ -1,0 +1,23 @@
+#define CLASS Cons
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define Cons__define \
+    Object__define \
+    CLASS_NAME(Cons) \
+    VAR(car, /* name */ \
+        Object*, /* C type */ \
+        , /* Array dimensions */ \
+        &Object__class_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    VAR(cdr, /* name */ \
+        Object*, /* C type */ \
+        , /* Array dimensions */ \
+        &Object__class_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    OVERRIDE(Cons,print) \
+    OVERRIDE(Cons,eval) \
+    /**/

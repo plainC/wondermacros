@@ -1,0 +1,21 @@
+#define CLASS StringRef
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define StringRef__define \
+    String__define \
+    CLASS_NAME(StringRef) \
+    VAR(object, /* name */ \
+        Object*, /* C type */ \
+        , /* Array dimensions */ \
+        &Object__class_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    VAR(property, /* name */ \
+        ClassProperty*, /* C type */ \
+        , /* Array dimensions */ \
+        NULL, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    /**/

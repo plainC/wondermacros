@@ -1,0 +1,19 @@
+#define CLASS Writer
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define Writer__define \
+    Object__define \
+    CLASS_NAME(Writer) \
+    METHOD(Writer, /* Class name */ \
+        1, /* Is member */ \
+        bool, /* C return type */ \
+        put_char, /* Name */ \
+        (char ch)  /* Arguments */) \
+    METHOD(Writer, /* Class name */ \
+        1, /* Is member */ \
+        bool, /* C return type */ \
+        put_cstr, /* Name */ \
+        (const char* str)  /* Arguments */) \
+    /**/

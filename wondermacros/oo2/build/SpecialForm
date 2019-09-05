@@ -1,0 +1,14 @@
+#define CLASS SpecialForm
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define SpecialForm__define \
+    Object__define \
+    CLASS_NAME(SpecialForm) \
+    METHOD(SpecialForm, /* Class name */ \
+        1, /* Is member */ \
+        Object*, /* C return type */ \
+        eval_special, /* Name */ \
+        (Object* args, EvalContext* context)  /* Arguments */) \
+    /**/

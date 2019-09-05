@@ -1,0 +1,63 @@
+#define CLASS Lisp
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 1
+#define HAS_DESTRUCT 0
+
+#define Lisp__define \
+    Object__define \
+    CLASS_NAME(Lisp) \
+    VAR(interned, /* name */ \
+        intern_map_t*, /* C type */ \
+        , /* Array dimensions */ \
+        NULL, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    VAR(classes, /* name */ \
+        intern_map_t*, /* C type */ \
+        , /* Array dimensions */ \
+        NULL, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    VAR(readtable, /* name */ \
+        readtable_func*, /* C type */ \
+        [256], /* Array dimensions */ \
+        NULL, /* Class */ \
+        NULL, /* Key class */ \
+        &((int[]) { W_CLASS_KIND_STATIC_ARRAY, 1, 256 }) /* Class argument */) \
+    VAR(quote, /* name */ \
+        Quote*, /* C type */ \
+        , /* Array dimensions */ \
+        &Quote__class_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    VAR(t, /* name */ \
+        True*, /* C type */ \
+        , /* Array dimensions */ \
+        &True__class_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    METHOD(Lisp, /* Class name */ \
+        1, /* Is member */ \
+        bool, /* C return type */ \
+        has_mapping, /* Name */ \
+        (char ch, readtable_func* func)  /* Arguments */) \
+    METHOD(Lisp, /* Class name */ \
+        1, /* Is member */ \
+        bool, /* C return type */ \
+        add_class, /* Name */ \
+        (Class* klass)  /* Arguments */) \
+    METHOD(Lisp, /* Class name */ \
+        1, /* Is member */ \
+        Symbol*, /* C return type */ \
+        intern, /* Name */ \
+        (const char* name, size_t len)  /* Arguments */) \
+    METHODV(Lisp, /* Class name */ \
+        1, /* Is member */ \
+        Object*, /* C return type */ \
+        read /* Name */) \
+    METHODV(Lisp, /* Class name */ \
+        1, /* Is member */ \
+        void, /* C return type */ \
+        repl /* Name */) \
+    OVERRIDE(Lisp,_read) \
+    /**/

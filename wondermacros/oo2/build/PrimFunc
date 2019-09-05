@@ -1,0 +1,28 @@
+#define CLASS PrimFunc
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 1
+#define HAS_DESTRUCT 0
+
+#define PrimFunc__define \
+    Object__define \
+    CLASS_NAME(PrimFunc) \
+    VAR(name, /* name */ \
+        char*, /* C type */ \
+        , /* Array dimensions */ \
+        &wobject_cstring__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    VAR(cname, /* name */ \
+        char*, /* C type */ \
+        , /* Array dimensions */ \
+        &wobject_cstring__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    VAR(func, /* name */ \
+        prim_func, /* C type */ \
+        , /* Array dimensions */ \
+        NULL, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    OVERRIDE(PrimFunc,print) \
+    /**/

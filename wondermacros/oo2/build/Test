@@ -1,0 +1,106 @@
+#define CLASS Test
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 1
+#define HAS_DESTRUCT 1
+
+#define Test__define \
+    Object__define \
+    CLASS_NAME(Test) \
+    VAR(a, /* name */ \
+        int, /* C type */ \
+        , /* Array dimensions */ \
+        &wobject_int__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    VAR(b, /* name */ \
+        int, /* C type */ \
+        [53], /* Array dimensions */ \
+        &wobject_int__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        &((int[]) { W_CLASS_KIND_STATIC_ARRAY, 1, 53 }) /* Class argument */) \
+    VAR(c, /* name */ \
+        int, /* C type */ \
+        [22][56], /* Array dimensions */ \
+        &wobject_int__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        &((int[]) { W_CLASS_KIND_STATIC_ARRAY, 2, 22, 56 }) /* Class argument */) \
+    VAR(d, /* name */ \
+        int, /* C type */ \
+        [1][2][3], /* Array dimensions */ \
+        &wobject_int__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        &((int[]) { W_CLASS_KIND_STATIC_ARRAY, 3, 1, 2, 3 }) /* Class argument */) \
+    VAR(e, /* name */ \
+        int*, /* C type */ \
+        , /* Array dimensions */ \
+        &wobject_int__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        &((int[]) { W_CLASS_KIND_DYNAMIC_ARRAY }) /* Class argument */) \
+    VAR(f, /* name */ \
+        int*, /* C type */ \
+        , /* Array dimensions */ \
+        &wobject_int__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        &((int[]) { W_CLASS_KIND_DYNAMIC_STACK }) /* Class argument */) \
+    VAR(g, /* name */ \
+        int*, /* C type */ \
+        , /* Array dimensions */ \
+        &wobject_int__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        &((int[]) { W_CLASS_KIND_DEQUE }) /* Class argument */) \
+    VAR(h, /* name */ \
+        int*, /* C type */ \
+        , /* Array dimensions */ \
+        &wobject_int__simple_instance, /* Class */ \
+        &int__simple_instance, /* Key class */ \
+        &((int[]) { W_CLASS_KIND_HASH }) /* Class argument */) \
+    VAR(i, /* name */ \
+        char*, /* C type */ \
+        , /* Array dimensions */ \
+        &wobject_cstring__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    VAR(j, /* name */ \
+        const char*, /* C type */ \
+        , /* Array dimensions */ \
+        &wobject_cstring__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    VAR(k, /* name */ \
+        const char*, /* C type */ \
+        [3][2], /* Array dimensions */ \
+        &wobject_cstring__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        &((int[]) { W_CLASS_KIND_STATIC_ARRAY, 2, 3, 2 }) /* Class argument */) \
+    VAR(next, /* name */ \
+        Test*, /* C type */ \
+        [4], /* Array dimensions */ \
+        &Test__class_instance, /* Class */ \
+        NULL, /* Key class */ \
+        &((int[]) { W_CLASS_KIND_STATIC_ARRAY, 1, 4 }) /* Class argument */) \
+    METHODV(Test, /* Class name */ \
+        1, /* Is member */ \
+        void, /* C return type */ \
+        foo /* Name */) \
+    METHOD(Test, /* Class name */ \
+        1, /* Is member */ \
+        void, /* C return type */ \
+        goo, /* Name */ \
+        (int x)  /* Arguments */) \
+    METHOD(Test, /* Class name */ \
+        1, /* Is member */ \
+        void, /* C return type */ \
+        boo, /* Name */ \
+        (int x, int y)  /* Arguments */) \
+    METHODV(Test, /* Class name */ \
+        0, /* Is member */ \
+        void, /* C return type */ \
+        foo_s /* Name */) \
+    METHOD(Test, /* Class name */ \
+        0, /* Is member */ \
+        void, /* C return type */ \
+        goo_s, /* Name */ \
+        (int x)  /* Arguments */) \
+    SIGNALV(jump) \
+    SIGNAL(moved,(int x, int y)) \
+    /**/

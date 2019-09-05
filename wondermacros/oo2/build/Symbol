@@ -1,0 +1,23 @@
+#define CLASS Symbol
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define Symbol__define \
+    Object__define \
+    CLASS_NAME(Symbol) \
+    VAR(name, /* name */ \
+        char*, /* C type */ \
+        , /* Array dimensions */ \
+        &wobject_cstring__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    VAR(value, /* name */ \
+        Object*, /* C type */ \
+        , /* Array dimensions */ \
+        &Object__class_instance, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    OVERRIDE(Symbol,print) \
+    OVERRIDE(Symbol,eval) \
+    /**/

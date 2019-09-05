@@ -1,0 +1,10 @@
+#define CLASS WhiteSpace
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define WhiteSpace__define \
+    Object__define \
+    CLASS_NAME(WhiteSpace) \
+    OVERRIDE(WhiteSpace,_read) \
+    /**/

@@ -1,0 +1,28 @@
+#define CLASS Number
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define Number__define \
+    Object__define \
+    CLASS_NAME(Number) \
+    METHODV(Number, /* Class name */ \
+        1, /* Is member */ \
+        Number*, /* C return type */ \
+        abs /* Name */) \
+    METHOD(Number, /* Class name */ \
+        1, /* Is member */ \
+        bool, /* C return type */ \
+        accept_rhs, /* Name */ \
+        (Number* rhs, void* value)  /* Arguments */) \
+    METHOD(Number, /* Class name */ \
+        1, /* Is member */ \
+        void, /* C return type */ \
+        add, /* Name */ \
+        (void* value)  /* Arguments */) \
+    METHOD(Number, /* Class name */ \
+        1, /* Is member */ \
+        void, /* C return type */ \
+        mul, /* Name */ \
+        (void* value)  /* Arguments */) \
+    /**/

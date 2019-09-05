@@ -1,0 +1,17 @@
+#define CLASS Character
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define Character__define \
+    Object__define \
+    CLASS_NAME(Character) \
+    VAR(value, /* name */ \
+        char, /* C type */ \
+        , /* Array dimensions */ \
+        NULL, /* Class */ \
+        NULL, /* Key class */ \
+        NULL /* Class argument */) \
+    OVERRIDE(Character,print) \
+    OVERRIDE(Character,_read) \
+    /**/

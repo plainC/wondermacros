@@ -1,0 +1,21 @@
+#define CLASS Ratio
+#define KIND W_KIND_CLASS
+#define HAS_CONSTRUCT 0
+#define HAS_DESTRUCT 0
+
+#define Ratio__define \
+    Number__define \
+    CLASS_NAME(Ratio) \
+    VAR(value, /* name */ \
+        int64_t, /* C type */ \
+        [2], /* Array dimensions */ \
+        &wobject_int64__simple_instance, /* Class */ \
+        NULL, /* Key class */ \
+        &((int[]) { W_CLASS_KIND_STATIC_ARRAY, 1, 2 }) /* Class argument */) \
+    OVERRIDE(Ratio,print) \
+    OVERRIDE(Ratio,_read) \
+    OVERRIDE(Ratio,abs) \
+    OVERRIDE(Ratio,accept_rhs) \
+    OVERRIDE(Ratio,add) \
+    OVERRIDE(Ratio,mul) \
+    /**/
