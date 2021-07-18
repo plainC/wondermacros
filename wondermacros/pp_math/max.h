@@ -1,4 +1,4 @@
-/* (C) Copyright 2019 J.P. Iivonen <wondermacros@yahoo.com>
+/* (C) Copyright 2019,2021 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
