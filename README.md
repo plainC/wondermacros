@@ -52,6 +52,15 @@ control structures.
 Best Regards,
 J.P. Iivonen <wondermacros@yahoo.com>
 
+## Release Tags
+
+* v0.0.1 (Jul 18 2021): Adds pre-processor sorting and various other tools.
+  * Add W_SEQ_SWAP, W_SEQ_SORT, W_SEQ_MIN, W_SEQ_MAX and W_SEQ_MEDIAN
+  * W_PP_MIN and W_PP_MAX and take up to six arguments (originally just two)
+  * Add W_PP_SORT and W_PP_MEDIAN
+  * Add W_PP_EVEN and W_PP_ODD
+* v0.0.0 (Jun 2 2019): Initial version.
+
 ## Projects using Wondermacros:
 * [Wrest](https://github.com/plainC/wrest) - A Generic Dynamic Loading Based REST Server
 * [Web Elements](https://github.com/plainC/web_elements) - HTML & CSS Generation and String Template System in C
