@@ -34,7 +34,7 @@
  *** Arg:         seq  a Boost pre-processor sequence, e.g. (1)(2)(3)
  *** Arg:         a    an index in the sequence
  *** Arg:         b    an index in the sequence
- *** Description: Use W_SEQ_SWAP to swap two positions in a Boost pre-processor sequnece.
+ *** Description: Use W_SEQ_SWAP to swap two positions in a Boost pre-processor sequence.
  ***/
 #define W_SEQ_SWAP(seq, a, b)                                     \
     BOOST_PP_SEQ_REPLACE(                                         \
