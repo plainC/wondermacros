@@ -27,7 +27,6 @@ Wondermacros aims to provide full programming platform toolkit including
 * Various X-macros to expand code from compact specifications in consistent
 manner
 * Iterative generic tree traversal macros: for_each_preorder and for_each_postorder
-* Generic tuples
 * Generic array manipulation: get_size (for statically allocated arrays), for_each, for_each_reversed, move_left, and move_right
 * Pointer macros
 * Sorting macros
@@ -92,7 +91,6 @@ To run all tests type ./test/wondermacros after building the test set.
 ### [Doubly-Linked List](https://github.com/plainC/wondermacros/blob/master/docs/dlist.md)
 ### [Singly-Linked Circular List](https://github.com/plainC/wondermacros/blob/master/docs/cslist.md)
 ### [Trees](https://github.com/plainC/wondermacros/blob/master/docs/tree.md)
-### [Tuples](https://github.com/plainC/wondermacros/blob/master/docs/tuple.md)
 
 ## Others
 ### [Object-Oriented API](https://github.com/plainC/wondermacros/blob/master/docs/object_api.md)
@@ -103,6 +101,7 @@ To run all tests type ./test/wondermacros after building the test set.
 ### [Macro Programming Helppers](https://github.com/plainC/wondermacros/blob/master/docs/meta.md)
 ### [Pre-Processor Character and String Tools](https://github.com/plainC/wondermacros/blob/master/docs/pp_char.md)
 ### [Pre-Processor Mathematic Tools](https://github.com/plainC/wondermacros/blob/master/docs/pp_math.md)
+### [Pre-Processor Sequence Utilities](https://github.com/plainC/wondermacros/blob/master/docs/seq.md)
 ### [Mathematics](https://github.com/plainC/wondermacros/blob/master/docs/math.md)
 ### [Sorting](https://github.com/plainC/wondermacros/blob/master/docs/sorting.md)
 ### [String Handling](https://github.com/plainC/wondermacros/blob/master/docs/string.md)
