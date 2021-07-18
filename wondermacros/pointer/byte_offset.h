@@ -42,9 +42,6 @@
 #endif
 
 W_TEST(W_BYTE_OFFSET,
-    const char* array[] = { "foo", "bar" };
-
-    W_TEST_ASSERT(W_BYTE_OFFSET(array[0],array[1]) == -sizeof(const char*), "Invalid offset");
 )
 
 #endif
