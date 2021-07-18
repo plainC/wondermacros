@@ -32,6 +32,14 @@ n                    an integer between 0...255
 #### Description
     Use W_PP_MAX to get the maximum  value of given arguments at pre-processing time.
     
+### W_PP_MEDIAN(...)
+#### Arguments
+```C
+...                  variadic number of integer arguments (up to six arguments) between 0...255
+```
+#### Description
+    Use W_PP_MEDIAN to get the median of values of arguments at pre-processing time. The result is a boost sequence. If the given arguments contain even number of arguments, the result sequence has two values, the first one being less or equal to the second. For instance, W_PP_MEDIAN(5,2,7) returns (5) and W_PP_MEDIAN(7,2,4,5) returns (4)(5).
+    
 ### W_PP_MIN(...)
 #### Arguments
 ```C
