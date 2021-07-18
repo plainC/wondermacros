@@ -26,7 +26,7 @@
 #define __W_SEQ_MIN_H
 
 #include <boost/preprocessor/seq/elem.hpp>
-#include <wondermacros/sorting/pp_sort.h>
+#include <wondermacros/seq/sort.h>
 
 /***
  *** Name:        W_SEQ_MIN
@@ -35,7 +35,7 @@
  *** Description: Use W_SEQ_MIN to get the maximum  value in a given sequence at pre-processing time. For example, W_SEQ_MIN((5)(2)(0)) expands to 0.
  ***/
 #define W_SEQ_MIN(seq) \
-    BOOST_PP_SEQ_ELEM(0, W_PP_SORT_SEQ(seq))
+    BOOST_PP_SEQ_ELEM(0, W_SEQ_SORT(seq))
 
 
 /*Unit Test*/

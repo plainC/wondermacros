@@ -25,7 +25,7 @@
 #ifndef __W_PP_MIN_H
 #define __W_PP_MIN_H
 
-#include <wondermacros/sorting/pp_sort.h>
+#include <wondermacros/seq/sort.h>
 
 /***
  *** Name:        W_PP_MIN
@@ -33,7 +33,7 @@
  *** Arg:         ...    variadic number of integer arguments (up to six arguments) between 0...255
  *** Description: Use W_PP_MIN to get the minimum of value of arguments at pre-processing time.
  ***/
-#define W_PP_MIN(...) BOOST_PP_SEQ_ELEM(0, W_PP_SORT_SEQ(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__)))
+#define W_PP_MIN(...) BOOST_PP_SEQ_ELEM(0, W_SEQ_SORT(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__)))
 
 /*Unit Test*/
 

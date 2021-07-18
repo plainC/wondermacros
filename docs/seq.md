@@ -15,3 +15,11 @@ seq                  a Boost pre-processor sequence of integer values (up to six
 ```
 #### Description
     Use W_SEQ_MIN to get the maximum  value in a given sequence at pre-processing time. For example, W_SEQ_MIN((5)(2)(0)) expands to 0.
+    
+### W_SEQ_SORT(seq)
+#### Arguments
+```C
+seq                  a Boost pre-processor sequence to be sorted (maximum sequence length is six).
+```
+#### Description
+    Use W_SEQ_SORT to sort a Boost pre-processor sequence at pre-processing time. For example, W_SEQ_SORT((5)(3)(0)(7)) expands to (0)(3)(5)(7).

@@ -28,7 +28,7 @@
 #include <boost/preprocessor/arithmetic/dec.hpp>
 #include <boost/preprocessor/seq/elem.hpp>
 #include <boost/preprocessor/seq/size.hpp>
-#include <wondermacros/sorting/pp_sort.h>
+#include <wondermacros/seq/sort.h>
 
 /***
  *** Name:        W_SEQ_MAX
@@ -37,7 +37,7 @@
  *** Description: Use W_SEQ_MAX to get the maximum  value in a given sequence at pre-processing time.
  ***/
 #define W_SEQ_MAX(seq) \
-    BOOST_PP_SEQ_ELEM(BOOST_PP_DEC(BOOST_PP_SEQ_SIZE(seq)), W_PP_SORT_SEQ(seq))
+    BOOST_PP_SEQ_ELEM(BOOST_PP_DEC(BOOST_PP_SEQ_SIZE(seq)), W_SEQ_SORT(seq))
 
 
 /*Unit Test*/
