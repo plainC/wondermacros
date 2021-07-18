@@ -46,8 +46,7 @@
 #endif
 
 W_TEST(W_ID,
-    int W_ID(i) = 42;
-    W_TEST_ASSERT(W_ID(i) == 42, "Value mismatch");
+    int W_ID(i) = 42;    W_TEST_ASSERT(W_ID(i) == 42, "Value mismatch");
 )
 
 #endif
