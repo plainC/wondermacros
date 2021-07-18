@@ -8,6 +8,14 @@ n                    an integer between 0...255
 #### Description
     Use W_PP_DECOMPOSE to get the decomposition of n at pre-processing time. The representation of the decomposition is a boost sequence. For example, W_PP_DECOMPOSE(156) expands to ((13)(1)) ((3)(1)) ((2)(2)), which means 13^1 * 3^1 * 2^2.
     
+### W_PP_EVEN(a)
+#### Arguments
+```C
+a                    a constant integer between 0...255
+```
+#### Description
+    Use W_PP_EVEN to check whether a constant value is even at pre-processing time.
+    
 ### W_PP_IS_PRIME(n)
 #### Arguments
 ```C
@@ -33,6 +41,14 @@ b                    a constant integer between 0...255
 ```
 #### Description
     Use W_PP_MIN to get the minimum of two values at pre-processing time.
+    
+### W_PP_ODD(a)
+#### Arguments
+```C
+a                    a constant integer between 0...255
+```
+#### Description
+    Use W_PP_ODD to check whether a constant value is odd at pre-processing time.
     
 ### W_PP_POW(a,b)
 #### Arguments

@@ -22,19 +22,19 @@
  * SOFTWARE.
  */
 
-#ifndef __W_PP_ODD_H
-#define __W_PP_ODD_H
+#ifndef __W_PP_EVEN_H
+#define __W_PP_EVEN_H
 
 #include <boost/preprocessor/arithmetic/mod.hpp>
-#include <boost/preprocessor/comparison/greater.hpp>
+#include <boost/preprocessor/comparison/equal.hpp>
 
 /***
- *** Name:        W_PP_ODD
- *** Proto:       W_PP_ODD(a)
+ *** Name:        W_PP_EVEN
+ *** Proto:       W_PP_EVEN(a)
  *** Arg:         a    a constant integer between 0...255
- *** Description: Use W_PP_ODD to check whether a constant value is odd at pre-processing time.
+ *** Description: Use W_PP_EVEN to check whether a constant value is even at pre-processing time.
  ***/
-#define W_PP_ODD(a) BOOST_PP_GREATER(BOOST_PP_MOD(a, 2), 0)
+#define W_PP_EVEN(a) BOOST_PP_EQUAL(BOOST_PP_MOD(a, 2), 0)
 
 /*Unit Test*/
 
@@ -42,14 +42,14 @@
 # define W_TEST(...)
 #endif
 
-W_TEST(W_PP_ODD,
-#if W_PP_ODD(2) == 0
+W_TEST(W_PP_EVEN,
+#if W_PP_EVEN(2) == 1
     W_TEST_ASSERT(1, "ok");
 #else
     W_TEST_ASSERT(0, "failed");
 #endif
 
-#if W_PP_ODD(3) == 1
+#if W_PP_EVEN(3) == 0
     W_TEST_ASSERT(1, "ok");
 #else
     W_TEST_ASSERT(0, "failed");

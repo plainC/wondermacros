@@ -109,6 +109,14 @@ i                    the exponent
 #### Description
     Use W_STRINGIZE_AND_LIST to stringize arguments to text and comma separate them.
     
+### W_STRINGIZE_WITH_COMMA(...)
+#### Arguments
+```C
+...                  arguments to be converted to text with commas
+```
+#### Description
+    Use W_STRINGIZE_WITH_COMMA to stringize arguments to text with commas.
+    
 ### W_WRAP(id,...)
 #### Arguments
 ```C
