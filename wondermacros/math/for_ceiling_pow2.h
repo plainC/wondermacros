@@ -55,7 +55,7 @@ W_TEST(W_FOR_CEILING_POW2,
             t = t - ((t >> 1) & 0x55555555);
             t = (t & 0x33333333) + ((t >> 2) & 0x33333333);
             t = (((t + (t >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
-            W_TEST_ASSERT(i==0 || (t == 1 && p >= i), "%d failed (%d)", i, t);
+            W_TEST_ASSERT(i==0 || (t == 1 && p >= i), "%zu failed (%d)", i, t);
         }
 )
 
