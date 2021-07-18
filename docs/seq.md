@@ -23,3 +23,13 @@ seq                  a Boost pre-processor sequence to be sorted (maximum sequen
 ```
 #### Description
     Use W_SEQ_SORT to sort a Boost pre-processor sequence at pre-processing time. For example, W_SEQ_SORT((5)(3)(0)(7)) expands to (0)(3)(5)(7).
+    
+### W_SEQ_SWAP(seq,a,b)
+#### Arguments
+```C
+seq                  a Boost pre-processor sequence, e.g. (1)(2)(3)
+a                    an index in the sequence
+b                    an index in the sequence
+```
+#### Description
+    Use W_SEQ_SWAP to swap two positions in a Boost pre-processor sequnece.

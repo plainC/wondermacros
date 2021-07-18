@@ -29,7 +29,7 @@
 #include <boost/preprocessor/comparison/greater.hpp>
 #include <boost/preprocessor/control/if.hpp>
 #include <boost/preprocessor/variadic/to_seq.hpp>
-#include <wondermacros/meta/seq_swap.h>
+#include <wondermacros/seq/swap.h>
 
 
 /***

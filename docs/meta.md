@@ -93,16 +93,6 @@ i                    the exponent
     The expansion is done at pre-processing time. Redefine W_PP_POW2_TYPE
     to modify the numeric literal type.  The default is unsigned (U).
     
-### W_SEQ_SWAP(seq,a,b)
-#### Arguments
-```C
-seq                  a Boost pre-processor sequence, e.g. (1)(2)(3)
-a                    an index in the sequence
-b                    an index in the sequence
-```
-#### Description
-    Use W_SEQ_SWAP to swap two positions in a Boost pre-processor sequnece.
-    
 ### W_STRINGIZE(...)
 #### Arguments
 ```C

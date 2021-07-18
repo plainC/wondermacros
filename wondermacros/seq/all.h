@@ -7,3 +7,4 @@ W_TEST_GROUP("Pre-Processor Sequence Macros")
 #include <wondermacros/seq/max.h>
 #include <wondermacros/seq/min.h>
 #include <wondermacros/seq/sort.h>
+#include <wondermacros/seq/swap.h>
