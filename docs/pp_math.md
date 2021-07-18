@@ -24,23 +24,21 @@ n                    an integer between 0...255
 #### Description
     Use W_PP_IS_PRIME to test if given argument is a prime number during pre-processing.
     
-### W_PP_MAX(a,b)
+### W_PP_MAX(...)
 #### Arguments
 ```C
-a                    a constant integer between 0...255
-b                    a constant integer between 0...255
+...                  a variadic number of integer arguments (up to six arguments) between 0...255
 ```
 #### Description
-    Use W_PP_MAX to get the maximum of two values at pre-processing time.
+    Use W_PP_MAX to get the maximum  value of given arguments at pre-processing time.
     
-### W_PP_MIN(a,b)
+### W_PP_MIN(...)
 #### Arguments
 ```C
-a                    a constant integer between 0...255
-b                    a constant integer between 0...255
+...                  variadic number of integer arguments (up to six arguments) between 0...255
 ```
 #### Description
-    Use W_PP_MIN to get the minimum of two values at pre-processing time.
+    Use W_PP_MIN to get the minimum of value of arguments at pre-processing time.
     
 ### W_PP_ODD(a)
 #### Arguments

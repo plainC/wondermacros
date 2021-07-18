@@ -1,4 +1,4 @@
-/* (C) Copyright 2019 J.P. Iivonen <wondermacros@yahoo.com>
+/* (C) Copyright 2019,2021 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -25,17 +25,15 @@
 #ifndef __W_PP_MIN_H
 #define __W_PP_MIN_H
 
-#include <boost/preprocessor/comparison/less_equal.hpp>
-#include <boost/preprocessor/control/if.hpp>
+#include <wondermacros/sorting/pp_sort.h>
 
 /***
  *** Name:        W_PP_MIN
- *** Proto:       W_PP_MIN(a,b)
- *** Arg:         a    a constant integer between 0...255
- *** Arg:         b    a constant integer between 0...255
- *** Description: Use W_PP_MIN to get the minimum of two values at pre-processing time.
+ *** Proto:       W_PP_MIN(...)
+ *** Arg:         ...    variadic number of integer arguments (up to six arguments) between 0...255
+ *** Description: Use W_PP_MIN to get the minimum of value of arguments at pre-processing time.
  ***/
-#define W_PP_MIN(a,b) BOOST_PP_IF(BOOST_PP_LESS_EQUAL(a,b),a,b)
+#define W_PP_MIN(...) BOOST_PP_SEQ_ELEM(0, W_PP_SORT_SEQ(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__)))
 
 /*Unit Test*/
 
@@ -51,6 +49,30 @@ W_TEST(W_PP_MIN,
 #endif
 
 #if W_PP_MIN(8,4) == 4
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+#if W_PP_MIN(8,4,9) == 4
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+#if W_PP_MIN(8,77,4,9) == 4
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+#if W_PP_MIN(8,77,4,5,9) == 4
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+#if W_PP_MIN(8,77,4,5,9,3) == 3
     W_TEST_ASSERT(1, "ok");
 #else
     W_TEST_ASSERT(0, "failed");

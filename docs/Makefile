@@ -17,9 +17,9 @@ DOCS =                   \
 	pp_math.md       \
 	pp_char.md       \
 	meta.md          \
+	seq.md           \
 	sorting.md       \
 	string.md        \
-	tuple.md         \
 	test.md          \
 	tree.md          \
 
@@ -99,9 +99,9 @@ math.md:
 	echo "## Mathematics" > math.md
 	cd ../wondermacros/math && ../../tools/api_tool.pl >> ../../docs/math.md
 
-tuple.md:
-	echo "## Tuples" > tuple.md
-	cd ../wondermacros/tuples && ../../tools/api_tool.pl >> ../../docs/tuple.md
+seq.md:
+	echo "## Pre-processor Sequence Utilities" > seq.md
+	cd ../wondermacros/seq && ../../tools/api_tool.pl >> ../../docs/seq.md
 
 misc.md:
 	echo "## Misc" > misc.md

@@ -25,17 +25,15 @@
 #ifndef __W_PP_MAX_H
 #define __W_PP_MAX_H
 
-#include <boost/preprocessor/comparison/greater_equal.hpp>
-#include <boost/preprocessor/control/if.hpp>
+#include <wondermacros/seq/max.h>
 
 /***
  *** Name:        W_PP_MAX
- *** Proto:       W_PP_MAX(a,b)
- *** Arg:         a    a constant integer between 0...255
- *** Arg:         b    a constant integer between 0...255
- *** Description: Use W_PP_MAX to get the maximum of two values at pre-processing time.
+ *** Proto:       W_PP_MAX(...)
+ *** Arg:         ...    a variadic number of integer arguments (up to six arguments) between 0...255
+ *** Description: Use W_PP_MAX to get the maximum  value of given arguments at pre-processing time.
  ***/
-#define W_PP_MAX(a,b) BOOST_PP_IF(BOOST_PP_GREATER_EQUAL(a,b),a,b)
+#define W_PP_MAX(...) W_SEQ_MAX(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__))
 
 /*Unit Test*/
 
