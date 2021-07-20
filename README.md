@@ -54,6 +54,9 @@ J.P. Iivonen <wondermacros@yahoo.com>
 
 ## Release Tags
 
+* v0.0.2 (Jul 20 2021): Adds pre-processor combination and permutation tools.
+  * Add W_PP_FOR_EACH_COMBINATION
+  * Add W_PP_FOR_EACH_PERMUTATION
 * v0.0.1 (Jul 18 2021): Adds pre-processor sorting and various other tools.
   * Add W_SEQ_SWAP, W_SEQ_SORT, W_SEQ_MIN, W_SEQ_MAX and W_SEQ_MEDIAN
   * W_PP_MIN and W_PP_MAX and take up to six arguments (originally just two)
