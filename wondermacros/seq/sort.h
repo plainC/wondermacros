@@ -32,11 +32,16 @@
 #include <wondermacros/seq/swap.h>
 
 
+#ifndef W_SEQ_SORT_COMPARE
+#define W_SEQ_SORT_COMPARE BOOST_PP_GREATER
+#include <boost/preprocessor/comparison/greater.hpp>
+#endif
+
 /***
  *** Name:        W_SEQ_SORT
  *** Proto:       W_SEQ_SORT(seq)
  *** Arg:         seq    a Boost pre-processor sequence to be sorted (maximum sequence length is six).
- *** Description: Use W_SEQ_SORT to sort a Boost pre-processor sequence at pre-processing time. For example, W_SEQ_SORT((5)(3)(0)(7)) expands to (0)(3)(5)(7).
+ *** Description: Use W_SEQ_SORT to sort a Boost pre-processor sequence at pre-processing time. For example, W_SEQ_SORT((5)(3)(0)(7)) expands to (0)(3)(5)(7). In order to change the comparison macro, redefine W_SEQ_SORT_COMPARE before applying the macro.
  ***/
 #define W_SEQ_SORT(seq)                                            \
     BOOST_PP_CAT(_PP_SORT_,BOOST_PP_SEQ_SIZE(seq))(seq)
@@ -56,10 +61,10 @@
 #define _PP_SORT_6(seq) \
    _PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(seq, 0, 1), 2, 3), 4, 5), 0, 2), 3, 5), 1, 4), 0, 1), 2, 3), 4, 5), 1, 2), 3, 4), 2, 3)
 
-#define _PP_SORT(seq, lhs, rhs)                                 \
-     BOOST_PP_IF(BOOST_PP_GREATER(BOOST_PP_SEQ_ELEM(lhs, seq),  \
-                                  BOOST_PP_SEQ_ELEM(rhs, seq)), \
-         W_SEQ_SWAP(seq, lhs, rhs),                             \
+#define _PP_SORT(seq, lhs, rhs)                                   \
+     BOOST_PP_IF(W_SEQ_SORT_COMPARE(BOOST_PP_SEQ_ELEM(lhs, seq),  \
+                                    BOOST_PP_SEQ_ELEM(rhs, seq)), \
+         W_SEQ_SWAP(seq, lhs, rhs),                               \
          seq)
 
 

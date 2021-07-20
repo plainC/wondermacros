@@ -36,7 +36,7 @@
  *** Name:        W_SEQ_MEDIAN
  *** Proto:       W_SEQ_MEDIAN(seq)
  *** Arg:         seq    a Boost pre-processor sequence to be sorted (maximum sequence length is six).
- *** Description: Use W_SEQ_MEDIAN to get the median of a Boost pre-processor sequence at pre-processing time. The result is a sequence having one or two values depending on the length of the given sequence. For even length, the result sequence has two values, the first one being always less or equal to the second value. For example, W_SEQ_MEDIAN((5)(3)(0)(7)) expands to (3)(5).
+ *** Description: Use W_SEQ_MEDIAN to get the median of a Boost pre-processor sequence at pre-processing time. The result is a sequence having one or two values depending on the length of the given sequence. For even length, the result sequence has two values, the first one being always less or equal to the second value. For example, W_SEQ_MEDIAN((5)(3)(0)(7)) expands to (3)(5). In order to change the comparison macro, redefine W_SEQ_SORT_COMPARE before applying the macro.
  ***/
 #define W_SEQ_MEDIAN(seq)                                                         \
     BOOST_PP_EXPR_IF(                                                             \
