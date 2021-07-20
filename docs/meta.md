@@ -93,6 +93,15 @@ n                    number of elements to be picked from the sequence
 #### Description
     Use W_PP_FOR_EACH_COMBINATION to expand a given macro for each combination in a sequence. For example, W_PP_FOR_EACH_COMBINATION(TEST_TRANSLATE, (en)(de)(fr)(es)(it)(pl)(cs)(pt), 2) expands TEST_TRANSLATE taking two arguments for each possible combination of the given eight langauge identifiers.
     
+### W_PP_FOR_EACH_PERMUTATION(macro,seq)
+#### Arguments
+```C
+macro                a macro to be expanded for each permutation (the macro should take the same number of arguments than in the sequenece)
+seq                  a sequence from which the permutations are taken (maximum length is six elements)
+```
+#### Description
+    Use W_PP_FOR_EACH_PERMUTATION to expand a given macro for each permutation of a sequence. The permutations are expanded in gray coded order. For example, W_PP_FOR_EACH_PERMUTATION(TEST, (a)(b)(c)) expands to TEST(a,b,c) TEST(b,a,c) TEST(c,a,b) TEST(a,c,b) TEST(b,c,a) TEST(c,b,a).
+    
 ### W_PP_POW2(i)
 #### Arguments
 ```C
