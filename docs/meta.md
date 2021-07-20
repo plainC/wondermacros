@@ -83,6 +83,16 @@ id2                  label one
 #### Description
     Use W_LABEL to construct line-unique labels.
     
+### W_PP_FOR_EACH_COMBINATION(macro,seq,n)
+#### Arguments
+```C
+macro                a macro to be expanded for each selected element set (the macro should take n arguments)
+seq                  a sequence from which combinations are taken (maximum length is eight elements)
+n                    number of elements to be picked from the sequence
+```
+#### Description
+    Use W_PP_FOR_EACH_COMBINATION to expand a given macro for each combination in a sequence. For example, W_PP_FOR_EACH_COMBINATION(TEST_TRANSLATE, (en)(de)(fr)(es)(it)(pl)(cs)(pt), 2) expands TEST_TRANSLATE taking two arguments for each possible combination of the given eight langauge identifiers.
+    
 ### W_PP_POW2(i)
 #### Arguments
 ```C
