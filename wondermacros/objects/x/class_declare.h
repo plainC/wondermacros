@@ -21,7 +21,7 @@ TO_HEADER
 #endif
 
 #include <wondermacros/objects/x/class_struct.h>
-#include <wondermacros/objects/x/object_instance.h>
+#include <wondermacros/objects/x/instance_struct.h>
 #include <wondermacros/objects/x/method_typedefs.h>
 #include <wondermacros/objects/x/new.h>
 #include <wondermacros/objects/x/dup.h>

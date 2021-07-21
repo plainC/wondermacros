@@ -1,6 +1,6 @@
 #define W_FORWARD_DECLARE
 #include <wondermacros/objects/x/class_struct.h>
-#include <wondermacros/objects/x/object_instance.h>
+#include <wondermacros/objects/x/instance_struct.h>
 #undef W_FORWARD_DECLARE
 
 #undef CLASS

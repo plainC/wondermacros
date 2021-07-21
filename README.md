@@ -12,6 +12,8 @@ issues but they require specific expertices. So a word of warning is in place.
 Wondermacros is for C11 standard at the moment. Most of the macros are fully
 functional with C99 as well.
 
+An alphabetical [macro reference is here](https://github.com/plainC/wondermacros/tree/master/wondermacros/README.md).
+
 Wondermacros aims to provide full programming platform toolkit including
 * Object-Oriented Programming Toolkit
 * Generic Data Structures
