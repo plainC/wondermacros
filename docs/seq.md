@@ -1,5 +1,31 @@
 ## Pre-processor Sequence Utilities
     
+### W_SEQ_FOR_EACH_COMBINATION(seq, n, macro)
+#### Arguments
+```C
+seq                  a sequence from which combinations are taken (maximum length is eight elements)
+n                    number of elements to be picked from the sequence
+macro                a macro to be expanded for each selected element set (the macro should take n arguments)
+```
+#### Description
+    Use W_SEQ_FOR_EACH_COMBINATION to expand a given macro for each combination in a sequence.
+    The combinations are expanded in lexicographical order.  For example,
+    W_SEQ_FOR_EACH_COMBINATION((en)(de)(fr)(es)(it)(pl)(cs)(pt), 2, TEST_TRANSLATE)
+    expands TEST_TRANSLATE taking two arguments for each possible combination of the given
+    eight langauge identifiers.
+    
+### W_SEQ_FOR_EACH_PERMUTATION(seq,macro)
+#### Arguments
+```C
+seq                  a sequence from which the permutations are taken (maximum length is six elements)
+macro                a macro to be expanded for each permutation (the macro should take the same number of arguments than in the sequenece)
+```
+#### Description
+    Use W_SEQ_FOR_EACH_PERMUTATION to expand a given macro for each permutation
+    of a sequence. The permutations are expanded in gray coded order. For example,
+    W_SEQ_FOR_EACH_PERMUTATION((a)(b)(c), TEST) expands to TEST(a,b,c) TEST(b,a,c)
+    TEST(c,a,b) TEST(a,c,b) TEST(b,c,a) TEST(c,b,a).
+    
 ### W_SEQ_MAX(...)
 #### Arguments
 ```C

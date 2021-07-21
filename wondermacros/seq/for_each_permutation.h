@@ -1,5 +1,5 @@
-#ifndef _W_PP_FOR_EACH_PERMUTATION_H
-#define _W_PP_FOR_EACH_PERMUTATION_H
+#ifndef _W_SEQ_FOR_EACH_PERMUTATION_H
+#define _W_SEQ_FOR_EACH_PERMUTATION_H
 
 /* (C) Copyright 2021 J.P. Iivonen <wondermacros@yahoo.com>
  *
@@ -31,13 +31,16 @@
 
 
 /***
- *** Name:        W_PP_FOR_EACH_PERMUTATION
- *** Proto:       W_PP_FOR_EACH_PERMUTATION(macro,seq)
- *** Arg:         macro  a macro to be expanded for each permutation (the macro should take the same number of arguments than in the sequenece)
+ *** Name:        W_SEQ_FOR_EACH_PERMUTATION
+ *** Proto:       W_SEQ_FOR_EACH_PERMUTATION(seq,macro)
  *** Arg:         seq    a sequence from which the permutations are taken (maximum length is six elements)
- *** Description: Use W_PP_FOR_EACH_PERMUTATION to expand a given macro for each permutation of a sequence. The permutations are expanded in gray coded order. For example, W_PP_FOR_EACH_PERMUTATION(TEST, (a)(b)(c)) expands to TEST(a,b,c) TEST(b,a,c) TEST(c,a,b) TEST(a,c,b) TEST(b,c,a) TEST(c,b,a).
+ *** Arg:         macro  a macro to be expanded for each permutation (the macro should take the same number of arguments than in the sequenece)
+ *** Description: Use W_SEQ_FOR_EACH_PERMUTATION to expand a given macro for each permutation
+ ***              of a sequence. The permutations are expanded in gray coded order. For example,
+ ***              W_SEQ_FOR_EACH_PERMUTATION((a)(b)(c), TEST) expands to TEST(a,b,c) TEST(b,a,c)
+ ***              TEST(c,a,b) TEST(a,c,b) TEST(b,c,a) TEST(c,b,a).
  ***/
-#define W_PP_FOR_EACH_PERMUTATION(macro, seq) \
+#define W_SEQ_FOR_EACH_PERMUTATION(seq, macro) \
     W_CAT(_W_PP_FOR_EACH_PERMUTATION_, BOOST_PP_SEQ_SIZE(seq))(macro,seq)
 
 #define _W_PP_FOR_EACH_PERMUTATION_0(macro,seq)
@@ -929,8 +932,8 @@
 # define _PERMUTATION_TEST(a,b,c) int W_CAT(a,b,c)=42;
 #endif
 
-W_TEST(W_PP_FOR_EACH_PERMUTATION,
-    W_PP_FOR_EACH_PERMUTATION(_PERMUTATION_TEST, (a)(b)(c))
+W_TEST(W_SEQ_FOR_EACH_PERMUTATION,
+    W_SEQ_FOR_EACH_PERMUTATION((a)(b)(c), _PERMUTATION_TEST)
     W_TEST_ASSERT(abc == 42, "Value mismatch");
     W_TEST_ASSERT(bac == 42, "Value mismatch");
     W_TEST_ASSERT(cab == 42, "Value mismatch");

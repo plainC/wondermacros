@@ -10,5 +10,3 @@
 #include <wondermacros/meta/id.h>
 #include <wondermacros/meta/stringize.h>
 #include <wondermacros/meta/stringize_and_list.h>
-#include <wondermacros/meta/pp_for_each_combination.h>
-#include <wondermacros/meta/pp_for_each_permutation.h>

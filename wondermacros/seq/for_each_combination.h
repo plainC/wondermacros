@@ -1,5 +1,5 @@
-#ifndef _W_PP_FOR_EACH_COMBINATION_H
-#define _W_PP_FOR_EACH_COMBINATION_H
+#ifndef _W_SEQ_FOR_EACH_COMBINATION_H
+#define _W_SEQ_FOR_EACH_COMBINATION_H
 
 /* (C) Copyright 2021 J.P. Iivonen <wondermacros@yahoo.com>
  *
@@ -31,14 +31,18 @@
 
 
 /***
- *** Name:        W_PP_FOR_EACH_COMBINATION
- *** Proto:       W_PP_FOR_EACH_COMBINATION(macro,seq,n)
- *** Arg:         macro  a macro to be expanded for each selected element set (the macro should take n arguments)
+ *** Name:        W_SEQ_FOR_EACH_COMBINATION
+ *** Proto:       W_SEQ_FOR_EACH_COMBINATION(seq, n, macro)
  *** Arg:         seq    a sequence from which combinations are taken (maximum length is eight elements)
  *** Arg:         n      number of elements to be picked from the sequence
- *** Description: Use W_PP_FOR_EACH_COMBINATION to expand a given macro for each combination in a sequence. For example, W_PP_FOR_EACH_COMBINATION(TEST_TRANSLATE, (en)(de)(fr)(es)(it)(pl)(cs)(pt), 2) expands TEST_TRANSLATE taking two arguments for each possible combination of the given eight langauge identifiers.
+ *** Arg:         macro  a macro to be expanded for each selected element set (the macro should take n arguments)
+ *** Description: Use W_SEQ_FOR_EACH_COMBINATION to expand a given macro for each combination in a sequence.
+ ***              The combinations are expanded in lexicographical order.  For example,
+ ***              W_SEQ_FOR_EACH_COMBINATION((en)(de)(fr)(es)(it)(pl)(cs)(pt), 2, TEST_TRANSLATE)
+ ***              expands TEST_TRANSLATE taking two arguments for each possible combination of the given
+ ***              eight langauge identifiers.
  ***/
-#define W_PP_FOR_EACH_COMBINATION(macro, seq, n) \
+#define W_SEQ_FOR_EACH_COMBINATION(seq, n, macro) \
     W_CAT(_W_PP_FOR_EACH_COMBINATION_, BOOST_PP_SEQ_SIZE(seq), _, n)(macro,seq)
 
 
@@ -141,8 +145,8 @@
 # define _COMBINATION_TEST(lhs,rhs) int W_CAT(lhs,rhs)=42;
 #endif
 
-W_TEST(W_PP_FOR_EACH_COMBINATION,
-    W_PP_FOR_EACH_COMBINATION(_COMBINATION_TEST, (a)(b)(c)(d)(e)(f)(g)(h), 2)
+W_TEST(W_SEQ_FOR_EACH_COMBINATION,
+    W_SEQ_FOR_EACH_COMBINATION((a)(b)(c)(d)(e)(f)(g)(h), 2, _COMBINATION_TEST)
     W_TEST_ASSERT(ab == 42, "Value mismatch");
     W_TEST_ASSERT(ef == 42, "Value mismatch");
     W_TEST_ASSERT(gh == 42, "Value mismatch");
