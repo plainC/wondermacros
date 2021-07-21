@@ -41,7 +41,9 @@
  *** Name:        W_SEQ_SORT
  *** Proto:       W_SEQ_SORT(seq)
  *** Arg:         seq    a Boost pre-processor sequence to be sorted (maximum sequence length is six).
- *** Description: Use W_SEQ_SORT to sort a Boost pre-processor sequence at pre-processing time. For example, W_SEQ_SORT((5)(3)(0)(7)) expands to (0)(3)(5)(7). In order to change the comparison macro, redefine W_SEQ_SORT_COMPARE before applying the macro.
+ *** Description: Use W_SEQ_SORT to sort a Boost pre-processor sequence at pre-processing time.
+ ***              For example, W_SEQ_SORT((5)(3)(0)(7)) expands to (0)(3)(5)(7). In order to change
+ ***              the comparison macro, redefine W_SEQ_SORT_COMPARE before applying the macro.
  ***/
 #define W_SEQ_SORT(seq)                                            \
     BOOST_PP_CAT(_PP_SORT_,BOOST_PP_SEQ_SIZE(seq))(seq)

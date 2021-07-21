@@ -32,7 +32,8 @@
  *** Name:        W_SEQ_MIN
  *** Proto:       W_SEQ_MIN(...)
  *** Arg:         seq    a Boost pre-processor sequence of integer values (up to six values) between 0...255
- *** Description: Use W_SEQ_MIN to get the maximum  value in a given sequence at pre-processing time. For example, W_SEQ_MIN((5)(2)(0)) expands to 0.
+ *** Description: Use W_SEQ_MIN to get the maximum  value in a given sequence at pre-processing time.
+ ***              For example, W_SEQ_MIN((5)(2)(0)) expands to 0.
  ***/
 #define W_SEQ_MIN(seq) \
     BOOST_PP_SEQ_ELEM(0, W_SEQ_SORT(seq))
