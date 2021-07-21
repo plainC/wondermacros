@@ -20,7 +20,7 @@ TO_HEADER
 # include INCLUDE_3
 #endif
 
-#include <wondermacros/objects/x/class.h>
+#include <wondermacros/objects/x/class_struct.h>
 #include <wondermacros/objects/x/object_instance.h>
 #include <wondermacros/objects/x/method_typedefs.h>
 #include <wondermacros/objects/x/new.h>

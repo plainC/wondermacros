@@ -1,5 +1,5 @@
 #define W_CLASS_GENERATE
-#include <wondermacros/objects/x/class.h>
+#include <wondermacros/objects/x/class_struct.h>
 #include <wondermacros/objects/x/object_instance.h>
 #include <wondermacros/objects/x/method_forward_declares.h>
 #undef W_CLASS_GENERATE
