@@ -60,7 +60,12 @@
 #include <wondermacros/x/code.h>
 
 /**/
-#include W_XFILE
+#ifdef W_XFILE
+# include W_XFILE
+#endif
+#ifdef W_XMACRO
+    W_XMACRO
+#endif
 /**/
 
 #undef W_NAME

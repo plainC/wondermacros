@@ -94,11 +94,14 @@ extern
 static
 #endif
 const char* W_NAME[]
-#ifdef W_XFILE
 = {
-#include W_XFILE
-}
+#ifdef W_XFILE
+# include W_XFILE
 #endif
+#ifdef W_XMACRO
+    W_XMACRO
+#endif
+}
 ;
 
 #undef W_NAME

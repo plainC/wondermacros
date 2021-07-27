@@ -89,18 +89,18 @@
 #endif
 
 
-#ifndef W_XFILE
-extern
-#endif
 #if W_STATIC
 static
 #endif
 W_TYPE W_NAME[]
-#ifdef W_XFILE
 = {
-#include W_XFILE
-}
+#ifdef W_XFILE
+# include W_XFILE
 #endif
+#ifdef W_XMACRO
+    W_XMACRO
+#endif
+}
 ;
 
 #undef W_NAME

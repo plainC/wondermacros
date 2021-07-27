@@ -28,7 +28,6 @@
 #endif
 
 
-
 #if W_CODE_INDEX == 0
 # if W_NAME_INDEX == 0
 #  define XMACRO(code,...) W_CASE(code,code)

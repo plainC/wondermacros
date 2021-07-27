@@ -1,4 +1,4 @@
-/* (C) is Copyright 2019 J.P. Iivonen <wondermacros@yahoo.com>
+/* (C) is Copyright 2019,2021 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -34,7 +34,9 @@
 #endif
 
 #ifndef W_XFILE
-# error "the specification file must be specified in W_XFILE"
+# ifndef W_XMACRO
+#  error "the specification file must be specified in W_XFILE, or, W_XMACRO should be set"
+# endif
 #endif
 
 #ifndef W_PREFIX
@@ -87,7 +89,12 @@
 
 
 enum W_NAME {
-#include W_XFILE
+#ifdef W_XFILE
+# include W_XFILE
+#endif
+#ifdef W_XMACRO
+    W_XMACRO
+#endif
 };
 
 #undef W_NAME

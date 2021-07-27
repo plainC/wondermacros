@@ -12,6 +12,21 @@ XMACRO(violet,450,cold)
 XMACRO(yellow,590,warm)
 ```
 
+Alternatively the specification can be written in to the same file by defining macro `W_XMACRO`. For instance,
+
+```C
+#define W_XMACRO \
+    XMACRO(blue,490,cold) \
+    XMACRO(green,560,warm) \
+    XMACRO(red,700,warm) \
+    XMACRO(violet,450,cold) \
+    XMACRO(yellow,590,warm) \
+    /**/
+```
+
+If you prefer the later version, do not define `W_XFILE` macro. Otherwise the the examples below work the same
+way.
+
 ### Generic Enum Type Generation
 
 In order to get a simple enumerated type from a specification file, use the following definition and inclusion.

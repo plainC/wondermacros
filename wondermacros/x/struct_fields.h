@@ -34,7 +34,9 @@
 #endif
 
 #ifndef W_XFILE
-# error "the specification file must be specified in W_XFILE"
+# ifndef W_XMACRO
+#  error "the specification file must be specified in W_XFILE, of W_XMACRO should be defined"
+# endif
 #endif
 
 #ifndef W_TYPE_INDEX
@@ -155,7 +157,12 @@
 
 struct W_NAME {
     W_PREFIX_FIELDS
-#include W_XFILE
+#ifdef W_XFILE
+# include W_XFILE
+#endif
+#ifdef W_XMACRO
+    W_XMACRO
+#endif
     W_SUFFIX_FIELDS
 };
 
