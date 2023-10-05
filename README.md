@@ -36,11 +36,6 @@ manner
 * Pre-processor mathematic macros
 * Pre-processor string (character sequence) macros
 
-This project is still a work in progress, so stay tuned. The following major
-enhancements are planned:
-* AVL tree, and heap
-* Dynamic arrays and other data structures using W_HIDDEN macros underneath does not yet support propert alignment
-
 We try not to reinvent the wheel and build on top of [Boost pre-processor
 library](https://www.boost.org/doc/libs/1_67_0/libs/preprocessor/doc/index.html).
 So Boost must be installed. Boost in general is a C++ framework but the pre-processor
