@@ -2,6 +2,7 @@ DOCS =                   \
 	array.md         \
 	pointer.md       \
 	char.md          \
+	comparison.md    \
 	debug.md         \
 	deque.md         \
 	dynamic_array.md \
@@ -52,6 +53,10 @@ dlist.md: ../wondermacros/list/dlist.h
 cslist.md: ../wondermacros/list/cslist.h
 	echo "## Singly-Linked Circular List" > cslist.md
 	cd ../wondermacros/list && ../../tools/api_tool.pl cslist.h >> ../../docs/cslist.md
+
+comparison.md: ../wondermacros/comparison/is_any_of.h
+	echo "## Comparison" > comparison.md
+	cd ../wondermacros/comparison && ../../tools/api_tool.pl is_any_of.h >> ../../docs/comparison.md
 
 tree.md: ../wondermacros/tree/for_each.h
 	echo "## Trees" > tree.md

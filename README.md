@@ -107,6 +107,7 @@ To run all tests type ./test/wondermacros after building the test set.
 ### [Generic Array Macros](https://github.com/plainC/wondermacros/blob/master/docs/array.md)
 ### [Pointer Macros](https://github.com/plainC/wondermacros/blob/master/docs/pointer.md)
 ### [Debugging](https://github.com/plainC/wondermacros/blob/master/docs/debug.md)
+### [Comparison](https://github.com/plainC/wondermacros/blob/master/docs/comparison.md)
 ### [Macro Programming Helppers](https://github.com/plainC/wondermacros/blob/master/docs/meta.md)
 ### [Pre-Processor Character and String Tools](https://github.com/plainC/wondermacros/blob/master/docs/pp_char.md)
 ### [Pre-Processor Mathematic Tools](https://github.com/plainC/wondermacros/blob/master/docs/pp_math.md)
