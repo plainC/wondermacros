@@ -48,6 +48,15 @@ offset               an offset in bytes.
 #### Description
     Use W_REF_VOID_PTR to reference a void pointer using an offset in bytes.
     
+### W_VALUES_AS_ARRAY(T, ...)
+#### Arguments
+```C
+T                    element type of the array
+...                  variadic number of values
+```
+#### Description
+    Use W_VALUES_AS_ARRAY to get a stack reference to given values without declaring temporary variables.
+    
 ### W_VARIADIC_TO_REFS(...)
 #### Arguments
 ```C
