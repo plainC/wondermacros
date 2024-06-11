@@ -58,7 +58,7 @@ seq                  a Boost pre-processor sequence of integer values (up to six
 ### W_SEQ_SORT(seq)
 #### Arguments
 ```C
-seq                  a Boost pre-processor sequence to be sorted (maximum sequence length is six).
+seq                  a Boost pre-processor sequence to be sorted (maximum sequence length is eight).
 ```
 #### Description
     Use W_SEQ_SORT to sort a Boost pre-processor sequence at pre-processing time.

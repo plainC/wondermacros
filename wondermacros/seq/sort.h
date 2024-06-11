@@ -40,7 +40,7 @@
 /***
  *** Name:        W_SEQ_SORT
  *** Proto:       W_SEQ_SORT(seq)
- *** Arg:         seq    a Boost pre-processor sequence to be sorted (maximum sequence length is six).
+ *** Arg:         seq    a Boost pre-processor sequence to be sorted (maximum sequence length is eight).
  *** Description: Use W_SEQ_SORT to sort a Boost pre-processor sequence at pre-processing time.
  ***              For example, W_SEQ_SORT((5)(3)(0)(7)) expands to (0)(3)(5)(7). In order to change
  ***              the comparison macro, redefine W_SEQ_SORT_COMPARE before applying the macro.
@@ -62,6 +62,12 @@
 
 #define _PP_SORT_6(seq) \
    _PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(seq, 0, 1), 2, 3), 4, 5), 0, 2), 3, 5), 1, 4), 0, 1), 2, 3), 4, 5), 1, 2), 3, 4), 2, 3)
+
+#define _PP_SORT_7(seq) \
+   _PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(seq, 0, 6), 2, 3), 4, 5), 0, 2), 1, 4), 3, 6), 0, 1), 2, 5), 3, 4), 1, 2), 4, 6), 2, 3), 4, 5), 1, 2), 3, 4), 5, 6)
+
+#define _PP_SORT_8(seq) \
+   _PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(_PP_SORT(seq, 0, 2), 1, 3), 4, 6), 5, 7), 0, 4), 1, 5), 2, 6), 3, 7), 0, 1), 2, 3), 4, 5), 6, 7), 2, 4), 3, 5), 1, 4), 3, 6), 1, 2), 3, 4), 5, 6)
 
 #define _PP_SORT(seq, lhs, rhs)                                   \
      BOOST_PP_IF(W_SEQ_SORT_COMPARE(BOOST_PP_SEQ_ELEM(lhs, seq),  \
@@ -141,6 +147,51 @@ W_TEST(W_SEQ_SORT,
 #endif
 
 #if BOOST_PP_SEQ_ELEM(4, W_SEQ_SORT((2)(77)(0)(4)(6))) == 77
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+/* 6 */
+#if BOOST_PP_SEQ_ELEM(5, W_SEQ_SORT((2)(3)(77)(0)(4)(6))) == 77
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+/* 7 */
+#if BOOST_PP_SEQ_ELEM(6, W_SEQ_SORT((2)(3)(7)(77)(0)(4)(6))) == 77
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+#if BOOST_PP_SEQ_ELEM(0, W_SEQ_SORT((2)(3)(7)(77)(0)(4)(6))) == 0
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+#if BOOST_PP_SEQ_ELEM(3, W_SEQ_SORT((2)(3)(7)(77)(0)(4)(6))) == 4
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+/* 8 */
+#if BOOST_PP_SEQ_ELEM(0, W_SEQ_SORT((2)(3)(7)(77)(99)(0)(4)(6))) == 0
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+#if BOOST_PP_SEQ_ELEM(7, W_SEQ_SORT((2)(3)(7)(77)(99)(0)(4)(6))) == 99
+    W_TEST_ASSERT(1, "ok");
+#else
+    W_TEST_ASSERT(0, "failed");
+#endif
+
+#if BOOST_PP_SEQ_ELEM(3, W_SEQ_SORT((2)(3)(7)(77)(99)(0)(4)(6))) == 4
     W_TEST_ASSERT(1, "ok");
 #else
     W_TEST_ASSERT(0, "failed");
