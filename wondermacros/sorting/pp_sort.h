@@ -32,7 +32,7 @@
 /***
  *** Name:        W_PP_SORT
  *** Proto:       W_PP_SORT(...)
- *** Arg:         ...    Variadic number of integer arguments (between 0 and 255) to be sorted (up to six arguments).
+ *** Arg:         ...    Variadic number of integer arguments (between 0 and 255) to be sorted (up to eight arguments).
  *** Description: Use W_PP_SORT to sort variadic number of arguments at pre-processing time. For example, W_PP_SORT(5,2,77,0) expands to 0,2,5,77.
  ***/
 #define W_PP_SORT(...) BOOST_PP_SEQ_ENUM(W_SEQ_SORT(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__)))

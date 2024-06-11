@@ -29,7 +29,7 @@ Both a and b are evaluated twice.
 ### W_PP_SORT(...)
 #### Arguments
 ```C
-...                  Variadic number of integer arguments (between 0 and 255) to be sorted (up to six arguments).
+...                  Variadic number of integer arguments (between 0 and 255) to be sorted (up to eight arguments).
 ```
 #### Description
     Use W_PP_SORT to sort variadic number of arguments at pre-processing time. For example, W_PP_SORT(5,2,77,0) expands to 0,2,5,77.
