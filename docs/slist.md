@@ -69,7 +69,16 @@ list                 a list to be prepended
 #### Arguments
 ```C
 T                    a type name (the type of the list nodes)
-list                 a list to be prepended
+list                 a list to be reversed
 ```
 #### Description
     Use W_SLIST_REVERSE to reverse a singly-linked list in-place.
+    
+### W_SLIST_LENGTH(T,list)
+#### Arguments
+```C
+T                    a type name (the type of the list nodes)
+list                 a list
+```
+#### Description
+    Use W_SLIST_LENGTH to get the length of a singly-linked list.

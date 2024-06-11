@@ -26,6 +26,7 @@
 #define __W_SLIST_H
 
 #include <wondermacros/meta/id.h>
+#include <wondermacros/functions/list_length.h>
 
 
 #ifndef W_SLIST_FIELD_NAME
@@ -130,7 +131,7 @@
  *** Name:        W_SLIST_REVERSE
  *** Proto:       W_SLIST_REVERSE(T,list)
  *** Arg:         T          a type name (the type of the list nodes)
- *** Arg:         list       a list to be prepended
+ *** Arg:         list       a list to be reversed
  *** Description: Use W_SLIST_REVERSE to reverse a singly-linked list in-place.
  ***/
 #define W_SLIST_REVERSE(T, List)                                \
@@ -144,6 +145,18 @@
         }                                                       \
         (List) = W_ID(prev);                                    \
     } while( 0 )                                                \
+    /**/
+
+
+/***
+ *** Name:        W_SLIST_LENGTH
+ *** Proto:       W_SLIST_LENGTH(T,list)
+ *** Arg:         T          a type name (the type of the list nodes)
+ *** Arg:         list       a list
+ *** Description: Use W_SLIST_LENGTH to get the length of a singly-linked list.
+ ***/
+#define W_SLIST_LENGTH(T, List)                                 \
+    (w_list_length((List), offsetof(T, W_SLIST_FIELD_NAME)))    \
     /**/
 
 
@@ -208,6 +221,9 @@ W_TEST(W_SLIST_PREPEND,
     W_SLIST_FOR_EACH(struct int_list, node, list)
         W_TEST_ASSERT(node->value == correct[ix++], "Value mismatch");
     W_TEST_ASSERT(ix == 3, "FOR_EACH failed to go through all items");
+
+    W_TEST_ASSERT(W_SLIST_LENGTH(struct int_list, list) == 3,
+                  "value mismatch");
 
     W_SLIST_FOR_EACH(struct int_list, node, list)
         free(node);
