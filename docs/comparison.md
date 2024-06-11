@@ -1,5 +1,14 @@
 ## Comparison
     
+### W_BYTE_COMPARE(buf,...)
+#### Arguments
+```C
+buf                  a buffer (or a string) to match
+...                  variadic number of bytes (or characters)
+```
+#### Description
+    Use W_BYTE_COMPARE to test if a given buffer contains given bytes. If the buffer is not \0-terminated, it must be large enough for testing.
+    
 ### W_IS_ANY_OF(value,...)
 #### Arguments
 ```C

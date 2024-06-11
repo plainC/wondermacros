@@ -56,6 +56,7 @@ cslist.md: ../wondermacros/list/cslist.h
 
 comparison.md: ../wondermacros/comparison/is_any_of.h
 	echo "## Comparison" > comparison.md
+	cd ../wondermacros/comparison && ../../tools/api_tool.pl byte_compare.h >> ../../docs/comparison.md
 	cd ../wondermacros/comparison && ../../tools/api_tool.pl is_any_of.h >> ../../docs/comparison.md
 
 tree.md: ../wondermacros/tree/for_each.h
