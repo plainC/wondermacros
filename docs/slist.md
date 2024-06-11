@@ -64,3 +64,12 @@ list                 a list to be prepended
 ```
 #### Description
     Use W_SLIST_APPEND_NAMED to append a list to another list.
+    
+### W_SLIST_REVERSE(T,list)
+#### Arguments
+```C
+T                    a type name (the type of the list nodes)
+list                 a list to be prepended
+```
+#### Description
+    Use W_SLIST_REVERSE to reverse a singly-linked list in-place.

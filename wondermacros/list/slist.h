@@ -126,6 +126,27 @@
     } while (0)
 
 
+/***
+ *** Name:        W_SLIST_REVERSE
+ *** Proto:       W_SLIST_REVERSE(T,list)
+ *** Arg:         T          a type name (the type of the list nodes)
+ *** Arg:         list       a list to be prepended
+ *** Description: Use W_SLIST_REVERSE to reverse a singly-linked list in-place.
+ ***/
+#define W_SLIST_REVERSE(T, List)                                \
+    do {                                                        \
+        T* W_ID(r) = (List);                                    \
+        T* W_ID(prev) = NULL;                                   \
+        for (T* W_ID(next); W_ID(r); W_ID(r) = W_ID(next)) {    \
+            W_ID(next) = W_ID(r)->W_SLIST_FIELD_NAME;           \
+            W_ID(r)->W_SLIST_FIELD_NAME = W_ID(prev);           \
+            W_ID(prev) = W_ID(r);                               \
+        }                                                       \
+        (List) = W_ID(prev);                                    \
+    } while( 0 )                                                \
+    /**/
+
+
 /*Unit Test*/
 
 #ifndef W_TEST
@@ -156,6 +177,11 @@ W_TEST(W_SLIST_APPEND,
     W_SLIST_FOR_EACH(struct int_list, node, list)
         W_TEST_ASSERT(node->value == correct[ix++], "Value mismatch");
     W_TEST_ASSERT(ix == 3, "FOR_EACH failed to go through all items");
+
+    W_SLIST_REVERSE(struct int_list, list);
+    ix = sizeof(correct) / sizeof(correct[0]) - 1;
+    W_SLIST_FOR_EACH(struct int_list, node, list)
+        W_TEST_ASSERT(node->value == correct[ix--], "value mismatch");
 
     W_SLIST_FOR_EACH(struct int_list, node, list)
         free(node);
