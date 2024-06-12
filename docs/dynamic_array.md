@@ -99,3 +99,16 @@ nbr_of_elems         Number of elements to be removed (default is one).
 ```
 #### Description
     Use W_DYNAMIC_ARRAY_REMOVE to remove elements from a dynamic array.
+    
+### W_DYNAMIC_ARRAY_SWAP(T, array, i, j)
+    
+#### Arguments
+```C
+T                    Type of array elementsr
+array                Array pointer
+i                    Array index
+j                    Array index
+    
+```
+#### Description
+    Use W_DYNAMIC_ARRAY_SWAP to swap elements of a dynamic array.

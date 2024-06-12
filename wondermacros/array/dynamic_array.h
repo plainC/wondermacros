@@ -1,4 +1,4 @@
-/* (C) Copyright 2018,2019 J.P. Iivonen <wondermacros@yahoo.com>
+/* (C) Copyright 2018,2019,2024 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -206,6 +206,26 @@
         W_ARRAY_MOVE_LEFT(array,W_DYNAMIC_ARRAY_SIZE(array),pos,W_ID(e));     \
         W_DYNAMIC_ARRAY_SIZE(array) -= W_ID(e);                               \
     } while (0)
+
+/***
+ *** Name:        W_DYNAMIC_ARRAY_SWAP
+ *** Proto:       W_DYNAMIC_ARRAY_SWAP(T, array, i, j)
+ ***
+ *** Arg:         T             Type of array elementsr
+ *** Arg:         array         Array pointer
+ *** Arg:         i             Array index
+ *** Arg:         j             Array index
+ ***
+ *** Description: Use W_DYNAMIC_ARRAY_SWAP to swap elements of a dynamic array.
+ ***/
+#define W_DYNAMIC_ARRAY_SWAP(T, array, i, j)         \
+    do {                                             \
+        T W_ID(t) = (array)[i];                      \
+        (array)[i] = (array)[j];                     \
+        (array)[j] = W_ID(t);                        \
+    } while( 0 )                                     \
+    /**/
+
 
 #define W_DYNAMIC_ARRAY_GROW(array)                                                    \
     do {                                                                               \

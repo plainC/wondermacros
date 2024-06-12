@@ -66,12 +66,11 @@ stack                A pointer to a dynamic stack
 #### Description
     Use W_DYNAMIC_STACK_IS_EMPTY to check if a dynamic stack is empty.
     
-### W_DYNAMIC_STACK_INIT(stack,T,init_size)
+### W_DYNAMIC_STACK_INIT(stack,init_size)
     
 #### Arguments
 ```C
 stack                A pointer to a dynamic stack
-T                    Type name of stack elements
 init_size            Initial allocation size for the stack
     
 ```

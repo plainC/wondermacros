@@ -94,10 +94,9 @@
 
 /***
  *** Name:        W_DYNAMIC_STACK_INIT
- *** Proto:       W_DYNAMIC_STACK_INIT(stack,T,init_size)
+ *** Proto:       W_DYNAMIC_STACK_INIT(stack,init_size)
  ***
  *** Arg:         stack     A pointer to a dynamic stack
- *** Arg:         T         Type name of stack elements
  *** Arg:         init_size Initial allocation size for the stack
  ***
  *** Description: Use W_DYNAMIC_STACK_INIT to initialize a dynamic stack.
