@@ -92,3 +92,14 @@ list                 a list, the new head
 ```
 #### Description
     Use W_SLIST_ATOMIC_PREPEND to prepend a list to a list atomically.
+    
+### W_SLIST_ATOMIC_STEAL_LIST(dest,list)
+#### Arguments
+```C
+dest                 destination list
+list                 original list
+```
+#### Description
+    Use W_SLIST_ATOMIC_STEAL_LIST to atomically assign list to dest and to set the original list to NULL.
+    Note that to avoid ABA issues, releasing the list elements must be deleyed
+    enough so that all other threads have made progress.

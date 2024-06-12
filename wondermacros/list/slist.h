@@ -186,6 +186,24 @@
     /**/
 
 
+/***
+ *** Name:        W_SLIST_ATOMIC_STEAL_LIST
+ *** Proto:       W_SLIST_ATOMIC_STEAL_LIST(dest,list)
+ *** Arg:         dest       destination list
+ *** Arg:         list       original list
+ *** Description: Use W_SLIST_ATOMIC_STEAL_LIST to atomically assign list to dest and to set the original list to NULL.
+ ***              Note that to avoid ABA issues, releasing the list elements must be deleyed
+ ***              enough so that all other threads have made progress.
+ ***/
+#define W_SLIST_ATOMIC_STEAL_LIST(Dest, List)                                 \
+    do {                                                                      \
+        do {                                                                  \
+            (Dest) = (List);                                                  \
+        } while( !atomic_compare_exchange_weak( &(List), &(Dest), NULL ) );   \
+    } while( 0 )                                                              \
+    /**/
+
+
 /*Unit Test*/
 
 #ifndef W_TEST
