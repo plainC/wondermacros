@@ -54,10 +54,20 @@
 
 /*Unit Test*/
 
+/*Unit Test*/
+
 #ifndef W_TEST
 # define W_TEST(...)
 #endif
 
+W_TEST(W_STRINGIZE_WITH_COMMA,
+    W_TEST_ASSERT(strcmp(W_STRINGIZE_WITH_COMMA(
+            {
+                "foo": "bar",
+                "value": 42
+            }),
+            "{ \"foo\": \"bar\",\"value\": 42 }") == 0, "String mismatch");
+)
 
 #endif
 

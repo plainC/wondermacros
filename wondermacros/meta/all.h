@@ -9,4 +9,5 @@
 #include <wondermacros/meta/declare.h>
 #include <wondermacros/meta/id.h>
 #include <wondermacros/meta/stringize.h>
-#include <wondermacros/meta/stringize_and_list.h>
+#include <wondermacros/meta/stringize_to_variadic.h>
+#include <wondermacros/meta/stringize_with_comma.h>
