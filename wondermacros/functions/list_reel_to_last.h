@@ -22,23 +22,23 @@
  * SOFTWARE.
  */
 
-#ifndef __W_LIST_LENGTH_H
-#define __W_LIST_LENGTH_H
+#ifndef __W_LIST_REEL_TO_LAST_H
+#define __W_LIST_REEL_TO_LAST_H
 
 #include <stddef.h>
 
 #include <wondermacros/pointer/ref_void_ptr.h>
 
 
-static inline size_t
-w_list_length(void* list, size_t offset)
+static inline void*
+w_list_reel_to_last(void* list, size_t offset)
 {
-    size_t len = 0;
-    while( list ) {
-        list = *((void**) W_REF_VOID_PTR( list, offset ));
-        len++;
-    }
-    return len;
+    if( !list )
+        return NULL;
+    void* next;
+    while( (next = *((void**) W_REF_VOID_PTR( list, offset ))) )
+        list = next;
+    return list;
 }
 
 #endif

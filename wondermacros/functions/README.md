@@ -11,5 +11,14 @@ provides type independent interface for the function.
 Returns the length of the list.
 
 ```
-static inline int cc_list_length(void* list, size_t offset)
+static inline size_t w_list_length(void* list, size_t offset)
+```
+
+## w_list_reel_to_last
+
+Returns the last item in a list, or NULL, if the list is empty.
+
+```
+static inline void*
+w_list_reel_to_last(void* list, size_t offset)
 ```
