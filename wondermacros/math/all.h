@@ -9,4 +9,5 @@ W_TEST_GROUP("Math")
 #include <wondermacros/math/max.h>
 #include <wondermacros/math/min.h>
 #include <wondermacros/math/sign.h>
+#include <wondermacros/math/uint_average.h>
 
