@@ -24,6 +24,8 @@
 #ifndef __W_TREE_FOR_EACH_H
 #define __W_TREE_FOR_EACH_H
 
+#include <stdint.h>
+
 #include <wondermacros/meta/after.h>
 #include <wondermacros/meta/before.h>
 #include <wondermacros/meta/declare.h>
@@ -109,70 +111,58 @@
         )                                                                \
     /**/
 
+#define W_UP 0
+#define W_DOWN 1
 
 /***
  *** Name:        W_TREE_FOR_EACH_POSTORDER
- *** Proto:       W_TREE_FOR_EACH_POSTORDER(T,node,self)
+ *** Proto:       W_TREE_FOR_EACH_POSTORDER(T,node,TreeRoot)
  *** Arg:         T          type name of tree nodes
  *** Arg:         node       name of the free variable
- *** Arg:         self       a tree
+ *** Arg:         TreeRoot   a tree
  *** Description: Use W_TREE_FOR_EACH_POSTORDER to traverse a tree structure iteratively in postorder.
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
+ ***              Also define what stack is to be used by defining PUSH_TAGGED_PTR(p), PEEK_TAGGED_PTR(), SWAP_PTRS(ix1,ix2) and POP_TAGGED_PTR() macros.
+ ***              Stack needs to be available before calling this macro and it must
+ ***              have space for the depth of the tree, or have the capability to grow.
  ***/
-#define W_TREE_FOR_EACH_POSTORDER(T,Child,self)                                                \
-    W_DECLARE(W_CAT(Child,po1), T *Child)                                                      \
-    W_DECLARE(W_CAT(Child,po2), T* W_ID(node) = (self))                                        \
-    W_DECLARE(W_CAT(Child,po3), T** W_ID(stack) = NULL )                                       \
-    W_DECLARE(W_CAT(Child,po9), int W_ID(_finish_) = 0 )                                       \
-    if (W_ID(node) == NULL)                                                                    \
-        ;                                                                                      \
-    else                                                                                       \
-        W_BEFORE(W_CAT(Child,po4), goto W_LABEL(6,Child); )                                    \
-        while (!W_ID(_finish_))                                                                \
-            W_BEFORE (W_CAT(Child,po5),                                                        \
-              W_LABEL(6,Child):                                                                \
-                while (W_ID(node)) {                                                           \
-                    BOOST_PP_IF(W_REVERSED,                                                    \
-                        W_TREE_FOR_EACH_IMMEDIATE_REVERSED(T,W_CAT(Child,_child), W_ID(node))  \
-                            if (W_CAT(Child,_child,_ix) < W_TREE_GET_DEGREE(W_ID(node))-1)     \
-                                W_DYNAMIC_STACK_PUSH( W_ID(stack),W_CAT(Child,_child) );       \
-                        W_DYNAMIC_STACK_PUSH( W_ID(stack),W_ID(node) );                        \
-                        W_ID(node) = W_TREE_NEXT_RIGHTMOST(W_ID(node));                        \
-                        , /* else */                                                           \
-                        W_TREE_FOR_EACH_IMMEDIATE(T,W_CAT(Child,_child), W_ID(node))           \
-                            if (W_CAT(Child,_child,_ix) > 0)                                   \
-                                W_DYNAMIC_STACK_PUSH( W_ID(stack),W_CAT(Child,_child) );       \
-                        W_DYNAMIC_STACK_PUSH( W_ID(stack),W_ID(node) );                        \
-                        W_ID(node) = W_TREE_NEXT_LEFTMOST(W_ID(node));                         \
-                    )                                                                          \
-                }                                                                              \
-                W_ID(node) = W_DYNAMIC_STACK_POP( W_ID(stack) );                               \
-                BOOST_PP_IF(W_REVERSED,                                                        \
-                    if (W_ID(node) && W_TREE_NEXT_LEFTMOST(W_ID(node))                         \
-                        && W_DYNAMIC_STACK_PEEK_SAFE(W_ID(stack),NULL) == W_TREE_NEXT_LEFTMOST(W_ID(node)) ) { \
-                        W_DYNAMIC_STACK_POP(W_ID(stack));                                      \
-                        W_DYNAMIC_STACK_PUSH( W_ID(stack),W_ID(node) );                        \
-                        W_ID(node) = W_TREE_NEXT_LEFTMOST(W_ID(node));                         \
-                        goto W_LABEL(6,Child);                                                 \
-                    }                                                                          \
-                    , /* else */                                                               \
-                    if (W_ID(node) && W_TREE_NEXT_RIGHTMOST(W_ID(node))                        \
-                        && W_DYNAMIC_STACK_PEEK_SAFE(W_ID(stack),NULL) == W_TREE_NEXT_RIGHTMOST(W_ID(node)) ) { \
-                        W_DYNAMIC_STACK_POP(W_ID(stack));                                      \
-                        W_DYNAMIC_STACK_PUSH( W_ID(stack),W_ID(node) );                        \
-                        W_ID(node) = W_TREE_NEXT_RIGHTMOST(W_ID(node));                        \
-                        goto W_LABEL(6,Child);                                                 \
-                    }                                                                          \
-                )                                                                              \
-                Child = W_ID(node);                                                            \
-                W_ID(node) = NULL;                                                             \
-            )                                                                                  \
-            W_AFTER(W_CAT(Child,po8),                                                          \
-                W_ID(_finish_) = W_DYNAMIC_STACK_IS_EMPTY(W_ID(stack));                        \
-                if (W_ID(_finish_))                                                            \
-                    W_DYNAMIC_STACK_FREE(W_ID(stack));                                         \
-            )                                                                                  \
-            /**/
+#define W_TREE_FOR_EACH_POSTORDER(Type, node, TreeRoot)                     \
+    W_DECLARE(_0, int W_ID(t))                                              \
+    W_BEFORE(_1,                                                            \
+        PUSH_TAGGED_PTR( TreeRoot, W_DOWN );                                \
+        if( PEEK_TAGGED_PTR( W_ID(t) ) ) {                                  \
+            PUSH_TAGGED_PTR( NULL, W_DOWN );                                \
+            SWAP_PTRS( 0, 1 );                                              \
+        }                                                                   \
+    )                                                                       \
+    for( Type* W_ID(l), *node = POP_TAGGED_PTR(W_ID(t));                    \
+            node; node = POP_TAGGED_PTR(W_ID(t)) )                          \
+        W_BEFORE(_2,                                                        \
+            if( W_ID(t) == W_DOWN ) {                                       \
+                do {                                                        \
+                    W_ID(l) = NULL;                                         \
+                    PUSH_TAGGED_PTR( node, W_UP );                          \
+                    BOOST_PP_IF(                                            \
+                        W_REVERSED,                                         \
+                        for( int W_ID(i) = 0;                               \
+                                W_ID(i) < W_TREE_GET_DEGREE(node);          \
+                                W_ID(i)++ )                                 \
+                        ,                                                   \
+                        for( int W_ID(i) = W_TREE_GET_DEGREE(node) - 1;     \
+                                W_ID(i) >= 0;                               \
+                                W_ID(i)-- )                                 \
+                    )                                                       \
+                        if( W_TREE_NEXT(node, W_ID(i) ) ) {                 \
+                            W_ID(l) = W_TREE_NEXT(node, W_ID(i));           \
+                            PUSH_TAGGED_PTR( W_ID(l), W_DOWN );             \
+                        }                                                   \
+                     node = W_ID(l) ?                                       \
+                             POP_TAGGED_PTR(W_ID(t)) : node;                \
+                } while( W_ID(l) );                                         \
+                node = POP_TAGGED_PTR(W_ID(t));                             \
+            }                                                               \
+        )                                                                   \
+    /**/
 
 
 /***
@@ -182,6 +172,9 @@
  *** Arg:         self       a tree
  *** Description: Use W_TREE_FREE to free all nodes in a tree.
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
+ ***              Also define what stack is to be used by defining PUSH_TAGGED_PTR(p), PEEK_TAGGED_PTR(), SWAP_PTRS(ix1,ix2) and POP_TAGGED_PTR() macros.
+ ***              Stack needs to be available before calling this macro and it must
+ ***              have space for the depth of the tree, or have the capability to grow.
  ***/
 #define W_TREE_FREE(T,root)                                              \
     W_TREE_FOR_EACH_POSTORDER(T,W_ID(_TREE_FREE_),root)                  \
@@ -215,6 +208,7 @@ W_TEST(W_TREE_FOR_EACH_PREORDER,
 
 #undef W_REVERSED
 #define W_REVERSED 0
+
 #define PUSH_PTR(p) W_DYNAMIC_STACK_PUSH(stack, p)
 #define POP_PTR() W_DYNAMIC_STACK_POP(stack)
 #define PEEK_PTR() W_DYNAMIC_STACK_PEEK(stack)
@@ -228,7 +222,12 @@ W_TEST(W_TREE_FOR_EACH_PREORDER,
     W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
     ix=0;
 
+#define PUSH_TAGGED_PTR(p,t) W_DYNAMIC_STACK_PUSH(stack, (void*) ((uintptr_t)(p) | ((uintptr_t)(((t)&1)))))
+#define POP_TAGGED_PTR(t) (t=(uintptr_t)W_DYNAMIC_STACK_PEEK(stack)&1, (void*)((uintptr_t)W_DYNAMIC_STACK_POP(stack)&(~1ull)))
+#define PEEK_TAGGED_PTR(t) (t=(uintptr_t)W_DYNAMIC_STACK_PEEK(stack)&1, (void*)((uintptr_t)W_DYNAMIC_STACK_PEEK(stack)&(~1ull)))
+
     W_TREE_FREE(struct bintree, root);
+    W_DYNAMIC_STACK_FREE(stack);
 )
 
 W_TEST(W_TREE_FOR_EACH_PREORDER_reversed,
@@ -259,6 +258,7 @@ W_TEST(W_TREE_FOR_EACH_PREORDER_reversed,
     ix=0;
 
     W_TREE_FREE(struct bintree, root);
+    W_DYNAMIC_STACK_FREE(stack);
 )
 
 
@@ -278,10 +278,15 @@ W_TEST(W_TREE_FOR_EACH_POSTORDER,
 
 #undef W_REVERSED
 #define W_REVERSED 0
+
+    void** stack = NULL;
+
     W_TREE_FOR_EACH_POSTORDER(struct bintree, np, root) {
-        W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch");
+        W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d", np->value);
         free(np);
     }
+
+    W_DYNAMIC_STACK_FREE(stack);
 
     W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
     ix=0;
@@ -303,10 +308,15 @@ W_TEST(W_TREE_FOR_EACH_POSTORDER_reversed,
 
 #undef W_REVERSED
 #define W_REVERSED 1
+
+    void** stack = NULL;
+
     W_TREE_FOR_EACH_POSTORDER(struct bintree, np, root) {
         W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d (at %d)", correct[ix-1], ix-1);
         free(np);
     }
+
+    W_DYNAMIC_STACK_FREE(stack);
 
     W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
     ix=0;

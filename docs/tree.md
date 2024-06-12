@@ -15,17 +15,20 @@ Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get cor
     Stack needs to be available before calling this macro and it must
     have space for the depth of the tree, or have the capability to grow.
     
-### W_TREE_FOR_EACH_POSTORDER(T,node,self)
+### W_TREE_FOR_EACH_POSTORDER(T,node,TreeRoot)
 #### Arguments
 ```C
 T                    type name of tree nodes
 node                 name of the free variable
-self                 a tree
+TreeRoot             a tree
 ```
 #### Description
     Use W_TREE_FOR_EACH_POSTORDER to traverse a tree structure iteratively in postorder.
 #### Notes
 Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
+    Also define what stack is to be used by defining PUSH_TAGGED_PTR(p), PEEK_TAGGED_PTR(), SWAP_PTRS(ix1,ix2) and POP_TAGGED_PTR() macros.
+    Stack needs to be available before calling this macro and it must
+    have space for the depth of the tree, or have the capability to grow.
     
 ### W_TREE_FREE(T,self)
 #### Arguments
@@ -37,3 +40,6 @@ self                 a tree
     Use W_TREE_FREE to free all nodes in a tree.
 #### Notes
 Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
+    Also define what stack is to be used by defining PUSH_TAGGED_PTR(p), PEEK_TAGGED_PTR(), SWAP_PTRS(ix1,ix2) and POP_TAGGED_PTR() macros.
+    Stack needs to be available before calling this macro and it must
+    have space for the depth of the tree, or have the capability to grow.

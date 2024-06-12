@@ -47,11 +47,15 @@ int main()
         printf("%s\n", node->value);
 
     W_DYNAMIC_STACK_FREE(stack);
-    stack = NULL;
+
+#define PUSH_TAGGED_PTR(p,t) W_DYNAMIC_STACK_PUSH(stack, (void*) ((uintptr_t)(p) | ((uintptr_t)(((t)&1)))))
+#define POP_TAGGED_PTR(t) (t=(uintptr_t)W_DYNAMIC_STACK_PEEK(stack)&1, (void*)((uintptr_t)W_DYNAMIC_STACK_POP(stack)&(~1ull)))
+#define PEEK_TAGGED_PTR(t) (t=(uintptr_t)W_DYNAMIC_STACK_PEEK(stack)&1, (void*)((uintptr_t)W_DYNAMIC_STACK_PEEK(stack)&(~1ull)))
 
     printf("In postorder:\n");
     W_TREE_FOR_EACH_POSTORDER(struct bintree, node, a)
         printf("%s\n", node->value);
 
+    W_DYNAMIC_STACK_FREE(stack);
 }
 
