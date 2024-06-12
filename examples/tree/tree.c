@@ -33,9 +33,21 @@ int main()
     b->next[LEFT] = c;
     c->next[LEFT] = d;
 
+#undef W_REVERSED
+#define W_REVERSED 0
+#define PUSH_PTR(p) W_DYNAMIC_STACK_PUSH(stack, p)
+#define POP_PTR() W_DYNAMIC_STACK_POP(stack)
+#define PEEK_PTR() W_DYNAMIC_STACK_PEEK(stack)
+#define SWAP_PTRS(x, y) W_DYNAMIC_ARRAY_SWAP(void*, stack, x, y)
+
+    void** stack = NULL;
+
     printf("In preorder:\n");
     W_TREE_FOR_EACH_PREORDER(struct bintree, node, a)
         printf("%s\n", node->value);
+
+    W_DYNAMIC_STACK_FREE(stack);
+    stack = NULL;
 
     printf("In postorder:\n");
     W_TREE_FOR_EACH_POSTORDER(struct bintree, node, a)
