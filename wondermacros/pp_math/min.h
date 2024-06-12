@@ -1,4 +1,4 @@
-/* (C) Copyright 2019,2021 J.P. Iivonen <wondermacros@yahoo.com>
+/* (C) Copyright 2019,2021,2024 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -30,7 +30,7 @@
 /***
  *** Name:        W_PP_MIN
  *** Proto:       W_PP_MIN(...)
- *** Arg:         ...    variadic number of integer arguments (up to six arguments) between 0...255
+ *** Arg:         ...    variadic number of integer arguments (up to eight arguments) between 0...255
  *** Description: Use W_PP_MIN to get the minimum of value of arguments at pre-processing time.
  ***/
 #define W_PP_MIN(...) BOOST_PP_SEQ_ELEM(0, W_SEQ_SORT(BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__)))
