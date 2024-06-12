@@ -101,13 +101,13 @@ i                    the exponent
 #### Description
     Use W_STRINGIZE to stringize arguments to text.
     
-### W_STRINGIZE_AND_LIST(...)
+### W_STRINGIZE_TO_VARIADIC(...)
 #### Arguments
 ```C
-...                  arguments to be converted to text and comma separated
+...                  arguments to be converted to text
 ```
 #### Description
-    Use W_STRINGIZE_AND_LIST to stringize arguments to text and comma separate them.
+    Use W_STRINGIZE_TO_VARIADIC to stringize arguments separately to text.
     
 ### W_STRINGIZE_WITH_COMMA(...)
 #### Arguments
