@@ -82,3 +82,13 @@ list                 a list
 ```
 #### Description
     Use W_SLIST_LENGTH to get the length of a singly-linked list.
+    
+### W_SLIST_ATOMIC_PREPEND(T,list)
+#### Arguments
+```C
+T                    a type name (the type of the list nodes)
+list                 original list
+list                 a list, the new head
+```
+#### Description
+    Use W_SLIST_ATOMIC_PREPEND to prepend a list to a list atomically.

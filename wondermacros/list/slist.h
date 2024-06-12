@@ -1,4 +1,4 @@
-/* (C) is Copyright 2015 J.P. Iivonen <wondermacros@yahoo.com>
+/* (C) is Copyright 2015, 2024 J.P. Iivonen <wondermacros@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -25,8 +25,11 @@
 #ifndef __W_SLIST_H
 #define __W_SLIST_H
 
+#include <stdatomic.h>
+
 #include <wondermacros/meta/id.h>
 #include <wondermacros/functions/list_length.h>
+#include <wondermacros/functions/list_reel_to_last.h>
 
 
 #ifndef W_SLIST_FIELD_NAME
@@ -160,6 +163,29 @@
     /**/
 
 
+/***
+ *** Name:        W_SLIST_ATOMIC_PREPEND
+ *** Proto:       W_SLIST_ATOMIC_PREPEND(T,list)
+ *** Arg:         T          a type name (the type of the list nodes)
+ *** Arg:         list       original list
+ *** Arg:         list       a list, the new head
+ *** Description: Use W_SLIST_ATOMIC_PREPEND to prepend a list to a list atomically.
+ ***/
+#define W_SLIST_ATOMIC_PREPEND(T, List, Head)                                 \
+    do {                                                                      \
+        T* W_ID(head) = (Head);                                               \
+        T* W_ID(last) = w_list_reel_to_last(W_ID(head),                       \
+                                            offsetof(T, W_SLIST_FIELD_NAME)); \
+        if( !W_ID(last) )                                                     \
+            break;                                                            \
+        do {                                                                  \
+            W_ID(last)->W_SLIST_FIELD_NAME = (List);                          \
+        } while(!atomic_compare_exchange_weak(&(List),                        \
+                &W_ID(last)->W_SLIST_FIELD_NAME, W_ID(head) ) );              \
+    } while( 0 )                                                              \
+    /**/
+
+
 /*Unit Test*/
 
 #ifndef W_TEST
@@ -223,6 +249,12 @@ W_TEST(W_SLIST_PREPEND,
     W_TEST_ASSERT(ix == 3, "FOR_EACH failed to go through all items");
 
     W_TEST_ASSERT(W_SLIST_LENGTH(struct int_list, list) == 3,
+                  "value mismatch");
+
+    struct int_list* d = W_STRUCT_NEW(struct int_list, .value=4);
+    W_SLIST_ATOMIC_PREPEND(struct int_list, list, d);
+
+    W_TEST_ASSERT(W_SLIST_LENGTH(struct int_list, list) == 4,
                   "value mismatch");
 
     W_SLIST_FOR_EACH(struct int_list, node, list)
