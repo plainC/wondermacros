@@ -48,6 +48,43 @@ offset               an offset in bytes.
 #### Description
     Use W_REF_VOID_PTR to reference a void pointer using an offset in bytes.
     
+### W_TAGGED_PTR_SET(p, tag)
+    
+#### Arguments
+```C
+p                    a pointer
+tag                  a tag (length in bits is set by W_TAG_LENGTH)
+    
+```
+#### Description
+    Use W_TAGGED_PTR_SET to set a pointer with a tag.
+#### Notes
+Redefine W_TAG_LENGTH to set the length of the tag. Default is 3.
+    
+### W_TAGGED_PTR_GET_PTR(p)
+    
+#### Arguments
+```C
+p                    a pointer
+    
+```
+#### Description
+    Use W_TAGGED_PTR_GET_PTR to get the pointer without tag.
+#### Notes
+Redefine W_TAG_LENGTH to set the length of the tag. Default is 3.
+    
+### W_TAGGED_PTR_GET_TAG(p)
+    
+#### Arguments
+```C
+p                    a pointer
+    
+```
+#### Description
+    Use W_TAGGED_PTR_GET_TAG to get the tag of tagged pointer.
+#### Notes
+Redefine W_TAG_LENGTH to set the length of the tag. Default is 3.
+    
 ### W_VALUES_AS_ARRAY(T, ...)
 #### Arguments
 ```C
