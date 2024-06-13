@@ -31,6 +31,7 @@
 #include <wondermacros/meta/declare.h>
 #include <wondermacros/meta/id.h>
 #include <wondermacros/meta/cat.h>
+#include <wondermacros/pointer/tagged.h>
 #include <boost/preprocessor/control/if.hpp>
 #ifndef WDEBUG_EXPAND
 # include <wondermacros/array/dynamic_stack.h>
@@ -114,6 +115,13 @@
 #define W_UP 0
 #define W_DOWN 1
 
+#define PUSH_TAGGED_PTR(p, tag) PUSH_PTR(W_TAGGED_PTR_SET(p, tag))
+#define PEEK_TAGGED_PTR(tag) \
+    ((tag) = W_TAGGED_PTR_GET_TAG(PEEK_PTR()), W_TAGGED_PTR_GET_PTR(PEEK_PTR()))
+#define POP_TAGGED_PTR(tag) \
+    ((tag) = W_TAGGED_PTR_GET_TAG(PEEK_PTR()), W_TAGGED_PTR_GET_PTR(POP_PTR()))
+
+
 /***
  *** Name:        W_TREE_FOR_EACH_POSTORDER
  *** Proto:       W_TREE_FOR_EACH_POSTORDER(T,node,TreeRoot)
@@ -122,7 +130,7 @@
  *** Arg:         TreeRoot   a tree
  *** Description: Use W_TREE_FOR_EACH_POSTORDER to traverse a tree structure iteratively in postorder.
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
- ***              Also define what stack is to be used by defining PUSH_TAGGED_PTR(p), PEEK_TAGGED_PTR(), SWAP_PTRS(ix1,ix2) and POP_TAGGED_PTR() macros.
+ ***              Also define what stack is to be used by defining PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
  ***              Stack needs to be available before calling this macro and it must
  ***              have space for the depth of the tree, or have the capability to grow.
  ***/
@@ -172,7 +180,7 @@
  *** Arg:         self       a tree
  *** Description: Use W_TREE_FREE to free all nodes in a tree.
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
- ***              Also define what stack is to be used by defining PUSH_TAGGED_PTR(p), PEEK_TAGGED_PTR(), SWAP_PTRS(ix1,ix2) and POP_TAGGED_PTR() macros.
+ ***              Also define what stack is to be used by defining PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
  ***              Stack needs to be available before calling this macro and it must
  ***              have space for the depth of the tree, or have the capability to grow.
  ***/
@@ -221,10 +229,6 @@ W_TEST(W_TREE_FOR_EACH_PREORDER,
 
     W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
     ix=0;
-
-#define PUSH_TAGGED_PTR(p,t) W_DYNAMIC_STACK_PUSH(stack, (void*) ((uintptr_t)(p) | ((uintptr_t)(((t)&1)))))
-#define POP_TAGGED_PTR(t) (t=(uintptr_t)W_DYNAMIC_STACK_PEEK(stack)&1, (void*)((uintptr_t)W_DYNAMIC_STACK_POP(stack)&(~1ull)))
-#define PEEK_TAGGED_PTR(t) (t=(uintptr_t)W_DYNAMIC_STACK_PEEK(stack)&1, (void*)((uintptr_t)W_DYNAMIC_STACK_PEEK(stack)&(~1ull)))
 
     W_TREE_FREE(struct bintree, root);
     W_DYNAMIC_STACK_FREE(stack);
