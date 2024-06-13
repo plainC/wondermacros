@@ -14,6 +14,8 @@ Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get cor
     Also define what stack is to be used by defining PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
     Stack needs to be available before calling this macro and it must
     have space for the depth of the tree, or have the capability to grow.
+    If these macros are not defined before including for_each.h,
+    dynamic stack is used by default.
     
 ### W_TREE_FOR_EACH_POSTORDER(T,node,TreeRoot)
 #### Arguments
@@ -29,6 +31,8 @@ Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get cor
     Also define what stack is to be used by defining PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
     Stack needs to be available before calling this macro and it must
     have space for the depth of the tree, or have the capability to grow.
+    If these macros are not defined before including for_each.h,
+    dynamic stack is used by default.
     
 ### W_TREE_FREE(T,self)
 #### Arguments
@@ -43,3 +47,5 @@ Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get cor
     Also define what stack is to be used by defining PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
     Stack needs to be available before calling this macro and it must
     have space for the depth of the tree, or have the capability to grow.
+    If these macros are not defined before including for_each.h,
+    dynamic stack is used by default.

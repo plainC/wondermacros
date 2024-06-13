@@ -33,9 +33,6 @@
 #include <wondermacros/meta/cat.h>
 #include <wondermacros/pointer/tagged.h>
 #include <boost/preprocessor/control/if.hpp>
-#ifndef WDEBUG_EXPAND
-# include <wondermacros/array/dynamic_stack.h>
-#endif
 
 
 #ifndef W_TREE_NEXT
@@ -50,6 +47,26 @@
 #ifndef W_REVERSED
 # define W_REVERSED 0
 #endif
+
+#ifndef PUSH_PTR
+# ifndef WDEBUG_EXPAND
+#  include <wondermacros/array/dynamic_stack.h>
+# endif
+# define PUSH_PTR(p) W_DYNAMIC_STACK_PUSH(stack, p)
+#endif
+
+#ifndef POP_PTR
+# define POP_PTR() W_DYNAMIC_STACK_POP(stack)
+#endif
+
+#ifndef PEEK_PTR
+# define PEEK_PTR() W_DYNAMIC_STACK_PEEK(stack)
+#endif
+
+#ifndef SWAP_PTRS
+# define SWAP_PTRS(x, y) W_DYNAMIC_ARRAY_SWAP(void*, stack, x, y)
+#endif
+
 
 
 #define W_TREE_NEXT_LEFTMOST(tree)                                             \
@@ -87,6 +104,8 @@
  ***              Also define what stack is to be used by defining PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
  ***              Stack needs to be available before calling this macro and it must
  ***              have space for the depth of the tree, or have the capability to grow.
+ ***              If these macros are not defined before including for_each.h,
+ ***              dynamic stack is used by default.
  ***/
 #define W_TREE_FOR_EACH_PREORDER(T,node,TreeRoot)                        \
    W_BEFORE(_1,                                                          \
@@ -133,6 +152,8 @@
  ***              Also define what stack is to be used by defining PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
  ***              Stack needs to be available before calling this macro and it must
  ***              have space for the depth of the tree, or have the capability to grow.
+ ***              If these macros are not defined before including for_each.h,
+ ***              dynamic stack is used by default.
  ***/
 #define W_TREE_FOR_EACH_POSTORDER(Type, node, TreeRoot)                     \
     W_DECLARE(_0, int W_ID(t))                                              \
@@ -183,6 +204,8 @@
  ***              Also define what stack is to be used by defining PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
  ***              Stack needs to be available before calling this macro and it must
  ***              have space for the depth of the tree, or have the capability to grow.
+ ***              If these macros are not defined before including for_each.h,
+ ***              dynamic stack is used by default.
  ***/
 #define W_TREE_FREE(T,root)                                              \
     W_TREE_FOR_EACH_POSTORDER(T,W_ID(_TREE_FREE_),root)                  \
@@ -216,11 +239,6 @@ W_TEST(W_TREE_FOR_EACH_PREORDER,
 
 #undef W_REVERSED
 #define W_REVERSED 0
-
-#define PUSH_PTR(p) W_DYNAMIC_STACK_PUSH(stack, p)
-#define POP_PTR() W_DYNAMIC_STACK_POP(stack)
-#define PEEK_PTR() W_DYNAMIC_STACK_PEEK(stack)
-#define SWAP_PTRS(x, y) W_DYNAMIC_ARRAY_SWAP(void*, stack, x, y)
 
     W_TREE_FOR_EACH_PREORDER(struct bintree, node, root)
         W_TEST_ASSERT(node->value == correct[ix++], "Value mismatch");
