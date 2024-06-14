@@ -55,6 +55,14 @@
 # define PUSH_PTR(p) W_DYNAMIC_STACK_PUSH(stack, p)
 #endif
 
+#ifndef INIT_STACK
+# define INIT_STACK W_DECLARE(0, void** stack = NULL)
+#endif
+
+#ifndef FREE_STACK
+# define FREE_STACK W_DYNAMIC_STACK_FREE(stack)
+#endif
+
 #ifndef POP_PTR
 # define POP_PTR() W_DYNAMIC_STACK_POP(stack)
 #endif
@@ -68,31 +76,6 @@
 #endif
 
 
-
-#define W_TREE_NEXT_LEFTMOST(tree)                                             \
-    W_TREE_NEXT(tree,0)
-
-#define W_TREE_NEXT_RIGHTMOST(tree)                                            \
-    W_TREE_NEXT(tree,W_TREE_GET_DEGREE(tree)-1)
-
-#define W_TREE_FOR_EACH_IMMEDIATE(T,node,tree)                                 \
-    W_DECLARE(W_CAT(node,10), T* node)                                         \
-    for (int W_CAT(node,_ix)=0; W_CAT(node,_ix) < W_TREE_GET_DEGREE(node)      \
-         && (node = W_TREE_NEXT(tree,W_CAT(node,_ix)),1); W_CAT(node,_ix)++)   \
-        if (node == NULL)                                                      \
-            ;                                                                  \
-        else
-
-#define W_TREE_FOR_EACH_IMMEDIATE_REVERSED(T,node,tree)                        \
-    W_DECLARE(W_CAT(node,10), T* node)                                         \
-    for (int W_CAT(node,_ix) = W_TREE_GET_DEGREE(node)-1;                      \
-         W_CAT(node,_ix) >= 0                                                  \
-         && (node = W_TREE_NEXT(tree, W_CAT(node,_ix)),1);                     \
-      W_CAT(node,_ix)--)                                                       \
-        if (node == NULL)                                                      \
-            ;                                                                  \
-        else
-
 /***
  *** Name:        W_TREE_FOR_EACH_PREORDER
  *** Proto:       W_TREE_FOR_EACH_PREORDER(T,node,self)
@@ -101,14 +84,16 @@
  *** Arg:         TreeRoot   a tree (root node)
  *** Description: Use W_TREE_FOR_EACH_PREORDER to traverse a tree structure iteratively in preorder.
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
- ***              Also define what stack is to be used by defining PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
+ ***              Also define what stack is to be used by defining INIT_STACK, FREE_STACK, PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
  ***              Stack needs to be available before calling this macro and it must
  ***              have space for the depth of the tree, or have the capability to grow.
  ***              If these macros are not defined before including for_each.h,
  ***              dynamic stack is used by default.
  ***/
 #define W_TREE_FOR_EACH_PREORDER(T,node,TreeRoot)                        \
-   W_BEFORE(_1,                                                          \
+   INIT_STACK                                                            \
+   W_AFTER(_1, FREE_STACK)                                               \
+   W_BEFORE(_2,                                                          \
         PUSH_PTR( TreeRoot );                                            \
         if( PEEK_PTR() ) {                                               \
             PUSH_PTR( NULL );                                            \
@@ -116,7 +101,7 @@
         }                                                                \
     )                                                                    \
     for( T* node = POP_PTR(); node; node = POP_PTR() )                   \
-        W_BEFORE(_2,                                                     \
+        W_BEFORE(_3,                                                     \
             BOOST_PP_IF(                                                 \
                 W_REVERSED,                                              \
                 for( int W_ID(i) = 0, W_ID(d) = W_TREE_GET_DEGREE(node); \
@@ -149,15 +134,17 @@
  *** Arg:         TreeRoot   a tree
  *** Description: Use W_TREE_FOR_EACH_POSTORDER to traverse a tree structure iteratively in postorder.
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
- ***              Also define what stack is to be used by defining PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
+ ***              Also define what stack is to be used by defining INIT_STACK, FREE_STACK, PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
  ***              Stack needs to be available before calling this macro and it must
  ***              have space for the depth of the tree, or have the capability to grow.
  ***              If these macros are not defined before including for_each.h,
  ***              dynamic stack is used by default.
  ***/
 #define W_TREE_FOR_EACH_POSTORDER(Type, node, TreeRoot)                     \
-    W_DECLARE(_0, int W_ID(t))                                              \
-    W_BEFORE(_1,                                                            \
+    INIT_STACK                                                            \
+    W_AFTER(_1, FREE_STACK)                                               \
+    W_DECLARE(_2, int W_ID(t))                                              \
+    W_BEFORE(_3,                                                            \
         PUSH_TAGGED_PTR( TreeRoot, W_DOWN );                                \
         if( PEEK_TAGGED_PTR( W_ID(t) ) ) {                                  \
             PUSH_TAGGED_PTR( NULL, W_DOWN );                                \
@@ -166,7 +153,7 @@
     )                                                                       \
     for( Type* W_ID(l), *node = POP_TAGGED_PTR(W_ID(t));                    \
             node; node = POP_TAGGED_PTR(W_ID(t)) )                          \
-        W_BEFORE(_2,                                                        \
+        W_BEFORE(_4,                                                        \
             if( W_ID(t) == W_DOWN ) {                                       \
                 do {                                                        \
                     W_ID(l) = NULL;                                         \
@@ -201,7 +188,7 @@
  *** Arg:         self       a tree
  *** Description: Use W_TREE_FREE to free all nodes in a tree.
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
- ***              Also define what stack is to be used by defining PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
+ ***              Also define what stack is to be used by defining INIT_STACK, FREE_STACK, PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
  ***              Stack needs to be available before calling this macro and it must
  ***              have space for the depth of the tree, or have the capability to grow.
  ***              If these macros are not defined before including for_each.h,
@@ -235,21 +222,16 @@ W_TEST(W_TREE_FOR_EACH_PREORDER,
     int correct[] = {45,13,7,19,74};
     int ix=0;
 
-    void** stack = NULL;
-
 #undef W_REVERSED
 #define W_REVERSED 0
 
     W_TREE_FOR_EACH_PREORDER(struct bintree, node, root)
         W_TEST_ASSERT(node->value == correct[ix++], "Value mismatch");
 
-    W_DYNAMIC_STACK_FREE(stack);
-
     W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
     ix=0;
 
     W_TREE_FREE(struct bintree, root);
-    W_DYNAMIC_STACK_FREE(stack);
 )
 
 W_TEST(W_TREE_FOR_EACH_PREORDER_reversed,
@@ -267,20 +249,15 @@ W_TEST(W_TREE_FOR_EACH_PREORDER_reversed,
     int correct[] = {45,74,13,19,7};
     int ix=0;
 
-    void** stack = NULL;
-
 #undef W_REVERSED
 #define W_REVERSED 1
     W_TREE_FOR_EACH_PREORDER(struct bintree, n, root)
         W_TEST_ASSERT(n->value == correct[ix++], "Value mismatch");
 
-    W_DYNAMIC_STACK_FREE(stack);
-
     W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
     ix=0;
 
     W_TREE_FREE(struct bintree, root);
-    W_DYNAMIC_STACK_FREE(stack);
 )
 
 
@@ -301,14 +278,10 @@ W_TEST(W_TREE_FOR_EACH_POSTORDER,
 #undef W_REVERSED
 #define W_REVERSED 0
 
-    void** stack = NULL;
-
     W_TREE_FOR_EACH_POSTORDER(struct bintree, np, root) {
         W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d", np->value);
         free(np);
     }
-
-    W_DYNAMIC_STACK_FREE(stack);
 
     W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
     ix=0;
@@ -331,14 +304,10 @@ W_TEST(W_TREE_FOR_EACH_POSTORDER_reversed,
 #undef W_REVERSED
 #define W_REVERSED 1
 
-    void** stack = NULL;
-
     W_TREE_FOR_EACH_POSTORDER(struct bintree, np, root) {
         W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d (at %d)", correct[ix-1], ix-1);
         free(np);
     }
-
-    W_DYNAMIC_STACK_FREE(stack);
 
     W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
     ix=0;

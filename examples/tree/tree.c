@@ -33,18 +33,14 @@ int main()
     b->next[LEFT] = c;
     c->next[LEFT] = d;
 
-    void** stack = NULL;
-
     printf("In preorder:\n");
     W_TREE_FOR_EACH_PREORDER(struct bintree, node, a)
         printf("%s\n", node->value);
-
-    W_DYNAMIC_STACK_FREE(stack);
 
     printf("In postorder:\n");
     W_TREE_FOR_EACH_POSTORDER(struct bintree, node, a)
         printf("%s\n", node->value);
 
-    W_DYNAMIC_STACK_FREE(stack);
+    W_TREE_FREE(struct bintree, a);
 }
 
