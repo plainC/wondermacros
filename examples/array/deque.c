@@ -6,11 +6,9 @@
 int main()
 {
     int* deque = NULL;
-int is_full;
     W_DEQUE_INIT(deque,3);
     for (int i=0; i < 1000; i++) {
-        W_DEQUE_PUSH_BACK(is_full,deque, i);
-        if (is_full) {
+        if (!W_DEQUE_PUSH_BACK(deque, i)) {
             printf("Queue full: %d\n", i);
             break;
         }

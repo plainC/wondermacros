@@ -24,6 +24,8 @@
     https://graphics.stanford.edu/%7Eseander/bithacks.html#RoundUpPowerOf2
 */
 
+#include <stdint.h>
+
 
 static inline uint32_t
 w_round_up_pow2_uint32( uint32_t v )
