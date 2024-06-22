@@ -5,6 +5,9 @@ all:
 	cd test && make all
 	cd docs && make all
 
+check:
+	./test/wondermacros
+
 install:
 	cp -r wondermacros $(DESTDIR)
 	cp -r tools $(DESTDIR)/wondermacros
