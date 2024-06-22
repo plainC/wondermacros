@@ -20,6 +20,14 @@ a                    a value
 #### Description
     Use W_FOR_CEILING_POW2 to round up to next power of two.
     
+### W_LOG2(a)
+#### Arguments
+```C
+a                    a value (32-bit unsigned)
+```
+#### Description
+    Use W_LOG2 to get the logarithm of 2.
+    
 ### W_MAX(...)
 #### Arguments
 ```C

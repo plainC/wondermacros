@@ -2,6 +2,7 @@
 # include <string.h>
 # include <wondermacros/functions/list_length.h>
 # include <wondermacros/functions/list_reel_to_last.h>
+# include <wondermacros/functions/log2.h>
 #endif
 
 #define W_XFILE <wondermacros/all.h>
