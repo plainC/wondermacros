@@ -41,6 +41,10 @@ int main()
     W_TREE_FOR_EACH_POSTORDER(struct bintree, node, a)
         printf("%s\n", node->value);
 
+    printf("In levelorder:\n");
+    W_TREE_FOR_EACH_LEVELORDER(struct bintree, node, a)
+        printf("%s\n", node->value);
+
     W_TREE_FREE(struct bintree, a);
 }
 

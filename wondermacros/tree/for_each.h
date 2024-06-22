@@ -32,6 +32,7 @@
 #include <wondermacros/meta/id.h>
 #include <wondermacros/meta/cat.h>
 #include <wondermacros/pointer/tagged.h>
+#include <wondermacros/array/deque.h>
 #include <boost/preprocessor/control/if.hpp>
 
 
@@ -182,6 +183,51 @@
 
 
 /***
+ *** Name:        W_TREE_FOR_EACH_LEVELORDER
+ *** Proto:       W_TREE_FOR_EACH_LEVELORDER(T, node, TreeRoot)
+ *** Arg:         T          type name of tree nodes
+ *** Arg:         node       name of the free variable
+ *** Arg:         TreeRoot   a tree
+ *** Description: Use W_TREE_FOR_EACH_LEVELORDER to traverse a tree structure iteratively in levelorder.
+ *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
+ ***              Also define what stack is to be used by defining INIT_STACK, FREE_STACK, PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
+ ***              Stack needs to be available before calling this macro and it must
+ ***              have space for the depth of the tree, or have the capability to grow.
+ ***              If these macros are not defined before including for_each.h,
+ ***              dynamic stack is used by default.
+ ***/
+#define W_TREE_FOR_EACH_LEVELORDER(Type, node, TreeRoot)                  \
+    W_DECLARE(_0, Type** W_ID(q)=NULL)                                    \
+    W_BEFORE(_1,                                                          \
+        W_DEQUE_INIT( W_ID(q), 8 );                                       \
+        W_DEQUE_PUSH( W_ID(q), TreeRoot );                                \
+        Type* W_ID(t);                                                    \
+        if( W_DEQUE_PEEK( W_ID(q) ) == NULL )                             \
+            W_DEQUE_POP( W_ID(q), W_ID(t) );                              \
+    )                                                                     \
+    W_AFTER(_2,                                                           \
+        W_DEQUE_FREE( W_ID(q) );                                          \
+    )                                                                     \
+    for( Type *node, *W_ID(t);                                            \
+            !W_DEQUE_IS_EMPTY( W_ID(q) ) &&                               \
+                    (node=W_DEQUE_POP( W_ID(q), W_ID(t) ), 1);            \
+            )                                                             \
+        W_BEFORE(_3,                                                      \
+            BOOST_PP_IF(W_REVERSED,                                       \
+                for( int W_ID(i) = W_TREE_GET_DEGREE(node)-1;             \
+                        W_ID(i) >= 0;                                     \
+                        W_ID(i)-- ),                                      \
+                for( int W_ID(i) = 0;                                     \
+                        W_ID(i) < W_TREE_GET_DEGREE(node);                \
+                        W_ID(i)++ ) )                                     \
+                if( W_TREE_NEXT(node, W_ID(i) ) ) {                       \
+                    W_DEQUE_PUSH( W_ID(q), W_TREE_NEXT(node, W_ID(i) ) ); \
+                }                                                         \
+        )                                                                 \
+    /**/
+
+
+/***
  *** Name:        W_TREE_FREE
  *** Proto:       W_TREE_FREE(T,self)
  *** Arg:         T          type name of tree nodes
@@ -306,6 +352,58 @@ W_TEST(W_TREE_FOR_EACH_POSTORDER_reversed,
 
     W_TREE_FOR_EACH_POSTORDER(struct bintree, np, root) {
         W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d (at %d)", correct[ix-1], ix-1);
+        free(np);
+    }
+
+    W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
+    ix=0;
+)
+
+W_TEST(W_TREE_FOR_EACH_LEVELORDER,
+    struct bintree {
+        int value;
+        struct bintree* next[2];
+    };
+    struct bintree* root = W_STRUCT_NEW(struct bintree, .value=45,
+        .next[0] = W_STRUCT_NEW(struct bintree, .value=13,
+            .next[0] = W_STRUCT_NEW(struct bintree, .value=7),
+            .next[1] = W_STRUCT_NEW(struct bintree, .value=19)),
+        .next[1] = W_STRUCT_NEW(struct bintree, .value=74));
+
+    int correct[] = {45, 13, 74, 7, 19};
+    int ix=0;
+
+#undef W_REVERSED
+#define W_REVERSED 0
+
+    W_TREE_FOR_EACH_LEVELORDER(struct bintree, np, root) {
+        W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d", np->value);
+        free(np);
+    }
+
+    W_TEST_ASSERT(ix == 5, "for_each did not traverse tree");
+    ix=0;
+)
+
+W_TEST(W_TREE_FOR_EACH_LEVELORDER_reversed,
+    struct bintree {
+        int value;
+        struct bintree* next[2];
+    };
+    struct bintree* root = W_STRUCT_NEW(struct bintree, .value=45,
+        .next[0] = W_STRUCT_NEW(struct bintree, .value=13,
+            .next[0] = W_STRUCT_NEW(struct bintree, .value=7),
+            .next[1] = W_STRUCT_NEW(struct bintree, .value=19)),
+        .next[1] = W_STRUCT_NEW(struct bintree, .value=74));
+
+    int correct[] = {45, 74, 13, 19, 7};
+    int ix=0;
+
+#undef W_REVERSED
+#define W_REVERSED 1
+
+    W_TREE_FOR_EACH_LEVELORDER(struct bintree, np, root) {
+        W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d", np->value);
         free(np);
     }
 
