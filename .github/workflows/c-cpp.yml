@@ -13,6 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: add boost
+      run: sudo apt-get install -y libboost-all-dev
     - name: make clean
       run: make clean
     - name: make
