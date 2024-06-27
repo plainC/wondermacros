@@ -162,7 +162,7 @@
     } while (0)
 
 
-#define _W_DYNAMIC_ARRAY_PUSH(r,array,i,e)                                      \
+#define _W_DYNAMIC_ARRAY_PUSH(r,array,i,e)                                     \
     (array)[W_DYNAMIC_ARRAY_SIZE(array) + i] = e;
 
 /***
@@ -211,7 +211,7 @@
  *** Name:        W_DYNAMIC_ARRAY_SWAP
  *** Proto:       W_DYNAMIC_ARRAY_SWAP(T, array, i, j)
  ***
- *** Arg:         T             Type of array elementsr
+ *** Arg:         T             Type of array element
  *** Arg:         array         Array pointer
  *** Arg:         i             Array index
  *** Arg:         j             Array index
@@ -224,6 +224,19 @@
         (array)[i] = (array)[j];                     \
         (array)[j] = W_ID(t);                        \
     } while( 0 )                                     \
+    /**/
+
+
+/***
+ *** Name:        W_DYNAMIC_ARRAY_CLEAR
+ *** Proto:       W_DYNAMIC_ARRAY_CLEAR(array)
+ ***
+ *** Arg:         array         Array pointer
+ ***
+ *** Description: Use W_DYNAMIC_ARRAY_CLEAR to clear a dynamic array without releasing the current allocations.
+ ***/
+#define W_DYNAMIC_ARRAY_CLEAR(array)                                                   \
+    W_HIDDEN_OF((array), W_DYNAMIC_ARRAY_HEADER_TYPE, nbr_of_elems) = 0                \
     /**/
 
 
@@ -241,10 +254,10 @@
 
 #define W_DYNAMIC_ARRAY_GROW_AT_LEAST(array,min)                                       \
     do {                                                                               \
-        if ((array) == NULL) {\
-            W_DYNAMIC_ARRAY_INIT(array,min); \
-            break; \
-        }\
+        if ((array) == NULL) {                                                         \
+            W_DYNAMIC_ARRAY_INIT(array,min);                                           \
+            break;                                                                     \
+        }                                                                              \
         int W_ID(old_size) = W_DYNAMIC_ARRAY_ALLOC_SIZE(array);                        \
         if ((min) <= W_DYNAMIC_ARRAY_ALLOC_SIZE(array))                                \
             break;                                                                     \
@@ -261,6 +274,16 @@
 
 #include <wondermacros/array/for_each.h>
 
+/***
+ *** Name:        W_DYNAMIC_ARRAY_FOR_EACH
+ *** Proto:       W_DYNAMIC_ARRAY_FOR_EACH(T,elem,array)
+ ***
+ *** Arg:         T             Type of array elementsr
+ *** Arg:         elem          Free variable name
+ *** Arg:         array         Array pointer
+ ***
+ *** Description: Use W_DYNAMIC_ARRAY_FOR_EACH to iterate all elements in a dynamic array.
+ ***/
 #define W_DYNAMIC_ARRAY_FOR_EACH(T,elem,array)                                         \
     for (void* W_ID(a) = (array); W_ID(a); W_ID(a) = NULL)                             \
         W_ARRAY_FOR_EACH(T,elem,array,W_DYNAMIC_ARRAY_GET_SIZE(array))
@@ -294,6 +317,15 @@ W_TEST(W_DYNAMIC_ARRAY_STEAL_LAST,
     W_DYNAMIC_ARRAY_PUSH(array, 1, 2, 3, 4);
     W_TEST_ASSERT(W_DYNAMIC_ARRAY_STEAL_LAST(array) == 4, "Steal last failed");
     W_TEST_ASSERT(W_DYNAMIC_ARRAY_GET_SIZE(array) == 3, "Array size mismatch");
+
+    W_DYNAMIC_ARRAY_FREE(array);
+)
+
+W_TEST(W_DYNAMIC_ARRAY_CLEAR,
+    int* array = NULL;
+    W_DYNAMIC_ARRAY_PUSH(array, 1, 2, 3, 4);
+    W_DYNAMIC_ARRAY_CLEAR(array);
+    W_TEST_ASSERT(W_DYNAMIC_ARRAY_GET_SIZE(array) == 0, "Array size mismatch");
 
     W_DYNAMIC_ARRAY_FREE(array);
 )

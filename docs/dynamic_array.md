@@ -104,7 +104,7 @@ nbr_of_elems         Number of elements to be removed (default is one).
     
 #### Arguments
 ```C
-T                    Type of array elementsr
+T                    Type of array element
 array                Array pointer
 i                    Array index
 j                    Array index
@@ -112,3 +112,25 @@ j                    Array index
 ```
 #### Description
     Use W_DYNAMIC_ARRAY_SWAP to swap elements of a dynamic array.
+    
+### W_DYNAMIC_ARRAY_CLEAR(array)
+    
+#### Arguments
+```C
+array                Array pointer
+    
+```
+#### Description
+    Use W_DYNAMIC_ARRAY_CLEAR to clear a dynamic array without releasing the current allocations.
+    
+### W_DYNAMIC_ARRAY_FOR_EACH(T,elem,array)
+    
+#### Arguments
+```C
+T                    Type of array elementsr
+elem                 Free variable name
+array                Array pointer
+    
+```
+#### Description
+    Use W_DYNAMIC_ARRAY_FOR_EACH to iterate all elements in a dynamic array.
