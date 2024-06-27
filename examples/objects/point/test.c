@@ -55,7 +55,7 @@ w_object_is_subclass_of(array[0],array[1]));
     /* We will initialize the first two objects from JSON string. */
 printf("%s\n", json);
     if (W_CALL(array[0],from_json)(json, &end))
-        printf("ERROR: %d\n", end-json);
+        printf("ERROR: %ld\n", end-json);
 
     if (W_CALL(array[1],from_json)(end, &end))
         printf("ERROR\n");
