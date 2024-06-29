@@ -11,7 +11,7 @@ TreeRoot             a tree (root node)
     Use W_TREE_FOR_EACH_PREORDER to traverse a tree structure iteratively in preorder.
 #### Notes
 Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
-    Also define what stack is to be used by defining INIT_STACK, FREE_STACK, PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
+    Also define what stack is to be used by defining WCONF_STACK_DECLARE_AND_INIT, WCONF_STACK_FREE, WCONF_STACK_PUSH_PTR(p), WCONF_STACK_PEEK_PTR(), WCONF_STACK_SWAP_PTRS(ix1,ix2) and WCONF_STACK_POP_PTR() macros.
     Stack needs to be available before calling this macro and it must
     have space for the depth of the tree, or have the capability to grow.
     If these macros are not defined before including for_each.h,
@@ -28,7 +28,7 @@ TreeRoot             a tree
     Use W_TREE_FOR_EACH_POSTORDER to traverse a tree structure iteratively in postorder.
 #### Notes
 Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
-    Also define what stack is to be used by defining INIT_STACK, FREE_STACK, PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
+    Also define what stack is to be used by defining WCONF_STACK_DECLARE_AND_INIT, WCONF_STACK_FREE, WCONF_STACK_PUSH_PTR(p), WCONF_STACK_PEEK_PTR(), WCONF_STACK_SWAP_PTRS(ix1,ix2) and WCONF_STACK_POP_PTR() macros.
     Stack needs to be available before calling this macro and it must
     have space for the depth of the tree, or have the capability to grow.
     If these macros are not defined before including for_each.h,
@@ -45,7 +45,7 @@ TreeRoot             a tree
     Use W_TREE_FOR_EACH_LEVELORDER to traverse a tree structure iteratively in levelorder.
 #### Notes
 Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
-    Also define what stack is to be used by defining INIT_STACK, FREE_STACK, PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
+    Also define what stack is to be used by defining WCONF_STACK_DECLARE_AND_INIT, WCONF_STACK_FREE, WCONF_STACK_PUSH_PTR(p), WCONF_STACK_PEEK_PTR(), WCONF_STACK_SWAP_PTRS(ix1,ix2) and WCONF_STACK_POP_PTR() macros.
     Stack needs to be available before calling this macro and it must
     have space for the depth of the tree, or have the capability to grow.
     If these macros are not defined before including for_each.h,
@@ -61,7 +61,7 @@ self                 a tree
     Use W_TREE_FREE to free all nodes in a tree.
 #### Notes
 Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
-    Also define what stack is to be used by defining INIT_STACK, FREE_STACK, PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
+    Also define what stack is to be used by defining WCONF_STACK_DECLARE_AND_INIT, WCONF_STACK_FREE, WCONF_STACK_PUSH_PTR(p), WCONF_STACK_PEEK_PTR(), WCONF_STACK_SWAP_PTRS(ix1,ix2) and WCONF_STACK_POP_PTR() macros.
     Stack needs to be available before calling this macro and it must
     have space for the depth of the tree, or have the capability to grow.
     If these macros are not defined before including for_each.h,

@@ -49,31 +49,8 @@
 # define W_REVERSED 0
 #endif
 
-#ifndef PUSH_PTR
-# ifndef WDEBUG_EXPAND
-#  include <wondermacros/array/dynamic_stack.h>
-# endif
-# define PUSH_PTR(p) W_DYNAMIC_STACK_PUSH(stack, p)
-#endif
-
-#ifndef INIT_STACK
-# define INIT_STACK W_DECLARE(0, void** stack = NULL)
-#endif
-
-#ifndef FREE_STACK
-# define FREE_STACK W_DYNAMIC_STACK_FREE(stack)
-#endif
-
-#ifndef POP_PTR
-# define POP_PTR() W_DYNAMIC_STACK_POP(stack)
-#endif
-
-#ifndef PEEK_PTR
-# define PEEK_PTR() W_DYNAMIC_STACK_PEEK(stack)
-#endif
-
-#ifndef SWAP_PTRS
-# define SWAP_PTRS(x, y) W_DYNAMIC_ARRAY_SWAP(void*, stack, x, y)
+#ifndef WCONF_STACK
+# include <wondermacros/configs/stack/dynamic_heap_array.h>
 #endif
 
 
@@ -85,23 +62,24 @@
  *** Arg:         TreeRoot   a tree (root node)
  *** Description: Use W_TREE_FOR_EACH_PREORDER to traverse a tree structure iteratively in preorder.
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
- ***              Also define what stack is to be used by defining INIT_STACK, FREE_STACK, PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
+ ***              Also define what stack is to be used by defining WCONF_STACK_DECLARE_AND_INIT, WCONF_STACK_FREE, WCONF_STACK_PUSH_PTR(p), WCONF_STACK_PEEK_PTR(), WCONF_STACK_SWAP_PTRS(ix1,ix2) and WCONF_STACK_POP_PTR() macros.
  ***              Stack needs to be available before calling this macro and it must
  ***              have space for the depth of the tree, or have the capability to grow.
  ***              If these macros are not defined before including for_each.h,
  ***              dynamic stack is used by default.
  ***/
 #define W_TREE_FOR_EACH_PREORDER(T,node,TreeRoot)                        \
-   INIT_STACK                                                            \
-   W_AFTER(_1, FREE_STACK)                                               \
+   WCONF_STACK_DECLARE_AND_INIT                                          \
+   W_AFTER(_1, WCONF_STACK_FREE)                                         \
    W_BEFORE(_2,                                                          \
-        PUSH_PTR( TreeRoot );                                            \
-        if( PEEK_PTR() ) {                                               \
-            PUSH_PTR( NULL );                                            \
-            SWAP_PTRS( 0, 1 );                                           \
+        WCONF_STACK_PUSH_PTR( TreeRoot );                                \
+        if( WCONF_STACK_PEEK_PTR() ) {                                   \
+            WCONF_STACK_PUSH_PTR( NULL );                                \
+            WCONF_STACK_SWAP_PTRS( 0, 1 );                               \
         }                                                                \
     )                                                                    \
-    for( T* node = POP_PTR(); node; node = POP_PTR() )                   \
+    for( T* node = WCONF_STACK_POP_PTR(); node;                          \
+            node = WCONF_STACK_POP_PTR() )                               \
         W_BEFORE(_3,                                                     \
             BOOST_PP_IF(                                                 \
                 W_REVERSED,                                              \
@@ -113,18 +91,21 @@
                         W_ID(i)-- )                                      \
             )                                                            \
                 if( W_TREE_NEXT(node, W_ID(i) ) )                        \
-                    PUSH_PTR( W_TREE_NEXT(node, W_ID(i) ) );             \
+                    WCONF_STACK_PUSH_PTR( W_TREE_NEXT(node, W_ID(i) ) ); \
         )                                                                \
     /**/
 
 #define W_UP 0
 #define W_DOWN 1
 
-#define PUSH_TAGGED_PTR(p, tag) PUSH_PTR(W_TAGGED_PTR_SET(p, tag))
-#define PEEK_TAGGED_PTR(tag) \
-    ((tag) = W_TAGGED_PTR_GET_TAG(PEEK_PTR()), W_TAGGED_PTR_GET_PTR(PEEK_PTR()))
-#define POP_TAGGED_PTR(tag) \
-    ((tag) = W_TAGGED_PTR_GET_TAG(PEEK_PTR()), W_TAGGED_PTR_GET_PTR(POP_PTR()))
+#define PUSH_TAGGED_PTR(p, tag)                                          \
+    WCONF_STACK_PUSH_PTR(W_TAGGED_PTR_SET(p, tag))
+#define PEEK_TAGGED_PTR(tag)                                             \
+    ((tag) = W_TAGGED_PTR_GET_TAG(WCONF_STACK_PEEK_PTR()),               \
+            W_TAGGED_PTR_GET_PTR(WCONF_STACK_PEEK_PTR()))
+#define POP_TAGGED_PTR(tag)                                              \
+    ((tag) = W_TAGGED_PTR_GET_TAG(WCONF_STACK_PEEK_PTR()),               \
+            W_TAGGED_PTR_GET_PTR(WCONF_STACK_POP_PTR()))
 
 
 /***
@@ -135,21 +116,21 @@
  *** Arg:         TreeRoot   a tree
  *** Description: Use W_TREE_FOR_EACH_POSTORDER to traverse a tree structure iteratively in postorder.
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
- ***              Also define what stack is to be used by defining INIT_STACK, FREE_STACK, PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
+ ***              Also define what stack is to be used by defining WCONF_STACK_DECLARE_AND_INIT, WCONF_STACK_FREE, WCONF_STACK_PUSH_PTR(p), WCONF_STACK_PEEK_PTR(), WCONF_STACK_SWAP_PTRS(ix1,ix2) and WCONF_STACK_POP_PTR() macros.
  ***              Stack needs to be available before calling this macro and it must
  ***              have space for the depth of the tree, or have the capability to grow.
  ***              If these macros are not defined before including for_each.h,
  ***              dynamic stack is used by default.
  ***/
 #define W_TREE_FOR_EACH_POSTORDER(Type, node, TreeRoot)                     \
-    INIT_STACK                                                            \
-    W_AFTER(_1, FREE_STACK)                                               \
+    WCONF_STACK_DECLARE_AND_INIT                                            \
+    W_AFTER(_1, WCONF_STACK_FREE)                                           \
     W_DECLARE(_2, int W_ID(t))                                              \
     W_BEFORE(_3,                                                            \
         PUSH_TAGGED_PTR( TreeRoot, W_DOWN );                                \
         if( PEEK_TAGGED_PTR( W_ID(t) ) ) {                                  \
             PUSH_TAGGED_PTR( NULL, W_DOWN );                                \
-            SWAP_PTRS( 0, 1 );                                              \
+            WCONF_STACK_SWAP_PTRS( 0, 1 );                                  \
         }                                                                   \
     )                                                                       \
     for( Type* W_ID(l), *node = POP_TAGGED_PTR(W_ID(t));                    \
@@ -190,7 +171,7 @@
  *** Arg:         TreeRoot   a tree
  *** Description: Use W_TREE_FOR_EACH_LEVELORDER to traverse a tree structure iteratively in levelorder.
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
- ***              Also define what stack is to be used by defining INIT_STACK, FREE_STACK, PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
+ ***              Also define what stack is to be used by defining WCONF_STACK_DECLARE_AND_INIT, WCONF_STACK_FREE, WCONF_STACK_PUSH_PTR(p), WCONF_STACK_PEEK_PTR(), WCONF_STACK_SWAP_PTRS(ix1,ix2) and WCONF_STACK_POP_PTR() macros.
  ***              Stack needs to be available before calling this macro and it must
  ***              have space for the depth of the tree, or have the capability to grow.
  ***              If these macros are not defined before including for_each.h,
@@ -234,7 +215,7 @@
  *** Arg:         self       a tree
  *** Description: Use W_TREE_FREE to free all nodes in a tree.
  *** Notes:       Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get correct behaviour with any tree type.
- ***              Also define what stack is to be used by defining INIT_STACK, FREE_STACK, PUSH_PTR(p), PEEK_PTR(), SWAP_PTRS(ix1,ix2) and POP_PTR() macros.
+ ***              Also define what stack is to be used by defining WCONF_STACK_DECLARE_AND_INIT, WCONF_STACK_FREE, WCONF_STACK_PUSH_PTR(p), WCONF_STACK_PEEK_PTR(), WCONF_STACK_SWAP_PTRS(ix1,ix2) and WCONF_STACK_POP_PTR() macros.
  ***              Stack needs to be available before calling this macro and it must
  ***              have space for the depth of the tree, or have the capability to grow.
  ***              If these macros are not defined before including for_each.h,
@@ -325,7 +306,8 @@ W_TEST(W_TREE_FOR_EACH_POSTORDER,
 #define W_REVERSED 0
 
     W_TREE_FOR_EACH_POSTORDER(struct bintree, np, root) {
-        W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d", np->value);
+        W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d",
+                      np->value);
         free(np);
     }
 
@@ -351,7 +333,8 @@ W_TEST(W_TREE_FOR_EACH_POSTORDER_reversed,
 #define W_REVERSED 1
 
     W_TREE_FOR_EACH_POSTORDER(struct bintree, np, root) {
-        W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d (at %d)", correct[ix-1], ix-1);
+        W_TEST_ASSERT(np->value == correct[ix++],
+                      "Value mismatch: %d (at %d)", correct[ix-1], ix-1);
         free(np);
     }
 
@@ -377,7 +360,8 @@ W_TEST(W_TREE_FOR_EACH_LEVELORDER,
 #define W_REVERSED 0
 
     W_TREE_FOR_EACH_LEVELORDER(struct bintree, np, root) {
-        W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d", np->value);
+        W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d",
+                      np->value);
         free(np);
     }
 
@@ -403,7 +387,8 @@ W_TEST(W_TREE_FOR_EACH_LEVELORDER_reversed,
 #define W_REVERSED 1
 
     W_TREE_FOR_EACH_LEVELORDER(struct bintree, np, root) {
-        W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d", np->value);
+        W_TEST_ASSERT(np->value == correct[ix++], "Value mismatch: %d",
+                      np->value);
         free(np);
     }
 
