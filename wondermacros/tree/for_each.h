@@ -63,6 +63,7 @@
  *** Description: Use W_TREE_FOR_EACH_PREORDER to traverse a tree structure iteratively in preorder.
  *** Notes:       Specify the stack to be used by including a configuration file under "wondermacros/configs/stack".
  ***              By default a static array stack is used and the stack size is set in WCONF_STACK_SIZE.
+ ***              Available stack options are [described here](https://github.com/plainC/wondermacros/blob/master/wondermacros/configs/stack/README.md).
  ***/
 #define W_TREE_FOR_EACH_PREORDER(T,node,TreeRoot)                        \
    WCONF_STACK_DECLARE_AND_INIT                                          \
@@ -113,6 +114,7 @@
  *** Description: Use W_TREE_FOR_EACH_POSTORDER to traverse a tree structure iteratively in postorder.
  *** Notes:       Specify the stack to be used by including a configuration file under "wondermacros/configs/stack".
  ***              By default a static array stack is used and the stack size is set in WCONF_STACK_SIZE.
+ ***              Available stack options are [described here](https://github.com/plainC/wondermacros/blob/master/wondermacros/configs/stack/README.md).
  ***/
 #define W_TREE_FOR_EACH_POSTORDER(Type, node, TreeRoot)                     \
     WCONF_STACK_DECLARE_AND_INIT                                            \
@@ -164,6 +166,7 @@
  *** Description: Use W_TREE_FOR_EACH_LEVELORDER to traverse a tree structure iteratively in levelorder.
  *** Notes:       Specify the stack to be used by including a configuration file under "wondermacros/configs/stack".
  ***              By default a static array stack is used and the stack size is set in WCONF_STACK_SIZE.
+ ***              Available stack options are [described here](https://github.com/plainC/wondermacros/blob/master/wondermacros/configs/stack/README.md).
  ***/
 #define W_TREE_FOR_EACH_LEVELORDER(Type, node, TreeRoot)                  \
     W_DECLARE(_0, Type** W_ID(q)=NULL)                                    \
@@ -208,6 +211,7 @@
  ***              have space for the depth of the tree, or have the capability to grow.
  ***              If these macros are not defined before including for_each.h,
  ***              dynamic stack is used by default.
+ ***              Available stack options are [described here](https://github.com/plainC/wondermacros/blob/master/wondermacros/configs/stack/README.md).
  ***/
 #define W_TREE_FREE(T,root)                                              \
     W_TREE_FOR_EACH_POSTORDER(T,W_ID(_TREE_FREE_),root)                  \

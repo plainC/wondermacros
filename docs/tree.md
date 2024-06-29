@@ -12,6 +12,7 @@ TreeRoot             a tree (root node)
 #### Notes
 Specify the stack to be used by including a configuration file under "wondermacros/configs/stack".
     By default a static array stack is used and the stack size is set in WCONF_STACK_SIZE.
+    Available stack options are [described here](https://github.com/plainC/wondermacros/blob/master/wondermacros/configs/stack/README.md).
     
 ### W_TREE_FOR_EACH_POSTORDER(T,node,TreeRoot)
 #### Arguments
@@ -25,6 +26,7 @@ TreeRoot             a tree
 #### Notes
 Specify the stack to be used by including a configuration file under "wondermacros/configs/stack".
     By default a static array stack is used and the stack size is set in WCONF_STACK_SIZE.
+    Available stack options are [described here](https://github.com/plainC/wondermacros/blob/master/wondermacros/configs/stack/README.md).
     
 ### W_TREE_FOR_EACH_LEVELORDER(T, node, TreeRoot)
 #### Arguments
@@ -38,6 +40,7 @@ TreeRoot             a tree
 #### Notes
 Specify the stack to be used by including a configuration file under "wondermacros/configs/stack".
     By default a static array stack is used and the stack size is set in WCONF_STACK_SIZE.
+    Available stack options are [described here](https://github.com/plainC/wondermacros/blob/master/wondermacros/configs/stack/README.md).
     
 ### W_TREE_FREE(T,self)
 #### Arguments
@@ -54,3 +57,4 @@ Redefine W_TREE_NEXT(node,ix), W_TREE_GET_DEGREE(node) and W_REVERSED to get cor
     have space for the depth of the tree, or have the capability to grow.
     If these macros are not defined before including for_each.h,
     dynamic stack is used by default.
+    Available stack options are [described here](https://github.com/plainC/wondermacros/blob/master/wondermacros/configs/stack/README.md).
